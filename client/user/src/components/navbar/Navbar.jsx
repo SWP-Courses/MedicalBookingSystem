@@ -9,36 +9,40 @@ const user = "customer";
 export default function Navbar() {
   return (
     <div className="navbarContainer">
-      <div className="navbarTop">
-        <div className="navbar-left">
-          <span className="logo">Health Care System</span>
-        </div>
-        <div className="navbar-center">
-          <div className="searchBar">
-            <FontAwesomeIcon icon={faSearch} className="searchIcon" />
-            <input
-              type="text"
-              className="searchInput"
-              placeholder="Tìm kiếm bài viết"
-            />
+      <div className="navbarTopWrapper">
+        <div className="navbarTop">
+          <div className="navbar-left">
+            <span className="logo">Health Care System</span>
           </div>
-        </div>
-        <div className="navbar-right">
-          {(user === "customer" || !user) && (
-            <Link to="/info/Booking" className="navbar-button">
-              ĐĂNG KÝ KHÁM
-            </Link>
-          )}
-          {user === "doctor" && (
-            <button className="navbar-button">LỊCH KHÁM</button>
-          )}
-          <div className="devideLine"></div>
-          {!user && <button className="navbar-button">ĐĂNG NHẬP</button>}
-          {user && (
-            <div className="avatarContainer">
-              <img src={blankAvatar} alt="" />
+          <div className="navbar-center">
+            <div className="searchBar">
+              <FontAwesomeIcon icon={faSearch} className="searchIcon" />
+              <input
+                type="text"
+                className="searchInput"
+                placeholder="Tìm kiếm bài viết"
+              />
             </div>
-          )}
+          </div>
+          <div className="navbar-right">
+            {(user === "customer" || !user) && (
+              <Link to="/Booking" className="navbar-button">
+                ĐĂNG KÝ KHÁM
+              </Link>
+            )}
+            {user === "doctor" && (
+              <button className="navbar-button">LỊCH KHÁM</button>
+            )}
+            <div className="devideLine"></div>
+            {!user && <button className="navbar-button">ĐĂNG NHẬP</button>}
+            {user && (
+              <div className="avatarContainer">
+                <Link to='customer'>
+                  <img src={blankAvatar} alt="" />
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
       </div>
       <Options />
