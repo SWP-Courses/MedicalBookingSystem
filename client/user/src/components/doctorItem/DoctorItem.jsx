@@ -15,7 +15,7 @@ export default function DoctorItem({ doctor }) {
         <img src={img} alt="" />
       </div>
       <div className="doctorTitle">
-        <Link to="/info/doctors/123" className="doctorName">
+        <Link to={`/doctors/${doctor.id}`} className="doctorName">
           Bác sĩ {name}
         </Link>
         <div className="titleItem">

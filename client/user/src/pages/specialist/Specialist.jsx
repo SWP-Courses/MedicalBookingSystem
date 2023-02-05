@@ -71,7 +71,7 @@ export default function Specialist() {
                 className={doctorShow.name === doctor.name ? "active" : ""}
               />
               <span className="title">{doctor.degree}</span>
-              <Link to="/info/doctors/123" className="name">
+              <Link to={`/doctors/${doctor.id}`} className="name">
                 {doctor.name}
               </Link>
             </div>

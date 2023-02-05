@@ -109,6 +109,7 @@ export const blogsSaved = [
 
 export const doctorList = [
   {
+    id: "1",
     img: doctorImg,
     name: "Philippe Macaire",
     degree: "Giáo sư , Tiến sĩ, Bác sĩ",
@@ -117,6 +118,7 @@ export const doctorList = [
       "Giáo sư, Tiến sĩ, Bác sĩ Philippe Macaire đã cống hiến hơn 30 năm trong lĩnh vực Gây mê - điều trị đau. Bác sĩ Philippe Macaire nhận danh hiệu Giáo sư. Ông đã dành cả cuộc đời để học tập và nghiên cứu gây mê - giảm đau bằng việc tham gia các khóa học chuyên sâu tại Pháp, Dubai, Anh Quốc, Thái Lan và Việt Nam; là diễn giả tại hơn 150 hội thảo, hội nghị thế giới; và là tác giả của nhiều sách, bài viết về gây mê giảm đau. Ngoài ra, ông cũng là thành viên kỳ cựu, có đóng góp tích cực cho 16 tổ chức y tế như Tổ chức phi lợi nhuận về gây mê giảm đau vùng Francophone; Thành viên Hội đồng Gây tê vùng và Điều trị đau; Thành viên Hội đồng Khoa Học; Chủ tịch kiêm đồng Người sáng lập, Quỹ gây mê trong phẫu thuật chấn thương chỉnh hình: AFARCOT, Thành viên ban Tổ chức các cuộc họp hằng năm, Hiệp Hội Gây Mê Hồi Sức Pháp; Thành viên nhóm chuyên môn: Hướng dẫn thực hành giảm đau sau phẫu thuật; Thành viên Ban tổ chức Hội nghị năm 2000 tại Paris, Pháp; Thành viên nhóm chuyên môn: Hướng dẫn thực hành Gây tê vùng: Gây tê thần kinh ngoại vị; Hiệp hội Gây mê Mỹ ASA; Hiệp hội Gây mê Châu Âu ESRA; Hiệp hội ICAR Lyon; Cố vấn học tập cho tổ chức ESRA learning zone; Thành viên Hội thảo Gây mê hằng năm tại Dubai; Đồng sáng lập RA Asia Group về giảm đau gây tê vùng tại Châu Á và Nhóm điều trị giảm đau bệnh lý cơ xương dưới siêu âm (MSKUS-PM Group) trong điều trị đau can thiệp.",
   },
   {
+    id: "2",
     img: "https://t4.ftcdn.net/jpg/03/17/85/49/360_F_317854905_2idSdvi2ds3yejmk8mhvxYr1OpdVTrSM.jpg",
     name: "Michael Jasmin",
     degree: "Giáo sư , Tiến sĩ, Bác sĩ",
@@ -125,6 +127,7 @@ export const doctorList = [
       "Giáo sư, Tiến sĩ, Bác sĩ Philippe Macaire đã cống hiến hơn 30 năm trong lĩnh vực Gây mê - điều trị đau. Bác sĩ Philippe Macaire nhận danh hiệu Giáo sư. Ông đã dành cả cuộc đời để học tập và nghiên cứu gây mê - giảm đau bằng việc tham gia các khóa học chuyên sâu tại Pháp, Dubai, Anh Quốc, Thái Lan và Việt Nam; là diễn giả tại hơn 150 hội thảo, hội nghị thế giới; và là tác giả của nhiều sách, bài viết về gây mê giảm đau. Ngoài ra, ông cũng là thành viên kỳ cựu, có đóng góp tích cực cho 16 tổ chức y tế như Tổ chức phi lợi nhuận về gây mê giảm đau vùng Francophone; Thành viên Hội đồng Gây tê vùng và Điều trị đau; Thành viên Hội đồng Khoa Học; Chủ tịch kiêm đồng Người sáng lập, Quỹ gây mê trong phẫu thuật chấn thương chỉnh hình: AFARCOT, Thành viên ban Tổ chức các cuộc họp hằng năm, Hiệp Hội Gây Mê Hồi Sức Pháp; Thành viên nhóm chuyên môn: Hướng dẫn thực hành giảm đau sau phẫu thuật; Thành viên Ban tổ chức Hội nghị năm 2000 tại Paris, Pháp; Thành viên nhóm chuyên môn: Hướng dẫn thực hành Gây tê vùng: Gây tê thần kinh ngoại vị; Hiệp hội Gây mê Mỹ ASA; Hiệp hội Gây mê Châu Âu ESRA; Hiệp hội ICAR Lyon; Cố vấn học tập cho tổ chức ESRA learning zone; Thành viên Hội thảo Gây mê hằng năm tại Dubai; Đồng sáng lập RA Asia Group về giảm đau gây tê vùng tại Châu Á và Nhóm điều trị giảm đau bệnh lý cơ xương dưới siêu âm (MSKUS-PM Group) trong điều trị đau can thiệp.",
   },
   {
+    id: "3",
     img: "https://media.istockphoto.com/id/1346711310/photo/portrait-of-smiling-female-doctor-wearing-uniform-standing.jpg?b=1&s=170667a&w=0&k=20&c=MP4Uz3zLO_2i8WGmcYaQgz8mOh2IrRjf5byFhqKRroY=",
     name: "Philippe Sena",
     degree: "Giáo sư , Tiến sĩ, Bác sĩ",
@@ -133,6 +136,7 @@ export const doctorList = [
       "Giáo sư, Tiến sĩ, Bác sĩ Philippe Macaire đã cống hiến hơn 30 năm trong lĩnh vực Gây mê - điều trị đau. Bác sĩ Philippe Macaire nhận danh hiệu Giáo sư. Ông đã dành cả cuộc đời để học tập và nghiên cứu gây mê - giảm đau bằng việc tham gia các khóa học chuyên sâu tại Pháp, Dubai, Anh Quốc, Thái Lan và Việt Nam; là diễn giả tại hơn 150 hội thảo, hội nghị thế giới; và là tác giả của nhiều sách, bài viết về gây mê giảm đau. Ngoài ra, ông cũng là thành viên kỳ cựu, có đóng góp tích cực cho 16 tổ chức y tế như Tổ chức phi lợi nhuận về gây mê giảm đau vùng Francophone; Thành viên Hội đồng Gây tê vùng và Điều trị đau; Thành viên Hội đồng Khoa Học; Chủ tịch kiêm đồng Người sáng lập, Quỹ gây mê trong phẫu thuật chấn thương chỉnh hình: AFARCOT, Thành viên ban Tổ chức các cuộc họp hằng năm, Hiệp Hội Gây Mê Hồi Sức Pháp; Thành viên nhóm chuyên môn: Hướng dẫn thực hành giảm đau sau phẫu thuật; Thành viên Ban tổ chức Hội nghị năm 2000 tại Paris, Pháp; Thành viên nhóm chuyên môn: Hướng dẫn thực hành Gây tê vùng: Gây tê thần kinh ngoại vị; Hiệp hội Gây mê Mỹ ASA; Hiệp hội Gây mê Châu Âu ESRA; Hiệp hội ICAR Lyon; Cố vấn học tập cho tổ chức ESRA learning zone; Thành viên Hội thảo Gây mê hằng năm tại Dubai; Đồng sáng lập RA Asia Group về giảm đau gây tê vùng tại Châu Á và Nhóm điều trị giảm đau bệnh lý cơ xương dưới siêu âm (MSKUS-PM Group) trong điều trị đau can thiệp.",
   },
   {
+    id: "4",
     img: doctorImg,
     name: "Philippe Macaire",
     degree: "Giáo sư , Tiến sĩ, Bác sĩ",
@@ -141,6 +145,7 @@ export const doctorList = [
       "Giáo sư, Tiến sĩ, Bác sĩ Philippe Macaire đã cống hiến hơn 30 năm trong lĩnh vực Gây mê - điều trị đau. Bác sĩ Philippe Macaire nhận danh hiệu Giáo sư. Ông đã dành cả cuộc đời để học tập và nghiên cứu gây mê - giảm đau bằng việc tham gia các khóa học chuyên sâu tại Pháp, Dubai, Anh Quốc, Thái Lan và Việt Nam; là diễn giả tại hơn 150 hội thảo, hội nghị thế giới; và là tác giả của nhiều sách, bài viết về gây mê giảm đau. Ngoài ra, ông cũng là thành viên kỳ cựu, có đóng góp tích cực cho 16 tổ chức y tế như Tổ chức phi lợi nhuận về gây mê giảm đau vùng Francophone; Thành viên Hội đồng Gây tê vùng và Điều trị đau; Thành viên Hội đồng Khoa Học; Chủ tịch kiêm đồng Người sáng lập, Quỹ gây mê trong phẫu thuật chấn thương chỉnh hình: AFARCOT, Thành viên ban Tổ chức các cuộc họp hằng năm, Hiệp Hội Gây Mê Hồi Sức Pháp; Thành viên nhóm chuyên môn: Hướng dẫn thực hành giảm đau sau phẫu thuật; Thành viên Ban tổ chức Hội nghị năm 2000 tại Paris, Pháp; Thành viên nhóm chuyên môn: Hướng dẫn thực hành Gây tê vùng: Gây tê thần kinh ngoại vị; Hiệp hội Gây mê Mỹ ASA; Hiệp hội Gây mê Châu Âu ESRA; Hiệp hội ICAR Lyon; Cố vấn học tập cho tổ chức ESRA learning zone; Thành viên Hội thảo Gây mê hằng năm tại Dubai; Đồng sáng lập RA Asia Group về giảm đau gây tê vùng tại Châu Á và Nhóm điều trị giảm đau bệnh lý cơ xương dưới siêu âm (MSKUS-PM Group) trong điều trị đau can thiệp.",
   },
   {
+    id: "5",
     img: doctorImg,
     name: "Philippe Macaire",
     degree: "Giáo sư , Tiến sĩ, Bác sĩ",

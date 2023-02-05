@@ -6,17 +6,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBriefcase,
   faGraduationCap,
-  faHospital,
-  faHospitalAlt,
   faHospitalSymbol,
-  faHospitalUser,
-  faHospitalWide,
   faInfoCircle,
 } from "@fortawesome/free-solid-svg-icons";
+import { useParams } from "react-router-dom";
 
 export default function DoctorDetail() {
   const [moreOpen, setMoreOpen] = useState(false);
-  const [doctor, setDoctor] = useState(doctorList[0]);
+  const params = useParams();
+  const [doctor, setDoctor] = useState(
+    doctorList.find((doctor) => doctor.id === params.id)
+  );
   return (
     <div className="doctorDetail">
       <div className="doctorVisual">

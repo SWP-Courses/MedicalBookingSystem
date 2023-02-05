@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Button, Modal } from "react-bootstrap";
 import BookingConfirm from "~/components/bookingConfirm/BookingConfirm";
 import BookingFill from "~/components/bookingFill/BookingFill";
 import "./booking.scss";
@@ -42,6 +43,21 @@ export default function Booking() {
           )}
         </div>
       </div>
+
+      <Modal show={payModal} onHide={() => setPayModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Thanh toán</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Tổng tiền: 312</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setPayModal(false)}>
+            Đóng
+          </Button>
+          <Button variant="primary" onClick={() => setPayModal(false)}>
+            Thanh toán
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }
