@@ -1,0 +1,51 @@
+.topbarOptions {
+    background-color: #DDDDDD;
+    height: 50px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    width: 100%;
+
+    >.optionItem {
+        position: relative;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        padding: 0px 20px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #cecccc;
+        }
+
+        .optionIcon {
+            margin-left: 10px;
+            color: rgb(184, 183, 183);
+        }
+
+        >.dropdown {
+            display: none;
+            position: absolute;
+            top: 50px;
+            left: 0;
+            background-color: #e5e4e4;
+            width: 100%;
+            
+            flex-direction: column;
+
+            .dropItem {
+                padding: 5px 10px;
+                
+
+                &:hover {
+                    background-color: #ccc;
+                }
+            }
+
+        }
+
+        &:hover .dropdown {
+            display: flex;
+        }
+    }
+}

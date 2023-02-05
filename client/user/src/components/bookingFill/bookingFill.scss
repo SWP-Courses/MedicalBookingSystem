@@ -1,0 +1,108 @@
+.bookingContent {
+    padding: 14px 32px;
+    display: flex;
+    gap: 20px;
+
+    >.divideLine {
+      border-right: 0.5px solid lightgray;
+    }
+
+    .hospitalPart {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      flex: 1;
+      .dropdownContain {
+        width: 100%;
+        .dropdownText {
+          width: 100%;
+          background-color: #fff;
+          color: #333;
+          border: 1px solid lightgray;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          > .text {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+          }
+        }
+
+        .dropdownOptions {
+          width: 100%;
+        }
+      }
+
+      > .timeAvailable {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        > .title {
+          font-weight: 500;
+          font-size: 18px;
+        }
+
+        > .time {
+          display: flex;
+          flex-direction: column;
+
+          .groupTime {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            > .timeItem {
+              padding: 5px 15px;
+              background-color: rgb(243, 243, 243);
+              border-radius: 5px;
+              cursor: pointer;
+
+              &.active {
+                border: 2px solid #e5a724;
+                background-color: #fff;
+                color: #e5a724;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .userFillPart {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      > h2 {
+          font-size: 20px;
+      }
+
+      .fillInput {
+          padding: 15px;
+          border: 1px solid lightgray;
+          border-radius: 5px;
+          display: flex;
+          gap: 10px;
+          align-items: center;
+          
+          input {
+              outline: none;
+              border: none;
+              font-size: 14px;
+              color: gray;
+          }
+      }
+
+      .twoInfoInput {
+          display: flex;
+          gap: 10px;
+          align-items: center;
+
+          > input[type=radio] {
+              transform: scale(1.5);
+          }
+      }
+
+    }
+  }

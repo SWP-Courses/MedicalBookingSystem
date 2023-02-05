@@ -1,0 +1,22 @@
+.appointmentSchedule {
+    .orderSchedule {
+        padding: 0px 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        .orderInfoItem {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            >.key {
+                font-weight: bold;
+                font-size: 18px;
+            }
+
+            >.value {
+                font-size: 16px;
+            }
+        }
+    }
+}

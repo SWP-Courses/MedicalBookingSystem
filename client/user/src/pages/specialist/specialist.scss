@@ -1,0 +1,125 @@
+.singleSpecialist {
+  .introImages {
+    width: 100vw;
+    max-width: 100%;
+    overflow-x: hidden;
+    .speIntroThumbnail {
+      font-size: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      background-image: url("../../assets//images/heart_line.jpg");
+      background-size: contain;
+      background-repeat: no-repeat;
+      height: 200px;
+
+      > b {
+        font-size: 36px;
+        color: rgb(145, 31, 31);
+      }
+    }
+  }
+
+  .speTitle {
+    text-align: center;
+    margin: 50px 0px;
+    font-weight: bold;
+    color: rgb(145, 31, 31);
+  }
+
+  > .doctorStaff {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .doctorShow {
+      width: 1024px;
+      display: flex;
+      gap: 50px;
+      margin-bottom: 80px;
+
+      > .imgShow {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow: hidden;
+
+        > img {
+          border-radius: 10px;
+          width: 100%;
+          height: 400px;
+          object-fit: cover;
+          margin-bottom: 20px;
+        }
+        > h1 {
+          font-size: 24px;
+        }
+      }
+
+      > .contentShow {
+        flex: 2;
+
+        > .profileItem {
+          > .header {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 5px;
+          }
+        }
+      }
+    }
+
+    .doctorOptions {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      align-items: center;
+      .doctorMini {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        > img {
+          width: 150px;
+          height: 150px;
+          border-radius: 50%;
+          margin-bottom: 20px;
+          border: 2px solid transparent;
+          object-fit: cover;
+
+          &.active {
+            border: 2px solid rgb(145, 31, 31);
+          }
+        }
+
+        > .title {
+          font-size: 13px;
+        }
+
+        > .name {
+          font-size: 16px;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+
+  .otherSpecialist {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+
+    > .speBlock {
+      width: 131px;
+      height: 131px;
+      border-radius: 10px;
+      background-image: url("../../assets//images/vaccine_logo.png");
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      font-weight: 500;
+    }
+  }
+}
