@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import Form from "react-bootstrap/Form";
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import "./Login.scss";
 
@@ -75,7 +76,7 @@ function Login() {
               </div>
               </div>
               <div className="sign-up mt-3">
-                <span>Bạn Chưa Có Tài Khoản ?</span><a href="" onClick={() => navigate('/register')}>Đăng Kí</a>
+                <span>Bạn Chưa Có Tài Khoản ?</span><Link to="/register">Đăng Kí</Link>
               </div>
             </div>
           </div>

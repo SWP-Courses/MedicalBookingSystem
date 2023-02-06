@@ -68,7 +68,7 @@
 
                     .input-box {
                         display: block;
-                        padding: 16px;
+                        padding: 13px;
                         width: 400px;
                         border-radius: 3px;
                         border: 1px solid #cccc;
@@ -91,10 +91,13 @@
                     }
 
                     .btn-sign-in {
-                        padding: 14px 27px;
-                        border: 1px solid #ccc;
+                        padding: 13px 27px;
+                        border: 1px solid #286ba6;
                         border-radius: 4px;
                         width: 100%;
+                        font-weight: 500;
+                        background-color: #286ba6;
+                        color: #fff;
                     }
 
                     .separate {
@@ -102,7 +105,7 @@
                         align-items: center;
 
                         .line {
-                            border-bottom: 1px solid orange;
+                            border-bottom: 1px solid #ccc;
                             width: 100%;
                         }
 
