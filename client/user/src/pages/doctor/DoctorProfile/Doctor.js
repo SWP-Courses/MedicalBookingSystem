@@ -59,7 +59,7 @@ export default function Doctor() {
         {userContent === "info" && <DoctorProfile />}
         {userContent === "prescription" && <Prescription />}
         {userContent === "doctorSchedule" && <DoctorSchedule />}
-        {userContent === "medicalHistory" && <MedicalHistory handleOptionClick={handleOptionClick}/>}
+        {userContent === "medicalHistory" && <MedicalHistory userContent={userContent} setUserContent={setUserContent}/>}
       </div>
     </div>
   );

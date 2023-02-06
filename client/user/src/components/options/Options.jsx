@@ -1,3 +1,4 @@
+import { faFacebook, faFacebookF, faYoutube } from "@fortawesome/free-brands-svg-icons";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link } from "react-router-dom";
@@ -28,7 +29,8 @@ export default function Options() {
           <FontAwesomeIcon icon={faChevronDown} className="optionIcon" />
         </div>
         <div className="optionItem">
-          <FontAwesomeIcon icon="fa-brands fa-facebook-f" />
+          <FontAwesomeIcon icon={faFacebookF} />
+          <FontAwesomeIcon icon={faYoutube} />
         </div>
       </div>
     </div>

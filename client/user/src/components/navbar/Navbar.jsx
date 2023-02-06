@@ -15,14 +15,15 @@ export default function Navbar() {
             <span className="logo">Health Care System</span>
           </div>
           <div className="navbar-center">
-            <div className="searchBar">
+            <label htmlFor='meme' className="searchBar" >
               <FontAwesomeIcon icon={faSearch} className="searchIcon" />
               <input
                 type="text"
                 className="searchInput"
                 placeholder="Tìm kiếm bài viết"
+                id='meme'
               />
-            </div>
+            </label>
           </div>
           <div className="navbar-right">
             {(user === "customer" || !user) && (
