@@ -6,10 +6,6 @@ import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 
-import Form from "react-bootstrap/Form";
-import { useLocation, useNavigate } from "react-router-dom";
-import { AuthContext } from "~/context/authContext";
-import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 import "./Login.scss";
@@ -23,7 +19,6 @@ function Login() {
   useEffect(() => {
     currentUser && navigate("/");
   }, [currentUser, navigate]);
-  const navigate = useNavigate();
 
   const [password, setPassword] = useState("");
   // const [email, setEmail] = useState("");
@@ -86,7 +81,8 @@ function Login() {
         phone: user,
         password: password,
       };
-      console.log(loginUser);
+      // console.log(loginUser);
+      login(loginUser);
     }
 
     if (type === "google") {

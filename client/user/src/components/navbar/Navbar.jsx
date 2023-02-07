@@ -26,13 +26,13 @@ export default function Navbar() {
             </Link>
           </div>
           <div className="navbar-center">
-            <label htmlFor='meme' className="searchBar" >
+            <label htmlFor="meme" className="searchBar">
               <FontAwesomeIcon icon={faSearch} className="searchIcon" />
               <input
                 type="text"
                 className="searchInput"
                 placeholder="Tìm kiếm bài viết"
-                id='meme'
+                id="meme"
               />
             </label>
           </div>
@@ -65,11 +65,8 @@ export default function Navbar() {
                 ĐĂNG NHẬP
               </Link>
             )}
-            {currentUser && (
-            
-            {!user && <Link to='/login' className="navbar-button">ĐĂNG NHẬP</Link>}
 
-            {user && (
+            {currentUser && (
               <div className="avatarContainer">
                 <Link to="customer">
                   <img src={blankAvatar} alt="" />
