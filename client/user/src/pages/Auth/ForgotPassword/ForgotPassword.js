@@ -36,6 +36,7 @@ function ForgotPassword() {
         </div>
       </div>
       <div className="login-main">
+        {/* <div className="login-title">Đăng Nhập</div> */}
         <div className="login-body">
           <select className="select">
             <option>Khách Hàng</option>
@@ -44,10 +45,10 @@ function ForgotPassword() {
           </select>
           <div className="form-body">
             <div className="form-content">
-              <h2>Booking Care System</h2>
+              <h2>Quên Mật Khẩu</h2>
               <input 
                 type="text" 
-                placeholder="email" 
+                placeholder="email hoặc số điện thoại" 
                 className="input-box" 
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}

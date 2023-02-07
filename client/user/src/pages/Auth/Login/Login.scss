@@ -1,5 +1,7 @@
 .Login-Wrapper {
 
+    height: 100vh;
+
     .Login-header {
         display: flex;
         align-items: center;
@@ -27,19 +29,35 @@
 
 
         .login-main {
-            background-color: #ccc;
-            height: 500px;
+            height: 100%;
+            width: 60%;
             position: relative;
+            margin: 0 auto;
+
+            .login-title {
+                width: 50%;
+                height: 40%;
+                margin: 0 auto;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 27px;
+                font-weight: 400;
+            }
 
             .login-body {
                 display: flex;
                 justify-content: space-around;
-                width: 50%;
+                width: 80%;
                 align-items: center;
-                top: 50%;
                 left: 50%;
                 position: absolute;
-                transform: translate(-50%, -50%);
+                transform: translateX(-50%);
+                box-shadow: -1px 0px 13px 1px rgba(0,0,0,0.5);
+                -webkit-box-shadow: -1px 0px 13px 1px rgba(0,0,0,0.5);
+                -moz-box-shadow: -1px 0px 13px 1px rgba(0,0,0,0.5);
+                padding: 100px 0;
+                border-radius: 5px;
 
                 .select {
                     align-self: center;
@@ -47,8 +65,10 @@
                     width: fit-content;
                     padding: 10px;
                     border-radius: 4px;
-
-                   
+                    box-shadow: -1px 0px 13px 1px rgb(0 0 0 / 21%);
+                    -webkit-box-shadow: -1px 0px 13px 1px rgb(0 0 0 / 21%);
+                    -moz-box-shadow: -1px 0px 13px 1px rgba(0,0,0,0.21);   
+                    cursor: pointer;                
                 }
 
                 .form-body {
@@ -56,6 +76,7 @@
                     background-color: #fff;
                     border-radius: 4px;
                     margin: 30px;
+                    border: 1px solid #ccc;
 
                     .form-content {
                         padding: 28px 17px;

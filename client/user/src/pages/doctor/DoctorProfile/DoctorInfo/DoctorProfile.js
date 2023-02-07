@@ -1,17 +1,43 @@
 import "./DoctorProfile.scss";
-import doctor from "~/assets/images/doctor.jpg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { faArrowUpFromBracket } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export default function DoctorProfile() {
-  const [image, setIamge] = useState(true);
-  const [gender, setGender] = useState("Nam");
+  const [image, setImage] = useState(null);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [address, setAddress] = useState('');
+  const [gender, setGender] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [birthday, setBirthday] = useState('');
 
-  const hanldeUploadImage = () => {
-    alert("demo");
+  const hanldeUploadImage = (e) => {
+    if(e && e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      file.avatar = URL.createObjectURL(file); 
+      setImage(file);
+    }
   };
 
+  useEffect(() => {
+    return () => {
+      image && image.avatar && URL.revokeObjectURL(image.avatar);
+    }
+  }, [image])
+
   const handleUpdateProfile = () => {
-    alert('demo')
+    const upDateInfo = {
+      name: name,
+      gender: gender,
+      address: address,
+      email: email,
+      phone: phoneNumber,
+      birthday: birthday,
+      image: image,
+
+    }
+    console.log(upDateInfo);
   }
 
   return (
@@ -20,57 +46,100 @@ export default function DoctorProfile() {
       <hr />
       <div className="userInfo">
         <div className="infoList">
-          <input type="text" placeholder="Họ và tên" />
-          <input type="text" placeholder="Email" />
-          <input type="text" placeholder="Địa chỉ" />
+          <input 
+            type="text" 
+            placeholder="Họ và tên" 
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <input 
+            type="email" 
+            placeholder="Email" 
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input 
+            type="text" 
+            placeholder="Địa chỉ" 
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+          />
           <div className="sex">
             <strong>Giới Tính</strong>
             <input
-              class="form-check-input"
+              className="form-check-input"
               type="radio"
               name="flexRadioDefault"
               id="flexRadioDefault1"
+              value={gender}
+              onChange={(e) => setGender(e.target.checked)}
             />
-            <label class="form-check-label" for="flexRadioDefault1">
+            <label className="form-check-label" htmlFor="flexRadioDefault1">
               Nam
             </label>
             <input
-              class="form-check-input"
+              className="form-check-input"
               type="radio"
               name="flexRadioDefault"
               id="flexRadioDefault1"
+              value={gender}
+              onChange={(e) => setGender(e.target.checked)}
             />
-            <label class="form-check-label" for="flexRadioDefault1">
+            <label className="form-check-label" htmlFor="flexRadioDefault1">
               Nữ
             </label>
             <input
-              class="form-check-input"
+              className="form-check-input"
               type="radio"
               name="flexRadioDefault"
               id="flexRadioDefault1"
+              value={gender}
+              onChange={(e) => setGender(e.target.checked)}
             />
-            <label class="form-check-label" for="flexRadioDefault1">
+            <label className="form-check-label" htmlFor="flexRadioDefault1">
               Khác
             </label>
           </div>
-          <div className="phone">
+          <div className="phone mt-1">
             <strong>Số Điện Thoại</strong>
-            <input type="text" />
+            <input 
+              type="text" 
+              placeholder="số điện thoại"
+              value={phoneNumber}
+              onChange={(e) => setPhoneNumber(e.target.value)}
+            />
           </div>
           <div className="recall-date">
-            <strong for="birthday">Ngày Sinh</strong>
-            <input type="date" id="birthday" name="birthday" />
+            <strong htmlFor="birthday">Ngày Sinh</strong>
+            <input 
+              type="date" 
+              id="birthday" 
+              name="birthday" 
+              value={birthday}
+              onChange={(e) => setBirthday(e.target.value)}
+            />
           </div>
         </div>
         <div className="accountAvatar">
-          <div>
-            {image && (
-              <img src={doctor} alt="account avarta" className="avata" />
-            )}
+          <div className="avata">
+            {            
+              image && image.avatar ?  (
+                <img src={image.avatar} alt="account avarta" className="avata" />
+              ) : 'upload your avatar here'          
+            } 
           </div>
-          <button className="uploadImage" onClick={() => hanldeUploadImage()}>
-            Chọn Ảnh
-          </button>
+          <label 
+            className="uploadImage" 
+            htmlFor='imageFile'
+          >
+            <FontAwesomeIcon icon={faArrowUpFromBracket} />
+            <span>Chọn Ảnh</span>
+          </label>
+          <input 
+            type='file' 
+            hidden id="imageFile"
+            onChange={(e) => hanldeUploadImage(e)}
+          />
         </div>
       </div>
       <button 

@@ -4,6 +4,7 @@ import DoctorProfile from "~/pages/doctor/DoctorProfile/DoctorInfo/DoctorProfile
 import Prescription from "./Prescription/Prescription";
 import MedicalHistory from "./History/MedicalHistory";
 import DoctorSchedule from "./DoctorSchedule/DoctorSchedule";
+import doctor from '~/assets/images/doctor.jpg'
 
 export default function Doctor() {
   const [userContent, setUserContent] = useState("info");
@@ -17,7 +18,7 @@ export default function Doctor() {
     <div className="doctor">
       <div className="doctorSidebar">
         <div className="userInfo">
-          <img src='' alt="avartar" />
+          <img src={doctor} alt="avartar" />
           <span className="doctorName">Bác Sỹ Anh</span>
         </div>
         <div className="profileActions">
@@ -30,14 +31,14 @@ export default function Doctor() {
             Thông tin cá nhân
           </h4>
           <h4
-            className={userContent === "history" ? "action active" : "action"}
+            className={userContent === "doctorSchedule" ? "action active" : "action"}
             onClick={() => handleOptionClick("doctorSchedule")}
           >
             Xem Lịch khám
           </h4>
           <h4
             className={
-              userContent === "apmSchedule" ? "action active" : "action"
+              userContent === "prescription" ? "action active" : "action"
             }
             onClick={() => {
               handleOptionClick("prescription");
@@ -46,7 +47,7 @@ export default function Doctor() {
             Kê Đơn
           </h4>
           <h4
-            className={userContent === "pSaved" ? "action active" : "action"}
+            className={userContent === "medicalHistory" ? "action active" : "action"}
             onClick={() => {
               handleOptionClick("medicalHistory");
             }}

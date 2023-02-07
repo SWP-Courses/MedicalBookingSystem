@@ -1,45 +1,58 @@
 .Login-Wrapper {
 
-    .Login-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        width: 1170px;
-        margin: 0 auto;
-        height: 84px;
+    // .Login-header {
+    //     display: flex;
+    //     align-items: center;
+    //     justify-content: space-between;
+    //     width: 1170px;
+    //     margin: 0 auto;
+    //     height: 84px;
 
-        .logo {
-            display: flex;
-            gap: 50px;
-            cursor: pointer;
-        }
+    //     .logo {
+    //         display: flex;
+    //         gap: 50px;
+    //         cursor: pointer;
+    //     }
 
-        .sign-in {
+    //     .sign-in {
             
-            &:hover {
-                border: 1px solid orange;
-                padding: 10px 20px;
-                border-radius: 4px;
-                cursor: pointer;
-            }
-        }
-    }
+    //         &:hover {
+    //             border: 1px solid orange;
+    //             padding: 10px 20px;
+    //             border-radius: 4px;
+    //             cursor: pointer;
+    //         }
+    //     }
+    // }
 
 
         .login-main {
-            background-color: #ccc;
-            height: 500px;
+            // background-color: #ccc;
+            height: 100%;
+            width: 60%;
             position: relative;
+            // top: 50%;
+            // transform: translateY(-50%);
+            margin: 0 auto;
+
+            .login-title {
+                width: 50%;
+                height: 40%;
+                margin: 0 auto;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 27px;
+                font-weight: 400;
+            }
 
             .login-body {
                 display: flex;
                 justify-content: space-around;
-                width: 50%;
                 align-items: center;
-                top: 50%;
                 left: 50%;
                 position: absolute;
-                transform: translate(-50%, -50%);
+                transform: translateX(-50%);
 
                 .select {
                     align-self: center;
@@ -60,6 +73,7 @@
                     background-color: #fff;
                     border-radius: 4px;
                     margin: 30px;
+                    border: 1px solid #ccc;
 
                     .form-content {
                         padding: 14px 17px;

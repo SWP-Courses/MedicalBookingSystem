@@ -13,26 +13,27 @@ function Register() {
   const [name, setName] = useState("");
   const [gender, setGender] = useState("");
   const [birthDay, setBirthDay] = useState("");
-  const [address, setAddress] = useState("");
+  // const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-
   const [password, setPassword] = useState("");
-
-  const navigate = useNavigate();
-
-  const hanldeLogin = (type) => {
-    if (type === "default") {
-      alert("login default");
-    }
-
-    if (type === "google") {
-      alert("login google");
-    }
-  };
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const handleRegisterUser = () => {
-    alert('demo');
+    // validate
+
+    // submit API
+    let data = {
+      name: name,
+      gender: gender,
+      birthDay: birthDay,
+      // address: address,
+      phone: phone,
+      email: email,
+      password: password,
+      confirmPassword: confirmPassword
+    }
+    console.log(data);
   }
 
   return (
@@ -42,19 +43,21 @@ function Register() {
           <img
             src=""
             alt="logo"
-            onClick={() => navigate("/")}
+            // onClick={() => navigate("/")}
             className="logo"
           />
           <div>Đăng Kí</div>
         </div>
       </div>
       <div className="login-main">
+        {/* <div className="login-title">Đăng Kí</div> */}
         <div className="login-body">
-          <select className="select register-select">
+          {/* <select className="select register-select">
             <option>Khách Hàng</option>
             <option>Bác Sỹ</option>
             <option>Quản Trị Viên</option>
-          </select>
+          </select> */}
+          <h2>Đăng Kí</h2>
           <div className="form-body">
             <div className="form-content">
               <div className="fisrt-block-input">
@@ -84,13 +87,13 @@ function Register() {
                 value={birthDay}
                 onChange={(e) => setBirthDay(e.target.value)}
               />
-              <input
+              {/* <input
                 type="text"
                 placeholder="Địa chỉ"
                 className="input-box mt-3"
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
-              />
+              /> */}
               <input
                 type="text"
                 placeholder="số điện thoại"
@@ -103,14 +106,21 @@ function Register() {
                 placeholder="email" 
                 className="input-box mt-3" 
                 value={email}
-                onClick={(e) => setEmail(e.target.value)}
+                onChange={(e) => setEmail(e.target.value)}
               />
               <input
                 type="password"
                 placeholder="mật khẩu"
                 className="input-box mt-3"
                 value={password}
-                onClick={(e) => setPassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <input
+                type="password"
+                placeholder="nhập lại mật khẩu"
+                className="input-box mt-3"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
               />
               <button 
                     className='btn-register mt-3'

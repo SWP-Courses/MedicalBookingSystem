@@ -5,7 +5,9 @@ import blankAvatar from "../../assets/images/blank_avatar.jpg";
 import Options from "../options/Options";
 import { Link } from "react-router-dom";
 
-const user = "customer";
+// const user = "doctor";
+const user = null;
+// const user = "customer";
 export default function Navbar() {
   return (
     <div className="navbarContainer">
@@ -35,7 +37,9 @@ export default function Navbar() {
               <button className="navbar-button">LỊCH KHÁM</button>
             )}
             <div className="devideLine"></div>
-            {!user && <button className="navbar-button">ĐĂNG NHẬP</button>}
+            
+            {!user && <Link to='/login' className="navbar-button">ĐĂNG NHẬP</Link>}
+
             {user && (
               <div className="avatarContainer">
                 <Link to='customer'>
