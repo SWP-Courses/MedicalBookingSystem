@@ -11,11 +11,12 @@ import "./Register.scss";
 
 function Register() {
   const [name, setName] = useState("");
-  const [gender, setGnder] = useState("");
+  const [gender, setGender] = useState("");
   const [birthDay, setBirthDay] = useState("");
   const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+
   const [password, setPassword] = useState("");
 
   const navigate = useNavigate();
@@ -49,7 +50,7 @@ function Register() {
       </div>
       <div className="login-main">
         <div className="login-body">
-          <select className="select">
+          <select className="select register-select">
             <option>Khách Hàng</option>
             <option>Bác Sỹ</option>
             <option>Quản Trị Viên</option>
@@ -68,11 +69,11 @@ function Register() {
                   <select
                     aria-label="Giới tính"
                     value={gender}
-                    onChange={(e) => setName(e.target.value)}
+                    onChange={(e) => setGender(e.target.value)}
                   >
                     <option value="1">Nam</option>
-                    <option value="2">Nữ</option>
-                    <option value="3">Khác</option>
+                    <option value="0">Nữ</option>
+                    <option value="-1">Khác</option>
                   </select>
                 </div>
               </div>
@@ -81,32 +82,32 @@ function Register() {
                 placeholder="Ngày sinh"
                 className="input-box mt-3"
                 value={birthDay}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => setBirthDay(e.target.value)}
               />
               <input
                 type="text"
                 placeholder="Địa chỉ"
                 className="input-box mt-3"
                 value={address}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => setAddress(e.target.value)}
               />
               <input
                 type="text"
                 placeholder="số điện thoại"
                 className="input-box mt-3"
                 value={phone}
-                onChange={(e) => setName(e.target.value)}
+                onChange={(e) => setPhone(e.target.value)}
               />
               <input 
                 type="text" 
-                placeholder="tên đăng nhập" 
+                placeholder="email" 
                 className="input-box mt-3" 
-                value={name}
-                onClick={(e) => setName(e.target.value)}
+                value={email}
+                onClick={(e) => setEmail(e.target.value)}
               />
               <input
                 type="password"
-                placeholder="password"
+                placeholder="mật khẩu"
                 className="input-box mt-3"
                 value={password}
                 onClick={(e) => setPassword(e.target.value)}

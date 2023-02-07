@@ -1,5 +1,6 @@
 import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useState } from "react";
 
 import Form from "react-bootstrap/Form";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +11,9 @@ import "./Login.scss";
 function Login() {
 
   const navigate = useNavigate();
+
+  const [username, setUserName] = useState('')
+  const [password, setPassword] = useState('');
 
   const hanldeLogin = (type) => {
     if(type === 'default') {
@@ -42,15 +46,23 @@ function Login() {
           <div className="form-body">
             <div className="form-content">
               <h2>Booking Care System</h2>
-              <input type="text" placeholder="UserName" className="input-box" />
+              <input 
+                type="text" 
+                placeholder="UserName" 
+                className="input-box" 
+                value={username}
+                onChange={(e) => setUserName(e.target.value)}
+              />
               <input
                 type="password"
                 placeholder="password"
                 className="input-box mt-3"
+                value={password}
+                onChange={(e) => setUserName(e.target.value)}
               />
               <p 
                 className="forgot-password"
-                onClick={() => navigate('/')}
+                onClick={() => navigate('/forgot-password')}
               >
                 Quên mật khẩu
               </p>
