@@ -1,27 +1,36 @@
+import { useContext, useEffect } from "react";
 import Form from "react-bootstrap/Form";
+import { useLocation, useNavigate } from "react-router-dom";
+import { AuthContext } from "~/context/authContext";
 
 import "./Login.scss";
 
 function Login() {
+  const { login, currentUser } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const location = useLocation();
+  console.log(location);
+
+  useEffect(() => {
+    currentUser && navigate("/");
+  }, [currentUser, navigate]);
+
   return (
     <div className="Login-Wrapper">
       <div className="Login-header">
         <div className="logo">
-          <img
-            src=''
-            alt='logo'
-          />
+          <img src="" alt="logo" />
           <div className="sign-in">Đăng Nhập</div>
         </div>
         <div className="sign-up">Đăng Kí</div>
       </div>
       <div className="Login-body">
         <div className="select-role">
-            <Form.Select aria-label="Khách Hàng">
-                <option value="1">Khách Hàng</option>
-                <option value="2">Amdin</option>
-                <option value="3">Doctor</option>
-            </Form.Select>
+          <Form.Select aria-label="Khách Hàng">
+            <option value="1">Khách Hàng</option>
+            <option value="2">Amdin</option>
+            <option value="3">Doctor</option>
+          </Form.Select>
         </div>
         <div className="form-login">
           <div className="form-body">
@@ -33,7 +42,17 @@ function Login() {
               className="input-box mt-3"
             />
             <p className="forgot-password">Quên mật khẩu</p>
-            <button className="btn-sign-in mt-3">Đăng Nhập</button>
+            <button
+              className="btn-sign-in mt-3"
+              onClick={() => {
+                login({
+                  phone: "01234567890",
+                  password: "111111",
+                });
+              }}
+            >
+              Đăng Nhập
+            </button>
             <p className="create-account">Tạo Tài Khoản</p>
           </div>
         </div>

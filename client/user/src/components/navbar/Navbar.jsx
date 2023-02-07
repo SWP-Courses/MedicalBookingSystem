@@ -3,10 +3,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./navbar.scss";
 import blankAvatar from "../../assets/images/blank_avatar.jpg";
 import Options from "../options/Options";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useContext } from "react";
+import { AuthContext } from "~/context/authContext";
 
 const user = "customer";
 export default function Navbar() {
+  const { currentUser, logout } = useContext(AuthContext);
+  const location = useLocation();
+  const pathname = location.pathname;
+  console.log(pathname);
+
   return (
     <div className="navbarContainer">
       <div className="navbarTopWrapper">
@@ -27,17 +34,35 @@ export default function Navbar() {
             </div>
           </div>
           <div className="navbar-right">
-            {(user === "customer" || !user) && (
-              <Link to="/Booking" className="navbar-button">
+            {(currentUser?.role === "customer" || !currentUser) && (
+              <Link
+                to={{
+                  pathname: "/booking",
+                  state: {
+                    from: pathname,
+                  },
+                }}
+                className="navbar-button"
+              >
                 ĐĂNG KÝ KHÁM
               </Link>
             )}
-            {user === "doctor" && (
+            {currentUser?.role === "doctor" && (
               <button className="navbar-button">LỊCH KHÁM</button>
             )}
             <div className="devideLine"></div>
-            {!user && <button className="navbar-button">ĐĂNG NHẬP</button>}
-            {user && (
+            {!currentUser && (
+              <Link
+                to="/login"
+                state={{
+                  from: pathname,
+                }}
+                className="navbar-button"
+              >
+                ĐĂNG NHẬP
+              </Link>
+            )}
+            {currentUser && (
               <div className="avatarContainer">
                 <Link to="customer">
                   <img src={blankAvatar} alt="" />
