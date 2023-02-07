@@ -9,6 +9,8 @@ export default function Doctor() {
   const [userContent, setUserContent] = useState("info");
   const [routeToPrescription, setRouteToPrescription] = useState('');
 
+  console.log(userContent);
+
   const handleOptionClick = (option) => {
     setUserContent(option);
   };
@@ -17,7 +19,7 @@ export default function Doctor() {
     <div className="doctor">
       <div className="doctorSidebar">
         <div className="userInfo">
-          <img src='' alt="avartar" />
+          <img src="" alt="avartar" />
           <span className="doctorName">Bác Sỹ Anh</span>
         </div>
         <div className="profileActions">
@@ -59,7 +61,9 @@ export default function Doctor() {
         {userContent === "info" && <DoctorProfile />}
         {userContent === "prescription" && <Prescription />}
         {userContent === "doctorSchedule" && <DoctorSchedule />}
-        {userContent === "medicalHistory" && <MedicalHistory handleOptionClick={handleOptionClick}/>}
+        {userContent === "medicalHistory" && (
+          <MedicalHistory handleOptionClick={handleOptionClick} />
+        )}
       </div>
     </div>
   );

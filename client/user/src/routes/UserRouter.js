@@ -28,7 +28,7 @@ export default function UserRouter() {
           <Route path="/specialist/:id" element={<Specialist />} />
           <Route path="/booking" element={<Booking />} />
           <Route path="/blogs" element={<Blogs />} />
-          <Route path="/blogs-detail" element={<BlogDetail />} />
+          <Route path="/blogs/:id" element={<BlogDetail />} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />

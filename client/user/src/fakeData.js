@@ -25,18 +25,66 @@ export const customerMedicalHistory = [
     desease: "Ho, Đau họng",
     doctor: "Mr.A",
     reExamDate: "22/02/2023",
+    medicines: [
+      {
+        name: "Thuốc A",
+        quantity: 12,
+      },
+      {
+        name: "Thuốc B",
+        quantity: 16,
+      },
+      {
+        name: "Thuốc C",
+        quantity: 12,
+      },
+    ],
+    total: 165000,
+    note: "Uống sau khi ăn, ngày uống 3 lần. Không uống nước đá, ăn ngọt.",
   },
   {
     date: "15/02/2023",
     desease: "Ho, Đau họng",
     doctor: "Mr.B",
     reExamDate: "22/02/2023",
+    medicines: [
+      {
+        name: "Thuốc A",
+        quantity: 12,
+      },
+      {
+        name: "Thuốc Y",
+        quantity: 16,
+      },
+      {
+        name: "Thuốc C",
+        quantity: 12,
+      },
+    ],
+    total: 165000,
+    note: "Uống sau khi ăn, ngày uống 3 lần. Không uống nước đá, ăn ngọt.",
   },
   {
     date: "15/02/2023",
     desease: "Ho, Đau họng",
     doctor: "Mr.C",
     reExamDate: "22/02/2023",
+    medicines: [
+      {
+        name: "Thuốc A",
+        quantity: 12,
+      },
+      {
+        name: "Thuốc V",
+        quantity: 16,
+      },
+      {
+        name: "Thuốc F",
+        quantity: 12,
+      },
+    ],
+    total: 165000,
+    note: "Uống sau khi ăn, ngày uống 3 lần. Không uống nước đá, ăn ngọt.",
   },
 ];
 

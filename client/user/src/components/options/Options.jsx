@@ -18,10 +18,12 @@ export default function Options() {
           </div>
         </div>
         <div className="optionItem">
-          <Link to="doctors">Danh sách bác sĩ</Link>
+          <Link to="/doctors">Danh sách bác sĩ</Link>
         </div>
         <div className="optionItem">
-          <Link to='blogs'><span>Bài viết</span></Link>
+          <Link to="/blogs">
+            <span>Bài viết</span>
+          </Link>
         </div>
         <div className="optionItem">
           <span>Khác</span>

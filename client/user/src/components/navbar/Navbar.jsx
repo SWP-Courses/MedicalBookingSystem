@@ -12,7 +12,9 @@ export default function Navbar() {
       <div className="navbarTopWrapper">
         <div className="navbarTop">
           <div className="navbar-left">
-            <span className="logo">Health Care System</span>
+            <Link to="/" className="logo">
+              Health Care System
+            </Link>
           </div>
           <div className="navbar-center">
             <div className="searchBar">
@@ -37,7 +39,7 @@ export default function Navbar() {
             {!user && <button className="navbar-button">ĐĂNG NHẬP</button>}
             {user && (
               <div className="avatarContainer">
-                <Link to='customer'>
+                <Link to="customer">
                   <img src={blankAvatar} alt="" />
                 </Link>
               </div>
