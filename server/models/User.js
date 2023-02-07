@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+import mongoose, { mongo } from "mongoose";
 
 const UserSchema = new mongoose.Schema({
   avatar: {
@@ -34,6 +34,14 @@ const UserSchema = new mongoose.Schema({
   },
   nationalId: {
     type: String,
+  },
+  role_code: {
+    type: String,
+    required: true,
+    default: 3,
+  },
+  spe_id: {
+    type: mongoose.Schema.Types.ObjectId,
   },
 });
 

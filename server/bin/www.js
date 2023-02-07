@@ -4,10 +4,11 @@
  * Module dependencies.
  */
 
-var app = require("../app");
-var debug = require("debug")("server:server");
-var http = require("http");
-const { default: mongoose } = require("mongoose");
+import app from "../app.js";
+import debugg from "debug";
+var debug = debugg("server:server");
+import http from "http";
+import mongoose from "mongoose";
 
 /**
  * Get port from environment and store in Express.
