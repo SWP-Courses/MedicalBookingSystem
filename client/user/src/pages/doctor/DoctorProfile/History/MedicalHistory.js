@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function MedicalHistory(props) {
 
-  const { handleOptionClick } = props;
+  const { setUserContent, handleOptionClick } = props;
 
   return (
     <div className="medicalHistory">
@@ -36,7 +36,7 @@ export default function MedicalHistory(props) {
           <td>
             <button 
               className="btn  btn-success"
-              onClick={() => handleOptionClick('medicalHistory')}
+              onClick={() => setUserContent('prescription')}
             >
               Kê Đơn
             </button>

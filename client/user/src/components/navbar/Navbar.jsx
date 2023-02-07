@@ -7,7 +7,9 @@ import { Link, useLocation } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "~/context/authContext";
 
-const user = "customer";
+// const user = "doctor";
+const user = null;
+// const user = "customer";
 export default function Navbar() {
   const { currentUser, logout } = useContext(AuthContext);
   const location = useLocation();
@@ -24,14 +26,15 @@ export default function Navbar() {
             </Link>
           </div>
           <div className="navbar-center">
-            <div className="searchBar">
+            <label htmlFor='meme' className="searchBar" >
               <FontAwesomeIcon icon={faSearch} className="searchIcon" />
               <input
                 type="text"
                 className="searchInput"
                 placeholder="Tìm kiếm bài viết"
+                id='meme'
               />
-            </div>
+            </label>
           </div>
           <div className="navbar-right">
             {(currentUser?.role === "customer" || !currentUser) && (
@@ -63,6 +66,10 @@ export default function Navbar() {
               </Link>
             )}
             {currentUser && (
+            
+            {!user && <Link to='/login' className="navbar-button">ĐĂNG NHẬP</Link>}
+
+            {user && (
               <div className="avatarContainer">
                 <Link to="customer">
                   <img src={blankAvatar} alt="" />

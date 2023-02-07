@@ -20,15 +20,17 @@
       >.doctorName {
         font-size: 20px;
         margin-left: 20px;
-        border: 1px solid #ccc;
-        border-radius: 3px;
+        border-radius: 5px;
         padding: 10px 26px;
+        box-shadow: -1px 0px 13px 1px rgba(0,0,0,0.21);
+        -webkit-box-shadow: -1px 0px 13px 1px rgba(0,0,0,0.21);
+        -moz-box-shadow: -1px 0px 13px 1px rgba(0,0,0,0.21);
 
       } 
 
       > img {
-        width: 40px;
-        height: 40px;
+        width: 60px;
+        height: 60px;
         border-radius: 100rem;
         background-color: orange;
       }
@@ -62,7 +64,8 @@
             cursor: pointer;
 
             &.active {
-                background-color: rgb(233, 119, 78);
+                background-color: #286ba6;
+                color: #fff;
             }
         }
         

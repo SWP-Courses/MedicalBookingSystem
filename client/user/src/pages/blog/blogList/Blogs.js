@@ -17,33 +17,39 @@ function Blogs() {
           <div className="major-list">
             <ul className="list">
               <li className="item">
-                <p 
-                  onClick={() => {}}>Sức khoẻ tổng quát</p>
+                <h5>Nội Dung</h5>
                 <div className="line"></div>
               </li>
               <li className="item">
-                <p 
-                  onClick={() => {}}>Dinh Dưỡng</p>
+                <span
+                  onClick={() => {}}
+                >Sức khoẻ tổng quát
+                </span>
                 <div className="line"></div>
               </li>
               <li className="item">
-                <p 
-                  onClick={() => {}}>Sống khỏe</p>
+                <span 
+                  onClick={() => {}}>Dinh Dưỡng</span>
                 <div className="line"></div>
               </li>
               <li className="item">
-                <p 
-                  onClick={() => {}}>Làm đẹp</p>
+                <span 
+                  onClick={() => {}}>Sống khỏe</span>
                 <div className="line"></div>
               </li>
               <li className="item">
-                <p 
-                  onClick={() => {}}>Thông tin dược</p>
+                <span
+                  onClick={() => {}}>Làm đẹp</span>
                 <div className="line"></div>
               </li>
               <li className="item">
-                <p 
-                  onClick={() => {}}>Nhi</p>
+                <span
+                  onClick={() => {}}>Thông tin dược</span>
+                <div className="line"></div>
+              </li>
+              <li className="item">
+                <span 
+                  onClick={() => {}}>Nhi</span>
                 <div className="line"></div>
               </li>
             </ul>
@@ -59,10 +65,23 @@ function Blogs() {
                 alt='blog-image'
               />
               <div className="blog-item-body">
-                <h2 className="bolg-item-title">
+                <h2 className="bolg-item-title line-clamp">
                   Những lưu ý quan trọng trước khi khám sức khỏe tổng quát
+                  Trong thời điểm dịch bệnh Covid-19 vẫn đang diễn ra phức tạp,
+                  nhiều cha mẹ băn khoăn không biết có nên đưa con đến bệnh viện
+                  để tiêm phòng không. Loại vắc xin nào có thể được trì hoãn
+                  lịch tiêm, loại vắc xin nào không thể?
                 </h2>
-                <p>
+                <p className="line-clamp line-4">
+                  Trong thời điểm dịch bệnh Covid-19 vẫn đang diễn ra phức tạp,
+                  nhiều cha mẹ băn khoăn không biết có nên đưa con đến bệnh viện
+                  để tiêm phòng không. Loại vắc xin nào có thể được trì hoãn
+                  lịch tiêm, loại vắc xin nào không thể?
+                  Những lưu ý quan trọng trước khi khám sức khỏe tổng quát
+                  Trong thời điểm dịch bệnh Covid-19 vẫn đang diễn ra phức tạp,
+                  nhiều cha mẹ băn khoăn không biết có nên đưa con đến bệnh viện
+                  để tiêm phòng không. Loại vắc xin nào có thể được trì hoãn
+                  lịch tiêm, loại vắc xin nào không thể? Những lưu ý quan trọng trước khi khám sức khỏe tổng quát
                   Trong thời điểm dịch bệnh Covid-19 vẫn đang diễn ra phức tạp,
                   nhiều cha mẹ băn khoăn không biết có nên đưa con đến bệnh viện
                   để tiêm phòng không. Loại vắc xin nào có thể được trì hoãn
@@ -70,6 +89,7 @@ function Blogs() {
                 </p>
               </div>
             </div>
+              
             <div className="blog-item">
               <img
                 className="blog-image"

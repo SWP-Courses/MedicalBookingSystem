@@ -1,60 +1,139 @@
-.Register-wrapper {
+.Login-Wrapper {
 
-    .Register-body {
-        background-color: #ccc;
-        width: 50%;
-        margin: 0 auto;
-        margin-top: 25vh;
-        padding: 10px;
+    // .Login-header {
+    //     display: flex;
+    //     align-items: center;
+    //     justify-content: space-between;
+    //     width: 1170px;
+    //     margin: 0 auto;
+    //     height: 84px;
 
-        input {
-            outline: none;
-            padding-left: 10px;
-        }
+    //     .logo {
+    //         display: flex;
+    //         gap: 50px;
+    //         cursor: pointer;
+    //     }
 
-        .title {
-            text-align: center;
-            margin-top: 20px;
-        }
+    //     .sign-in {
+            
+    //         &:hover {
+    //             border: 1px solid orange;
+    //             padding: 10px 20px;
+    //             border-radius: 4px;
+    //             cursor: pointer;
+    //         }
+    //     }
+    // }
 
-        .input-box {
-            display: block;
+
+        .login-main {
+            // background-color: #ccc;
+            height: 100%;
+            width: 60%;
+            position: relative;
+            // top: 50%;
+            // transform: translateY(-50%);
             margin: 0 auto;
-            width: 70%;
-            height: 45px;
-            border-radius: 4px;
-            border: 1px solid #ccc;
-        }
 
-        .fisrt-block-input {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 7px;
-
-            .input {
-                width: 60%;
-                height: 45px;
-                border-radius: 4px;
-                border: 1px solid #ccc;
+            .login-title {
+                width: 50%;
+                height: 40%;
+                margin: 0 auto;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 27px;
+                font-weight: 400;
             }
 
-            .checkbox-wrap {
-                margin-top: 16px;
-            }
-        }
+            .login-body {
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                left: 50%;
+                position: absolute;
+                transform: translateX(-50%);
 
-        .btn-register {
-            display: block;
-            width: 70%;
-            padding: 15px;
-            margin: 0 auto;
-            background-color: #23d160;
-            border: none;
-            color: #fff;
-            border-radius: 4px;
-            margin-bottom: 20px;
+                .select {
+                    align-self: center;
+                    outline: none;
+                    width: fit-content;
+                    padding: 10px;
+                    border-radius: 4px; 
+                    
+                    &.register-select {
+                        visibility: hidden;
+
+                    }
+                    
+                }
+
+                .form-body {
+                    margin: 30px;
+                    background-color: #fff;
+                    border-radius: 4px;
+                    margin: 30px;
+                    border: 1px solid #ccc;
+
+                    .form-content {
+                        padding: 14px 17px;
+
+
+                        .fisrt-block-input {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                            gap: 7px;
+                
+                            .input {
+                                width: 83%;
+                                padding: 10px;
+                                border-radius: 4px;
+                                border: 1px solid #ccc;
+                            }
+                
+                            .checkbox-wrap {
+                                margin-top: 16px;
+                            }
+                        }
+
+                        .input-box {
+                            display: block;
+                            margin: 0 auto;
+                            padding: 10px;
+                            border-radius: 4px;
+                            border: 1px solid #ccc;
+                        }
+
+                        .btn-register {
+                            padding: 13px 27px;
+                            border: 1px solid #286ba6;
+                            border-radius: 4px;
+                            width: 100%;
+                            font-weight: 500;
+                            background-color: #286ba6;
+                            color: #fff;
+                        }
+                    }
+
+
+                    .input-box {
+                        display: block;
+                        padding: 13px;
+                        width: 400px;
+                        border-radius: 3px;
+                        border: 1px solid #cccc;
+
+                        .input-box:focus {
+                            outline: 1px solid orange;
+                        }
+                    }
+                }
+            }
+
         }
-    }
+        
+
+
 
 }

@@ -23,7 +23,7 @@ function Prescription() {
               <option value="2">Two</option>
               <option value="3">Three</option>
             </select>
-            <label className="input-group-text" for="inputGroupSelect02">
+            <label className="input-group-text" htmlFor="inputGroupSelect02">
               Options
             </label>
           </div>
@@ -34,7 +34,7 @@ function Prescription() {
               <option value="2">Two</option>
               <option value="3">Three</option>
             </select>
-            <label className="input-group-text" for="inputGroupSelect02">
+            <label className="input-group-text" htmlFor="inputGroupSelect02">
               Options
             </label>
           </div>
@@ -79,7 +79,7 @@ function Prescription() {
         </div>
         <div className="note">
           <h4>
-            <label for="w3review">Thêm nhắc nhở</label>
+            <label htmlFor="w3review">Thêm nhắc nhở</label>
           </h4>
           <textarea id="w3review" name="w3review" rows="4" cols="50">
             At w3schools.com you will learn how to make a website. They offer
@@ -89,7 +89,7 @@ function Prescription() {
         </div>
       </div>
       <div className="recall-date">
-        <h4 for="birthday">Hẹn Ngày Tái Khám</h4>
+        <h4 htmlFor="birthday">Hẹn Ngày Tái Khám</h4>
         <input type="date" id="birthday" name="birthday" />
       </div>
       <button 

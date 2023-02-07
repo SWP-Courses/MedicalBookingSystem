@@ -20,19 +20,31 @@
             // border: 1px solid green;
             .list {
                 margin-top: 20px;
+                width: 294px;
+                padding: 13px;
+                border: 0.5px solid #EEEEEE;
+                border-radius: 5px;
+                position: sticky;
+                top: 150px;
 
                 .item {
                     list-style-type: none;
+
+                    h5 {
+                       text-align: center;
+                    }
                     
-                    p {
+                    span {
                         text-decoration: none;
                         color: #0066a6;
                         font-weight: 500;
                         position: relative;
                         right: 0;
                         cursor: pointer;
-                        margin: 0;
-
+                        display: block;
+                        padding: 9.5px;
+                        margin-left: 6px;
+                        
                         &:hover {
                             right: -10px;
                             transition: right linear .1s;
@@ -42,8 +54,8 @@
 
                     .line {
                         border-bottom: 1px solid #ccc;
-                        width: 60%;
-                        margin: 10px 0;
+                        width: 90%;
+                        margin: 0 auto;
                     }
 
                     
@@ -59,8 +71,8 @@
             .blog-item {
 
                 display: flex;
-                align-items: center;
                 gap: 10px;
+                margin-bottom: 30px;
 
                 .blog-image {
                     width: 260px;
@@ -72,6 +84,21 @@
 
                 .bolg-item-title {
                     font-size: 22px;
+                }
+
+                .blog-item-body {
+
+                    .line-clamp.line-4 {
+                        --line-clamp: 4; 
+
+                    }
+                }
+
+                .separate-line {
+                    border-bottom: 1px solid #ccc;
+                    width: 90%;
+                    margin: 0 auto;
+
                 }
             }
 
