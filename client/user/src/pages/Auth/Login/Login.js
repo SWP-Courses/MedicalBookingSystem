@@ -102,9 +102,9 @@ function Login() {
         phone: user,
         password: password,
       };
-      // let res = login(loginUser);
+      login(loginUser);
       // console.log(res);
-      console.log(loginUser);
+      // console.log(loginUser);
     }
 
     if (type === "google") {

@@ -5,10 +5,30 @@ import {
 } from "@fortawesome/free-brands-svg-icons";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import "./options.scss";
 
 export default function Options() {
+  const [specialists, setSpecialists] = useState([]);
+
+  useEffect(() => {
+    fetchSpecialists();
+  }, []);
+
+  const fetchSpecialists = () => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get("/specialists");
+        setSpecialists(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  };
+  console.log(specialists);
   return (
     <div className="topbarOptions">
       <div className="optionItem-wrapper container-fluid">
@@ -16,10 +36,15 @@ export default function Options() {
           <span>Chuyên khoa trọng điểm</span>
           <FontAwesomeIcon icon={faChevronDown} className="optionIcon" />
           <div className="dropdown">
-            <Link to="/specialist/id" className="dropItem">
-              Tim mạch
-            </Link>
-            <span className="dropItem">Thần kinh</span>
+            {specialists.map((spe) => (
+              <Link
+                to={`/specialists/${spe._id}`}
+                className="dropItem"
+                key={spe._id}
+              >
+                {spe.title}
+              </Link>
+            ))}
           </div>
         </div>
         <div className="optionItem col-sm-2.5">

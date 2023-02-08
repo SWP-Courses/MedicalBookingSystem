@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const DrugBillSchema = new mongoose.Schema(
   {
@@ -35,4 +35,4 @@ const DrugBillSchema = new mongoose.Schema(
   }
 );
 
-export default mongoose.model("DrugBill", DrugBillSchema);
+module.exports = mongoose.model("DrugBill", DrugBillSchema);

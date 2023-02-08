@@ -6,6 +6,7 @@ import Options from "../options/Options";
 import { Link, useLocation } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "~/context/authContext";
+import { Dropdown } from "react-bootstrap";
 
 // const user = "doctor";
 const user = null;
@@ -35,12 +36,7 @@ export default function Navbar() {
           </div>
           <div className="navbar-right col-lg-5">
             {(currentUser?.role === "customer" || !currentUser) && (
-              <Link
-                to={{
-                  pathname: "/booking",
-                }}
-                className="navbar-button"
-              >
+              <Link to="/booking" className="navbar-button">
                 ĐĂNG KÝ KHÁM
               </Link>
             )}
@@ -55,11 +51,29 @@ export default function Navbar() {
             )}
 
             {currentUser && (
-              <div className="avatarContainer">
-                <Link to={"/" + currentUser.role}>
+              <Dropdown>
+                <Dropdown.Toggle
+                  variant="success"
+                  id="dropdown-basic"
+                  className="avatarContainer"
+                  as="div"
+                >
                   <img src={blankAvatar} alt="" />
-                </Link>
-              </div>
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                  <Dropdown.Item href="#/action-1">
+                    <Link className="dropdown-item" to={"/" + currentUser.role}>
+                      Thông tin cá nhân
+                    </Link>
+                  </Dropdown.Item>
+                  <Dropdown.Item href="#/action-2">
+                    <button className="dropdown-item text-danger" href="#">
+                      Đăng xuất
+                    </button>
+                  </Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
             )}
           </div>
         </div>

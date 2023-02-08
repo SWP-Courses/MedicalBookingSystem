@@ -15,14 +15,20 @@ export default function AuthContextProvider({ children }) {
 
   // Side Effect
   useEffect(() => {
+    // console.log(currentUser);
     localStorage.setItem("user", JSON.stringify(currentUser));
   }, [currentUser]);
 
   // Functions
   const login = async (inputs) => {
-    const res = await axios.post("/auth/login", inputs);
+    const res = await axios.post("/auth/login", {
+      role_code: "R3",
+      phone: "0123456789",
+      password: "111111",
+    });
+    // console.log(res.data);
     setCurrentUser(res.data);
-    navigate(routingHistory.beforeLogin || "/");
+    navigate("/");
   };
 
   const logout = async () => {
