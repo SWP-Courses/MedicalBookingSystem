@@ -99,6 +99,7 @@ function Login() {
         password: password,
       };
       // let res = login(loginUser);
+      // console.log(res);
       console.log(loginUser);
     }
 

@@ -19,6 +19,12 @@
         color: rgb(145, 31, 31);
       }
     }
+
+    >img {
+      max-height: 500px;
+      width: 100%;
+      object-fit: cover;
+    }
   }
 
   .speTitle {

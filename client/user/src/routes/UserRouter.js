@@ -30,7 +30,7 @@ export default function UserRouter() {
               <Route path="/doctor" element={<Doctor />} />
               <Route path="/doctors" element={<DoctorList />} />
               <Route path="/doctors/:id" element={<DoctorDetail />} />
-              <Route path="/specialist/:id" element={<Specialist />} />
+              <Route path="/specialists/:speId" element={<Specialist />} />
               <Route path="/booking" element={<Booking />} />
               <Route path="/blogs" element={<Blogs />} />
               <Route path="/blogs/:id" element={<BlogDetail />} />
@@ -54,6 +54,5 @@ export default function UserRouter() {
         </AuthContextProvider>
       </BrowserRouter>
     </>
-    
   );
 }

@@ -12,7 +12,7 @@ function BlogDetail() {
 
   return (
     <div className="blog-detail-wrapper">
-      <button
+      {/* <button
         className="saveBlog"
         onClick={() =>
           setRoutingHistory((prev) => ({
@@ -22,7 +22,7 @@ function BlogDetail() {
         }
       >
         Lưu
-      </button>
+      </button> */}
       <div className="blog-detail-body">
         <div className="bread-crumb">
           <Breadcrumb>

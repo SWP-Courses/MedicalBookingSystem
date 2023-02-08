@@ -1,50 +1,56 @@
-import mongoose, { mongo } from "mongoose";
+const mongoose = require("mongoose");
 
-const UserSchema = new mongoose.Schema({
-  avatar: {
-    type: String,
+const UserSchema = new mongoose.Schema(
+  {
+    avatar: {
+      type: String,
+    },
+    fullname: {
+      type: String,
+      required: true,
+    },
+    gender: {
+      type: String,
+      required: true,
+    },
+    dateOfBirth: {
+      type: String,
+      required: true,
+    },
+    address: {
+      type: String,
+    },
+    email: {
+      type: String,
+      required: false,
+      unique: true,
+      sparse: true,
+    },
+    phone: {
+      type: String,
+      required: true,
+      unique: true,
+    },
+    password: {
+      type: String,
+      min: 6,
+    },
+    nationalId: {
+      type: String,
+    },
+    role_code: {
+      type: String,
+      required: true,
+      default: "R3",
+    },
+    specialist_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Specialist",
+    },
   },
-  fullname: {
-    type: String,
-    required: true,
-  },
-  gender: {
-    type: String,
-    required: true,
-  },
-  dateOfBirth: {
-    type: String,
-    required: true,
-  },
-  address: {
-    type: String,
-  },
-  email: {
-    type: String,
-    required: false,
-    unique: true,
-    sparse: true,
-  },
-  phone: {
-    type: String,
-    required: true,
-    unique: true,
-  },
-  password: {
-    type: String,
-    min: 6,
-  },
-  nationalId: {
-    type: String,
-  },
-  role_code: {
-    type: String,
-    required: true,
-    default: "r3",
-  },
-  spe_id: {
-    type: mongoose.Schema.Types.ObjectId,
-  },
-});
+  {
+    versionKey: false,
+  }
+);
 
-export default mongoose.model("User", UserSchema);
+module.exports = mongoose.model("User", UserSchema);

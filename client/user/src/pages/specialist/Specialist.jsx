@@ -1,7 +1,7 @@
 import "./specialist.scss";
 import heartCureIntro from "../../assets/images/heart_cure_intro.jpg";
 import { doctorList } from "../../fakeData";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBriefcase,
@@ -9,22 +9,40 @@ import {
   faInfoCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { shortenText } from "../../utils";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
+
+import { encodedImage } from "~/assets/images/thumbnailbase64";
+import axios from "axios";
 
 export default function Specialist() {
   const newDoctorList = doctorList.slice(0, 3);
   const [doctorShow, setDoctorShow] = useState(newDoctorList[0]);
+  const [specialistInfo, setSpecialistInfo] = useState({});
+  const { speId } = useParams();
 
   const handleDoctorMiniClick = (doctor) => {
     setDoctorShow(doctor);
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get("/specialists/" + speId);
+        setSpecialistInfo(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, [speId]);
+
   return (
     <div className="singleSpecialist">
       <div className="introImages">
         <h1 className="speIntroThumbnail">
-          Chuyên khoa <b>TIM MẠCH</b>
+          Chuyên khoa <b>{specialistInfo.title?.toUpperCase()}</b>
         </h1>
-        <img src={heartCureIntro} alt="" />
+        <img src={encodedImage} alt="" />
       </div>
       <h2 className="speTitle">Đội ngũ chuyên gia của chúng tôi</h2>
       <div className="doctorStaff">
@@ -60,10 +78,11 @@ export default function Specialist() {
         </div>
 
         <div className="doctorOptions">
-          {newDoctorList.map((doctor) => (
+          {newDoctorList.map((doctor, index) => (
             <div
               className="doctorMini"
               onClick={() => handleDoctorMiniClick(doctor)}
+              key={index}
             >
               <img
                 src={doctor.img}

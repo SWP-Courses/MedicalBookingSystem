@@ -1,7 +1,7 @@
-import express from "express";
+var express = require("express");
 var router = express.Router();
-import UserModel from "../models/User.js";
-import mongoose, { ObjectId } from "mongoose";
+var UserModel = require("../models/User.js");
+var mongoose = require("mongoose");
 
 /* GET users listing. */
 router.get("/", async function (req, res, next) {
@@ -32,4 +32,4 @@ router.get("/", async function (req, res, next) {
   }
 });
 
-export default router;
+module.exports = router;

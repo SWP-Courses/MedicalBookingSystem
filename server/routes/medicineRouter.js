@@ -1,19 +1,18 @@
-import express from "express";
+var express = require("express");
 var router = express.Router();
-import DrugBill from "../models/DrugBill.js";
+var MedicineModel = require("../models/Medicine.js");
 
-// Get all bills - also cure history
+// Get all medicines
 router.get("/", async (req, res) => {
   try {
-    const bills = await DrugBill.find({ customer_id: req.body.customer_id });
-    if (bills.length) return;
-    res.status(200).json(bills);
+    const medicines = await MedicineModel.find();
+    res.status(200).json(medicines);
   } catch (err) {
     res.status(500).json(err);
   }
 });
 
-// Add a bill
+// Add a medicine
 router.post("/", async (req, res) => {
   const newMedicine = new MedicineModel({
     name: req.body.name,
@@ -29,4 +28,4 @@ router.post("/", async (req, res) => {
     res.status(500).json(err);
   }
 });
-export default router;
+module.exports = router;
