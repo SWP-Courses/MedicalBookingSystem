@@ -7,10 +7,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 
 import { Link } from "react-router-dom";
-import { toast } from 'react-toastify';
-import 'animate.css';
+import { toast } from "react-toastify";
+import "animate.css";
 import { validateEmail } from "~/utils";
-import {  checkStringContainInPhoneNumber } from '~/utils'
+import { checkStringContainInPhoneNumber } from "~/utils";
 
 import "./Login.scss";
 
@@ -20,81 +20,77 @@ function Login() {
   const location = useLocation();
   // console.log(location);
 
-  const errorAlert = useRef()
-  const errorPassword = useRef()
+  const errorAlert = useRef();
+  const errorPassword = useRef();
 
   const inputRef = useRef();
-
-  console.log('error alert', errorAlert);
 
   useEffect(() => {
     currentUser && navigate("/");
   }, [currentUser, navigate]);
 
   const [password, setPassword] = useState("");
-  const [user, setUser] = useState('');
+  const [user, setUser] = useState("");
   const [userType, setUserType] = useState("r3");
 
+  console.log(user);
 
   const hanldeLogin = (type) => {
     // case phone or email is empty
     if (!user) {
-      // toast.error("choose phone or email to login")
+      errorAlert.current.innerText = "Vui lòng nhập số điện thoại hoặc email";
       inputRef.current.focus();
       return;
     }
 
     // case password empty
     if (!password) {
-      console.log("password can not be empty");
       return;
     }
 
     // validate email
-    // if(typeof(+user) === 'number') {
-    //   console.log(+user);
-    //   alert('true');
-    // }
     const isEmail = validateEmail(user);
 
     // validate phone
     let isPhoneNumber = true;
     let phone = user;
-    if (!isEmail) {
-      const isContainsString =  checkStringContainInPhoneNumber(phone);
-      // case contain string 
-      if(isContainsString) {
-        toast.error('phone number can not contain character!!');
+    if (!isEmail && !user.includes('@')) {
+      const isContainsString = checkStringContainInPhoneNumber(phone);
+      // case contain string
+      if (isContainsString) {
+        toast.error("phone number can not contain character!!");
+        isPhoneNumber = false;
+        return;
+      }
+
+      // case not start with number 0
+      if (+phone.charAt(0) !== 0) {
+        toast.error("phone number must start with 0");
         isPhoneNumber = false;
         return;
       }
 
       // case less than 10 number
       if (phone.length != 10) {
-        toast.error('phone must contain 10 number')
+        toast.error("phone must contain 10 number");
         isPhoneNumber = false;
         return;
       }
-
-      // case not start with number 0
-      if(+phone.charAt(0) !== 0) {
-        toast.error('phone number must start with 0');
-        isPhoneNumber = false;
-        return;
-      }
-    }else {
-      toast.error('email incorrect')
     }
 
     if (type === "default" && isEmail) {
+      isPhoneNumber = false;
       let loginUser = {
         role_code: userType,
         email: user,
         password: password,
       };
       console.log(loginUser);
-      // login(loginUser)
-    } 
+      const res = login(loginUser)
+      console.log('check res', res);
+    } else {
+      toast.error("email invalid");
+    }
 
     if (type === "default" && isPhoneNumber) {
       let loginUser = {
@@ -103,7 +99,6 @@ function Login() {
         password: password,
       };
       // let res = login(loginUser);
-      // console.log(res);
       console.log(loginUser);
     }
 
@@ -113,27 +108,26 @@ function Login() {
   };
 
   const hanldeEmptyInput = (e) => {
-    if(!e.target.value) {
-      e.target.className = 'input-box mt-3 error';
-      errorAlert.current.innerText = 'Vui lòng nhập số điện thoại hoặc email';
-      if(!password) {
-        errorPassword.current.innerText = 'Vui lòng nhập mật khẩu';
+    if (!e.target.value) {
+      e.target.className = "input-box mt-3 error";
+      errorAlert.current.innerText = "Vui lòng nhập số điện thoại hoặc email";
+      if (!password) {
+        errorPassword.current.innerText = "Vui lòng nhập mật khẩu";
       }
-    }else {
-      e.target.className = 'input-box mt-3';
+    } else {
+      e.target.className = "input-box mt-3";
+    }
+  };
 
-    }
-  }
-  
   const hanldeOnBlurInput = (e) => {
-    if(e.target.value) {
-      e.target.className = 'input-box mt-3';
-      errorAlert.current.innerText = '';
-      if(password) {
-        errorPassword.current.innerText = '';
+    if (e.target.value) {
+      e.target.className = "input-box mt-3";
+      errorAlert.current.innerText = "";
+      if (password) {
+        errorPassword.current.innerText = "";
       }
     }
-  }
+  };
 
   return (
     <div className="Login-Wrapper animate__animated animate__fadeInDown">
@@ -166,8 +160,12 @@ function Login() {
                 className="input-box"
                 value={user}
                 onChange={(e) => setUser(e.target.value)}
-                onBlur={(e) => {hanldeEmptyInput(e)}}
-                onInput={(e) => {hanldeOnBlurInput(e)}}
+                onBlur={(e) => {
+                  hanldeEmptyInput(e);
+                }}
+                onInput={(e) => {
+                  hanldeOnBlurInput(e);
+                }}
                 ref={inputRef}
               />
               <span className="errorAlert" ref={errorAlert}></span>
@@ -178,8 +176,12 @@ function Login() {
                 className="input-box mt-3"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                onBlur={(e) => {hanldeEmptyInput(e)}}
-                onInput={(e) => {hanldeOnBlurInput(e)}}
+                onBlur={(e) => {
+                  hanldeEmptyInput(e);
+                }}
+                onInput={(e) => {
+                  hanldeOnBlurInput(e);
+                }}
               />
               <span className="errorAlert" ref={errorPassword}></span>
               {/* {password ?  undefined: 'Vui lòng nhập mật khẩu'} */}

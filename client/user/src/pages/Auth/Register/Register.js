@@ -13,11 +13,12 @@ function Register() {
   const [name, setName] = useState("");
   const [gender, setGender] = useState("");
   const [birthDay, setBirthDay] = useState("");
-  // const [address, setAddress] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const navigate = useNavigate();
 
   const handleRegisterUser = () => {
     // validate
@@ -27,13 +28,26 @@ function Register() {
       name: name,
       gender: gender,
       birthDay: birthDay,
-      // address: address,
       phone: phone,
       email: email,
       password: password,
       confirmPassword: confirmPassword,
     };
     console.log(data);
+  };
+
+  const hanldeEmptyInput = (e) => {
+    if (!e.target.value) {
+      e.target.className = "input-box error";
+    } else {
+      e.target.className = "input-box";
+    }
+  };
+
+  const hanldeOnBlurInput = (e) => {
+    if (e.target.value) {
+      e.target.className = "input-box";
+    }
   };
 
   return (
@@ -43,85 +57,173 @@ function Register() {
           <img
             src=""
             alt="logo"
-            // onClick={() => navigate("/")}
+            onClick={() => navigate("/")}
             className="logo"
           />
           <div>Đăng Kí</div>
         </div>
       </div>
       <div className="login-main">
-        {/* <div className="login-title">Đăng Kí</div> */}
         <div className="login-body">
-          {/* <select className="select register-select">
-            <option>Khách Hàng</option>
-            <option>Bác Sỹ</option>
-            <option>Quản Trị Viên</option>
-          </select> */}
           <h2>Đăng Kí</h2>
           <div className="form-body">
             <div className="form-content">
-              <div className="fisrt-block-input">
+              <div className="form-group">
+                <span>Họ và tên</span>
                 <input
                   type="text"
-                  placeholder="Họ và Tên"
-                  className="input mt-3"
+                  placeholder="Nhập tên đầy đủ"
+                  className="input-box"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
+                  onBlur={(e) => {
+                    hanldeEmptyInput(e);
+                  }}
+                  onInput={(e) => {
+                    hanldeOnBlurInput(e);
+                  }}
                 />
-                <div className="checkbox-wrap">
-                  <select
-                    aria-label="Giới tính"
-                    value={gender}
-                    onChange={(e) => setGender(e.target.value)}
-                  >
-                    <option value="1">Nam</option>
-                    <option value="0">Nữ</option>
-                    <option value="-1">Khác</option>
-                  </select>
+              </div>
+
+              <div className="form-group mt-3">
+                <span>Ngày Sinh</span>
+                <input
+                  type="date"
+                  placeholder="Nhập ngày sinh"
+                  className="input-box"
+                  value={birthDay}
+                  onChange={(e) => setBirthDay(e.target.value)}
+                  onBlur={(e) => {
+                    hanldeEmptyInput(e);
+                  }}
+                  onInput={(e) => {
+                    hanldeOnBlurInput(e);
+                  }}
+                />
+              </div>
+
+              <div className="form-group mt-3">
+                <span>Số Điện Thoại</span>
+                <input
+                  type="text"
+                  placeholder="nhập số điện thoại"
+                  className="input-box"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  onBlur={(e) => {
+                    hanldeEmptyInput(e);
+                  }}
+                  onInput={(e) => {
+                    hanldeOnBlurInput(e);
+                  }}
+                />
+              </div>
+
+              <div className="form-group mt-3">
+                <span>Email</span>
+                <input
+                  type="text"
+                  placeholder="Nhập email"
+                  className="input-box"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  onBlur={(e) => {
+                    hanldeEmptyInput(e);
+                  }}
+                  onInput={(e) => {
+                    hanldeOnBlurInput(e);
+                  }}
+                />
+              </div>
+
+              <div className="form-group mt-3">
+                <span>Mật khẩu</span>
+                <input
+                  type="password"
+                  placeholder="Nhập mật khẩu"
+                  className="input-box"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  onBlur={(e) => {
+                    hanldeEmptyInput(e);
+                  }}
+                  onInput={(e) => {
+                    hanldeOnBlurInput(e);
+                  }}
+                />
+              </div>
+
+              <div className="form-group mt-3">
+                <span>Nhập lại mật khẩu</span>
+                <input
+                  type="password"
+                  placeholder="nhập lại mật khẩu"
+                  className="input-box"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  onBlur={(e) => {
+                    hanldeEmptyInput(e);
+                  }}
+                  onInput={(e) => {
+                    hanldeOnBlurInput(e);
+                  }}
+                />
+              </div>
+
+              <div className="form-group mt-3">
+                <span>Giới Tính</span>
+                <div className="sex">
+                  <div className="checkbox-group">
+                    <input
+                      // className="form-check-input"
+                      type="radio"
+                      name="flexRadioDefault"
+                      id="flexRadioDefault1"
+                      value={gender}
+                      onChange={(e) => setGender(e.target.checked)}
+                    />
+                    <label
+                      className="form-check-label"
+                      htmlFor="flexRadioDefault1"
+                    >
+                      Nam
+                    </label>
+                  </div>
+                  <div className="checkbox-group">
+                    <input
+                      // className="form-check-input"
+                      type="radio"
+                      name="flexRadioDefault"
+                      id="flexRadioDefault1"
+                      value={gender}
+                      onChange={(e) => setGender(e.target.checked)}
+                    />
+                    <label
+                      className="form-check-label"
+                      htmlFor="flexRadioDefault1"
+                    >
+                      Nữ
+                    </label>
+                  </div>
+                  <div className="checkbox-group">
+                    <input
+                      // className="form-check-input"
+                      type="radio"
+                      name="flexRadioDefault"
+                      id="flexRadioDefault1"
+                      value={gender}
+                      onChange={(e) => setGender(e.target.checked)}
+                    />
+                    <label
+                      className="form-check-label"
+                      htmlFor="flexRadioDefault1"
+                    >
+                      Khác
+                    </label>
+                  </div>
                 </div>
               </div>
-              <input
-                type="date"
-                placeholder="Ngày sinh"
-                className="input-box mt-3"
-                value={birthDay}
-                onChange={(e) => setBirthDay(e.target.value)}
-              />
-              {/* <input
-                type="text"
-                placeholder="Địa chỉ"
-                className="input-box mt-3"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-              /> */}
-              <input
-                type="text"
-                placeholder="số điện thoại"
-                className="input-box mt-3"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-              />
-              <input
-                type="text"
-                placeholder="email"
-                className="input-box mt-3"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <input
-                type="password"
-                placeholder="mật khẩu"
-                className="input-box mt-3"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <input
-                type="password"
-                placeholder="nhập lại mật khẩu"
-                className="input-box mt-3"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-              />
+
               <button
                 className="btn-register mt-3"
                 onClick={() => handleRegisterUser()}

@@ -64,3 +64,12 @@ input, select {
   ::-webkit-scrollbar-thumb:hover {
 	background: #a0a0a0; 
   }
+
+// error input field
+.errorAlert {
+	margin-left: 5px;
+	font-size: 15px;
+	margin-top: 5px;
+	display: block; 
+	color: red;
+}
