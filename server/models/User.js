@@ -21,7 +21,9 @@ const UserSchema = new mongoose.Schema({
   },
   email: {
     type: String,
-    // unique: true,
+    required: false,
+    unique: true,
+    sparse: true,
   },
   phone: {
     type: String,
@@ -38,7 +40,7 @@ const UserSchema = new mongoose.Schema({
   role_code: {
     type: String,
     required: true,
-    default: 3,
+    default: "r3",
   },
   spe_id: {
     type: mongoose.Schema.Types.ObjectId,

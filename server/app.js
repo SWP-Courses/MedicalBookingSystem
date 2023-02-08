@@ -7,11 +7,13 @@ const __dirname = path.dirname(__filename);
 import cookieParser from "cookie-parser";
 import logger from "morgan";
 import dotenv from "dotenv";
+import cors from "cors";
 
 // endpoint
 import indexRouter from "./routes/index.js";
 import authRouter from "./routes/auth.js";
 import usersRouter from "./routes/users.js";
+import medicineRouter from "./routes/medicines.js";
 
 var app = express();
 dotenv.config();
@@ -25,10 +27,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+app.use(cors());
 
 app.use("/api/", indexRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/users", usersRouter);
+app.use("/api/medicines", medicineRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

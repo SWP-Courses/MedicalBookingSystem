@@ -12,20 +12,17 @@ const user = null;
 // const user = "customer";
 export default function Navbar() {
   const { currentUser, logout } = useContext(AuthContext);
-  const location = useLocation();
-  const pathname = location.pathname;
-  console.log(pathname);
 
   return (
     <div className="navbarContainer">
       <div className="navbarTopWrapper">
-        <div className="navbarTop">
-          <div className="navbar-left">
+        <div className="navbarTop container-fluid row">
+          <div className="navbar-left col-lg-3 col-sm-3">
             <Link to="/" className="logo">
               Health Care System
             </Link>
           </div>
-          <div className="navbar-center">
+          <div className="navbar-center col-lg-4 col-sm-9">
             <label htmlFor="meme" className="searchBar">
               <FontAwesomeIcon icon={faSearch} className="searchIcon" />
               <input
@@ -36,14 +33,11 @@ export default function Navbar() {
               />
             </label>
           </div>
-          <div className="navbar-right">
+          <div className="navbar-right col-lg-5">
             {(currentUser?.role === "customer" || !currentUser) && (
               <Link
                 to={{
                   pathname: "/booking",
-                  state: {
-                    from: pathname,
-                  },
                 }}
                 className="navbar-button"
               >
@@ -55,20 +49,14 @@ export default function Navbar() {
             )}
             <div className="devideLine"></div>
             {!currentUser && (
-              <Link
-                to="/login"
-                state={{
-                  from: pathname,
-                }}
-                className="navbar-button"
-              >
+              <Link to="/login" className="navbar-button">
                 ĐĂNG NHẬP
               </Link>
             )}
 
             {currentUser && (
               <div className="avatarContainer">
-                <Link to="customer">
+                <Link to={"/" + currentUser.role}>
                   <img src={blankAvatar} alt="" />
                 </Link>
               </div>

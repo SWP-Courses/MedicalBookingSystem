@@ -1,19 +1,16 @@
 import "./home.scss";
-import Navbar from "../../components/navbar/Navbar";
-import Options from "../../components/options/Options";
-import Footer from "../../components/footer/Footer";
 
 export default function Home() {
   return (
-    <div>
-      <div className="slider">
+    <div className="homeWrapper container-lg">
+      <div className="slider row">
         <img
           src="https://thumbs.dreamstime.com/b/hospital-building-modern-parking-lot-59693686.jpg"
           alt=""
         />
       </div>
-      <div className="introduction">
-        <div className="introLeft">
+      <div className="introduction row">
+        <div className="introLeft col-sm-7">
           <h1>Human Heal</h1>
           <p>
             Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sequi
@@ -22,7 +19,7 @@ export default function Home() {
             reprehenderit dolorum tempore similique sed.
           </p>
         </div>
-        <div className="introRight">
+        <div className="introRight col-sm-5">
           <h1>Dịch vụ</h1>
           <ul className="specialistList">
             <li className="specialistItem">Khám bệnh</li>
