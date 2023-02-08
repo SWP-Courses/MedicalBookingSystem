@@ -23,7 +23,7 @@ export default function Options() {
         </div>
         <div className="optionItem">
           <Link to="/blogs">
-            <span>Bài viết</span>
+            <span>Bài viết - Tin Tức</span>
           </Link>
         </div>
         <div className="optionItem">
@@ -31,8 +31,12 @@ export default function Options() {
           <FontAwesomeIcon icon={faChevronDown} className="optionIcon" />
         </div>
         <div className="optionItem">
-          <FontAwesomeIcon icon={faFacebookF} />
-          <FontAwesomeIcon icon={faYoutube} />
+          <span>
+            <FontAwesomeIcon className="social-icon" icon={faFacebookF} />
+          </span>
+          <span>
+            <FontAwesomeIcon className="social-icon youtube" icon={faYoutube} />
+          </span>
         </div>
       </div>
     </div>

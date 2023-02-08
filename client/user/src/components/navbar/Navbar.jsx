@@ -14,7 +14,7 @@ export default function Navbar() {
   const { currentUser, logout } = useContext(AuthContext);
   const location = useLocation();
   const pathname = location.pathname;
-  console.log(pathname);
+  // console.log(pathname);
 
   return (
     <div className="navbarContainer">

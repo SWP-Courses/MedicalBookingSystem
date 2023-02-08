@@ -103,6 +103,15 @@
                             padding: 10px;
                             border-radius: 4px;
                             border: 1px solid #ccc;
+
+                            &:hover {
+                                border: 1px solid #2dc2d0;
+                            }
+
+                            &.error {
+                                border: 1px solid red;
+                                background-color: #ffebeb;;
+                            }
                         }
 
                         .btn-register {
