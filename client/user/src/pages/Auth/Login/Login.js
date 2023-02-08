@@ -1,4 +1,4 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useRef } from "react";
 import Form from "react-bootstrap/Form";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "~/context/authContext";
@@ -7,6 +7,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 
 import { Link } from "react-router-dom";
+import { toast } from 'react-toastify';
+import 'animate.css';
+import { validateEmail } from "~/utils";
+import {  checkStringContainInPhoneNumber } from '~/utils'
 
 import "./Login.scss";
 
@@ -14,30 +18,29 @@ function Login() {
   const { login, currentUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
-  console.log(location);
+  // console.log(location);
+
+  const errorAlert = useRef()
+  const errorPassword = useRef()
+
+  const inputRef = useRef();
+
+  console.log('error alert', errorAlert);
 
   useEffect(() => {
     currentUser && navigate("/");
   }, [currentUser, navigate]);
 
   const [password, setPassword] = useState("");
-  // const [email, setEmail] = useState("");
-  // const [phone, setPhone] = useState("");
-  const [user, setUser] = useState("");
+  const [user, setUser] = useState('');
   const [userType, setUserType] = useState("r3");
 
-  const validateEmail = (email) => {
-    return String(email)
-      .toLowerCase()
-      .match(
-        /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      );
-  };
 
   const hanldeLogin = (type) => {
     // case phone or email is empty
     if (!user) {
-      console.log("choose phone or email to login");
+      // toast.error("choose phone or email to login")
+      inputRef.current.focus();
       return;
     }
 
@@ -48,18 +51,39 @@ function Login() {
     }
 
     // validate email
+    // if(typeof(+user) === 'number') {
+    //   console.log(+user);
+    //   alert('true');
+    // }
     const isEmail = validateEmail(user);
 
     // validate phone
-    let isPhoneNumber = null;
+    let isPhoneNumber = true;
+    let phone = user;
     if (!isEmail) {
-      isPhoneNumber = user.replace(/[^0-9]/g, "");
-      if (user.length != 10) {
+      const isContainsString =  checkStringContainInPhoneNumber(phone);
+      // case contain string 
+      if(isContainsString) {
+        toast.error('phone number can not contain character!!');
         isPhoneNumber = false;
         return;
-      } else {
-        isPhoneNumber = user;
       }
+
+      // case less than 10 number
+      if (phone.length != 10) {
+        toast.error('phone must contain 10 number')
+        isPhoneNumber = false;
+        return;
+      }
+
+      // case not start with number 0
+      if(+phone.charAt(0) !== 0) {
+        toast.error('phone number must start with 0');
+        isPhoneNumber = false;
+        return;
+      }
+    }else {
+      toast.error('email incorrect')
     }
 
     if (type === "default" && isEmail) {
@@ -69,11 +93,8 @@ function Login() {
         password: password,
       };
       console.log(loginUser);
-    } else {
-      // if(!isPhoneNumber) {
-      console.log("email incorrect");
-      // }
-    }
+      // login(loginUser)
+    } 
 
     if (type === "default" && isPhoneNumber) {
       let loginUser = {
@@ -81,8 +102,9 @@ function Login() {
         phone: user,
         password: password,
       };
-      // console.log(loginUser);
-      login(loginUser);
+      // let res = login(loginUser);
+      // console.log(res);
+      console.log(loginUser);
     }
 
     if (type === "google") {
@@ -90,30 +112,33 @@ function Login() {
     }
   };
 
-  // const hanldeLoginType = (e) => {
-  //   const email = e.target.value;
-  //   const isEmail = validateEmail(email);
-  //   if(isEmail) {
-  //     setEmail(email)
-  //   }else {
-  //     console.log('email incorrect');
-  //     return;
-  //   }
+  const hanldeEmptyInput = (e) => {
+    if(!e.target.value) {
+      e.target.className = 'input-box mt-3 error';
+      errorAlert.current.innerText = 'Vui lòng nhập số điện thoại hoặc email';
+      if(!password) {
+        errorPassword.current.innerText = 'Vui lòng nhập mật khẩu';
+      }
+    }else {
+      e.target.className = 'input-box mt-3';
 
-  //   // phone = phone.replace(/[^0-9]/g, '');
-  //   // if(phone.length != 10) {
-  //   //   console.log('phone number must be contain 10 degit');
-  //   //   return;
-  //   // }
-  //   console.log('helo', e.target.value);
-  // }
+    }
+  }
+  
+  const hanldeOnBlurInput = (e) => {
+    if(e.target.value) {
+      e.target.className = 'input-box mt-3';
+      errorAlert.current.innerText = '';
+      if(password) {
+        errorPassword.current.innerText = '';
+      }
+    }
+  }
 
   return (
-    <div className="Login-Wrapper">
+    <div className="Login-Wrapper animate__animated animate__fadeInDown">
       <div className="Login-header">
         <div className="logo">
-          <img src="" alt="logo" />
-          <div className="sign-in">Đăng Nhập</div>
           <img
             src=""
             alt="logo"
@@ -141,14 +166,23 @@ function Login() {
                 className="input-box"
                 value={user}
                 onChange={(e) => setUser(e.target.value)}
+                onBlur={(e) => {hanldeEmptyInput(e)}}
+                onInput={(e) => {hanldeOnBlurInput(e)}}
+                ref={inputRef}
               />
+              <span className="errorAlert" ref={errorAlert}></span>
+              {/* {user ?  undefined: 'Vui lòng nhập số điện thoại hoặc email'} */}
               <input
                 type="password"
                 placeholder="mật khẩu"
                 className="input-box mt-3"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                onBlur={(e) => {hanldeEmptyInput(e)}}
+                onInput={(e) => {hanldeOnBlurInput(e)}}
               />
+              <span className="errorAlert" ref={errorPassword}></span>
+              {/* {password ?  undefined: 'Vui lòng nhập mật khẩu'} */}
               <p
                 className="forgot-password"
                 onClick={() => navigate("/forgot-password")}

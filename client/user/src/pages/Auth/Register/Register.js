@@ -37,7 +37,7 @@ function Register() {
   };
 
   return (
-    <div className="Login-Wrapper">
+    <div className="Login-Wrapper animate__animated animate__fadeInDown">
       <div className="Login-header">
         <div className="logo">
           <img

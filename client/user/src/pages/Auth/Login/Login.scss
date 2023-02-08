@@ -80,11 +80,19 @@
 
                     .form-content {
                         padding: 28px 17px;
+
+                        .errorAlert {
+                            margin-left: 5px;
+                            font-size: 15px;
+                            margin-top: 5px;
+                            display: block; 
+                            color: red;
+                        }
                     }
 
                     h2 {
-                        margin: 15px 0;
-                        font-size: 30px;    
+                        margin: 9px 0;
+                        font-size: 24px;
                     }
 
                     .input-box {
@@ -92,7 +100,7 @@
                         padding: 13px;
                         width: 400px;
                         border-radius: 3px;
-                        border: 1px solid #cccc;
+                        border: 1px solid #2dc2d0;
 
                         .input-box:focus {
                             outline: 1px solid orange;
@@ -102,9 +110,10 @@
                     .forgot-password {
                         position: relative;
                         top: 8px;
-                        font-size: 15px;
+                        font-size: 14px;
                         left: 6px;
                         cursor: pointer;
+                        margin-top: 17px;
 
                         &:hover {
                             opacity: 0.8;

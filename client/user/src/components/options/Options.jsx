@@ -1,4 +1,8 @@
-import { faFacebook, faFacebookF, faYoutube } from "@fortawesome/free-brands-svg-icons";
+import {
+  faFacebook,
+  faFacebookF,
+  faYoutube,
+} from "@fortawesome/free-brands-svg-icons";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, useLocation } from "react-router-dom";
@@ -23,16 +27,20 @@ export default function Options() {
         </div>
         <div className="optionItem col-sm-2.5">
           <Link to="/blogs">
-            <span>Bài viết</span>
+            <span>Bài viết - Tin Tức</span>
           </Link>
         </div>
         <div className="optionItem col-sm-2.5">
           <span>Khác</span>
           <FontAwesomeIcon icon={faChevronDown} className="optionIcon" />
         </div>
-        <div className="optionItem col-sm-2">
-          <FontAwesomeIcon icon={faFacebookF} />
-          <FontAwesomeIcon icon={faYoutube} />
+        <div className="optionItem">
+          <span>
+            <FontAwesomeIcon className="social-icon" icon={faFacebookF} />
+          </span>
+          <span>
+            <FontAwesomeIcon className="social-icon youtube" icon={faYoutube} />
+          </span>
         </div>
       </div>
     </div>
