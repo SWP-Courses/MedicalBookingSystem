@@ -1,10 +1,11 @@
 import "./Blog.scss";
 
-import { useNavigate } from "react-router-dom";
-import doctor from '~/assets/images/doctor.jpg'
+import { useLocation, useNavigate } from "react-router-dom";
+import doctor from "~/assets/images/doctor.jpg";
 
 function Blogs() {
-
+  const location = useLocation();
+  console.log(location);
   const navigate = useNavigate();
 
   return (
@@ -21,81 +22,73 @@ function Blogs() {
                 <div className="line"></div>
               </li>
               <li className="item">
-                <span
-                  onClick={() => {}}
-                >Sức khoẻ tổng quát
-                </span>
+                <span onClick={() => {}}>Sức khoẻ tổng quát</span>
                 <div className="line"></div>
               </li>
               <li className="item">
-                <span 
-                  onClick={() => {}}>Dinh Dưỡng</span>
+                <span onClick={() => {}}>Dinh Dưỡng</span>
                 <div className="line"></div>
               </li>
               <li className="item">
-                <span 
-                  onClick={() => {}}>Sống khỏe</span>
+                <span onClick={() => {}}>Sống khỏe</span>
                 <div className="line"></div>
               </li>
               <li className="item">
-                <span
-                  onClick={() => {}}>Làm đẹp</span>
+                <span onClick={() => {}}>Làm đẹp</span>
                 <div className="line"></div>
               </li>
               <li className="item">
-                <span
-                  onClick={() => {}}>Thông tin dược</span>
+                <span onClick={() => {}}>Thông tin dược</span>
                 <div className="line"></div>
               </li>
               <li className="item">
-                <span 
-                  onClick={() => {}}>Nhi</span>
+                <span onClick={() => {}}>Nhi</span>
                 <div className="line"></div>
               </li>
             </ul>
           </div>
           <div className="blog-list">
             <h1 className="type">Sức Khỏe Tổng Quát</h1>
-            <hr/>
+            <hr />
             <div className="blog-item">
               <img
                 className="blog-image"
-                onClick={() => navigate('/blogs/id')}
+                onClick={() => navigate("/blogs/id")}
                 src={doctor}
-                alt='blog-image'
+                alt="blog-image"
               />
               <div className="blog-item-body">
                 <h2 className="bolg-item-title line-clamp">
-                  Những lưu ý quan trọng trước khi khám sức khỏe tổng quát
-                  Trong thời điểm dịch bệnh Covid-19 vẫn đang diễn ra phức tạp,
-                  nhiều cha mẹ băn khoăn không biết có nên đưa con đến bệnh viện
-                  để tiêm phòng không. Loại vắc xin nào có thể được trì hoãn
-                  lịch tiêm, loại vắc xin nào không thể?
+                  Những lưu ý quan trọng trước khi khám sức khỏe tổng quát Trong
+                  thời điểm dịch bệnh Covid-19 vẫn đang diễn ra phức tạp, nhiều
+                  cha mẹ băn khoăn không biết có nên đưa con đến bệnh viện để
+                  tiêm phòng không. Loại vắc xin nào có thể được trì hoãn lịch
+                  tiêm, loại vắc xin nào không thể?
                 </h2>
                 <p className="line-clamp line-4">
                   Trong thời điểm dịch bệnh Covid-19 vẫn đang diễn ra phức tạp,
                   nhiều cha mẹ băn khoăn không biết có nên đưa con đến bệnh viện
                   để tiêm phòng không. Loại vắc xin nào có thể được trì hoãn
-                  lịch tiêm, loại vắc xin nào không thể?
-                  Những lưu ý quan trọng trước khi khám sức khỏe tổng quát
-                  Trong thời điểm dịch bệnh Covid-19 vẫn đang diễn ra phức tạp,
-                  nhiều cha mẹ băn khoăn không biết có nên đưa con đến bệnh viện
-                  để tiêm phòng không. Loại vắc xin nào có thể được trì hoãn
-                  lịch tiêm, loại vắc xin nào không thể? Những lưu ý quan trọng trước khi khám sức khỏe tổng quát
-                  Trong thời điểm dịch bệnh Covid-19 vẫn đang diễn ra phức tạp,
-                  nhiều cha mẹ băn khoăn không biết có nên đưa con đến bệnh viện
-                  để tiêm phòng không. Loại vắc xin nào có thể được trì hoãn
-                  lịch tiêm, loại vắc xin nào không thể?
+                  lịch tiêm, loại vắc xin nào không thể? Những lưu ý quan trọng
+                  trước khi khám sức khỏe tổng quát Trong thời điểm dịch bệnh
+                  Covid-19 vẫn đang diễn ra phức tạp, nhiều cha mẹ băn khoăn
+                  không biết có nên đưa con đến bệnh viện để tiêm phòng không.
+                  Loại vắc xin nào có thể được trì hoãn lịch tiêm, loại vắc xin
+                  nào không thể? Những lưu ý quan trọng trước khi khám sức khỏe
+                  tổng quát Trong thời điểm dịch bệnh Covid-19 vẫn đang diễn ra
+                  phức tạp, nhiều cha mẹ băn khoăn không biết có nên đưa con đến
+                  bệnh viện để tiêm phòng không. Loại vắc xin nào có thể được
+                  trì hoãn lịch tiêm, loại vắc xin nào không thể?
                 </p>
               </div>
             </div>
-              
+
             <div className="blog-item">
               <img
                 className="blog-image"
-                onClick={() => navigate('/blogs-detail')}
+                onClick={() => navigate("/blogs-detail")}
                 src={doctor}
-                alt='blog-image'
+                alt="blog-image"
               />
               <div className="blog-item-body">
                 <h2 className="bolg-item-title">
@@ -112,9 +105,9 @@ function Blogs() {
             <div className="blog-item">
               <img
                 className="blog-image"
-                onClick={() => navigate('/blogs-detail')}
+                onClick={() => navigate("/blogs-detail")}
                 src={doctor}
-                alt='blog-image'
+                alt="blog-image"
               />
               <div className="blog-item-body">
                 <h2 className="bolg-item-title">
@@ -131,9 +124,9 @@ function Blogs() {
             <div className="blog-item">
               <img
                 className="blog-image"
-                onClick={() => navigate('/blogs-detail')}
+                onClick={() => navigate("/blogs-detail")}
                 src={doctor}
-                alt='blog-image'
+                alt="blog-image"
               />
               <div className="blog-item-body">
                 <h2 className="bolg-item-title">

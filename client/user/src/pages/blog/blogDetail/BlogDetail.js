@@ -1,20 +1,33 @@
-import { Link } from "react-router-dom";
-import Breadcrumb from 'react-bootstrap/Breadcrumb';
+import { Link, useLocation } from "react-router-dom";
+import Breadcrumb from "react-bootstrap/Breadcrumb";
 
 import "./BlogDetail.scss";
-import doctor from '~/assets/images/doctor.jpg'
-
+import doctor from "~/assets/images/doctor.jpg";
+import { AuthContext } from "~/context/authContext";
+import { useContext } from "react";
 
 function BlogDetail() {
+  const { setRoutingHistory } = useContext(AuthContext);
+  const location = useLocation();
+
   return (
     <div className="blog-detail-wrapper">
+      <button
+        className="saveBlog"
+        onClick={() =>
+          setRoutingHistory((prev) => ({
+            ...prev,
+            beforeLogin: location.pathname,
+          }))
+        }
+      >
+        Lưu
+      </button>
       <div className="blog-detail-body">
         <div className="bread-crumb">
           <Breadcrumb>
             <Breadcrumb.Item href="#">Home</Breadcrumb.Item>
-              <Breadcrumb.Item href="#">
-                Library
-              </Breadcrumb.Item>
+            <Breadcrumb.Item href="#">Library</Breadcrumb.Item>
             <Breadcrumb.Item active>Data</Breadcrumb.Item>
           </Breadcrumb>
         </div>
@@ -24,10 +37,7 @@ function BlogDetail() {
               <h1 className="blog-title">
                 Những lưu ý quan trọng trước khi khám sức khỏe tổng quát
               </h1>
-              <img
-                className="blog-detail-image"
-                src={doctor}
-              />
+              <img className="blog-detail-image" src={doctor} />
               <div className="content-box">
                 <h2 className="sub-title">1. Vai trò của Vitamin D</h2>
                 <ul>
@@ -211,72 +221,69 @@ function BlogDetail() {
           </div>
           <div className="sub-infor">
             <div className="doctor-info">
-              <Link to='/'>
+              <Link to="/">
                 <img
                   src={doctor}
-                  alt='doctor image'
+                  alt="doctor image"
                   className="doctor-avarta"
                 />
               </Link>
               <span className="doctor-name">Thạc sĩ, Bác sĩ Đặng Tiến Đạt</span>
-              <p className="desc">Khoa Gây mê giảm đau - Bệnh viện Đa khoa Quốc tế Vinmec Times City</p>
-              <Link to="/doctors" className="link-to-detail">Xem thông tin bác sĩ &gt;</Link>
+              <p className="desc">
+                Khoa Gây mê giảm đau - Bệnh viện Đa khoa Quốc tế Vinmec Times
+                City
+              </p>
+              <Link to="/doctors/id" className="link-to-detail">
+                Xem thông tin bác sĩ &gt;
+              </Link>
             </div>
             <div className="more-blogs">
-                <div className="single-blog">
-                  <h3 className="single-blog-title">Có thể bạn quan tâm</h3>
-                  <div className="sub-blog">
-                      <a href="">
-                      <img
-                          className="blog-sub-image"
-                          src={doctor}
-                      />
-                      </a>
-                      <div className="blog-sub-title">
-                          <a href="" className="blog-sub-title-link">
-                              Cortisol là gì và làm thế nào để điều chỉnh mức độ Cortisol?
-                          </a>
-                      </div>
+              <div className="single-blog">
+                <h3 className="single-blog-title">Có thể bạn quan tâm</h3>
+                <div className="sub-blog">
+                  <a href="">
+                    <img className="blog-sub-image" src={doctor} />
+                  </a>
+                  <div className="blog-sub-title">
+                    <a href="" className="blog-sub-title-link">
+                      Cortisol là gì và làm thế nào để điều chỉnh mức độ
+                      Cortisol?
+                    </a>
                   </div>
-                  <div className="sub-blog">
-                      <a href="">
-                      <img
-                          className="blog-sub-image"
-                          src={doctor}
-                      />
-                      </a>
-                      <div className="blog-sub-title">
-                          <a href="" className="blog-sub-title-link">
-                              Cortisol là gì và làm thế nào để điều chỉnh mức độ Cortisol?
-                          </a>
-                      </div>
+                </div>
+                <div className="sub-blog">
+                  <a href="">
+                    <img className="blog-sub-image" src={doctor} />
+                  </a>
+                  <div className="blog-sub-title">
+                    <a href="" className="blog-sub-title-link">
+                      Cortisol là gì và làm thế nào để điều chỉnh mức độ
+                      Cortisol?
+                    </a>
                   </div>
-                  <div className="sub-blog">
-                      <a href="">
-                        <img
-                            className="blog-sub-image"
-                            src={doctor}
-                        />
-                      </a>
-                      <div className="blog-sub-title">
-                          <a href="" className="blog-sub-title-link">
-                              Cortisol là gì và làm thế nào để điều chỉnh mức độ Cortisol?
-                          </a>
-                      </div>
+                </div>
+                <div className="sub-blog">
+                  <a href="">
+                    <img className="blog-sub-image" src={doctor} />
+                  </a>
+                  <div className="blog-sub-title">
+                    <a href="" className="blog-sub-title-link">
+                      Cortisol là gì và làm thế nào để điều chỉnh mức độ
+                      Cortisol?
+                    </a>
                   </div>
-                  <div className="sub-blog">
-                      <a href="">
-                      <img
-                          className="blog-sub-image"
-                          src={doctor}
-                      />
-                      </a>
-                      <div className="blog-sub-title">
-                          <a href="" className="blog-sub-title-link">
-                              Cortisol là gì và làm thế nào để điều chỉnh mức độ Cortisol?
-                          </a>
-                      </div>
+                </div>
+                <div className="sub-blog">
+                  <a href="">
+                    <img className="blog-sub-image" src={doctor} />
+                  </a>
+                  <div className="blog-sub-title">
+                    <a href="" className="blog-sub-title-link">
+                      Cortisol là gì và làm thế nào để điều chỉnh mức độ
+                      Cortisol?
+                    </a>
                   </div>
+                </div>
               </div>
             </div>
           </div>

@@ -15,14 +15,22 @@ export const register = async (req, res, next) => {
       const salt = bcrypt.genSaltSync(10);
       const hash = bcrypt.hashSync(req.body.password, salt);
 
-      const newUser = new UserModel({
+      const document = {
         fullname: req.body.fullname,
         gender: req.body.gender,
         dateOfBirth: req.body.dateOfBirth,
-        email: req.body.email || "",
         password: hash,
         phone: req.body.phone,
-      });
+        role_code: req.body.role_code,
+      };
+      const newUser = new UserModel(
+        !req.body.email
+          ? document
+          : {
+              ...document,
+              email: req.body.email,
+            }
+      );
 
       await newUser.save();
       res.status(200).send("User has been created.");
@@ -64,6 +72,8 @@ export const login = async (req, res, next) => {
     //   },
     // ]);
     // const user = result[0];
+
+    console.log(user);
 
     if (!user) return res.status(404).send("User not exists.");
 

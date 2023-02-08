@@ -8,7 +8,11 @@ export default function AuthContextProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(
     JSON.parse(localStorage.getItem("user") || null)
   );
+  const [routingHistory, setRoutingHistory] = useState({
+    beforeLogin: "",
+  });
   const navigate = useNavigate();
+
   // Side Effect
   useEffect(() => {
     localStorage.setItem("user", JSON.stringify(currentUser));
@@ -17,9 +21,8 @@ export default function AuthContextProvider({ children }) {
   // Functions
   const login = async (inputs) => {
     const res = await axios.post("/auth/login", inputs);
-    console.log(res);
     setCurrentUser(res.data);
-    // navigate("/");
+    navigate(routingHistory.beforeLogin || "/");
   };
 
   const logout = async () => {
@@ -28,7 +31,9 @@ export default function AuthContextProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ currentUser, login, logout }}>
+    <AuthContext.Provider
+      value={{ currentUser, login, logout, routingHistory, setRoutingHistory }}
+    >
       {children}
     </AuthContext.Provider>
   );

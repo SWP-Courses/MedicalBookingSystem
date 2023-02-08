@@ -7,17 +7,20 @@
   background-color: #fff;
 
   .navbarTopWrapper {
-    width: 1170px;
+    width: 90%;
     margin: 0 auto;
+    display: flex;
+    justify-content: center;
     
     .navbarTop {
+      width: 90%;
       height: 70px;
       display: flex;
       justify-content: space-between;
       align-items: center;
   
       .navbar-left {
-        flex: 3;
+        // flex: 3;
         display: flex;
         justify-content: center;
   
@@ -33,7 +36,7 @@
       }
   
       .navbar-center {
-        flex: 5;
+        // flex: 5;
   
         .searchBar {
           width: 100%;
@@ -66,7 +69,7 @@
       }
   
       .navbar-right {
-        flex: 4;
+        // flex: 4;
         display: flex;
         justify-content: space-around;
   
@@ -102,4 +105,17 @@
     }
   }
 
+}
+
+
+@media only screen and (max-width: 992px) {
+  .navbar-right {
+    position: fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    border-top: 2px solid #CCA469;
+    background-color: lightgray;
+    
+  }
 }
