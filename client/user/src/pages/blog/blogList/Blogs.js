@@ -60,7 +60,7 @@ function Blogs() {
             <div className="blog-item">
               <img
                 className="blog-image"
-                onClick={() => navigate('/blogs-detail')}
+                onClick={() => navigate('/blogs/id')}
                 src={doctor}
                 alt='blog-image'
               />

@@ -30,34 +30,62 @@ function BlogDetail() {
               />
               <div className="content-box">
                 <h2 className="sub-title">1. Vai trò của Vitamin D</h2>
-                <p className="sub-content">
-                  Không tiêu thụ lượng vitamin D được theo đúng nhu cầu khuyến
-                  nghị. Điều này có thể xảy ra nếu sử dụng chế độ ăn thuần chay.
-                  Bởi vì hầu hết các nguồn thức ăn tự nhiên là động vật chứa
-                  nhiều vitamin D bao gồm như: cá, dầu cá, lòng đỏ trứng, sữa...
-                  không được sử dụng trong khẩu phần ăn.
-                </p>
-                <p className="sub-content">
-                  Không tiêu thụ lượng vitamin D được theo đúng nhu cầu khuyến
-                  nghị. Điều này có thể xảy ra nếu sử dụng chế độ ăn thuần chay.
-                  Bởi vì hầu hết các nguồn thức ăn tự nhiên là động vật chứa
-                  nhiều vitamin D bao gồm như: cá, dầu cá, lòng đỏ trứng, sữa...
-                  không được sử dụng trong khẩu phần ăn.
-                </p>
-                <p className="sub-content">
-                  Không tiêu thụ lượng vitamin D được theo đúng nhu cầu khuyến
-                  nghị. Điều này có thể xảy ra nếu sử dụng chế độ ăn thuần chay.
-                  Bởi vì hầu hết các nguồn thức ăn tự nhiên là động vật chứa
-                  nhiều vitamin D bao gồm như: cá, dầu cá, lòng đỏ trứng, sữa...
-                  không được sử dụng trong khẩu phần ăn.
-                </p>
-                <p className="sub-content">
-                  Không tiêu thụ lượng vitamin D được theo đúng nhu cầu khuyến
-                  nghị. Điều này có thể xảy ra nếu sử dụng chế độ ăn thuần chay.
-                  Bởi vì hầu hết các nguồn thức ăn tự nhiên là động vật chứa
-                  nhiều vitamin D bao gồm như: cá, dầu cá, lòng đỏ trứng, sữa...
-                  không được sử dụng trong khẩu phần ăn.
-                </p>
+                <ul>
+                  <li>
+                    <p className="sub-content">
+                    Không tiêu thụ lượng vitamin D được theo đúng nhu cầu khuyến
+                    nghị. Điều này có thể xảy ra nếu sử dụng chế độ ăn thuần chay.
+                    Bởi vì hầu hết các nguồn thức ăn tự nhiên là động vật chứa
+                    nhiều vitamin D bao gồm như: cá, dầu cá, lòng đỏ trứng, sữa...
+                    không được sử dụng trong khẩu phần ăn.
+                    </p>  
+                  </li>
+                  <li>
+                    <p className="sub-content">
+                    Không tiêu thụ lượng vitamin D được theo đúng nhu cầu khuyến
+                    nghị. Điều này có thể xảy ra nếu sử dụng chế độ ăn thuần chay.
+                    Bởi vì hầu hết các nguồn thức ăn tự nhiên là động vật chứa
+                    nhiều vitamin D bao gồm như: cá, dầu cá, lòng đỏ trứng, sữa...
+                    không được sử dụng trong khẩu phần ăn.
+                    </p>  
+                  </li>
+                  <li>
+                    <p className="sub-content">
+                    Không tiêu thụ lượng vitamin D được theo đúng nhu cầu khuyến
+                    nghị. Điều này có thể xảy ra nếu sử dụng chế độ ăn thuần chay.
+                    Bởi vì hầu hết các nguồn thức ăn tự nhiên là động vật chứa
+                    nhiều vitamin D bao gồm như: cá, dầu cá, lòng đỏ trứng, sữa...
+                    không được sử dụng trong khẩu phần ăn.
+                    </p>  
+                  </li>
+                  <li>
+                    <p className="sub-content">
+                    Không tiêu thụ lượng vitamin D được theo đúng nhu cầu khuyến
+                    nghị. Điều này có thể xảy ra nếu sử dụng chế độ ăn thuần chay.
+                    Bởi vì hầu hết các nguồn thức ăn tự nhiên là động vật chứa
+                    nhiều vitamin D bao gồm như: cá, dầu cá, lòng đỏ trứng, sữa...
+                    không được sử dụng trong khẩu phần ăn.
+                    </p>  
+                  </li>
+                  <li>
+                    <p className="sub-content">
+                    Không tiêu thụ lượng vitamin D được theo đúng nhu cầu khuyến
+                    nghị. Điều này có thể xảy ra nếu sử dụng chế độ ăn thuần chay.
+                    Bởi vì hầu hết các nguồn thức ăn tự nhiên là động vật chứa
+                    nhiều vitamin D bao gồm như: cá, dầu cá, lòng đỏ trứng, sữa...
+                    không được sử dụng trong khẩu phần ăn.
+                    </p>  
+                  </li>
+                  <li>
+                    <p className="sub-content">
+                    Không tiêu thụ lượng vitamin D được theo đúng nhu cầu khuyến
+                    nghị. Điều này có thể xảy ra nếu sử dụng chế độ ăn thuần chay.
+                    Bởi vì hầu hết các nguồn thức ăn tự nhiên là động vật chứa
+                    nhiều vitamin D bao gồm như: cá, dầu cá, lòng đỏ trứng, sữa...
+                    không được sử dụng trong khẩu phần ăn.
+                    </p>  
+                  </li>
+                </ul>
                 <h2 className="sub-title">2. Nguyên nhân thiếu vitamin D</h2>
                 <ul>
                   <li>

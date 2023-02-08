@@ -26,10 +26,10 @@ export default function Options() {
             <span>Bài viết - Tin Tức</span>
           </Link>
         </div>
-        <div className="optionItem">
+        {/* <div className="optionItem">
           <span>Khác</span>
           <FontAwesomeIcon icon={faChevronDown} className="optionIcon" />
-        </div>
+        </div> */}
         <div className="optionItem">
           <span>
             <FontAwesomeIcon className="social-icon" icon={faFacebookF} />
