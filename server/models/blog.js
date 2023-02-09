@@ -22,8 +22,9 @@ const blogSchema = new mongoose.Schema({
   image: {
     type: String,
   },
-  category: {
-    type: Array
+  category_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Category"
   }
 
 }, {versionKey: false});
