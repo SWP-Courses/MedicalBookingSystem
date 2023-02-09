@@ -1,7 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./doctorDetail.scss";
-import { doctorList } from "../../../fakeData";
-import doctorBackground from "../../../assets/images/doctor_background.jpg";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBriefcase,
@@ -10,18 +8,31 @@ import {
   faInfoCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 
 export default function DoctorDetail() {
   const [moreOpen, setMoreOpen] = useState(false);
-  const params = useParams();
-  const [doctor, setDoctor] = useState(
-    doctorList.find((doctor) => doctor.id === params.id)
-  );
+  const { id: doctorId } = useParams();
+  const [doctor, setDoctor] = useState();
+
+  // Side effects
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get("/users/" + doctorId);
+        setDoctor(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  }, [doctorId]);
+
   return (
     <div className="doctorDetail">
       <div className="doctorVisual">
-        <img src={doctor.img} alt="" />
-        <h1>{`${doctor.degree} ${doctor.name}`} </h1>
+        <img src={doctor?.avatar} alt="" />
+        <h1>{`${doctor?.degree} ${doctor?.fullname}`} </h1>
       </div>
       <div className="doctorProfileContent">
         <div className="profileLeft">
@@ -31,7 +42,7 @@ export default function DoctorDetail() {
               <span>Học vấn</span>
             </div>
             <div className="devideLine" />
-            <p>{doctor.degree}</p>
+            <p>{doctor?.degree}</p>
           </div>
           <div className="profileItem">
             <div className="header">
@@ -44,10 +55,10 @@ export default function DoctorDetail() {
           <div className="profileItem">
             <div className="header">
               <FontAwesomeIcon icon={faBriefcase} />
-              <span>Chuyên ngành{}</span>
+              <span>Chuyên ngành</span>
             </div>
             <div className="devideLine" />
-            <p>{doctor.major}</p>
+            <p>{doctor?.specialist}</p>
           </div>
         </div>
         <div className="profileRight">
@@ -57,7 +68,7 @@ export default function DoctorDetail() {
               <span>Giới thiệu</span>
             </div>
             <div className="devideLine" />
-            <p>{doctor.infoDetails}</p>
+            <p>{doctor?.profile}</p>
           </div>
         </div>
       </div>

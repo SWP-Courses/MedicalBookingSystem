@@ -35,46 +35,53 @@ export default function Navbar() {
             </label>
           </div>
           <div className="navbar-right col-lg-5">
-            {(currentUser?.role === "customer" || !currentUser) && (
-              <Link to="/booking" className="navbar-button">
-                ĐĂNG KÝ KHÁM
-              </Link>
-            )}
-            {currentUser?.role === "doctor" && (
-              <button className="navbar-button">LỊCH KHÁM</button>
-            )}
+            <div className="navItemContainer">
+              {(currentUser?.role === "customer" || !currentUser) && (
+                <Link to="/booking" className="navbar-button">
+                  ĐĂNG KÝ KHÁM
+                </Link>
+              )}
+              {currentUser?.role === "doctor" && (
+                <button className="navbar-button">LỊCH KHÁM</button>
+              )}
+            </div>
             <div className="devideLine"></div>
-            {!currentUser && (
-              <Link to="/login" className="navbar-button">
-                ĐĂNG NHẬP
-              </Link>
-            )}
+            <div className="navItemContainer">
+              {!currentUser && (
+                <Link to="/login" className="navbar-button">
+                  ĐĂNG NHẬP
+                </Link>
+              )}
 
-            {currentUser && (
-              <Dropdown>
-                <Dropdown.Toggle
-                  variant="success"
-                  id="dropdown-basic"
-                  className="avatarContainer"
-                  as="div"
-                >
-                  <img src={blankAvatar} alt="" />
-                </Dropdown.Toggle>
+              {currentUser && (
+                <Dropdown>
+                  <Dropdown.Toggle
+                    variant="success"
+                    id="dropdown-basic"
+                    className="avatarContainer"
+                    as="div"
+                  >
+                    <img src={blankAvatar} alt="" />
+                  </Dropdown.Toggle>
 
-                <Dropdown.Menu>
-                  <Dropdown.Item href="#/action-1">
-                    <Link className="dropdown-item" to={"/" + currentUser.role}>
-                      Thông tin cá nhân
-                    </Link>
-                  </Dropdown.Item>
-                  <Dropdown.Item href="#/action-2">
-                    <button className="dropdown-item text-danger" href="#">
-                      Đăng xuất
-                    </button>
-                  </Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-            )}
+                  <Dropdown.Menu>
+                    <Dropdown.Item href="#/action-1">
+                      <Link
+                        className="dropdown-item"
+                        to={"/" + currentUser.role}
+                      >
+                        Thông tin cá nhân
+                      </Link>
+                    </Dropdown.Item>
+                    <Dropdown.Item href="#/action-2">
+                      <button className="dropdown-item text-danger" href="#">
+                        Đăng xuất
+                      </button>
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              )}
+            </div>
           </div>
         </div>
       </div>

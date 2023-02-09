@@ -1,4 +1,5 @@
 var SpecialistModel = require("../models/Specialist");
+var UserModel = require("../models/User");
 
 // GET /api/specialists/
 // Get all specialists
@@ -14,10 +15,19 @@ const getAllSpecialists = async (req, res) => {
 // GET /api/specialists/:specialistId
 // Get single specialists by id
 const getSingleSpecialist = async (req, res) => {
-  const specialistId = req.params.specialistId;
+  const specialistId = req.params.id;
   try {
-    const specialist = await SpecialistModel.findOne({ _id: specialistId });
-    res.status(200).json(specialist);
+    const specialist = await SpecialistModel.findById(specialistId);
+    let speDoctors = await UserModel.find(
+      { specialist_id: specialistId },
+      "_id fullname degree profile avatar"
+    );
+
+    const result = {
+      ...specialist._doc,
+      doctor_list: [...speDoctors],
+    };
+    res.status(200).json(result);
   } catch (err) {
     res.status(500).json(err);
   }

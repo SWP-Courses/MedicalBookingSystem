@@ -9,6 +9,6 @@ const {
 
 // /api/specialists/
 router.get("/", getAllSpecialists);
-router.get("/:specialistId", getSingleSpecialist);
+router.get("/:id", getSingleSpecialist);
 
 module.exports = router;

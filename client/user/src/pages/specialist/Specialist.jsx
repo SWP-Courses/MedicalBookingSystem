@@ -15,8 +15,8 @@ import { encodedImage } from "~/assets/images/thumbnailbase64";
 import axios from "axios";
 
 export default function Specialist() {
-  const newDoctorList = doctorList.slice(0, 3);
-  const [doctorShow, setDoctorShow] = useState(newDoctorList[0]);
+  const [doctorList, setDoctorList] = useState([]);
+  const [doctorShow, setDoctorShow] = useState();
   const [specialistInfo, setSpecialistInfo] = useState({});
   const { speId } = useParams();
   const [specialists, setSpecialists] = useState([]);
@@ -27,13 +27,19 @@ export default function Specialist() {
     const fetchData = async () => {
       try {
         const res = await axios.get("/specialists/" + speId);
-        setSpecialistInfo(res.data);
+        const { doctor_list, ...speInfo } = res.data;
+        setSpecialistInfo(speInfo);
+        setDoctorList(doctor_list);
       } catch (err) {
         console.log(err);
       }
     };
     fetchData();
   }, [speId]);
+
+  useEffect(() => {
+    setDoctorShow(doctorList && doctorList[0]);
+  }, [doctorList]);
 
   useEffect(() => {
     fetchSpecialists();
@@ -73,9 +79,9 @@ export default function Specialist() {
       <div className="doctorStaff">
         <div className="doctorShow">
           <div className="imgShow">
-            <img src={doctorShow.img} alt="" />
-            <h1>{doctorShow.name}</h1>
-            <span>{doctorShow.degree}</span>
+            <img src={doctorShow?.avatar} alt="" />
+            <h1>{doctorShow?.fullname}</h1>
+            <span>{doctorShow?.degree}</span>
           </div>
           <div className="contentShow">
             <div className="profileItem">
@@ -90,33 +96,37 @@ export default function Specialist() {
                 <FontAwesomeIcon icon={faBriefcase} />
                 <span>Chuyên khoa</span>
               </div>
-              <p>{doctorShow.major}</p>
+              <p>{specialistInfo?.title}</p>
             </div>
             <div className="profileItem">
               <div className="header">
                 <FontAwesomeIcon icon={faInfoCircle} />
                 <span>Giới thiệu</span>
               </div>
-              <p>{shortenText(doctorShow.infoDetails, 500)}</p>
+              <p>
+                {doctorShow?.profile && shortenText(doctorShow?.profile, 500)}
+              </p>
             </div>
           </div>
         </div>
 
         <div className="doctorOptions">
-          {newDoctorList.map((doctor, index) => (
+          {doctorList?.map((doctor, index) => (
             <div
               className="doctorMini"
               onClick={() => handleDoctorMiniClick(doctor)}
               key={index}
             >
               <img
-                src={doctor.img}
+                src={doctor.avatar}
                 alt=""
-                className={doctorShow.name === doctor.name ? "active" : ""}
+                className={
+                  doctorShow?.fullname === doctor?.fullname ? "active" : ""
+                }
               />
-              <span className="title">{doctor.degree}</span>
-              <Link to={`/doctors/${doctor.id}`} className="name">
-                {doctor.name}
+              <span className="title">{doctor?.degree}</span>
+              <Link to={`/doctors/${doctor._id}`} className="name">
+                {doctor?.fullname}
               </Link>
             </div>
           ))}
