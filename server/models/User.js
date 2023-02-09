@@ -34,6 +34,7 @@ const UserSchema = new mongoose.Schema(
     password: {
       type: String,
       min: 6,
+      required: true,
     },
     nationalId: {
       type: String,

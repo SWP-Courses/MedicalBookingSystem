@@ -1,31 +1,35 @@
-var express = require("express");
-var router = express.Router();
-var MedicineModel = require("../models/Medicine.js");
+const express = require("express");
+const bodyParser = require("body-parser");
+const medicineRouter = express.Router();
+const {
+  getMedicine,
+  getMedicineById,
+  createMedicine,
+  updateMedicine,
+  deleteMedicine,
+} = require("../controllers/medicineController");
 
-// Get all medicines
-router.get("/", async (req, res) => {
-  try {
-    const medicines = await MedicineModel.find();
-    res.status(200).json(medicines);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
+medicineRouter.use(bodyParser.json());
 
-// Add a medicine
-router.post("/", async (req, res) => {
-  const newMedicine = new MedicineModel({
-    name: req.body.name,
-    type: req.body.type,
-    quantity: req.body.quantity,
-    price: req.body.price,
-  });
+medicineRouter
+  .route("/")
+  .all((req, res, next) => {
+    res.statusCode = 200;
+    res.setHeader("Content-Type", "json/plain");
+    next();
+  })
+  .get(getMedicine)
+  .post(createMedicine);
 
-  try {
-    const savedMedicine = await newMedicine.save();
-    res.status(200).json(savedMedicine);
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-module.exports = router;
+medicineRouter
+  .route("/:id")
+  // .all((req, res, next) => {
+  //   res.statusCode = 200;
+  //   res.setHeader("Content-Type", "json/plain");
+  //   next();
+  // })
+  .get(getMedicineById)
+  .put(updateMedicine)
+  .delete(deleteMedicine);
+
+module.exports = medicineRouter;
