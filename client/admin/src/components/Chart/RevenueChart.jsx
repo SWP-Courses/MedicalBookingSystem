@@ -71,9 +71,9 @@ function RevenueChart() {
                 <Chart type='bar' data={data} options={option} />
             </div>
             <div className=' d-flex justify-content-end gap-2 pt-1'>
-                <button type="button" class="btn btn-secondary">Quarter </button>
-                <button type="button" class="btn btn-secondary">Month</button>
-                <button type="button" class="btn btn-secondary">Year</button>
+                <button type="button" className="btn btn-secondary">Quarter </button>
+                <button type="button" className="btn btn-secondary">Month</button>
+                <button type="button" className="btn btn-secondary">Year</button>
             </div>
         </div>
     )

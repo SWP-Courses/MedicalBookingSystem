@@ -1,10 +1,12 @@
-var createError = require("http-errors");
-var express = require("express");
-var path = require("path");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
-var bodyParser = require("body-parser");
-var cors = require("cors");
+var createError = require('http-errors');
+var express = require('express');
+var path = require('path');
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
+const bodyParser = require("body-parser");
+var cors = require('cors');
+
+var indexRouter = require('./routes/index');
 
 /* Import endpoint */
 //    Khoa
@@ -12,13 +14,16 @@ var indexRouter = require("./routes/indexRouter");
 var authRouter = require("./routes/authRouter");
 var usersRouter = require("./routes/userRouter");
 var specialistRouter = require("./routes/specialistRouter");
-//    An
-const medicineRouter = require("./routes/medicineRouter");
-const blogRouter = require("./routes/blogRouter");
-const categoryRouter = require("./routes/categoryRouter");
-const serviceRouter = require("./routes/serviceRouter");
+
+const connectToDb = require('./config/dbConnection');
+const medicineRouter = require('./routes/medicineRouter');
+const blogRouter = require('./routes/blogRouter');
+const categoryRouter = require('./routes/categoryRouter');
+const serviceRouter = require('./routes/serviceRouter');
+const imageRouter = require('./routes/imageRouter');
 
 var app = express();
+app.use(cors());
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -45,11 +50,12 @@ app.use("/api/", indexRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/specialists", specialistRouter);
-//  An
+//  An + Minh
 app.use("/api/medicine", medicineRouter);
 app.use("/api/blog", blogRouter);
 app.use("/api/category", categoryRouter);
 app.use("/api/service", serviceRouter);
+app.use('/image', imageRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
