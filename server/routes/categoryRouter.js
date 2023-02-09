@@ -2,11 +2,11 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const categoryRouter = express.Router();
 const {
-  getCategory,
-  getCategoryById,
-  createCategory,
-  updateCategory,
-  deleteCategory,
+    getCategory,
+    getCategoryById,
+    createCategory,
+    updateCategory,
+    deleteCategory,
 } = require("../controllers/categoryController");
 
 categoryRouter.use(bodyParser.json());
@@ -21,7 +21,7 @@ categoryRouter
   .get(getCategory)
   .post(createCategory);
 
-categoryRouter
+  categoryRouter
   .route("/:id")
   // .all((req, res, next) => {
   //   res.statusCode = 200;

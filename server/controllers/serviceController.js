@@ -27,7 +27,7 @@ const getServiceById = asyncHandler(async (req, res, next) => {
 const createService = asyncHandler(async (req, res, next) => {
   const { name, price, description } = req.body;
 
-  if (!name || !price || !description) {
+  if (!name || !price || !description ) {
     res.status(400);
     throw new Error("All field not be empty!");
   }
@@ -35,7 +35,7 @@ const createService = asyncHandler(async (req, res, next) => {
   const services = await Service.create({
     name,
     price,
-    description,
+    description
   });
 
   res.status(200).json({ services });
@@ -47,7 +47,7 @@ const createService = asyncHandler(async (req, res, next) => {
 const updateService = asyncHandler(async (req, res, next) => {
   const serviceId = req.params.id;
   const service = await Service.findById(serviceId);
-
+  
   if (!service) {
     res.status(404);
     throw new Error("Service Not Found!");
@@ -57,7 +57,7 @@ const updateService = asyncHandler(async (req, res, next) => {
   const updateService = await Service.findByIdAndUpdate(serviceId, {
     name,
     price,
-    description,
+    description
   });
 
   res.status(200).json({ updateService });

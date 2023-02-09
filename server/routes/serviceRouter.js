@@ -2,11 +2,11 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const serviceRouter = express.Router();
 const {
-  getService,
-  getServiceById,
-  createService,
-  updateService,
-  deleteService,
+    getService,
+    getServiceById,
+    createService,
+    updateService,
+    deleteService,
 } = require("../controllers/serviceController");
 
 serviceRouter.use(bodyParser.json());
@@ -21,7 +21,7 @@ serviceRouter
   .get(getService)
   .post(createService);
 
-serviceRouter
+  serviceRouter
   .route("/:id")
   // .all((req, res, next) => {
   //   res.statusCode = 200;

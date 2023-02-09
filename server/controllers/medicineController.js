@@ -48,7 +48,7 @@ const createMedicine = asyncHandler(async (req, res, next) => {
 const updateMedicine = asyncHandler(async (req, res, next) => {
   const medicineId = req.params.id;
   const medicines = await Medicine.findById(medicineId);
-
+  
   if (!medicines) {
     res.status(404);
     throw new Error("Medicine Not Found!");
