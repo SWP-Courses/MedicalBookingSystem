@@ -1,5 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 import Dashboard from "../pages/Dashboard";
 import Blog from "../pages/Blog";
@@ -11,16 +13,19 @@ import Chat from "../pages/Chat";
 
 const AdminRouter = () => {
   return (
-    <Routes>
-      <Route path="/" element={<Dashboard />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/blog" element={<Blog />} />
-      <Route path="/doctor" element={<Doctor />} />
-      <Route path="/service" element={<Service />} />
-      <Route path="/medicine" element={<Medicine />} />
-      <Route path="/calendar" element={<Calendar />} />
-      <Route path="/chat" element={<Chat />} />
-    </Routes>
+    <>
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/doctor" element={<Doctor />} />
+        <Route path="/service" element={<Service />} />
+        <Route path="/medicine" element={<Medicine />} />
+        <Route path="/calendar" element={<Calendar />} />
+        <Route path="/chat" element={<Chat />} />
+      </Routes>
+      <ToastContainer />
+    </>
   );
 };
 

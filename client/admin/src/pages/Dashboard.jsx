@@ -13,13 +13,13 @@ const Dashboard = () => {
     <div className='bg-light container w-100 h-auto d-flex flex-column gap-3'>
       {/* 1 row */}
       <div className='row'>
-        <div class="col-12 border py-3">
+        <div className="col-12 border py-3">
           <RevenueChart />
         </div>
       </div>
 
       <div className='row d-flex'>
-        <div class="col-12 p-0 d-flex gap-3">
+        <div className="col-12 p-0 d-flex gap-3">
           <div className='border p-0 d-flex flex-column justify-content-between gap-3 p-3' style={{ width: '40%' }}>
             <h4>Total</h4>
             <NumberUserCard title={'Doctor'} number={30} logo={<GiStethoscope />} />
@@ -35,7 +35,7 @@ const Dashboard = () => {
       </div>
 
       <div className='row'>
-        <div class="col-12 border vh-100">
+        <div className="col-12 border vh-100">
           <Calendar />
         </div>
       </div>

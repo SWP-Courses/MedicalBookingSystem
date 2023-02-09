@@ -15,25 +15,25 @@ function DoctorTable({ onClickEditDoctor, doctors }) {
             {/* Filter */}
             <div className='w-100 d-flex justify-content-between'>
                 <select className="form-select filter-select" style={{ width: "13%" }} aria-label="Default select example">
-                    <option selected value="1">One</option>
+                    <option defaultValue value="1">One</option>
                     <option value="2">Two</option>
                     <option value="3">Three</option>
                 </select>
 
                 <select className="form-select filter-select" style={{ width: "13%" }} aria-label="Default select example">
-                    <option selected value="1">One</option>
+                    <option defaultValue value="1">One</option>
                     <option value="2">Two</option>
                     <option value="3">Three</option>
                 </select>
 
                 <select className="form-select filter-select" style={{ width: "13%" }} aria-label="Default select example">
-                    <option selected value="1">One</option>
+                    <option defaultValue value="1">One</option>
                     <option value="2">Two</option>
                     <option value="3">Three</option>
                 </select>
 
                 <select className="form-select filter-select" style={{ width: "13%" }} aria-label="Default select example">
-                    <option selected value="1">One</option>
+                    <option defaultValue value="1">One</option>
                     <option value="2">Two</option>
                     <option value="3">Three</option>
                 </select>
@@ -55,7 +55,7 @@ function DoctorTable({ onClickEditDoctor, doctors }) {
                     </thead>
                     <tbody>
                         {
-                            doctorList.map((doctor, index) => <DoctorRow onDeleteBlogById={onDeleteBlogById} onClickEditDoctor={onClickEditDoctor} key={doctor.id} doctor={doctor} stt={index + 1} />)
+                            doctorList.map((doctor, index) => <DoctorRow key={index} onDeleteBlogById={onDeleteBlogById} onClickEditDoctor={onClickEditDoctor} doctor={doctor} stt={index + 1} />)
                         }
                     </tbody>
                 </table>
