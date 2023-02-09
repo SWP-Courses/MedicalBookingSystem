@@ -48,6 +48,12 @@ const UserSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Specialist",
     },
+    degree: {
+      type: String,
+    },
+    profile: {
+      type: String,
+    },
   },
   {
     versionKey: false,

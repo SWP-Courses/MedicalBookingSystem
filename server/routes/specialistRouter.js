@@ -6,7 +6,8 @@ const {
   getSingleSpecialist,
 } = require("../controllers/specialistController");
 
-/* GET users listing. */
+
+// /api/specialists/
 router.get("/", getAllSpecialists);
 router.get("/:specialistId", getSingleSpecialist);
 

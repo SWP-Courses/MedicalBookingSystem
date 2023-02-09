@@ -19,10 +19,9 @@ export default function Specialist() {
   const [doctorShow, setDoctorShow] = useState(newDoctorList[0]);
   const [specialistInfo, setSpecialistInfo] = useState({});
   const { speId } = useParams();
+  const [specialists, setSpecialists] = useState([]);
 
-  const handleDoctorMiniClick = (doctor) => {
-    setDoctorShow(doctor);
-  };
+  // Side effects
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,13 +35,39 @@ export default function Specialist() {
     fetchData();
   }, [speId]);
 
+  useEffect(() => {
+    fetchSpecialists();
+  }, []);
+
+  // Functions
+  const fetchSpecialists = () => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get("/specialists");
+        setSpecialists(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
+  };
+
+  const handleDoctorMiniClick = (doctor) => {
+    setDoctorShow(doctor);
+  };
+
+  console.log(specialistInfo?.banner);
+
   return (
     <div className="singleSpecialist">
       <div className="introImages">
-        <h1 className="speIntroThumbnail">
+        <h1
+          className="speIntroThumbnail"
+          style={{ backgroundImage: `url(${specialistInfo?.thumbnail})` }}
+        >
           Chuyên khoa <b>{specialistInfo.title?.toUpperCase()}</b>
         </h1>
-        <img src={encodedImage} alt="" />
+        <img src={specialistInfo?.banner} alt="" />
       </div>
       <h2 className="speTitle">Đội ngũ chuyên gia của chúng tôi</h2>
       <div className="doctorStaff">
@@ -99,11 +124,15 @@ export default function Specialist() {
       </div>
       <h2 className="speTitle">Chuyên khoa khác</h2>
       <div className="otherSpecialist">
-        <div className="speBlock">Vắc xin</div>
-        <div className="speBlock">Vắc xin</div>
-        <div className="speBlock">Vắc xin</div>
-        <div className="speBlock">Vắc xin</div>
-        <div className="speBlock">Vắc xin</div>
+        {specialists?.map((spe) => (
+          <Link
+            to={"/specialists/" + spe._id}
+            className="speBlock"
+            style={{ backgroundImage: `url(${spe.thumbnail})` }}
+          >
+            {spe.title}
+          </Link>
+        ))}
       </div>
     </div>
   );
