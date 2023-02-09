@@ -41,7 +41,6 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 // connect to database
-const connectToDb = require("./config/dbConnection");
 connectToDb();
 
 /* baseURL */
