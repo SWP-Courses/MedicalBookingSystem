@@ -18,6 +18,7 @@ export default function Specialist() {
   const newDoctorList = doctorList.slice(0, 3);
   const [doctorShow, setDoctorShow] = useState(newDoctorList[0]);
   const [specialistInfo, setSpecialistInfo] = useState({});
+  
   const { speId } = useParams();
 
   const handleDoctorMiniClick = (doctor) => {

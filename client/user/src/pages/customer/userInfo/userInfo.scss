@@ -3,7 +3,7 @@
     > .title {
         font-size: 30px;
         font-weight: 500;
-        margin-bottom: 50px;
+        margin-bottom: 30px;
     }
 
     > .userInfo {
@@ -25,6 +25,33 @@
                 border: none;
                 outline: none;
                 color: #333;
+            }
+
+            .sex {
+                display: flex;
+                gap: 10px;
+                align-items: center;
+
+                .form-select {
+                    width: fit-content;                   
+                    height: 38px;
+                }
+
+                >span {
+                    width: 40px;
+                }
+
+                >strong {
+                    margin-right: 80px;
+                    opacity: 0.8;
+                }
+
+                .checkbox-group {
+                    margin-right: 10px;
+                    >input {
+                        margin-right: 5px;
+                    }
+                }
             }
         }
 

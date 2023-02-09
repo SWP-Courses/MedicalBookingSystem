@@ -5,12 +5,17 @@ import { useNavigate } from "react-router-dom";
 export const AuthContext = createContext();
 
 export default function AuthContextProvider({ children }) {
+
   const [currentUser, setCurrentUser] = useState(
     JSON.parse(localStorage.getItem("user") || null)
   );
+
+  console.log('check current User: ', currentUser);
+
   const [routingHistory, setRoutingHistory] = useState({
     beforeLogin: "",
   });
+
   const navigate = useNavigate();
 
   // Side Effect

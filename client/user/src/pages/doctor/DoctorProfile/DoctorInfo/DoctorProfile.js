@@ -3,8 +3,10 @@ import { useEffect, useState } from "react";
 import { faArrowUpFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-export default function DoctorProfile() {
-  const [image, setImage] = useState(null);
+export default function DoctorProfile(props) {
+  
+  const { image, hanldeUploadImage} = props;
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [address, setAddress] = useState('');
@@ -12,13 +14,6 @@ export default function DoctorProfile() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [birthday, setBirthday] = useState('');
 
-  const hanldeUploadImage = (e) => {
-    if(e && e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      file.avatar = URL.createObjectURL(file); 
-      setImage(file);
-    }
-  };
 
   useEffect(() => {
     return () => {
@@ -46,6 +41,8 @@ export default function DoctorProfile() {
       <hr />
       <div className="userInfo">
         <div className="infoList">
+
+
           <input 
             type="text" 
             placeholder="Họ và tên" 
@@ -66,39 +63,45 @@ export default function DoctorProfile() {
           />
           <div className="sex">
             <strong>Giới Tính</strong>
-            <input
-              className="form-check-input"
-              type="radio"
-              name="flexRadioDefault"
-              id="flexRadioDefault1"
-              value={gender}
-              onChange={(e) => setGender(e.target.checked)}
-            />
-            <label className="form-check-label" htmlFor="flexRadioDefault1">
-              Nam
-            </label>
-            <input
-              className="form-check-input"
-              type="radio"
-              name="flexRadioDefault"
-              id="flexRadioDefault1"
-              value={gender}
-              onChange={(e) => setGender(e.target.checked)}
-            />
-            <label className="form-check-label" htmlFor="flexRadioDefault1">
-              Nữ
-            </label>
-            <input
-              className="form-check-input"
-              type="radio"
-              name="flexRadioDefault"
-              id="flexRadioDefault1"
-              value={gender}
-              onChange={(e) => setGender(e.target.checked)}
-            />
-            <label className="form-check-label" htmlFor="flexRadioDefault1">
-              Khác
-            </label>
+            <div className="checkbox-group">
+              <input
+                // className="form-check-input"
+                type="radio"
+                name="flexRadioDefault"
+                id="flexRadioDefault1"
+                value={gender}
+                onChange={(e) => setGender(e.target.checked)}
+              />
+              <label className="form-check-label" htmlFor="flexRadioDefault1">
+                Nam
+              </label>
+            </div>
+            <div className="checkbox-group">
+              <input
+                // className="form-check-input"
+                type="radio"
+                name="flexRadioDefault"
+                id="flexRadioDefault1"
+                value={gender}
+                onChange={(e) => setGender(e.target.checked)}
+              />
+              <label className="form-check-label" htmlFor="flexRadioDefault1">
+                Nữ
+              </label>
+            </div>
+            <div className="checkbox-group">
+              <input
+                // className="form-check-input"
+                type="radio"
+                name="flexRadioDefault"
+                id="flexRadioDefault1"
+                value={gender}
+                onChange={(e) => setGender(e.target.checked)}
+              />
+              <label className="form-check-label" htmlFor="flexRadioDefault1">
+                Khác
+              </label>
+            </div>
           </div>
           <div className="phone mt-1">
             <strong>Số Điện Thoại</strong>
@@ -119,6 +122,10 @@ export default function DoctorProfile() {
               onChange={(e) => setBirthday(e.target.value)}
             />
           </div>
+
+
+
+
         </div>
         <div className="accountAvatar">
           <div className="avata">

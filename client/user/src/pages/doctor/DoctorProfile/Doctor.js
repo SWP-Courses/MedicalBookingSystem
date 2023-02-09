@@ -10,7 +10,15 @@ export default function Doctor() {
   const [userContent, setUserContent] = useState("info");
   const [routeToPrescription, setRouteToPrescription] = useState("");
 
-  console.log(userContent);
+  const [image, setImage] = useState(null);
+
+  const hanldeUploadImage = (e) => {
+    if(e && e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      file.avatar = URL.createObjectURL(file); 
+      setImage(file);
+    }
+  };
 
   const handleOptionClick = (option) => {
     setUserContent(option);
@@ -63,7 +71,7 @@ export default function Doctor() {
         </div>
       </div>
       <div className="doctorContent">
-        {userContent === "info" && <DoctorProfile />}
+        {userContent === "info" && <DoctorProfile hanldeUploadImage={hanldeUploadImage} image={image}/>}
         {userContent === "prescription" && <Prescription />}
         {userContent === "doctorSchedule" && <DoctorSchedule />}
         {userContent === "medicalHistory" && (

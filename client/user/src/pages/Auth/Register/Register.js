@@ -69,7 +69,7 @@ function Register() {
           <div className="form-body">
             <div className="form-content">
               <div className="form-group">
-                <span>Họ và tên</span>
+                <span>Họ và tên (*)</span>
                 <input
                   type="text"
                   placeholder="Nhập tên đầy đủ"
@@ -86,7 +86,7 @@ function Register() {
               </div>
 
               <div className="form-group mt-3">
-                <span>Ngày Sinh</span>
+                <span>Ngày Sinh (*)</span>
                 <input
                   type="date"
                   placeholder="Nhập ngày sinh"
@@ -103,7 +103,7 @@ function Register() {
               </div>
 
               <div className="form-group mt-3">
-                <span>Số Điện Thoại</span>
+                <span>Số Điện Thoại (*)</span>
                 <input
                   type="text"
                   placeholder="nhập số điện thoại"

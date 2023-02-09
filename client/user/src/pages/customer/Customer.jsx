@@ -9,15 +9,29 @@ import BlogsSaved from "./blogsSaved/BlogsSaved";
 export default function Customer() {
   const [userContent, setUserContent] = useState("info");
 
+  const [image, setImage] = useState(null);
+
+  const hanldeUploadImage = (e) => {
+    if(e && e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      file.avatar = URL.createObjectURL(file); 
+      setImage(file);
+    }
+  };
+
   const handleOptionClick = (option) => {
     setUserContent(option);
   };
+
   return (
     <div className="customer">
       <div className="userSidebar">
         <div className="userInfo">
-          <img src={blankAvatar} alt="" />
-          <span>Anh Anh</span>
+          { 
+            image && image.avatar ?
+            <img src={image.avatar} alt="avatar" /> : 'no avatar available'
+          }
+          <span className="userName">Anh Anh</span>
         </div>
         <div className="profileActions">
           <h4
@@ -55,7 +69,7 @@ export default function Customer() {
         </div>
       </div>
       <div className="userContent">
-        {userContent === "info" && <UserInfo />}
+        {userContent === "info" && <UserInfo hanldeUploadImage={hanldeUploadImage} image={image}/>}
         {userContent === "history" && <MedicalHistory />}
         {userContent === "apmSchedule" && <AppointmentSchedule />}
         {userContent === "pSaved" && <BlogsSaved />}
