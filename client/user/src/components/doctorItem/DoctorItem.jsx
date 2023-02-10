@@ -8,26 +8,26 @@ import "./doctorItem.scss";
 import { shortenText } from "~/utils";
 
 export default function DoctorItem({ doctor }) {
-  const { img, name, degree, major, infoDetails } = doctor;
+  const { avatar, fullname, degree, profile } = doctor;
   return (
     <div className="doctorItem">
       <div className="doctorImg">
-        <img src={img} alt="" />
+        <img src={avatar} alt="" />
       </div>
       <div className="doctorTitle">
-        <Link to={`/doctors/${doctor.id}`} className="doctorName">
-          Bác sĩ {name}
+        <Link to={`/doctors/${doctor._id}`} className="doctorName">
+          Bác sĩ {fullname}
         </Link>
         <div className="titleItem">
           <FontAwesomeIcon icon={faGraduationCap} />
           <span>{degree}</span>
         </div>
-        <div className="titleItem">
+        {/* <div className="titleItem">
           <FontAwesomeIcon icon={faStethoscope} />
           <span>{major}</span>
-        </div>
+        </div> */}
       </div>
-      <p className="doctorShortIntro">{shortenText(infoDetails, 145)}</p>
+      <p className="doctorShortIntro">{shortenText(profile, 145)}</p>
     </div>
   );
 }

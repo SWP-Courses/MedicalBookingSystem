@@ -19,7 +19,7 @@ export default function DoctorDetail() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("/users/" + doctorId);
+        const res = await axios.get("/users/doctors/" + doctorId);
         setDoctor(res.data);
       } catch (err) {
         console.log(err);
