@@ -59,7 +59,7 @@ export default function Navbar() {
                   className="avatarContainer"
                   as="div"
                 >
-                  <img src={blankAvatar} alt="" />
+                  <img src={currentUser?.avatar} alt="" />
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu>

@@ -6,10 +6,15 @@ import MedicalHistory from "./medicalHistory/MedicalHistory";
 import AppointmentSchedule from "./appointmentSchedule/AppointmentSchedule";
 import BlogsSaved from "./blogsSaved/BlogsSaved";
 
+import { useContext } from "react";
+import { AuthContext } from "~/context/authContext";
+
 export default function Customer() {
   const [userContent, setUserContent] = useState("info");
 
-  const [image, setImage] = useState(null);
+  const { currentUser } = useContext(AuthContext);
+
+  const [image, setImage] = useState(currentUser?.avatar);
 
   const hanldeUploadImage = (e) => {
     if(e && e.target.files && e.target.files[0]) {
@@ -31,7 +36,7 @@ export default function Customer() {
             image && image.avatar ?
             <img src={image.avatar} alt="avatar" /> : 'no avatar available'
           }
-          <span className="userName">Anh Anh</span>
+          <span className="userName">{currentUser?.fullname}</span>
         </div>
         <div className="profileActions">
           <h4

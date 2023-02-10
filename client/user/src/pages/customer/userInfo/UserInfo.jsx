@@ -5,11 +5,15 @@ import { useState, useEffect } from "react";
 import { faArrowUpFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import { useContext } from "react";
+import { AuthContext } from "~/context/authContext";
+
 export default function UserInfo(props) {
 
   const {image, hanldeUploadImage} = props;
 
-  // const [image, setImage] = useState(null);
+  const { currentUser } = useContext(AuthContext);
+
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [address, setAddress] = useState('');
@@ -17,13 +21,7 @@ export default function UserInfo(props) {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [birthday, setBirthday] = useState('');
 
-  // const hanldeUploadImage = (e) => {
-  //   if(e && e.target.files && e.target.files[0]) {
-  //     const file = e.target.files[0];
-  //     file.avatar = URL.createObjectURL(file); 
-  //     setImage(file);
-  //   }
-  // };
+
 
   useEffect(() => {
     return () => {

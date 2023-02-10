@@ -28,7 +28,7 @@ export default function Options() {
     };
     fetchData();
   };
-  console.log(specialists);
+  
   return (
     <div className="topbarOptions">
       <div className="optionItem-wrapper container-fluid">

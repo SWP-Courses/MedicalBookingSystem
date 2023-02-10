@@ -4,6 +4,7 @@
   align-items: center;
   padding: 20px 50px 30px;
   gap: 50px;
+  background-color: #ffff;
 
   .doctorSidebar {
     flex: 1;
@@ -41,12 +42,14 @@
     }
 
     .profileActions {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        padding: 10px 20px;
-        background-color: #D9D9D9;
-        border-radius: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding: 18px 20px;
+      border-radius: 10px;
+      background: #ffffff;
+      box-shadow:  15px 15px 30px #949494,
+                  -15px -15px 30px #ffffff;
 
         > .action {
             text-align: center;
@@ -71,6 +74,9 @@
     flex: 3;
     background-color: #F2F2F2;
     min-height: 500px;
-    border-radius: 4px;
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow:  21px 21px 83px #b5b5b5,
+                -21px -21px 83px #ffffff;
   }
 }

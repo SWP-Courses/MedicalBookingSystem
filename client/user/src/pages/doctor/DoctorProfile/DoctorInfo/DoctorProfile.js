@@ -1,19 +1,30 @@
 import "./DoctorProfile.scss";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { faArrowUpFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useContext } from "react";
+import { AuthContext } from "~/context/authContext";
 
 export default function DoctorProfile(props) {
+
+  const { currentUser } = useContext(AuthContext);
+
+  console.log(currentUser);
   
   const { image, hanldeUploadImage} = props;
 
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [address, setAddress] = useState('');
-  const [gender, setGender] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [birthday, setBirthday] = useState('');
+  const [name, setName] = useState(currentUser?.fullname);
+  const [email, setEmail] = useState(currentUser?.email);
+  const [address, setAddress] = useState(currentUser?.address);
+  const [gender, setGender] = useState(currentUser?.gender);
+  const [phoneNumber, setPhoneNumber] = useState(currentUser?.phone);  
+  const [birthday, setBirthday] = useState(() => {
+    const curDate = currentUser?.dateOfBirth;
+    return curDate.split('/').reverse().join('-');
+  });
 
+  console.log('check birthday: ', birthday);
+  console.log(gender);
 
   useEffect(() => {
     return () => {
@@ -41,8 +52,6 @@ export default function DoctorProfile(props) {
       <hr />
       <div className="userInfo">
         <div className="infoList">
-
-
           <input 
             type="text" 
             placeholder="Họ và tên" 
@@ -69,7 +78,7 @@ export default function DoctorProfile(props) {
                 type="radio"
                 name="flexRadioDefault"
                 id="flexRadioDefault1"
-                value={gender}
+                checked={gender === 'male'}
                 onChange={(e) => setGender(e.target.checked)}
               />
               <label className="form-check-label" htmlFor="flexRadioDefault1">
@@ -82,7 +91,7 @@ export default function DoctorProfile(props) {
                 type="radio"
                 name="flexRadioDefault"
                 id="flexRadioDefault1"
-                value={gender}
+                checked={gender === 'female'}
                 onChange={(e) => setGender(e.target.checked)}
               />
               <label className="form-check-label" htmlFor="flexRadioDefault1">
@@ -95,7 +104,7 @@ export default function DoctorProfile(props) {
                 type="radio"
                 name="flexRadioDefault"
                 id="flexRadioDefault1"
-                value={gender}
+                // checked={gender === ''}
                 onChange={(e) => setGender(e.target.checked)}
               />
               <label className="form-check-label" htmlFor="flexRadioDefault1">
@@ -122,17 +131,18 @@ export default function DoctorProfile(props) {
               onChange={(e) => setBirthday(e.target.value)}
             />
           </div>
-
-
-
-
         </div>
         <div className="accountAvatar">
           <div className="avata">
             {            
-              image && image.avatar ?  (
-                <img src={image.avatar} alt="account avarta" className="avata" />
-              ) : 'upload your avatar here'          
+              // image && image.avatar ?  (
+              //   <img src={image.avatar} alt="account avarta" className="avata" />
+              // ) : 'upload your avatar here'          
+              // image && 
+              //  ( <img src{}= alt="avatar"/>)
+              image && (
+                <img src={image} alt='avatar'/>
+              )
             } 
           </div>
           <label 

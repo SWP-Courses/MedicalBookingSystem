@@ -20,9 +20,6 @@ const validateEmail = (email) => {
     );
 };
 
-const checkPhoneLength = () => {
-
-}
 
 const checkStringContainInPhoneNumber = (phone) => {
   var Regex = /\b[\+]?[(]?[0-9]{2,6}[)]?[-\s\.]?[-\s\/\.0-9]{3,15}\b/m;
