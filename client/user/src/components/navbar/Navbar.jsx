@@ -4,14 +4,15 @@ import "./navbar.scss";
 import blankAvatar from "../../assets/images/blank_avatar.jpg";
 import Options from "../options/Options";
 import { Link, useLocation } from "react-router-dom";
+
 import { useContext } from "react";
 import { AuthContext } from "~/context/authContext";
+
 import { Dropdown } from "react-bootstrap";
 
-// const user = "doctor";
-const user = null;
-// const user = "customer";
+
 export default function Navbar() {
+
   const { currentUser, logout } = useContext(AuthContext);
 
   return (

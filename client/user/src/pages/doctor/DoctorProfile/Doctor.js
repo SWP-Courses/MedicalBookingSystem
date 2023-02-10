@@ -6,11 +6,24 @@ import MedicalHistory from "./History/MedicalHistory";
 import DoctorSchedule from "./DoctorSchedule/DoctorSchedule";
 import doctor from "~/assets/images/doctor.jpg";
 
+import { useContext } from "react";
+import { AuthContext } from "~/context/authContext";
+
 export default function Doctor() {
   const [userContent, setUserContent] = useState("info");
   const [routeToPrescription, setRouteToPrescription] = useState("");
 
-  console.log(userContent);
+  const { currentUser } = useContext(AuthContext);
+
+  const [image, setImage] = useState(currentUser?.avatar);
+
+  const hanldeUploadImage = (e) => {
+    if(e && e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      file.avatar = URL.createObjectURL(file); 
+      setImage(file);
+    }
+  };
 
   const handleOptionClick = (option) => {
     setUserContent(option);
@@ -20,8 +33,8 @@ export default function Doctor() {
     <div className="doctor">
       <div className="doctorSidebar">
         <div className="userInfo">
-          <img src={doctor} alt="avartar" />
-          <span className="doctorName">Bác Sỹ Anh</span>
+          <img src={image} alt="avartar" />
+          <span className="doctorName">{currentUser?.fullname}</span>
         </div>
         <div className="profileActions">
           <h4
@@ -63,7 +76,7 @@ export default function Doctor() {
         </div>
       </div>
       <div className="doctorContent">
-        {userContent === "info" && <DoctorProfile />}
+        {userContent === "info" && <DoctorProfile hanldeUploadImage={hanldeUploadImage} image={image}/>}
         {userContent === "prescription" && <Prescription />}
         {userContent === "doctorSchedule" && <DoctorSchedule />}
         {userContent === "medicalHistory" && (

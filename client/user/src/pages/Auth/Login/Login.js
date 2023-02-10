@@ -7,104 +7,97 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 
 import { Link } from "react-router-dom";
-import { toast } from 'react-toastify';
-import 'animate.css';
+import { toast } from "react-toastify";
+import "animate.css";
 import { validateEmail } from "~/utils";
-import {  checkStringContainInPhoneNumber } from '~/utils'
+import { checkStringContainInPhoneNumber } from "~/utils";
 
 import "./Login.scss";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 function Login() {
   const { login, currentUser } = useContext(AuthContext);
+
   const navigate = useNavigate();
   const location = useLocation();
   // console.log(location);
 
-  const errorAlert = useRef()
-  const errorPassword = useRef()
+  const errorAlert = useRef();
+  const errorPassword = useRef();
 
   const inputRef = useRef();
-
-  console.log('error alert', errorAlert);
 
   useEffect(() => {
     currentUser && navigate("/");
   }, [currentUser, navigate]);
 
   const [password, setPassword] = useState("");
-  const [user, setUser] = useState('');
-  const [userType, setUserType] = useState("r3");
+  const [user, setUser] = useState("");
+  const [userType, setUserType] = useState("R3");
+  const [isloading, setIsLoading] = useState(false);
 
+  console.log(user);
 
   const hanldeLogin = (type) => {
     // case phone or email is empty
     if (!user) {
-      // toast.error("choose phone or email to login")
+      errorAlert.current.innerText = "Vui lòng nhập số điện thoại hoặc email";
       inputRef.current.focus();
       return;
     }
 
-    // case password empty
     if (!password) {
-      console.log("password can not be empty");
+      errorPassword.current.innerText = "Vui lòng nhập mật khẩu";
       return;
     }
 
-    // validate email
-    // if(typeof(+user) === 'number') {
-    //   console.log(+user);
-    //   alert('true');
-    // }
-    const isEmail = validateEmail(user);
-
     // validate phone
     let isPhoneNumber = true;
-    let phone = user;
-    if (!isEmail) {
-      const isContainsString =  checkStringContainInPhoneNumber(phone);
-      // case contain string 
-      if(isContainsString) {
-        toast.error('phone number can not contain character!!');
+    let phone = user.trim();
+    if (!validateEmail(user) && !user.includes('@')) {
+      const isContainsString = checkStringContainInPhoneNumber(phone);
+
+      if (isContainsString) {
+        toast.error("SDT không được chứa kí tự");
+        isPhoneNumber = false;
+        return;
+      }else if(+phone.charAt(0) !== 0) {
+        toast.error("SDT phải bắt đầu bằng số 0");
+        isPhoneNumber = false;
+        return;
+      }else if(phone.length >= 11) {
+        toast.error("SDT phải có ít nhất 11 số ");
         isPhoneNumber = false;
         return;
       }
 
-      // case less than 10 number
-      if (phone.length != 10) {
-        toast.error('phone must contain 10 number')
-        isPhoneNumber = false;
-        return;
-      }
 
-      // case not start with number 0
-      if(+phone.charAt(0) !== 0) {
-        toast.error('phone number must start with 0');
-        isPhoneNumber = false;
+      setIsLoading(true);
+
+      if(isPhoneNumber) {
+        const loginUser = {
+          role_code: userType,
+          phone: user,
+          password: password,
+        }
+        console.log(loginUser);
+        login(loginUser, setIsLoading);
         return;
       }
-    }else {
-      toast.error('email incorrect')
     }
 
-    if (type === "default" && isEmail) {
+    // validate email
+    if(validateEmail(user)) {
       let loginUser = {
         role_code: userType,
         email: user,
         password: password,
-      };
+      };    
       console.log(loginUser);
-      // login(loginUser)
-    } 
-
-    if (type === "default" && isPhoneNumber) {
-      let loginUser = {
-        role_code: userType,
-        phone: user,
-        password: password,
-      };
       login(loginUser);
-      // console.log(res);
-      // console.log(loginUser);
+    }else {
+      toast.error('sai email')
+      return;
     }
 
     if (type === "google") {
@@ -113,27 +106,26 @@ function Login() {
   };
 
   const hanldeEmptyInput = (e) => {
-    if(!e.target.value) {
-      e.target.className = 'input-box mt-3 error';
-      errorAlert.current.innerText = 'Vui lòng nhập số điện thoại hoặc email';
-      if(!password) {
-        errorPassword.current.innerText = 'Vui lòng nhập mật khẩu';
+    if (!e.target.value) {
+      e.target.className = "input-box mt-3 error";
+      errorAlert.current.innerText = "Vui lòng nhập số điện thoại hoặc email";
+      if (!password) {
+        errorPassword.current.innerText = "Vui lòng nhập mật khẩu";
       }
-    }else {
-      e.target.className = 'input-box mt-3';
+    } else {
+      e.target.className = "input-box mt-3";
+    }
+  };
 
-    }
-  }
-  
   const hanldeOnBlurInput = (e) => {
-    if(e.target.value) {
-      e.target.className = 'input-box mt-3';
-      errorAlert.current.innerText = '';
-      if(password) {
-        errorPassword.current.innerText = '';
+    if (e.target.value) {
+      e.target.className = "input-box mt-3";
+      errorAlert.current.innerText = "";
+      if (password) {
+        errorPassword.current.innerText = "";
       }
     }
-  }
+  };
 
   return (
     <div className="Login-Wrapper animate__animated animate__fadeInDown">
@@ -148,14 +140,13 @@ function Login() {
         </div>
       </div>
       <div className="login-main">
-        {/* <div className="login-title">Đăng Nhập</div> */}
         <div className="login-body">
           <select
             className="select"
             onChange={(e) => setUserType(e.target.value)}
           >
-            <option value="r3">Khách Hàng</option>
-            <option value="r2">Bác Sỹ</option>
+            <option value="R3">Khách Hàng</option>
+            <option value="R2">Bác Sỹ</option>
           </select>
           <div className="form-body">
             <div className="form-content">
@@ -166,8 +157,12 @@ function Login() {
                 className="input-box"
                 value={user}
                 onChange={(e) => setUser(e.target.value)}
-                onBlur={(e) => {hanldeEmptyInput(e)}}
-                onInput={(e) => {hanldeOnBlurInput(e)}}
+                onBlur={(e) => {
+                  hanldeEmptyInput(e);
+                }}
+                onInput={(e) => {
+                  hanldeOnBlurInput(e);
+                }}
                 ref={inputRef}
               />
               <span className="errorAlert" ref={errorAlert}></span>
@@ -178,8 +173,12 @@ function Login() {
                 className="input-box mt-3"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                onBlur={(e) => {hanldeEmptyInput(e)}}
-                onInput={(e) => {hanldeOnBlurInput(e)}}
+                onBlur={(e) => {
+                  hanldeEmptyInput(e);
+                }}
+                onInput={(e) => {
+                  hanldeOnBlurInput(e);
+                }}
               />
               <span className="errorAlert" ref={errorPassword}></span>
               {/* {password ?  undefined: 'Vui lòng nhập mật khẩu'} */}
@@ -192,7 +191,9 @@ function Login() {
               <button
                 className="btn-sign-in"
                 onClick={() => hanldeLogin("default")}
+                disabled={isloading}
               >
+                { isloading && <FontAwesomeIcon icon={faSpinner} className='loader-icon'/>}
                 Đăng Nhập
               </button>
               <div className="separate mt-3">
@@ -207,7 +208,7 @@ function Login() {
                 >
                   <FontAwesomeIcon icon={faGoogle} className="google-icon" />
                 </div>
-              </div>
+              </div> 
               <div className="sign-up mt-3">
                 <span>Bạn Chưa Có Tài Khoản ?</span>
                 <Link to="/register">Đăng Kí</Link>

@@ -6,18 +6,37 @@ import MedicalHistory from "./medicalHistory/MedicalHistory";
 import AppointmentSchedule from "./appointmentSchedule/AppointmentSchedule";
 import BlogsSaved from "./blogsSaved/BlogsSaved";
 
+import { useContext } from "react";
+import { AuthContext } from "~/context/authContext";
+
 export default function Customer() {
   const [userContent, setUserContent] = useState("info");
+
+  const { currentUser } = useContext(AuthContext);
+
+  const [image, setImage] = useState(currentUser?.avatar);
+
+  const hanldeUploadImage = (e) => {
+    if(e && e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      file.avatar = URL.createObjectURL(file); 
+      setImage(file);
+    }
+  };
 
   const handleOptionClick = (option) => {
     setUserContent(option);
   };
+
   return (
     <div className="customer">
       <div className="userSidebar">
         <div className="userInfo">
-          <img src={blankAvatar} alt="" />
-          <span>Anh Anh</span>
+          { 
+            image && image.avatar ?
+            <img src={image.avatar} alt="avatar" /> : 'no avatar available'
+          }
+          <span className="userName">{currentUser?.fullname}</span>
         </div>
         <div className="profileActions">
           <h4
@@ -55,7 +74,7 @@ export default function Customer() {
         </div>
       </div>
       <div className="userContent">
-        {userContent === "info" && <UserInfo />}
+        {userContent === "info" && <UserInfo hanldeUploadImage={hanldeUploadImage} image={image}/>}
         {userContent === "history" && <MedicalHistory />}
         {userContent === "apmSchedule" && <AppointmentSchedule />}
         {userContent === "pSaved" && <BlogsSaved />}

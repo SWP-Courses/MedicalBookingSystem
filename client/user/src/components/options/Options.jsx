@@ -28,7 +28,7 @@ export default function Options() {
     };
     fetchData();
   };
-  console.log(specialists);
+  
   return (
     <div className="topbarOptions">
       <div className="optionItem-wrapper container-fluid">
@@ -54,10 +54,6 @@ export default function Options() {
           <Link to="/blogs">
             <span>Bài viết - Tin Tức</span>
           </Link>
-        </div>
-        <div className="optionItem col-sm-2.5">
-          <span>Khác</span>
-          <FontAwesomeIcon icon={faChevronDown} className="optionIcon" />
         </div>
         <div className="optionItem">
           <span>

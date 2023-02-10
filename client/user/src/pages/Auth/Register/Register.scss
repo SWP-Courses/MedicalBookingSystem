@@ -1,38 +1,9 @@
 .Login-Wrapper {
 
-    // .Login-header {
-    //     display: flex;
-    //     align-items: center;
-    //     justify-content: space-between;
-    //     width: 1170px;
-    //     margin: 0 auto;
-    //     height: 84px;
-
-    //     .logo {
-    //         display: flex;
-    //         gap: 50px;
-    //         cursor: pointer;
-    //     }
-
-    //     .sign-in {
-            
-    //         &:hover {
-    //             border: 1px solid orange;
-    //             padding: 10px 20px;
-    //             border-radius: 4px;
-    //             cursor: pointer;
-    //         }
-    //     }
-    // }
-
-
         .login-main {
-            // background-color: #ccc;
             height: 100%;
             width: 60%;
             position: relative;
-            // top: 50%;
-            // transform: translateY(-50%);
             margin: 0 auto;
 
             .login-title {
@@ -78,22 +49,11 @@
                     .form-content {
                         padding: 14px 17px;
 
-
-                        .fisrt-block-input {
-                            display: flex;
-                            justify-content: center;
-                            align-items: center;
-                            gap: 7px;
-                
-                            .input {
-                                width: 83%;
-                                padding: 10px;
-                                border-radius: 4px;
-                                border: 1px solid #ccc;
-                            }
-                
-                            .checkbox-wrap {
-                                margin-top: 16px;
+                        .form-group {
+                            >span {
+                                display: block;
+                                font-weight: 500;
+                                font-size: 14px;
                             }
                         }
 
@@ -103,6 +63,7 @@
                             padding: 10px;
                             border-radius: 4px;
                             border: 1px solid #ccc;
+                            margin-top: 7px;
 
                             &:hover {
                                 border: 1px solid #2dc2d0;
@@ -123,6 +84,29 @@
                             background-color: #286ba6;
                             color: #fff;
                         }
+
+                        .sex {
+                            display: flex;
+                            align-items: center;
+                            margin-top: 8px;
+                            justify-content: center;
+                            gap: 30px;
+            
+                            .form-select {
+                                width: fit-content;                   
+                                height: 38px;
+                            }
+            
+                            >span {
+                                width: 40px;
+                            }
+
+                            .checkbox-group {
+                                >input {
+                                    margin-right: 6px;
+                                }
+                            }   
+                        }
                     }
 
 
@@ -132,10 +116,6 @@
                         width: 400px;
                         border-radius: 3px;
                         border: 1px solid #cccc;
-
-                        .input-box:focus {
-                            outline: 1px solid orange;
-                        }
                     }
                 }
             }

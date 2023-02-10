@@ -17,6 +17,7 @@ export default function Specialist() {
   const [doctorList, setDoctorList] = useState([]);
   const [doctorShow, setDoctorShow] = useState();
   const [specialistInfo, setSpecialistInfo] = useState({});
+  
   const { speId } = useParams();
   const [specialists, setSpecialists] = useState([]);
 
