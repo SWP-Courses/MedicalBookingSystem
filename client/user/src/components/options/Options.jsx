@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import API_URL from "~/api/Router";
 import "./options.scss";
 
 export default function Options() {
@@ -20,7 +21,7 @@ export default function Options() {
   const fetchSpecialists = () => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("/specialists");
+        const res = await axios.get(API_URL+"/specialists");
         setSpecialists(res.data);
       } catch (err) {
         console.log(err);

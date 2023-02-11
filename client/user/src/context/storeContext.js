@@ -10,7 +10,7 @@ export default function StoreContextProvider({ children }) {
   });
   const navigate = useNavigate();
 
-  // Side Effect
+  // Side Effects
 
   // Functions
 

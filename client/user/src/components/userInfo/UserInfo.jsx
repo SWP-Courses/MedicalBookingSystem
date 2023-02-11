@@ -1,5 +1,5 @@
 import "./userInfo.scss";
-import blankAvatar from "../../../assets/images/blank_avatar.jpg";
+import blankAvatar from "../../assets/images/blank_avatar.jpg";
 
 import { useState, useEffect } from "react";
 import { faArrowUpFromBracket } from "@fortawesome/free-solid-svg-icons";
@@ -7,27 +7,39 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { useContext } from "react";
 import { AuthContext } from "~/context/authContext";
+import { Calendar, fo } from "react-calendar";
+import { format, parseISO } from "date-fns";
 
 export default function UserInfo(props) {
-
   const {image, hanldeUploadImage} = props;
-
   const { currentUser } = useContext(AuthContext);
 
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [address, setAddress] = useState('');
-  const [gender, setGender] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
-  const [birthday, setBirthday] = useState('');
-
-
+  const [userInfo, setUserInfo] = useState({
+    fullname:currentUser?.fullname,
+    email: currentUser?.email,
+    address: currentUser?.address || '',
+    gender: currentUser?.gender,
+    phone: currentUser?.phone,
+    dateOfBirth: currentUser?.dateOfBirth
+  })
 
   useEffect(() => {
     return () => {
       image && image.avatar && URL.revokeObjectURL(image.avatar);
     }
   }, [image])
+
+  // Functions 
+  const handleTextInputChange = (e) => {
+    setUserInfo(prev => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }))
+  }
+
+  // todo-func: call api update
+
+  console.log(userInfo);
 
   return (
     <div className="userInfoContainer">
@@ -36,22 +48,23 @@ export default function UserInfo(props) {
       <div className="userInfo">
           <div className="infoList">
             <input 
-              type="text" 
+              name="fullname"
               placeholder="Họ và tên" 
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={userInfo?.fullname}
+              onChange={handleTextInputChange}
             />
             <input 
               type="email" 
+              name="email"
               placeholder="Email" 
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={userInfo?.email}
+              onChange={handleTextInputChange}
             />
             <input 
-              type="text" 
+              name="address"  
               placeholder="Địa chỉ" 
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
+              value={userInfo?.address}
+              onChange={handleTextInputChange}
             />
             <div className="sex">
             <strong>Giới Tính</strong>
@@ -59,10 +72,11 @@ export default function UserInfo(props) {
               <input
                 // className="form-check-input"
                 type="radio"
-                name="flexRadioDefault"
+                name="gender"
                 id="flexRadioDefault1"
-                value={gender}
-                onChange={(e) => setGender(e.target.checked)}
+                value="male"
+                checked = {userInfo?.gender ==='male'}
+                onChange={handleTextInputChange}
               />
               <label className="form-check-label" htmlFor="flexRadioDefault1">
                 Nam
@@ -72,16 +86,17 @@ export default function UserInfo(props) {
               <input
                 // className="form-check-input"
                 type="radio"
-                name="flexRadioDefault"
+                name="gender"
                 id="flexRadioDefault1"
-                value={gender}
-                onChange={(e) => setGender(e.target.checked)}
+                checked = {userInfo?.gender ==='female'}
+                value="female"
+                onChange={handleTextInputChange}
               />
               <label className="form-check-label" htmlFor="flexRadioDefault1">
                 Nữ
               </label>
             </div>
-            <div className="checkbox-group">
+            {/* <div className="checkbox-group">
               <input
                 // className="form-check-input"
                 type="radio"
@@ -93,26 +108,38 @@ export default function UserInfo(props) {
               <label className="form-check-label" htmlFor="flexRadioDefault1">
                 Khác
               </label>
-            </div>
+            </div> */}
           </div>
             <div className="phone mt-1">
               <strong>Số Điện Thoại</strong>
               <input 
-                type="text" 
-                placeholder="số điện thoại"
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
+                name="phone"
+                placeholder="Số điện thoại"
+                value={userInfo.phone}
+                onChange={handleTextInputChange}
               />
             </div>
             <div className="recall-date">
               <strong htmlFor="birthday">Ngày Sinh</strong>
               <input 
+                name="dateOfBirth" 
+                placeholder="Ngày sinh"
+                value={currentUser.dateOfBirth}
+                onChange={handleTextInputChange}
+              />
+              {/* <input 
                 type="date" 
                 id="birthday" 
                 name="birthday" 
                 value={birthday}
                 onChange={(e) => setBirthday(e.target.value)}
-              />
+              /> */}
+              {/* <Calendar
+                onChange={(date) => setBirthday(date)}
+                value={birthday}
+                maxDate={new Date()}
+                // formatLongDate={(locale, date) => formatDate(date, 'dd/MM/yyyy')}
+            /> */}
             </div>
         </div>
         <div className="accountAvatar">
@@ -137,7 +164,7 @@ export default function UserInfo(props) {
           />
         </div>
       </div>
-      <button>LƯU</button>
+      <button onClick={() => console.log(userInfo)}>LƯU</button>
     </div>
   );
 }

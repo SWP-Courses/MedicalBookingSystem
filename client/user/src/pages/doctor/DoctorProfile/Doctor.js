@@ -8,10 +8,10 @@ import doctor from "~/assets/images/doctor.jpg";
 
 import { useContext } from "react";
 import { AuthContext } from "~/context/authContext";
+import UserInfo from "~/components/userInfo/UserInfo";
 
 export default function Doctor() {
   const [userContent, setUserContent] = useState("info");
-  const [routeToPrescription, setRouteToPrescription] = useState("");
 
   const { currentUser } = useContext(AuthContext);
 
@@ -76,7 +76,7 @@ export default function Doctor() {
         </div>
       </div>
       <div className="doctorContent">
-        {userContent === "info" && <DoctorProfile hanldeUploadImage={hanldeUploadImage} image={image}/>}
+        {userContent === "info" && <UserInfo hanldeUploadImage={hanldeUploadImage} image={image}/>}
         {userContent === "prescription" && <Prescription />}
         {userContent === "doctorSchedule" && <DoctorSchedule />}
         {userContent === "medicalHistory" && (

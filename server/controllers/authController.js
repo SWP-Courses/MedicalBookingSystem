@@ -9,14 +9,15 @@ var RoleModel = require("../models/Role.js");
 const register = async (req, res, next) => {
   try {
     const user = await UserModel.findOne({ phone: req.body.phone });
-    // console.log(user);
+    console.log(req.body);
     if (user) {
       return res.status(409).send("Số điện thoại đã tồn tại.");
     } else {
       // Hash the password and create a user
       const salt = bcrypt.genSaltSync(10);
+      console.log('resgiter');
       const hash = bcrypt.hashSync(req.body.password, salt);
-
+      
       // default: role_code = "R3"
       let document = {
         fullname: req.body.fullname,
@@ -24,18 +25,19 @@ const register = async (req, res, next) => {
         dateOfBirth: req.body.dateOfBirth,
         password: hash,
         phone: req.body.phone,
-        role_code: req.body.role_code,
       };
-
-      // If create a doctor accounts
+      
+      // If create a doctor account
+      // Pass role_code="R2"
       if (req.body.role_code === "R2")
-        document = {
-          ...document,
-          degree: req.body.degree,
-          specialist_id: req.body.specialist_id,
-          profile: req.body.profile,
-        };
-
+      document = {
+        role_code: "R2",
+        ...document,
+        degree: req.body.degree,
+        specialist_id: req.body.specialist_id,
+        profile: req.body.profile,
+      };
+      
       const newUser = new UserModel(
         !req.body.email
           ? document
@@ -45,8 +47,8 @@ const register = async (req, res, next) => {
             }
       );
 
-      await newUser.save();
-      res.status(200).send(user);
+      const savedUser = await newUser.save();
+      res.status(200).send(savedUser);
     }
   } catch (err) {
     res.status(500).json(err);
@@ -119,13 +121,16 @@ const login = async (req, res, next) => {
 // POST /api/logout
 // LOGOUT
 const logout = (req, res) => {
-  res
-    .clearCookie("access_token", {
-      sameSite: "none",
-      secure: true,
-    })
-    .status(200)
-    .json("User has been logged out.");
+  console.log('logout controller');
+  // res
+  //   .clearCookie("access_token", {
+  //     sameSite: "none",
+  //     secure: true,
+  //   })
+  //   .status(200)
+  //   .json("User has been logged out.");
+
+  res.status(200).json("Logged out!")
 };
 
 module.exports = { register, login, logout };

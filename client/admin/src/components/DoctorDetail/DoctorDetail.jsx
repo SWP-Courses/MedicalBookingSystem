@@ -22,7 +22,7 @@ function DoctorDetail({ doctorDetail }) {
                                 <span className="w-25" id="basic-addon1">Fullname</span>
                             </div>
                             <input type="text" className="form-control" defaultValue={doctorDetail.fullname} placeholder="Fullname" aria-label="Fullname" aria-describedby="basic-addon1" />
-                        </div >
+                        </div>
 
                         <div className="input-group">
                             <div className="input-group-prepend w-100">

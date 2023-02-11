@@ -2,7 +2,7 @@ const UserModel = require("../models/User");
 var SpecialistModel = require("../models/Specialist");
 
 // PUT /api/users/:id
-// Update a user
+// Update a user by id (customer, doctor)
 const updateUser = async (req, res, next) => {
   try {
     const updatedUser = await UserModel.findByIdAndUpdate(req.params.id, req.body, {new:true});
@@ -32,8 +32,15 @@ const getDoctorById = async (req, res, next) => {
 const getDoctors = async (req, res, next) => {
   const user_code = "R2";
   try {
-    const users = await UserModel.find({role_code: user_code});
+    const users= await UserModel.aggregate([
+      {
+        $match: {
+          "role_code":"R2"
+        }
+      }
+    ])
     if (users.length === 0) return res.status(404).send("Empty doctors!");
+    // console.log(users);
     res.status(200).json(users);
   } catch (err) {
     res.status(500).json(err);

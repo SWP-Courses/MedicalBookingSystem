@@ -14,14 +14,14 @@
     .userInfo {
       display: flex;
       align-items: center;
-      gap: 20px;
+      gap: 10px;
       margin: 0 auto;
 
       >.userName {
         font-size: 20px;
         margin-left: 20px;
         border-radius: 5px;
-        padding: 10px 26px;
+        padding: 10px 20px;
         box-shadow: -1px 0px 13px 1px rgba(0,0,0,0.21);
         -webkit-box-shadow: -1px 0px 13px 1px rgba(0,0,0,0.21);
         -moz-box-shadow: -1px 0px 13px 1px rgba(0,0,0,0.21);

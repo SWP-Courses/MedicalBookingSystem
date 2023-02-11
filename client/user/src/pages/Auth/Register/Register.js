@@ -1,39 +1,48 @@
-import { faGoogle } from "@fortawesome/free-brands-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-import Form from "react-bootstrap/Form";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 import { useState } from "react";
 
 import "./Register.scss";
+import UserInfo from "~/components/userInfo/UserInfo";
+import axios from "axios";
+import { parse, isValid, format } from 'date-fns';
+import { enGB } from 'date-fns/locale';
+import API_URL from "~/api/Router";
 
 function Register() {
-  const [name, setName] = useState("");
-  const [gender, setGender] = useState("");
-  const [birthDay, setBirthDay] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-
+  const [registerInfo, setRegisterInfo] = useState({
+    fullname: "",
+    email: "",
+    gender: "",
+    phone: "",
+    dateOfBirth: "",
+    password: "",
+    confirmPassword: "",
+  });
+  console.log(registerInfo.dateOfBirth);
   const navigate = useNavigate();
 
-  const handleRegisterUser = () => {
-    // validate
+  // Functions
+  const handleTextInputChange = (e) => {
+    setRegisterInfo((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }));
+  };
 
+  const handleRegisterClick = async () => {
+    // validate
+    const { confirmPassword, ...data } = registerInfo;
     // submit API
-    let data = {
-      name: name,
-      gender: gender,
-      birthDay: birthDay,
-      phone: phone,
-      email: email,
-      password: password,
-      confirmPassword: confirmPassword,
-    };
-    console.log(data);
+    try {
+      const res = await axios.post(API_URL+"/auth/register", data);
+      setRegisterInfo({});
+      console.log(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+    // console.log(registerInfo);
   };
 
   const hanldeEmptyInput = (e) => {
@@ -71,11 +80,11 @@ function Register() {
               <div className="form-group">
                 <span>Họ và tên (*)</span>
                 <input
-                  type="text"
-                  placeholder="Nhập tên đầy đủ"
+                  name="fullname"
+                  placeholder="Nhập họ và tên"
                   className="input-box"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  value={registerInfo?.fullname}
+                  onChange={handleTextInputChange}
                   onBlur={(e) => {
                     hanldeEmptyInput(e);
                   }}
@@ -88,11 +97,11 @@ function Register() {
               <div className="form-group mt-3">
                 <span>Ngày Sinh (*)</span>
                 <input
+                  name="dateOfBirth"
                   type="date"
-                  placeholder="Nhập ngày sinh"
+                  defaultValue="2020-01-10"
                   className="input-box"
-                  value={birthDay}
-                  onChange={(e) => setBirthDay(e.target.value)}
+                  onChange={handleTextInputChange}
                   onBlur={(e) => {
                     hanldeEmptyInput(e);
                   }}
@@ -105,11 +114,11 @@ function Register() {
               <div className="form-group mt-3">
                 <span>Số Điện Thoại (*)</span>
                 <input
-                  type="text"
-                  placeholder="nhập số điện thoại"
+                  name="phone"
+                  placeholder="Nhập số điện thoại"
                   className="input-box"
-                  value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+                  value={registerInfo.phone}
+                  onChange={handleTextInputChange}
                   onBlur={(e) => {
                     hanldeEmptyInput(e);
                   }}
@@ -122,11 +131,11 @@ function Register() {
               <div className="form-group mt-3">
                 <span>Email</span>
                 <input
-                  type="text"
+                  name="email"
                   placeholder="Nhập email"
                   className="input-box"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  value={registerInfo.email}
+                  onChange={handleTextInputChange}
                   onBlur={(e) => {
                     hanldeEmptyInput(e);
                   }}
@@ -139,11 +148,12 @@ function Register() {
               <div className="form-group mt-3">
                 <span>Mật khẩu</span>
                 <input
+                  name="password"
                   type="password"
                   placeholder="Nhập mật khẩu"
                   className="input-box"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  value={registerInfo.password}
+                  onChange={handleTextInputChange}
                   onBlur={(e) => {
                     hanldeEmptyInput(e);
                   }}
@@ -156,11 +166,12 @@ function Register() {
               <div className="form-group mt-3">
                 <span>Nhập lại mật khẩu</span>
                 <input
+                  name="confirmPassword"
                   type="password"
-                  placeholder="nhập lại mật khẩu"
+                  placeholder="Nhập lại mật khẩu"
                   className="input-box"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  value={registerInfo.confirmPassword}
+                  onChange={handleTextInputChange}
                   onBlur={(e) => {
                     hanldeEmptyInput(e);
                   }}
@@ -177,10 +188,11 @@ function Register() {
                     <input
                       // className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
+                      name="gender"
                       id="flexRadioDefault1"
-                      value={gender}
-                      onChange={(e) => setGender(e.target.checked)}
+                      value="male"
+                      checked={registerInfo.gender === "male"}
+                      onChange={handleTextInputChange}
                     />
                     <label
                       className="form-check-label"
@@ -193,10 +205,11 @@ function Register() {
                     <input
                       // className="form-check-input"
                       type="radio"
-                      name="flexRadioDefault"
+                      name="gender"
                       id="flexRadioDefault1"
-                      value={gender}
-                      onChange={(e) => setGender(e.target.checked)}
+                      value="female"
+                      checked={registerInfo.gender === "female"}
+                      onChange={handleTextInputChange}
                     />
                     <label
                       className="form-check-label"
@@ -205,7 +218,7 @@ function Register() {
                       Nữ
                     </label>
                   </div>
-                  <div className="checkbox-group">
+                  {/* <div className="checkbox-group">
                     <input
                       // className="form-check-input"
                       type="radio"
@@ -220,13 +233,13 @@ function Register() {
                     >
                       Khác
                     </label>
-                  </div>
+                  </div> */}
                 </div>
               </div>
 
               <button
                 className="btn-register mt-3"
-                onClick={() => handleRegisterUser()}
+                onClick={handleRegisterClick}
               >
                 Đăng Kí
               </button>

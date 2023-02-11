@@ -24,11 +24,11 @@ export default function UserRouter() {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
-          {currentUser?.role_code === "R3" && (
+          {currentUser?.role === "customer" && (
             <Route path="/customer" element={<Customer />} />
           )}
           {/* doctor */}
-          {currentUser?.role_code === "R2" && (
+          {currentUser?.role === "doctor" && (
             <Route path="/doctor" element={<Doctor />} />
           )}
           <Route path="/doctors" element={<DoctorList />} />

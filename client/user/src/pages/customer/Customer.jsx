@@ -1,6 +1,6 @@
 import "./customer.scss";
 import blankAvatar from "../../assets/images/blank_avatar.jpg";
-import UserInfo from "./userInfo/UserInfo";
+import UserInfo from "../../components/userInfo/UserInfo";
 import { useState } from "react";
 import MedicalHistory from "./medicalHistory/MedicalHistory";
 import AppointmentSchedule from "./appointmentSchedule/AppointmentSchedule";
@@ -32,10 +32,10 @@ export default function Customer() {
     <div className="customer">
       <div className="userSidebar">
         <div className="userInfo">
-          { 
+          {/* { 
             image && image.avatar ?
             <img src={image.avatar} alt="avatar" /> : 'no avatar available'
-          }
+          } */}
           <span className="userName">{currentUser?.fullname}</span>
         </div>
         <div className="profileActions">

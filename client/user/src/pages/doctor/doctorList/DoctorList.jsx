@@ -5,6 +5,7 @@ import stethoscope from "~/assets/images/stethoscope.jpg";
 import DoctorItem from "~/components/doctorItem/DoctorItem";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import API_URL from "~/api/Router";
 
 export default function DoctorList() {
   const [doctorList, setDoctorList] = useState();
@@ -13,7 +14,7 @@ export default function DoctorList() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("/specialists");
+        const res = await axios.get(API_URL+"/specialists");
         setSpecialists(res.data);
       } catch (err) {
         console.log(err);
@@ -25,7 +26,7 @@ export default function DoctorList() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("/users/doctors");
+        const res = await axios.get(API_URL+"/users/doctors");
         setDoctorList(res.data);
       } catch (err) {
         console.log(err);

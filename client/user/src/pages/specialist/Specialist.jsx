@@ -12,6 +12,7 @@ import {
 import { shortenText } from "../../utils";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
+import API_URL from "~/api/Router";
 
 export default function Specialist() {
   const [doctorList, setDoctorList] = useState([]);
@@ -25,7 +26,7 @@ export default function Specialist() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("/specialists/" + speId);
+        const res = await axios.get(API_URL+"/specialists/" + speId);
         const { doctor_list, ...speInfo } = res.data;
         setSpecialistInfo(speInfo);
         setDoctorList(doctor_list);
@@ -49,7 +50,7 @@ export default function Specialist() {
   const fetchSpecialists = () => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("/specialists");
+        const res = await axios.get(API_URL+"/specialists");
         setSpecialists(res.data);
       } catch (err) {
         console.log(err);
@@ -78,7 +79,7 @@ export default function Specialist() {
         <div className="doctorStaff">
           <div className="doctorShow">
             <div className="imgShow">
-              <img src={doctorShow?.avatar} alt="" />
+              <img src={`${API_URL}/image/doctorShow?.avatar.filename`} alt="" />
               <h1>{doctorShow?.fullname}</h1>
               <span>{doctorShow?.degree}</span>
             </div>
@@ -117,7 +118,7 @@ export default function Specialist() {
                 key={index}
               >
                 <img
-                  src={doctor.avatar}
+                  src={`${API_URL}/image/doctorShow?.avatar.filename`}
                   alt=""
                   className={
                     doctorShow?.fullname === doctor?.fullname ? "active" : ""

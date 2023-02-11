@@ -9,7 +9,7 @@ export default function DoctorProfile(props) {
 
   const { currentUser } = useContext(AuthContext);
 
-  console.log(currentUser);
+  // console.log(currentUser);
   
   const { image, hanldeUploadImage} = props;
 

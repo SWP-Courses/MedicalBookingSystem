@@ -16,20 +16,15 @@ import "./Login.scss";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
 
 function Login() {
-  const { login, currentUser } = useContext(AuthContext);
+  const { login } = useContext(AuthContext);
 
   const navigate = useNavigate();
-  const location = useLocation();
-  // console.log(location);
 
   const errorAlert = useRef();
   const errorPassword = useRef();
 
   const inputRef = useRef();
 
-  useEffect(() => {
-    currentUser && navigate("/");
-  }, [currentUser, navigate]);
 
   const [password, setPassword] = useState("");
   const [user, setUser] = useState("");
@@ -38,7 +33,7 @@ function Login() {
 
   console.log(user);
 
-  const hanldeLogin = (type) => {
+  const hanldeValidateLogin = (type) => {
     // case phone or email is empty
     if (!user) {
       errorAlert.current.innerText = "Vui lòng nhập số điện thoại hoặc email";
@@ -65,8 +60,8 @@ function Login() {
         toast.error("SDT phải bắt đầu bằng số 0");
         isPhoneNumber = false;
         return;
-      }else if(phone.length >= 11) {
-        toast.error("SDT phải có ít nhất 11 số ");
+      }else if(phone.length <10 || phone.length >11) {
+        toast.error("SDT phải có 10 hoặc 11 số ");
         isPhoneNumber = false;
         return;
       }
@@ -153,7 +148,7 @@ function Login() {
               <h2>Đăng Nhập</h2>
               <input
                 type={user}
-                placeholder="số điện thoại hoặc email"
+                placeholder="Số điện thoại hoặc Email"
                 className="input-box"
                 value={user}
                 onChange={(e) => setUser(e.target.value)}
@@ -169,7 +164,7 @@ function Login() {
               {/* {user ?  undefined: 'Vui lòng nhập số điện thoại hoặc email'} */}
               <input
                 type="password"
-                placeholder="mật khẩu"
+                placeholder="Mật khẩu"
                 className="input-box mt-3"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -190,7 +185,7 @@ function Login() {
               </p>
               <button
                 className="btn-sign-in"
-                onClick={() => hanldeLogin("default")}
+                onClick={() => hanldeValidateLogin("default")}
                 disabled={isloading}
               >
                 { isloading && <FontAwesomeIcon icon={faSpinner} className='loader-icon'/>}
@@ -204,7 +199,7 @@ function Login() {
               <div>
                 <div
                   className="login-google mt-3"
-                  onClick={() => hanldeLogin("google")}
+                  onClick={() => hanldeValidateLogin("google")}
                 >
                   <FontAwesomeIcon icon={faGoogle} className="google-icon" />
                 </div>
