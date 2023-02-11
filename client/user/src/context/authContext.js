@@ -29,10 +29,13 @@ export default function AuthContextProvider({ children }) {
         ...inputs
       });
       setCurrentUser(res.data);
-      setIsLoading(false);
+      // setIsLoading(false);
       navigate("/");
     } catch (error) {
         toast.error(error?.response?.data);
+        if(error?.response?.data) {
+          setIsLoading(false);
+        }
     }
   };
 
