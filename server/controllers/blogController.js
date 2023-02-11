@@ -64,7 +64,7 @@ const updateBlog = asyncHandler(async (req, res, next) => {
     content,
     image,
     category_id
-  });
+  }, { new: true });
 
   res.status(200).json({ updateBlog });
 });
