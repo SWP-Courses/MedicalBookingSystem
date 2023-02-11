@@ -12,7 +12,7 @@ router.get("/doctors/:id", getDoctorById);
 router.get("/doctors", getDoctors);
 
 // UPDATE user by id
-router.put("/:id",verifyUser, updateUser )
+// router.put("/:id",verifyUser, updateUser )
 
 router.delete("/doctors/:id", deleteDoctorAccount);
 

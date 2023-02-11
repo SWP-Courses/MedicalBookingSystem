@@ -12,7 +12,7 @@ import {
 import { shortenText } from "../../utils";
 import { Link, useParams } from "react-router-dom";
 import axios from "axios";
-import API_URL from "~/api/Router";
+import API_URL, { API_IMAGE_URL } from "~/api/Router";
 
 export default function Specialist() {
   const [doctorList, setDoctorList] = useState([]);
@@ -79,7 +79,7 @@ export default function Specialist() {
         <div className="doctorStaff">
           <div className="doctorShow">
             <div className="imgShow">
-              <img src={`${API_URL}/image/doctorShow?.avatar.filename`} alt="" />
+              <img src={`${API_IMAGE_URL}/image/${doctorShow?.avatar.filename}`} alt="" />
               <h1>{doctorShow?.fullname}</h1>
               <span>{doctorShow?.degree}</span>
             </div>
@@ -118,7 +118,7 @@ export default function Specialist() {
                 key={index}
               >
                 <img
-                  src={`${API_URL}/image/doctorShow?.avatar.filename`}
+                  src={`${API_IMAGE_URL}/image/${doctor?.avatar.filename}`}
                   alt=""
                   className={
                     doctorShow?.fullname === doctor?.fullname ? "active" : ""

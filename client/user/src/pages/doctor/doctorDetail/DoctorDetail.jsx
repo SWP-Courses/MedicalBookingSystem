@@ -9,7 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-import API_URL from "~/api/Router";
+import API_URL, { API_IMAGE_URL } from "~/api/Router";
 
 export default function DoctorDetail() {
   const [moreOpen, setMoreOpen] = useState(false);
@@ -32,7 +32,7 @@ export default function DoctorDetail() {
   return (
     <div className="doctorDetail">
       <div className="doctorVisual">
-        <img src={`${API_URL}/image/doctor?.avatar.filename`} alt="" />
+        <img src={`${API_IMAGE_URL}/image/${doctor?.avatar.filename}`} alt="" />
         <h1>{`${doctor?.degree} ${doctor?.fullname}`} </h1>
       </div>
       <div className="doctorProfileContent">
