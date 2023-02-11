@@ -36,6 +36,9 @@ export default function AuthContextProvider({ children }) {
       navigate("/");
     } catch (error) {
         toast.error(error?.response?.data);
+        if(error?.response?.data) {
+          setIsLoading(false);
+        }
     }
   };
 

@@ -11,28 +11,28 @@ function BlogDetail() {
   const { setRoutingHistory } = useContext(AuthContext);
   const location = useLocation();
   const [blog, setBlog] = useState({});
-  const { id } = useParams()
+  const { id } = useParams();
   const refBlog = useRef();
 
   console.log(blog);
 
   useEffect(() => {
     fetchBlogById();
-  }, [])
+  }, []);
 
   useEffect(() => {
-    refBlog.current.innerHTML = blog.content
-  })
+    refBlog.current.innerHTML = blog.content;
+  });
 
-  const fetchBlogById = async() => {
+  const fetchBlogById = async () => {
     const res = await axios.get(`/blog/${id}`);
-    console.log('check res: ', res);
-    if(res && res.data && res.data.blogs) {
-      setBlog(res.data.blogs)
+    console.log("check res: ", res);
+    if (res && res.data && res.data.blogs) {
+      setBlog(res.data.blogs);
     }
-  }
+  };
 
-  console.log('mounted')
+  console.log("mounted");
   return (
     <div className="blog-detail-wrapper">
       {/* <button
@@ -49,22 +49,23 @@ function BlogDetail() {
       <div className="blog-detail-body">
         <div className="bread-crumb">
           <Breadcrumb>
-            <Breadcrumb.Item href="#">Home</Breadcrumb.Item>
-            <Breadcrumb.Item href="#">Library</Breadcrumb.Item>
-            <Breadcrumb.Item active>Data</Breadcrumb.Item>
+            <Breadcrumb.Item href="#">
+              <Link to="/">Home</Link>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item href="#">
+              <Link to="/blogs">Blogs</Link>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item active>
+              <Link to="/blogs/:id">Blog Detail</Link>
+            </Breadcrumb.Item>
           </Breadcrumb>
         </div>
         <div className="blog-content">
           <div className="blog-wrapper">
             <div className="blog-detail">
-              <h1 className="blog-title">
-                {blog?.title}
-              </h1>
+              <h1 className="blog-title">{blog?.title}</h1>
               <img className="blog-detail-image" src={blog?.image} />
-              <div 
-                className="content-box"
-                ref={refBlog}
-              >
+              <div className="content-box" ref={refBlog}>
                 <h2 className="sub-title">1. Vai trò của Vitamin D</h2>
                 {
                   // refBlog.current.innerHTML = blog.content
@@ -81,13 +82,13 @@ function BlogDetail() {
                   className="doctor-avarta"
                 />
               </Link>
-              <span className="doctor-name">Thạc sĩ, Bác sĩ Đặng Tiến Đạt</span>
+              <span className="doctor-name">{blog.author}</span>
               <p className="desc">
                 Khoa Gây mê giảm đau - Bệnh viện Đa khoa Quốc tế Vinmec Times
                 City
               </p>
               <Link to="/doctors/id" className="link-to-detail">
-                Xem thông tin bác sĩ &gt;
+                Xem thông tin bác sĩ &gt;&gt;
               </Link>
             </div>
             <div className="more-blogs">

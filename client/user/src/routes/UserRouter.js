@@ -38,6 +38,8 @@ export default function UserRouter() {
             {<Route path="/login" element={<Login />} />}
             <Route path="/register" element={<Register />} />
             <Route path="/forgotPassword" element={<ForgotPassword />} />
+            <Route path="*" element={<ForgotPassword />} />
+
           </Routes>
           <ToastContainer
             position="top-right"

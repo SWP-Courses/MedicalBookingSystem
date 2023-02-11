@@ -65,12 +65,11 @@ function Login() {
         toast.error("SDT phải bắt đầu bằng số 0");
         isPhoneNumber = false;
         return;
-      }else if(phone.length >= 11) {
-        toast.error("SDT phải có ít nhất 11 số ");
+      }else if(phone.length < 10 || phone.length > 11) {
+        toast.error("SDT phải có 10 hoặc 11 số ");
         isPhoneNumber = false;
         return;
       }
-
 
       setIsLoading(true);
 
