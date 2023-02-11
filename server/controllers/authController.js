@@ -2,6 +2,8 @@ var bcrypt = require("bcryptjs");
 var jwt = require("jsonwebtoken");
 var UserModel = require("../models/User.js");
 var RoleModel = require("../models/Role.js");
+var SpecialistModel = require("../models/Specialist");
+const { deleteImageById } = require("./imageController.js");
 
 // POST /api/resgiter
 // Với role là R2 (doctor) thì gửi thêm 3 fields là degree, specialist_id, profile
@@ -9,6 +11,7 @@ var RoleModel = require("../models/Role.js");
 const register = async (req, res, next) => {
   try {
     const user = await UserModel.findOne({ phone: req.body.phone });
+    const avatar = req.file;
     console.log(req.body);
     if (user) {
       return res.status(409).send("Số điện thoại đã tồn tại.");
@@ -25,6 +28,8 @@ const register = async (req, res, next) => {
         dateOfBirth: req.body.dateOfBirth,
         password: hash,
         phone: req.body.phone,
+        role_code: req.body.role_code,
+        avatar: avatar
       };
       
       // If create a doctor account
@@ -42,15 +47,26 @@ const register = async (req, res, next) => {
         !req.body.email
           ? document
           : {
-              ...document,
-              email: req.body.email,
-            }
+            ...document,
+            email: req.body.email,
+          }
       );
 
-      const savedUser = await newUser.save();
-      res.status(200).send(savedUser);
+      let user = await newUser.save();
+
+      if (req.body.role_code === "R2") {
+        const doctor = await UserModel.findById(user._id);
+        if (!doctor) return res.status(404).send("Doctor not found!");
+        const special = await SpecialistModel.findById(doctor.specialist_id);
+        res.status(200).json({ ...doctor._doc, special });
+        return;
+      }
+
+      res.status(200).json(user);
     }
   } catch (err) {
+    console.log(err);
+    await deleteImageById(avatar.id);
     res.status(500).json(err);
   }
 };

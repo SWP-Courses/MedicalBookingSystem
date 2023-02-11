@@ -1,5 +1,6 @@
 const UserModel = require("../models/User");
 var SpecialistModel = require("../models/Specialist");
+const { deleteImageById } = require("./imageController");
 
 // PUT /api/users/:id
 // Update a user by id (customer, doctor)
@@ -28,23 +29,48 @@ const getDoctorById = async (req, res, next) => {
 };
 
 // GET /api/users/doctors
-// Get all doctors info for page
 const getDoctors = async (req, res, next) => {
-  const user_code = "R2";
   try {
-    const users= await UserModel.aggregate([
+    const user = await UserModel.aggregate([
       {
-        $match: {
-          "role_code":"R2"
+        "$match": {
+          "role_code": "R2",
         }
-      }
+      },
+      {
+        "$lookup": {
+          "from": "specialists",
+          "localField": "specialist_id",
+          "foreignField": "_id",
+          "as": "special"
+        }
+      },
+      { "$unwind": '$special' },
     ])
-    if (users.length === 0) return res.status(404).send("Empty doctors!");
-    // console.log(users);
-    res.status(200).json(users);
+    console.log(user);
+    res.status(200).json(user);
   } catch (err) {
     res.status(500).json(err);
   }
-};
+}
 
-module.exports = { getDoctorById, getDoctors, updateUser };
+const deleteDoctorAccount = async (req, res, next) => {
+  try {
+    const doctorId = req.params.id;
+    const deleteDoctor = await UserModel.findOneAndDelete({ _id: doctorId, role_code: "R2" });
+    if (!deleteDoctor) {
+      res.status(404);
+    }
+    console.log(deleteDoctor);
+    await UserModel.deleteOne({ _id: doctorId });
+    console.log(deleteDoctor);
+    await deleteImageById(deleteDoctor.avatar.id);
+    res.status(200).json({ deleteDoctor });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+
+
+module.exports = { getUserById, getDoctors, deleteDoctorAccount };

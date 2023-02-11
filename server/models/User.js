@@ -3,6 +3,12 @@ const mongoose = require("mongoose");
 const UserSchema = new mongoose.Schema(
   {
     avatar: {
+      type: Object,
+      default: {
+        filename: "defaultAvatar.jpg",
+      }
+    },
+    address: {
       type: String,
     },
     fullname: {

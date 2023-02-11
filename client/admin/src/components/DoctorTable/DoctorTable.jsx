@@ -1,15 +1,19 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import DoctorRow from './DoctorRow'
-import { faker } from '@faker-js/faker';
 
-
-function DoctorTable({ onClickEditDoctor, doctors }) {
+function DoctorTable({ onClickEditDoctor, doctors, onDeleteBlogById }) {
     const [doctorList, setDoctorList] = useState(doctors);
 
-    const onDeleteBlogById = (id) => {
-        if (!id) return
-        setDoctorList(list => list.filter(list => list._id !== id));
-    }
+    useEffect(() => {
+        if (!doctors) return;
+        setDoctorList(doctors);
+    }, [doctors])
+
+    if (!doctorList) return (
+        <p>Loading...</p>
+    )
+
+
     return (
         <>
             {/* Filter */}
@@ -54,8 +58,9 @@ function DoctorTable({ onClickEditDoctor, doctors }) {
                         </tr>
                     </thead>
                     <tbody>
-                        {
-                            doctorList.map((doctor, index) => <DoctorRow key={index} onDeleteBlogById={onDeleteBlogById} onClickEditDoctor={onClickEditDoctor} doctor={doctor} stt={index + 1} />)
+                        {doctorList ?
+                            doctorList.map((doctor, index) => <DoctorRow key={doctor._id} onDeleteBlogById={onDeleteBlogById} onClickEditDoctor={onClickEditDoctor} doctor={doctor} stt={index + 1} />)
+                            : undefined
                         }
                     </tbody>
                 </table>

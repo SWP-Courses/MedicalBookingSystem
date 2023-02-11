@@ -15,7 +15,6 @@ function ServiceRow({ onDeleteBlogById, service, stt, onClickEditService }) {
         if (!service._id) return;
         try {
             const result = await axios.delete(`${ROUTER}/api/service/${service._id}`);
-            console.log(result);
             if (result.status === 200) {
                 toast.success("Susscess!", toastOption);
                 onDeleteBlogById(service._id);
