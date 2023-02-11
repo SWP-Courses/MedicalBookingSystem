@@ -82,7 +82,7 @@ var RoleModel = require("../models/Role.js");
        user.password
      );
 
-     if (!isPasswordCorrect) return next(createError(401, "Wrong password!"));
+     if (!isPasswordCorrect) return res.status(401).send("Wrong password");
      const userRole = await RoleModel.findOne({ role_code: user.role_code });
      console.log(userRole);
 
