@@ -54,7 +54,7 @@ const updateCategory = asyncHandler(async (req, res, next) => {
   const { name } = req.body;
   const updateCategory = await Category.findByIdAndUpdate(categoryId, {
     name,
-  });
+  }, { new: true });
 
   res.status(200).json({ updateCategory });
 });

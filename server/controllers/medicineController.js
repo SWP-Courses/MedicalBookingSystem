@@ -47,9 +47,9 @@ const createMedicine = asyncHandler(async (req, res, next) => {
 //@access private
 const updateMedicine = asyncHandler(async (req, res, next) => {
   const medicineId = req.params.id;
-  const medicines = await Medicine.findById(medicineId);
+  const medicine = await Medicine.findById(medicineId);
   
-  if (!medicines) {
+  if (!medicine) {
     res.status(404);
     throw new Error("Medicine Not Found!");
   }
@@ -57,10 +57,10 @@ const updateMedicine = asyncHandler(async (req, res, next) => {
   const { name, type, dosageForm, price } = req.body;
   const updateMedicine = await Medicine.findByIdAndUpdate(medicineId, {
     name,
-    type,
     dosageForm,
+    type,
     price,
-  });
+  }, { new: true });
 
   res.status(200).json({ updateMedicine });
 });
