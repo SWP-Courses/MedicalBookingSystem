@@ -9,7 +9,7 @@ import { useContext } from "react";
 import { AuthContext } from "~/context/authContext";
 
 import { Dropdown } from "react-bootstrap";
-import API_URL from "~/api/Router";
+import API_URL, { API_IMAGE_URL } from "~/api/Router";
 
 
 export default function Navbar() {
@@ -68,7 +68,7 @@ export default function Navbar() {
                     className="avatarContainer"
                     as="div"
                   >
-                    <img src={`${API_URL}/image/currentUser?.avatar.filename`} alt="" />
+                    <img src={`${API_IMAGE_URL}/image/${currentUser?.avatar.filename}`} alt="" />
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu>

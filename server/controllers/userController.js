@@ -73,4 +73,4 @@ const deleteDoctorAccount = async (req, res, next) => {
 
 
 
-module.exports = { getDoctorById, getDoctors, deleteDoctorAccount };
+module.exports = { getDoctorById, getDoctors, deleteDoctorAccount, updateUser };

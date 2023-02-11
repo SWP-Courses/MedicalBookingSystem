@@ -4,6 +4,7 @@ import { useLocation, useNavigate, Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import DOMPurify from "dompurify";
+import API_URL from "~/api/Router";
 
 function Blogs() {
 
@@ -27,7 +28,7 @@ function Blogs() {
 
 
   const fetchListCategoryBlogs = async () => {
-    const res = await axios.get('category');
+    const res = await axios.get(API_URL+'/category');
     console.log('check res cate: ', res);
     if(res && res.data && res.data.category && res.data.category.length > 0) {
       setBlogCategory(res.data.category);
@@ -35,7 +36,7 @@ function Blogs() {
   }
 
   const fetchBlogs = async () => {
-    const res = await axios.get('blog');
+    const res = await axios.get(API_URL+'/blog');
     console.log('check res blog: ', res);
     if(res && res.data && res.data.blogs && res.data.blogs.length > 0) {
       setBlogs(res.data.blogs)
@@ -85,12 +86,13 @@ function Blogs() {
               blogsFiltered.map((blog, index) => {
                 return (
                   <div key={index} className="blog-item">
-                    <img
-                      className="blog-image"
-                      onClick={() => navigate(`/blogs/${blog._id}`)}
-                      src={blog.image}
-                      alt="blog-image"
-                    />
+                  <Link  to={`/blogs/${blog._id}`}>
+                      <img
+                        className="blog-image"
+                        src={blog.image}
+                        alt="blog-image"
+                      />
+                    </Link>
                     <div className="blog-item-body">
                       <h2 className="bolg-item-title line-clamp">
                         {blog.title}

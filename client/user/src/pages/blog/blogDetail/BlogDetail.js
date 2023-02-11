@@ -6,6 +6,7 @@ import doctor from "~/assets/images/doctor.jpg";
 import { AuthContext } from "~/context/authContext";
 import { useContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
+import API_URL from "~/api/Router";
 
 function BlogDetail() {
   const { setRoutingHistory } = useContext(AuthContext);
@@ -25,7 +26,7 @@ function BlogDetail() {
   });
 
   const fetchBlogById = async () => {
-    const res = await axios.get(`/blog/${id}`);
+    const res = await axios.get(`${API_URL}/blog/${id}`);
     console.log("check res: ", res);
     if (res && res.data && res.data.blogs) {
       setBlog(res.data.blogs);

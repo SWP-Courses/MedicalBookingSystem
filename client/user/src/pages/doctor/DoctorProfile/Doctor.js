@@ -9,6 +9,7 @@ import doctor from "~/assets/images/doctor.jpg";
 import { useContext } from "react";
 import { AuthContext } from "~/context/authContext";
 import UserInfo from "~/components/userInfo/UserInfo";
+import { API_IMAGE_URL } from "~/api/Router";
 
 export default function Doctor() {
   const [userContent, setUserContent] = useState("info");
@@ -33,7 +34,7 @@ export default function Doctor() {
     <div className="doctor">
       <div className="doctorSidebar">
         <div className="userInfo">
-          <img src={image} alt="avartar" />
+          <img src={`${API_IMAGE_URL}/image/${currentUser?.avatar.filename}`} alt="avartar" />
           <span className="doctorName">{currentUser?.fullname}</span>
         </div>
         <div className="profileActions">

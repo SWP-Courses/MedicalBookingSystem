@@ -8,6 +8,7 @@ import BlogsSaved from "./blogsSaved/BlogsSaved";
 
 import { useContext } from "react";
 import { AuthContext } from "~/context/authContext";
+import { API_IMAGE_URL } from "~/api/Router";
 
 export default function Customer() {
   const [userContent, setUserContent] = useState("info");
@@ -32,10 +33,8 @@ export default function Customer() {
     <div className="customer">
       <div className="userSidebar">
         <div className="userInfo">
-          {/* { 
-            image && image.avatar ?
-            <img src={image.avatar} alt="avatar" /> : 'no avatar available'
-          } */}
+            <img src={`${API_IMAGE_URL}/image/${currentUser?.avatar?.filename}`} alt=""/> 
+          
           <span className="userName">{currentUser?.fullname}</span>
         </div>
         <div className="profileActions">

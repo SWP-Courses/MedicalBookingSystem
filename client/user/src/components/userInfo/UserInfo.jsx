@@ -9,6 +9,8 @@ import { useContext } from "react";
 import { AuthContext } from "~/context/authContext";
 import { Calendar, fo } from "react-calendar";
 import { format, parseISO } from "date-fns";
+import API_URL from "~/api/Router";
+import axios from "axios";
 
 export default function UserInfo(props) {
   const {image, hanldeUploadImage} = props;
@@ -38,6 +40,13 @@ export default function UserInfo(props) {
   }
 
   // todo-func: call api update
+  const handleUpdateClick =async () => {
+    try {
+      await axios.put(`${API_URL}/users/${currentUser._id}`, userInfo);
+    } catch(err) {
+      console.log(err);
+    }
+  }
 
   console.log(userInfo);
 
