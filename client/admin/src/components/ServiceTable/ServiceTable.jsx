@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import ServiceRow from './ServiceRow'
 
-function ServiceTable({ services, onClickEditService }) {
+function ServiceTable({ services, onClickEditService, onDeleteBlogById }) {
     const [serviceList, setServiceList] = useState(services);
 
-    const onDeleteBlogById = (id) => {
-        if (!id) return
-        setServiceList(list => list.filter(list => list._id !== id));
-    }
+    // console.log(services);
 
     useEffect(() => {
         if (!services) return;

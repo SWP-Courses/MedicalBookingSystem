@@ -61,6 +61,11 @@ const Service = () => {
     }
   }
 
+  const onDeleteBlogById = (id) => {
+    if (!id) return
+    setServiceList(list => list.filter(list => list._id !== id));
+  }
+
   useEffect(() => {
     getAllService()
   }, [])
@@ -134,7 +139,7 @@ const Service = () => {
         {
           createService ?
             <ServiceDetail serviceDetail={serviceDetail} serviceName={serviceName} servicePrice={servicePrice} serviceDescription={serviceDescription} /> :
-            <ServiceTable services={serviceList} onClickEditService={onClickEditService} />
+            <ServiceTable onDeleteBlogById={onDeleteBlogById} services={serviceList} onClickEditService={onClickEditService} />
         }
 
 

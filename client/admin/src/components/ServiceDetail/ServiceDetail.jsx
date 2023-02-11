@@ -23,7 +23,7 @@ function ServiceDetail({ serviceDetail, serviceName, serviceDescription, service
                     </div>
 
                     <div className="mb-3">
-                        <label for="exampleFormControlTextarea1" className="form-label">Description</label>
+                        <label htmlFor="exampleFormControlTextarea1" className="form-label">Description</label>
                         <textarea ref={serviceDescription} className="form-control" id="exampleFormControlTextarea1" rows="8"></textarea>
                     </div>
 
@@ -54,7 +54,7 @@ function ServiceDetail({ serviceDetail, serviceName, serviceDescription, service
                     </div>
 
                     <div className="mb-3">
-                        <label for="exampleFormControlTextarea1" className="form-label">Description</label>
+                        <label htmlFor="exampleFormControlTextarea1" className="form-label">Description</label>
                         <textarea ref={serviceDescription} className="form-control" defaultValue={serviceDetail.description} id="exampleFormControlTextarea1" rows="8"></textarea>
                     </div>
 
