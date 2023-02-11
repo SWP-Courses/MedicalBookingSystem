@@ -1,0 +1,127 @@
+.Login-Wrapper {
+
+        .login-main {
+            width: 60%;
+            position: relative;
+            margin: 0 auto;
+
+            .login-title {
+                width: 50%;
+                height: 40%;
+                margin: 0 auto;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                font-size: 27px;
+                font-weight: 400;
+            }
+
+            .login-body {
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                left: 50%;
+                position: absolute;
+                transform: translateX(-50%);
+
+                .select {
+                    align-self: center;
+                    outline: none;
+                    width: fit-content;
+                    padding: 10px;
+                    border-radius: 4px; 
+                    
+                    &.register-select {
+                        visibility: hidden;
+
+                    }
+                    
+                }
+
+                .form-body {
+                    margin: 30px;
+                    background-color: #fff;
+                    border-radius: 4px;
+                    margin: 30px;
+                    border: 1px solid #ccc;
+
+                    .form-content {
+                        padding: 14px 17px;
+
+                        .form-group {
+                            >span {
+                                display: block;
+                                font-weight: 500;
+                                font-size: 14px;
+                            }
+                        }
+
+                        .input-box {
+                            display: block;
+                            margin: 0 auto;
+                            padding: 10px;
+                            border-radius: 4px;
+                            border: 1px solid #ccc;
+                            margin-top: 7px;
+
+                            &:hover {
+                                border: 1px solid #2dc2d0;
+                            }
+
+                            &.error {
+                                border: 1px solid red;
+                                background-color: #ffebeb;;
+                            }
+                        }
+
+                        .btn-register {
+                            padding: 13px 27px;
+                            border: 1px solid #286ba6;
+                            border-radius: 4px;
+                            width: 100%;
+                            font-weight: 500;
+                            background-color: #286ba6;
+                            color: #fff;
+                        }
+
+                        .sex {
+                            display: flex;
+                            align-items: center;
+                            margin-top: 8px;
+                            justify-content: center;
+                            gap: 30px;
+            
+                            .form-select {
+                                width: fit-content;                   
+                                height: 38px;
+                            }
+            
+                            >span {
+                                width: 40px;
+                            }
+
+                            .checkbox-group {
+                                >input {
+                                    margin-right: 6px;
+                                }
+                            }   
+                        }
+                    }
+
+
+                    .input-box {
+                        display: block;
+                        padding: 13px;
+                        width: 400px;
+                        border-radius: 3px;
+                        border: 1px solid #cccc;
+                    }
+                }
+            }
+
+        }
+        
+
+
+
+}

@@ -1,0 +1,80 @@
+.userInfoContainer {
+    padding: 30px;
+    > .title {
+        font-size: 30px;
+        font-weight: 500;
+        margin-bottom: 30px;
+    }
+
+    > .userInfo {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        gap: 50px;
+        
+
+        >.infoList {
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+            >input {
+                padding: 10px;
+                font-size: 14px;
+                border: none;
+                outline: none;
+                color: #333;
+            }
+
+            .sex {
+                display: flex;
+                gap: 10px;
+                align-items: center;
+
+                .form-select {
+                    width: fit-content;                   
+                    height: 38px;
+                }
+
+                >span {
+                    width: 40px;
+                }
+
+                >strong {
+                    margin-right: 80px;
+                    opacity: 0.8;
+                }
+
+                .checkbox-group {
+                    margin-right: 10px;
+                    >input {
+                        margin-right: 5px;
+                    }
+                }
+            }
+        }
+
+        >.accountAvatar {
+            flex: 1;
+
+            >img {
+                width: 200px;
+                height: 200px;
+                border-radius: 100rem;
+
+            }
+        }
+    }
+
+    >button {
+        border: none;
+        outline: none;
+        padding: 10px 30px;
+        background-color: #337AB7;
+        color: white;
+        font-weight: bold;
+        font-size: 16px;
+        margin-top: 20px;
+    }
+}

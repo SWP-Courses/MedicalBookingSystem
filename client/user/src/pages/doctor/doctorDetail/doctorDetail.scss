@@ -1,0 +1,60 @@
+.doctorDetail {
+  .doctorVisual {
+    background-image: url("../../../assets/images/doctor_background.jpg");
+    padding-top: 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    > img {
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    > h1 {
+      font-size: 26px;
+      font-weight: bold;
+    }
+  }
+
+  .doctorProfileContent {
+    display: flex;
+    gap: 30px;
+    padding: 20px 100px;
+
+    .profileLeft {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .profileRight {
+      flex: 1;
+    }
+
+    .profileItem {
+        border: 1px solid #EEEEEE;
+        border-radius: 5px;
+
+      > .header {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        padding: 10px;
+      }
+
+      >.devideLine {
+        border-top: 0.5px solid #EEEEEE;
+      }
+
+      > p {
+        padding: 20px;
+        margin-bottom: 0px;
+        text-align: justify;
+        line-height: 2em;
+      }
+    }
+  }
+}

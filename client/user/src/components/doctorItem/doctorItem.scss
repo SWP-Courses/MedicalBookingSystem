@@ -1,0 +1,46 @@
+.doctorItem {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px;
+    border: 1px solid transparent;
+    border-bottom: 1px solid rgb(214, 213, 213);
+    transition: all 0.25s;
+    
+    &:hover {
+        border-radius: 10px;
+        border: 1px solid rgb(214, 213, 213);
+    }
+
+    >.doctorImg {
+        flex: 1;
+        >img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    >.doctorTitle {
+        flex: 3;
+
+        >.doctorName {
+            display: inline-block;
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 20px;
+            margin-bottom: 14px;
+        }
+        
+        >.titleItem {
+                display: flex;
+                align-items: center;
+        }
+    }
+
+    >.doctorShortIntro {
+        flex: 1.5;
+        text-align: justify;
+        font-size: 14px;
+    }
+}

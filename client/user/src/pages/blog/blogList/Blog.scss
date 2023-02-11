@@ -1,0 +1,125 @@
+.Blog-wrapper {
+    .blog-content {
+        width: 1140px;
+        margin: 0 auto;
+
+        .slider {
+            border: 1px solid red;
+            margin-top: 20px;
+            height: 200px;
+        }
+        
+        .blog-body {
+            display: flex;
+            // border: 1px solid red;
+            
+        }
+
+        .major-list {
+            width: 30%;
+            // border: 1px solid green;
+            .list {
+                margin-top: 20px;
+                width: 294px;
+                padding: 13px;
+                border: 0.5px solid #EEEEEE;
+                border-radius: 5px;
+                position: sticky;
+                top: 150px;
+
+                .item {
+                    list-style-type: none;
+
+                    h5 {
+                       text-align: center;
+                    }
+                    
+                    span {
+                        text-decoration: none;
+                        color: #0066a6;
+                        font-weight: 500;
+                        position: relative;
+                        right: 0;
+                        cursor: pointer;
+                        display: block;
+                        padding: 9.5px;
+                        margin-left: 6px;
+                        
+                        &:hover {
+                            right: -10px;
+                            transition: right linear .1s;
+                            color: #b98d55;
+                        }
+                    }
+
+                    .line {
+                        border-bottom: 1px solid #ccc;
+                        width: 90%;
+                        margin: 0 auto;
+                    }
+
+                    
+                }
+            }
+        }
+
+        .blog-list {
+            flex: 1;
+            // border: 1px solid green;
+            margin-top: 20px;
+    
+            .blog-item {
+
+                display: flex;
+                gap: 10px;
+                margin-bottom: 30px;
+
+                >a {
+                    display: block;
+                    .blog-image {
+                        min-width: 260px;
+                        height: 173px;
+                        object-fit: cover;
+                        cursor: pointer;
+
+                    }
+                }
+
+
+                .bolg-item-title {
+                    font-size: 22px;
+                }
+
+                .blog-item-body {
+
+                    .line-clamp.line-4 {
+                        --line-clamp: 4; 
+                        h2 {
+                            display: none;
+                        }
+                    }
+                }
+
+                .separate-line {
+                    border-bottom: 1px solid #ccc;
+                    width: 90%;
+                    margin: 0 auto;
+
+                }
+            }
+
+            .type {
+                font-size: 27px;
+                background-color: #f5f5f5;  
+                padding: 4px;
+                border-radius: 6px;
+            }
+        }
+
+        .paginate {
+            text-align: center;
+            margin-top: 20px;
+            border: 1px solid red;
+        }
+    }
+}

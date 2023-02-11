@@ -1,0 +1,85 @@
+.doctorListContainer {
+    width: 100vw;
+    max-width: 100%;
+    .imgWrapper {
+        max-width: 100%;
+        width: 100vw;
+        position: relative;
+
+        >img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        >.title {
+            position: absolute;
+            margin:auto;
+            top: 0;
+            // right: 0;
+            // left: 0;
+            bottom: 0;
+            width: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-weight: 500;
+            font-size: 30px;
+       }
+    }
+
+    .doctorsWrapper {
+        padding: 20px 100px;
+        display: flex;
+        gap: 20px;
+        width: 1170px;
+        margin: 0 auto;
+
+        .filter {
+            flex: 1;
+            position: sticky;
+            top: 150px;
+            padding: 10px;
+            border: 0.5px solid #EEEEEE;
+            border-radius: 5px;
+            height: max-content;
+
+            >.divideLine {
+                border: 0.25px solid #EEEEEE;
+            }
+
+            >h2 {
+                font-size: 18px;
+
+            }
+
+            > ul {
+                list-style: none;
+                padding: 0px;
+                margin-bottom: 0px;
+
+                > li {
+                    padding: 10px;
+                    border-bottom: 1px solid #EEEEEE;
+                    cursor: pointer;
+
+                    &:hover {
+                        color: rgb(21, 74, 221);
+                    }
+                }
+
+                >li:last-of-type {
+                    border-bottom: none;
+                }
+            }
+        }
+
+        .doctorList {
+            flex: 3;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+    }
+}

@@ -1,0 +1,83 @@
+.doctor {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px 30px;
+  gap: 50px;
+  background-color: #ffff;
+
+  .doctorSidebar {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    .userInfo {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin: 0 auto;
+
+      >.doctorName {
+        font-size: 20px;
+        margin-left: 20px;
+        border-radius: 5px;
+        padding: 10px 26px;
+        box-shadow: -1px 0px 13px 1px rgba(0,0,0,0.21);
+        -webkit-box-shadow: -1px 0px 13px 1px rgba(0,0,0,0.21);
+        -moz-box-shadow: -1px 0px 13px 1px rgba(0,0,0,0.21);
+
+      } 
+
+      > img {
+        width: 60px;
+        height: 60px;
+        border-radius: 100rem;
+        object-fit: cover;
+      }
+
+      > span {
+        font-size: 14px;
+        cursor: pointer;
+      } 
+    }
+
+    .profileActions {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding: 18px 20px;
+      border-radius: 10px;
+      background: #ffffff;
+      box-shadow:  15px 15px 30px #949494,
+                  -15px -15px 30px #ffffff;
+
+        > .action {
+            text-align: center;
+            background-color: #F2F2F2;
+            height: 50px;
+            line-height: 50px;
+            user-select: none;
+            border-radius: 10px;
+            font-size: 20px;
+            cursor: pointer;
+
+            &.active {
+                background-color: #286ba6;
+                color: #fff;
+            }
+        }
+        
+    }
+  }
+
+  .doctorContent {
+    flex: 3;
+    background-color: #F2F2F2;
+    min-height: 500px;
+    border-radius: 10px;
+    background: #ffffff;
+    box-shadow:  21px 21px 83px #b5b5b5,
+                -21px -21px 83px #ffffff;
+  }
+}

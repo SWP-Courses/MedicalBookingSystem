@@ -1,0 +1,61 @@
+.homeWrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.slider {
+    width: 100%;
+
+    >img {
+        width: 100%;
+        height: 500px;
+        object-fit: cover;
+    }
+}
+
+.introduction {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+
+    .introLeft {
+        flex: 3;
+        border: 1px solid rgb(197, 197, 231);
+        border-radius: 5px;
+        padding: 10px;
+
+        >h1 {
+            font-size: 26px;
+            font-weight: bold;
+        }
+    }
+
+    .introRight {
+        flex: 2;
+        background-color: rgb(232, 229, 229);
+        padding: 20px;
+
+        >h1 {
+            font-size: 18px;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        .specialistList {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+            .specialistItem {
+                padding: 10px 0px;
+                width: 100%;
+                background-color: #0C8CE9;
+                text-align: center;
+                cursor: pointer;
+            }
+        }
+    }
+}
