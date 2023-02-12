@@ -1,14 +1,17 @@
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
-import { useState } from "react";
+import { useRef, useState, useEffect } from "react";
 
 import "./Register.scss";
 import UserInfo from "~/components/userInfo/UserInfo";
 import axios from "axios";
-import { parse, isValid, format } from 'date-fns';
-import { enGB } from 'date-fns/locale';
+import { parse, isValid, format } from "date-fns";
+import { enGB } from "date-fns/locale";
 import API_URL from "~/api/Router";
+import { checkStringContainInPhoneNumber, validateUsername } from "~/utils";
+import { validateEmail } from "~/utils";
 
 function Register() {
   const [registerInfo, setRegisterInfo] = useState({
@@ -20,8 +23,14 @@ function Register() {
     password: "",
     confirmPassword: "",
   });
-  console.log(registerInfo.dateOfBirth);
+
   const navigate = useNavigate();
+
+  const inputRef = useRef({});
+
+  useEffect(() => {
+    inputRef.current["name"].focus();
+  }, []);
 
   // Functions
   const handleTextInputChange = (e) => {
@@ -31,18 +40,95 @@ function Register() {
     }));
   };
 
-  const handleRegisterClick = async () => {
+  const handleRegister = async () => {
     // validate
-    const { confirmPassword, ...data } = registerInfo;
-    // submit API
+    const {
+      phone,
+      email,
+      fullname,
+      dateOfBirth,
+      password,
+      confirmPassword,
+      gender,
+    } = registerInfo;
+
+    // username
+    if (!fullname) {
+      inputRef.current["name"].className = "input-box error";
+      return;
+    }
+    if (!validateUsername(fullname)) {
+      inputRef.current["isValidName"].innerText =
+        "Tên không được chứa số, kí tự đặc biệt";
+      return;
+    }
+
+    // birthdate
+    if (!dateOfBirth) {
+      inputRef.current["birth"].className = "input-box error";
+      return;
+    }
+
+    //validate phone number
+    const isContainsString = checkStringContainInPhoneNumber(phone);
+    if (isContainsString) {
+      inputRef.current["phone"].className = "input-box error";
+      inputRef.current["isValidPhone"].innerText = "SDT không được chứa kí tự";
+      return;
+    } else if (+phone.charAt(0) !== 0) {
+      inputRef.current["phone"].className = "input-box error";
+      toast.error("SDT phải bắt đầu bằng số 0");
+      return;
+    } else if (phone.length < 10 || phone.length > 11) {
+      inputRef.current["phone"].className = "input-box error";
+      toast.error("SDT phải có 10 hoặc 11 số ");
+      return;
+    }
+
+    // validate email
+    if (email) {
+      const isValidEmail = validateEmail(email);
+      if (!isValidEmail) {
+        toast.error("email sai định dạng");
+      }
+    }
+
+    // validate password
+    if (password.length < 6) {
+      inputRef.current["curPass"].className = "input-box error";
+      inputRef.current["isValidPassword"].innerText =
+        "mật khẩu tối thiểu phải có 6 kí tự";
+      return;
+    }
+
+    if (confirmPassword.length < 6) {
+      inputRef.current["confirmPass"].className = "input-box error";
+      inputRef.current["isConfirmPassword"].innerText =
+        "mật khẩu tối thiểu phải có 6 kí tự";
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      inputRef.current["confirmPass"].className = "input-box error";
+      toast.error("mật khẩu nhập lại không chính xác");
+      return;
+    }
+
+    // validate gender
+    if (!gender) {
+      inputRef.current["isValidGender"].innerText = "chọn giới tính của bạn";
+      return;
+    }
+
+    // call api
     try {
-      const res = await axios.post(API_URL+"/auth/register", data);
+      const res = await axios.post(API_URL+"/auth/register", registerInfo);
       setRegisterInfo({});
-      console.log(res.data);
+      console.log(res.data); 
     } catch (err) {
       console.log(err);
     }
-    // console.log(registerInfo);
+    console.log(registerInfo);
   };
 
   const hanldeEmptyInput = (e) => {
@@ -51,13 +137,27 @@ function Register() {
     } else {
       e.target.className = "input-box";
     }
+    if(e.target.checked) {
+      inputRef.current["isValidGender"].innerText = "";
+    }
   };
 
   const hanldeOnBlurInput = (e) => {
     if (e.target.value) {
       e.target.className = "input-box";
+      for (const key in inputRef.current) {
+        if (inputRef.current.hasOwnProperty(key)) {
+          inputRef.current[key].innerText = "";
+        }
+      }
     }
   };
+
+  const hanldeCheckEmptyCheckBox = (e) => {
+    if(e.target.value) {
+      inputRef.current["isValidGender"].innerText = '';
+    }
+  }
 
   return (
     <div className="Login-Wrapper animate__animated animate__fadeInDown">
@@ -82,16 +182,25 @@ function Register() {
                 <input
                   name="fullname"
                   placeholder="Nhập họ và tên"
+                  type="text"
                   className="input-box"
                   value={registerInfo?.fullname}
-                  onChange={handleTextInputChange}
-                  onBlur={(e) => {
-                    hanldeEmptyInput(e);
+                  // required
+                  ref={(element) => {
+                    //define key, value for obj current
+                    inputRef.current["name"] = element;
                   }}
+                  onChange={handleTextInputChange}
                   onInput={(e) => {
                     hanldeOnBlurInput(e);
                   }}
                 />
+                <span
+                  ref={(element) => {
+                    inputRef.current["isValidName"] = element;
+                  }}
+                  className="errorAlert mt-2"
+                ></span>
               </div>
 
               <div className="form-group mt-3">
@@ -99,9 +208,13 @@ function Register() {
                 <input
                   name="dateOfBirth"
                   type="date"
-                  defaultValue="2020-01-10"
+                  value={registerInfo?.dateOfBirth}
                   className="input-box"
                   onChange={handleTextInputChange}
+                  // required
+                  ref={(element) => {
+                    inputRef.current["birth"] = element;
+                  }}
                   onBlur={(e) => {
                     hanldeEmptyInput(e);
                   }}
@@ -118,6 +231,9 @@ function Register() {
                   placeholder="Nhập số điện thoại"
                   className="input-box"
                   value={registerInfo.phone}
+                  ref={(element) => {
+                    inputRef.current["phone"] = element;
+                  }}
                   onChange={handleTextInputChange}
                   onBlur={(e) => {
                     hanldeEmptyInput(e);
@@ -126,6 +242,12 @@ function Register() {
                     hanldeOnBlurInput(e);
                   }}
                 />
+                <span
+                  ref={(element) => {
+                    inputRef.current["isValidPhone"] = element;
+                  }}
+                  className="errorAlert mt-2"
+                ></span>
               </div>
 
               <div className="form-group mt-3">
@@ -135,10 +257,10 @@ function Register() {
                   placeholder="Nhập email"
                   className="input-box"
                   value={registerInfo.email}
-                  onChange={handleTextInputChange}
-                  onBlur={(e) => {
-                    hanldeEmptyInput(e);
+                  ref={(element) => {
+                    inputRef.current["email"] = element;
                   }}
+                  onChange={handleTextInputChange}
                   onInput={(e) => {
                     hanldeOnBlurInput(e);
                   }}
@@ -146,13 +268,17 @@ function Register() {
               </div>
 
               <div className="form-group mt-3">
-                <span>Mật khẩu</span>
+                <span>Mật khẩu (*)</span>
                 <input
                   name="password"
                   type="password"
                   placeholder="Nhập mật khẩu"
                   className="input-box"
                   value={registerInfo.password}
+                  // required
+                  ref={(element) => {
+                    inputRef.current["curPass"] = element;
+                  }}
                   onChange={handleTextInputChange}
                   onBlur={(e) => {
                     hanldeEmptyInput(e);
@@ -161,15 +287,25 @@ function Register() {
                     hanldeOnBlurInput(e);
                   }}
                 />
+                <span
+                  ref={(element) => {
+                    inputRef.current["isValidPassword"] = element;
+                  }}
+                  className="errorAlert mt-2"
+                ></span>
               </div>
 
               <div className="form-group mt-3">
-                <span>Nhập lại mật khẩu</span>
+                <span>Nhập lại mật khẩu (*)</span>
                 <input
                   name="confirmPassword"
                   type="password"
                   placeholder="Nhập lại mật khẩu"
                   className="input-box"
+                  // required
+                  ref={(element) => {
+                    inputRef.current["confirmPass"] = element;
+                  }}
                   value={registerInfo.confirmPassword}
                   onChange={handleTextInputChange}
                   onBlur={(e) => {
@@ -179,10 +315,16 @@ function Register() {
                     hanldeOnBlurInput(e);
                   }}
                 />
+                <span
+                  ref={(element) => {
+                    inputRef.current["isConfirmPassword"] = element;
+                  }}
+                  className="errorAlert mt-2"
+                ></span>
               </div>
 
               <div className="form-group mt-3">
-                <span>Giới Tính</span>
+                <span>Giới Tính (*)</span>
                 <div className="sex">
                   <div className="checkbox-group">
                     <input
@@ -191,8 +333,15 @@ function Register() {
                       name="gender"
                       id="flexRadioDefault1"
                       value="male"
+                      // required
+                      ref={(element) => {
+                        inputRef.current["male"] = element;
+                      }}
                       checked={registerInfo.gender === "male"}
                       onChange={handleTextInputChange}
+                      onInput={(e) => {
+                        hanldeCheckEmptyCheckBox(e);
+                      }}
                     />
                     <label
                       className="form-check-label"
@@ -203,13 +352,18 @@ function Register() {
                   </div>
                   <div className="checkbox-group">
                     <input
-                      // className="form-check-input"
                       type="radio"
                       name="gender"
                       id="flexRadioDefault1"
                       value="female"
+                      ref={(element) => {
+                        inputRef.current["female"] = element;
+                      }}
                       checked={registerInfo.gender === "female"}
                       onChange={handleTextInputChange}
+                      onInput={(e) => {
+                        hanldeCheckEmptyCheckBox(e);
+                      }}
                     />
                     <label
                       className="form-check-label"
@@ -218,29 +372,18 @@ function Register() {
                       Nữ
                     </label>
                   </div>
-                  {/* <div className="checkbox-group">
-                    <input
-                      // className="form-check-input"
-                      type="radio"
-                      name="flexRadioDefault"
-                      id="flexRadioDefault1"
-                      value={gender}
-                      onChange={(e) => setGender(e.target.checked)}
-                    />
-                    <label
-                      className="form-check-label"
-                      htmlFor="flexRadioDefault1"
-                    >
-                      Khác
-                    </label>
-                  </div> */}
                 </div>
-              </div>
+                <center>
+                  <span
+                    ref={(element) => {
+                      inputRef.current["isValidGender"] = element;
+                    }}
+                    className="errorAlert mt-2"
+                  ></span>
 
-              <button
-                className="btn-register mt-3"
-                onClick={handleRegisterClick}
-              >
+                </center>
+              </div>
+              <button className="btn-register mt-3" onClick={handleRegister}>
                 Đăng Kí
               </button>
               <div className="sign-up mt-3">
