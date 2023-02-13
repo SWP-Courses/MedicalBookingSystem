@@ -1,16 +1,13 @@
 import "./Doctor.scss";
 import { useState } from "react";
-import DoctorProfile from "~/pages/doctor/DoctorProfile/DoctorInfo/DoctorProfile";
-import Prescription from "./Prescription/Prescription";
 import MedicalHistory from "./History/MedicalHistory";
 import DoctorSchedule from "./DoctorSchedule/DoctorSchedule";
-import doctor from "~/assets/images/doctor.jpg";
 
 import { useContext } from "react";
 import { AuthContext } from "~/context/authContext";
 import UserInfo from "~/components/userInfo/UserInfo";
 import { API_IMAGE_URL } from "~/api/Router";
-import PrescriptionNew from "./PrescriptionNew/PrescriptionNew";
+import Prescription from "./Prescription/Prescription";
 
 export default function Doctor() {
   const [userContent, setUserContent] = useState("info");
@@ -67,16 +64,6 @@ export default function Doctor() {
           </h4>
           <h4
             className={
-              userContent === "prescriptionNew" ? "action active" : "action"
-            }
-            onClick={() => {
-              handleOptionClick("prescriptionNew");
-            }}
-          >
-            Kê Đơn New
-          </h4>
-          <h4
-            className={
               userContent === "medicalHistory" ? "action active" : "action"
             }
             onClick={() => {
@@ -90,7 +77,6 @@ export default function Doctor() {
       <div className="doctorContent">
         {userContent === "info" && <UserInfo hanldeUploadImage={hanldeUploadImage} image={image}/>}
         {userContent === "prescription" && <Prescription />}
-        {userContent === "prescriptionNew" && <PrescriptionNew />}
         {userContent === "doctorSchedule" && <DoctorSchedule />}
         {userContent === "medicalHistory" && (
           <MedicalHistory
