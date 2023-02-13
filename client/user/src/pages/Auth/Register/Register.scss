@@ -74,6 +74,25 @@
                             }
                         }
 
+                        .input-feild {
+                            display: block;
+                            margin: 0 auto;
+                            width: 400px;
+                            padding: 10px;
+                            border-radius: 4px;
+                            border: 1px solid #ccc;
+                            margin-top: 3px;
+
+                            &:hover {
+                                border: 1px solid #2dc2d0;
+                            }
+
+                            &.error {
+                                border: 1px solid red;
+                                background-color: #ffebeb;;
+                            }
+                        }
+
                         .btn-register {
                             padding: 13px 27px;
                             border: 1px solid #286ba6;

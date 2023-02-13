@@ -4,6 +4,7 @@ import "./navbar.scss";
 import blankAvatar from "../../assets/images/blank_avatar.jpg";
 import Options from "../options/Options";
 import { Link, useLocation } from "react-router-dom";
+import logo from '~/assets/images/logo.jpg'
 
 import { useContext } from "react";
 import { AuthContext } from "~/context/authContext";
@@ -27,7 +28,11 @@ export default function Navbar() {
         <div className="navbarTop container-fluid row">
           <div className="navbar-left col-lg-3 col-sm-3">
             <Link to="/" className="logo">
-              Health Care System
+              <img
+                src={logo}
+                alt='logo'
+                className="logo"
+              />
             </Link>
           </div>
           <div className="navbar-center col-lg-4 col-sm-9">
@@ -68,7 +73,7 @@ export default function Navbar() {
                     className="avatarContainer"
                     as="div"
                   >
-                    <img src={`${API_IMAGE_URL}/image/${currentUser?.avatar.filename}`} alt="" />
+                    <img src={`${API_IMAGE_URL}/image/${currentUser?.avatar?.filename}`} alt="" />
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu>

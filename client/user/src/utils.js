@@ -26,8 +26,14 @@ const checkStringContainInPhoneNumber = (phone) => {
   return !Regex.test(phone)
 }
 
+function validateUsername(username) {
+  const pattern = /^[\p{L}\s]+$/u;
+  return pattern.test(username);
+}
+
 export {
   shortenText,
   validateEmail,
-  checkStringContainInPhoneNumber
+  checkStringContainInPhoneNumber,
+  validateUsername
 }
