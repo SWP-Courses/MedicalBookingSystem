@@ -73,3 +73,12 @@ input, select {
 	display: block; 
 	color: red;
 }
+
+.form-control:focus {
+    color: #212529;
+    background-color: #fff;
+    border-color: #2684ff;
+    outline: 3px;
+    box-shadow: none;
+}
+

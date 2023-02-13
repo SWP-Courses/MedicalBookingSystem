@@ -10,6 +10,7 @@ import { useContext } from "react";
 import { AuthContext } from "~/context/authContext";
 import UserInfo from "~/components/userInfo/UserInfo";
 import { API_IMAGE_URL } from "~/api/Router";
+import PrescriptionNew from "./PrescriptionNew/PrescriptionNew";
 
 export default function Doctor() {
   const [userContent, setUserContent] = useState("info");
@@ -66,6 +67,16 @@ export default function Doctor() {
           </h4>
           <h4
             className={
+              userContent === "prescriptionNew" ? "action active" : "action"
+            }
+            onClick={() => {
+              handleOptionClick("prescriptionNew");
+            }}
+          >
+            Kê Đơn New
+          </h4>
+          <h4
+            className={
               userContent === "medicalHistory" ? "action active" : "action"
             }
             onClick={() => {
@@ -79,6 +90,7 @@ export default function Doctor() {
       <div className="doctorContent">
         {userContent === "info" && <UserInfo hanldeUploadImage={hanldeUploadImage} image={image}/>}
         {userContent === "prescription" && <Prescription />}
+        {userContent === "prescriptionNew" && <PrescriptionNew />}
         {userContent === "doctorSchedule" && <DoctorSchedule />}
         {userContent === "medicalHistory" && (
           <MedicalHistory
