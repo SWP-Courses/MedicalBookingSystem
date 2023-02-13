@@ -47,7 +47,7 @@ const getDoctors = async (req, res, next) => {
       },
       { "$unwind": '$special' },
     ])
-    console.log(user);
+    // console.log(user);
     res.status(200).json(user);
   } catch (err) {
     res.status(500).json(err);
