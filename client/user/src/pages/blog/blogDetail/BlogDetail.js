@@ -71,7 +71,7 @@ function BlogDetail() {
     } else {
       try {
         await axios.post(`${API_URL}/blogs/save/${id}/${currentUser._id}`);
-        setIsSaved(true)
+        setIsSaved(true);
       } catch (err) {
         console.log(err);
       }
@@ -81,7 +81,7 @@ function BlogDetail() {
   const handleUnSaveBlogClick = async () => {
     try {
       await axios.delete(`${API_URL}/blogs/unsave/${id}/${currentUser._id}`);
-      setIsSaved(false)
+      setIsSaved(false);
     } catch (err) {
       console.log(err);
     }
@@ -105,7 +105,7 @@ function BlogDetail() {
         </div>
         <div className="blog-content">
           <div className="blog-wrapper">
-            {!isSaved ? (
+            {currentUser?.role !== "doctor" && (!isSaved ? (
               <button className="saveBlog" onClick={handleSaveBlogClick}>
                 LƯU
               </button>
@@ -113,7 +113,7 @@ function BlogDetail() {
               <button className="saveBlog" onClick={handleUnSaveBlogClick}>
                 HUỶ LƯU
               </button>
-            )}
+            ))}
             <h1 className="blog-title">{blog?.title}</h1>
             <h6>Ngày đăng: {blog.createdAt}</h6>
             <img className="blog-detail-image" src={blog?.image} alt="" />

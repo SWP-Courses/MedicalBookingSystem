@@ -1,80 +1,163 @@
+
+
 .userInfoContainer {
-    padding: 30px;
-    > .title {
-        font-size: 30px;
-        font-weight: 500;
-        margin-bottom: 30px;
-    }
+  padding: 30px;
+  > .title {
+    font-size: 30px;
+    font-weight: 500;
+    margin-bottom: 30px;
+  }
 
-    > .userInfo {
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
-        gap: 50px;
-        
+  > .userInfo {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 50px;
 
-        >.infoList {
-            flex: 3;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+    > .infoList {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
 
-            >input {
-                padding: 10px;
-                font-size: 14px;
-                border: none;
-                outline: none;
-                color: #333;
-            }
-
-            .sex {
-                display: flex;
-                gap: 10px;
-                align-items: center;
-
-                .form-select {
-                    width: fit-content;                   
-                    height: 38px;
-                }
-
-                >span {
-                    width: 40px;
-                }
-
-                >strong {
-                    margin-right: 80px;
-                    opacity: 0.8;
-                }
-
-                .checkbox-group {
-                    margin-right: 10px;
-                    >input {
-                        margin-right: 5px;
-                    }
-                }
-            }
-        }
-
-        >.accountAvatar {
-            flex: 1;
-
-            >img {
-                width: 200px;
-                height: 200px;
-                border-radius: 100rem;
-
-            }
-        }
-    }
-
-    >button {
-        border: none;
+      > input {
+        padding: 13px;
+        font-size: 14px;
         outline: none;
-        padding: 10px 30px;
-        background-color: #337AB7;
-        color: white;
-        font-weight: bold;
-        font-size: 16px;
-        margin-top: 20px;
+        color: #333;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+
+        :focus {
+          outline: 1px solid #337ab7;
+        }
+      }
+
+      .form-select:focus {
+        /* border-color: #86b7fe; */
+        outline: 0;
+        box-shadow: 0 0 0 0.25rem rgb(249 251 255 / 25%);
+      }
+
+      .recall-date {
+        > h4 {
+          display: inline;
+          font-size: 19px;
+        }
+
+        > input {
+          padding: 10px;
+          font-size: 14px;
+          outline: none;
+          color: #333;
+          border-radius: 4px;
+        }
+      }
+
+      .sex {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+
+        .form-select {
+          width: fit-content;
+          height: 38px;
+        }
+
+        > span {
+          width: 40px;
+        }
+
+        > strong {
+          margin-right: 80px;
+          opacity: 0.8;
+        }
+
+        .checkbox-group {
+          margin-right: 10px;
+          > input {
+            margin-right: 5px;
+          }
+        }
+      }
+
+      .phone {
+        > input {
+          padding: 10px;
+          border: 1px solid lightgray;
+          font-size: 14px;
+          outline: none;
+          color: #333;
+          border-radius: 4px;
+        }
+
+        strong {
+          margin-right: 50px;
+          opacity: 0.8;
+        }
+      }
+
+      .recall-date {
+        strong {
+          margin-right: 80px;
+          opacity: 0.8;
+        }
+
+        > input {
+          cursor: pointer;
+          border: 1px solid lightgray;
+        }
+      }
     }
+
+    > .accountAvatar {
+      flex: 1;
+      border-left: 1px solid #ccc;
+
+      > div img {
+        width: 200px;
+        height: 200px;
+        object-fit: cover;
+        border-radius: 100rem;
+        margin: 0 auto;
+        display: block;
+      }
+
+      .uploadImage {
+        border: 1px solid #ccc;
+        padding: 7px 29px;
+        display: block;
+        margin: 20px auto;
+        border-radius: 4px;
+        width: fit-content;
+        cursor: pointer;
+
+        span {
+          margin-left: 10px;
+        }
+      }
+
+      .avata {
+        text-align: center;
+      }
+    }
+  }
+
+  > button {
+    // border: 1px solid #337AB7;
+    background-color: #4a8bc4;
+    padding: 10px 30px;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-top: 20px;
+    opacity: 0.9;
+    font-weight: bold;
+
+    &:hover {
+      background-color: #4a8bc4;
+      color: #fff;
+      transition: right linear 0.4s;
+      opacity: 1;
+    }
+  }
 }
