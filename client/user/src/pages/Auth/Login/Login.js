@@ -31,7 +31,7 @@ function Login() {
   const [userType, setUserType] = useState("R3");
   const [isloading, setIsLoading] = useState(false);
 
-  console.log(user);
+  // console.log(user);
 
   const hanldeValidateLogin = (type) => {
     // case phone or email is empty

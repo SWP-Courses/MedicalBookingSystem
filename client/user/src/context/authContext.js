@@ -9,7 +9,6 @@ import API_URL from "~/api/Router";
 export const AuthContext = createContext();
 
 export default function AuthContextProvider({ children }) {
-
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState(
     JSON.parse(localStorage.getItem("user") || null)
@@ -50,9 +49,21 @@ export default function AuthContextProvider({ children }) {
     }
   };
 
+  //todo
+ const update = async (userInfo) => {
+  try {
+    // check api phải gửi after change object
+    const res =  await axios.put(`${API_URL}/users/${currentUser._id}`, userInfo);
+    console.log(res.data);
+    setCurrentUser(res.data);
+  } catch(err) {
+    console.log(err);
+  }
+ }
+
   return (
     <AuthContext.Provider
-      value={{ currentUser, login, logout }}
+      value={{ currentUser, login, logout, update }}
     >
       {children}
     </AuthContext.Provider>

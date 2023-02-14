@@ -23,12 +23,15 @@ const serviceRouter = require('./routes/serviceRouter');
 const imageRouter = require('./routes/imageRouter');
 
 var app = express();
-app.use(cors());
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
+const corsOptions = {
+  origin: 'http://localhost:3000',
+  credentials: true
+};
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
@@ -37,8 +40,9 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+app.use(cookieParser());
+app.use(cors(corsOptions));
 
 // connect to database
 connectToDb();
@@ -50,10 +54,10 @@ app.use("/api/auth", authRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/specialists", specialistRouter);
 //  An + Minh
-app.use("/api/medicine", medicineRouter);
-app.use("/api/blog", blogRouter);
-app.use("/api/category", categoryRouter);
-app.use("/api/service", serviceRouter);
+app.use("/api/medicines", medicineRouter);
+app.use("/api/blogs", blogRouter);
+app.use("/api/categorys", categoryRouter);
+app.use("/api/services", serviceRouter);
 app.use('/image', imageRouter);
 
 
