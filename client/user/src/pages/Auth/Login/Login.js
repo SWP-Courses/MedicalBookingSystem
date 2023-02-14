@@ -25,7 +25,6 @@ function Login() {
 
   const inputRef = useRef();
 
-
   const [password, setPassword] = useState("");
   const [user, setUser] = useState("");
   const [userType, setUserType] = useState("R3");
@@ -56,11 +55,13 @@ function Login() {
         toast.error("SDT không được chứa kí tự");
         isPhoneNumber = false;
         return;
-      }else if(+phone.charAt(0) !== 0) {
+      }
+      if(+phone.charAt(0) !== 0) {
         toast.error("SDT phải bắt đầu bằng số 0");
         isPhoneNumber = false;
         return;
-      }else if(phone.length < 10 || phone.length > 11) {
+      }
+      if(phone.length < 10 || phone.length > 11) {
         toast.error("SDT phải có 10 hoặc 11 số ");
         isPhoneNumber = false;
         return;
@@ -74,7 +75,7 @@ function Login() {
           phone: user,
           password: password,
         }
-        console.log(loginUser);
+        // console.log(loginUser);
         login(loginUser, setIsLoading);
         return;
       }
@@ -87,7 +88,7 @@ function Login() {
         email: user,
         password: password,
       };    
-      console.log(loginUser);
+      // console.log(loginUser);
       login(loginUser);
     }else {
       toast.error('sai email')

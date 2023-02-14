@@ -1,14 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-
 import { useRef, useState, useEffect } from "react";
-
 import "./Register.scss";
-import UserInfo from "~/components/userInfo/UserInfo";
 import axios from "axios";
-import { parse, isValid, format } from "date-fns";
-import { enGB } from "date-fns/locale";
 import API_URL from "~/api/Router";
 import { checkStringContainInPhoneNumber, validateUsername } from "~/utils";
 import { validateEmail } from "~/utils";
