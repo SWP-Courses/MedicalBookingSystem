@@ -1,5 +1,6 @@
 .wrapper-prescription {
     padding: 20px 20px 30px;
+    height: 840px;
 
     .user {
         display: flex;
@@ -21,7 +22,7 @@
             >.gender {
                 .title {
                     font-weight: 500;
-                    font-size: 20px;
+                    font-size: 18px;
                 }
 
             }
@@ -45,7 +46,7 @@
 
         .medicine-choice {
             flex: 1;
-            height: 320px;
+            height: 600px;
             overflow: hidden auto;
             overscroll-behavior: contain;
 
@@ -115,14 +116,18 @@
 
         .medicine-note {
             width: 40%;
+
+            .desease-note {
+
+            }
             
             textarea {
-                border: 2px solid #337AB7;
+              border: 2px solid #337AB7;
               border-radius: 4px;
               outline: none;
               margin: 0 auto;
               display: block;
-              height: 80%;
+              height: 240px;
               padding: 10px;
             }
 
