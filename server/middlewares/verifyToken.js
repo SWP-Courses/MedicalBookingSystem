@@ -2,6 +2,7 @@ var jwt = require("jsonwebtoken");
 var { createError } = require("./error.js");
 
 const verifyToken = (req, res, next) => {
+  console.log(req.cookies);
   const token = req.cookies.access_token;
   if (!token) {
     // return next(createError(401, "You are not authenticated!"));
@@ -21,6 +22,7 @@ const verifyToken = (req, res, next) => {
 // Use when Update user
 const verifyUser = (req, res, next) => {
   verifyToken(req, res, next, () => {
+    // update, delete often has params.id
     if (req.user.id === req.params.id || req.user.isAdmin) {
       next();
     } else {

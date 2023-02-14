@@ -107,8 +107,7 @@ function DoctorDetail({ specialistId, profile, formData, doctorDetail, fullname,
                             <label htmlFor="exampleFormControlTextarea1" className="form-label">Description</label>
                             <textarea className="form-control" id="exampleFormControlTextarea1" defaultValue={doctorDetail.profile} rows="8"></textarea>
                         </div>
-
-                    </div >
+                    </div>
 
                 </div >
             </div >

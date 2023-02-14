@@ -10,11 +10,12 @@ import API_URL from "~/api/Router";
 export default function DoctorList() {
   const [doctorList, setDoctorList] = useState();
   const [specialists, setSpecialists] = useState([]);
+  const [filterId, setFilterId] = useState();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(API_URL+"/specialists");
+        const res = await axios.get(API_URL + "/specialists");
         setSpecialists(res.data);
       } catch (err) {
         console.log(err);
@@ -26,7 +27,7 @@ export default function DoctorList() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(API_URL+"/users/doctors");
+        const res = await axios.get(API_URL + "/users/doctors");
         setDoctorList(res.data);
       } catch (err) {
         console.log(err);
@@ -47,14 +48,27 @@ export default function DoctorList() {
           <div className="divideLine" />
           <ul>
             {specialists?.map((spe) => (
-              <li key={spe._id}>{spe.title}</li>
+              <li
+                key={spe._id}
+                className={filterId === spe._id && "active"}
+                onClick={() => setFilterId(spe._id)}
+              >
+                {spe.title}
+              </li>
             ))}
           </ul>
         </div>
+        <div className="divideLine" />
         <div className="doctorList">
-          {doctorList?.map((doctor, index) => (
-            <DoctorItem doctor={doctor} key={index} />
-          ))}
+          {filterId
+            ? doctorList.filter((doctor) => (
+                doctor.specialist_id === filterId
+              ))?.map((doctor, index) => (
+                <DoctorItem doctor={doctor} key={index} />
+              ))
+            : doctorList?.map((doctor, index) => (
+                <DoctorItem doctor={doctor} key={index} />
+              ))}
         </div>
       </div>
     </div>

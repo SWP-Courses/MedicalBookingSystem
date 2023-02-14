@@ -4,6 +4,7 @@ var UserModel = require("../models/User");
 // GET /api/specialists/
 // Get all specialists
 const getAllSpecialists = async (req, res) => {
+  console.log(req.cookies.access_token);
   try {
     const specialists = await SpecialistModel.find();
     res.status(200).json(specialists);

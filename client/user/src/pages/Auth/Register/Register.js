@@ -36,6 +36,7 @@ function Register() {
   };
 
   const handleRegister = async () => {
+    console.log(registerInfo);
     // validate
     const {
       phone,
@@ -84,7 +85,7 @@ function Register() {
     if (email) {
       const isValidEmail = validateEmail(email);
       if (!isValidEmail) {
-        toast.error("email sai định dạng");
+        toast.error("Email sai định dạng");
       }
     }
 
@@ -92,34 +93,42 @@ function Register() {
     if (password.length < 6) {
       inputRef.current["curPass"].className = "input-box error";
       inputRef.current["isValidPassword"].innerText =
-        "mật khẩu tối thiểu phải có 6 kí tự";
+        "Mật khẩu tối thiểu phải có 6 kí tự";
       return;
     }
 
     if (confirmPassword.length < 6) {
       inputRef.current["confirmPass"].className = "input-box error";
       inputRef.current["isConfirmPassword"].innerText =
-        "mật khẩu tối thiểu phải có 6 kí tự";
+        "Mật khẩu tối thiểu phải có 6 kí tự";
       return;
     }
 
     if (password !== confirmPassword) {
       inputRef.current["confirmPass"].className = "input-box error";
-      toast.error("mật khẩu nhập lại không chính xác");
+      toast.error("Mật khẩu nhập lại không chính xác");
       return;
     }
 
     // validate gender
     if (!gender) {
-      inputRef.current["isValidGender"].innerText = "chọn giới tính của bạn";
+      inputRef.current["isValidGender"].innerText = "Chọn giới tính của bạn";
       return;
     }
 
     // call api
     try {
       const res = await axios.post(API_URL+"/auth/register", registerInfo);
-      setRegisterInfo({});
-      console.log(res.data); 
+      setRegisterInfo({
+        fullname: "",
+        email: "",
+        gender: "",
+        phone: "",
+        dateOfBirth: "",
+        password: "",
+        confirmPassword: "",
+      });
+      navigate("/login")
     } catch (err) {
       console.log(err);
     }

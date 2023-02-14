@@ -104,8 +104,6 @@ const login = async (req, res, next) => {
     // ]);
     // const user = result[0];
 
-    // console.log(user);
-
     if (!user) return res.status(404).send("Tài khoản không tồn tại!");
 
     const isPasswordCorrect = await bcrypt.compare(
@@ -121,11 +119,12 @@ const login = async (req, res, next) => {
       { id: user._id, isAdmin: user.role === 'admin' ? true : false },
       process.env.JWT
     );
+    console.log(token);
 
     const { password, role_code, ...filteredUser } = user._doc;
     res
-      .cookie("access_token", token, {
-        httpOnly: true,
+      .cookie("access_token", "sfasdfdf", {
+        httpOnly: true
       })
       .status(200)
       .json({ ...filteredUser, role: userRole.title });
@@ -138,13 +137,13 @@ const login = async (req, res, next) => {
 // LOGOUT
 const logout = (req, res) => {
   console.log('logout controller');
-  // res
-  //   .clearCookie("access_token", {
-  //     sameSite: "none",
-  //     secure: true,
-  //   })
-  //   .status(200)
-  //   .json("User has been logged out.");
+  res
+    // .clearCookie("access_token", {
+    //   sameSite: "none",
+    //   secure: true,
+    // })
+    .status(200)
+    .json("User has been logged out.");
 
   res.status(200).json("Logged out!")
 };

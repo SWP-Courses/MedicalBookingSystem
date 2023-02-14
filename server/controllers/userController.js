@@ -1,5 +1,6 @@
 const UserModel = require("../models/User");
 var SpecialistModel = require("../models/Specialist");
+var RoleModel = require('../models/Role');
 const { deleteImageById } = require("./imageController");
 
 // PUT /api/users/:id
@@ -7,9 +8,10 @@ const { deleteImageById } = require("./imageController");
 const updateUser = async (req, res, next) => {
   try {
     const updatedUser = await UserModel.findByIdAndUpdate(req.params.id, req.body, {new:true});
-    // if (!doctor) return res.status(404).send("Doctor not found!");
-    // const specialist = await SpecialistModel.findById(doctor._doc.specialist_id);
-    res.status(200).json(updatedUser);
+    const userRole = await RoleModel.findOne({ role_code: updatedUser.role_code });
+    const { password, role_code, ...filteredInfo } = updatedUser._doc;
+
+    res.status(200).json({ ...filteredInfo, role: userRole.title });
   } catch (err) {
     res.status(500).json(err);
   }
@@ -47,7 +49,7 @@ const getDoctors = async (req, res, next) => {
       },
       { "$unwind": '$special' },
     ])
-    console.log(user);
+    // console.log(user);
     res.status(200).json(user);
   } catch (err) {
     res.status(500).json(err);

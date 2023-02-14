@@ -10,6 +10,7 @@ import {
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import API_URL, { API_IMAGE_URL } from "~/api/Router";
+import background from "~/assets/images/doctor_background.jpg";
 
 export default function DoctorDetail() {
   const [moreOpen, setMoreOpen] = useState(false);
@@ -20,7 +21,7 @@ export default function DoctorDetail() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(API_URL+"/users/doctors/" + doctorId);
+        const res = await axios.get(API_URL + "/users/doctors/" + doctorId);
         setDoctor(res.data);
       } catch (err) {
         console.log(err);
@@ -31,10 +32,14 @@ export default function DoctorDetail() {
 
   return (
     <div className="doctorDetail">
-      <div className="doctorVisual">
-        <img src={`${API_IMAGE_URL}/image/${doctor?.avatar.filename}`} alt="" />
-        <h1>{`${doctor?.degree} ${doctor?.fullname}`} </h1>
-      </div>
+      <img src={background} alt="" className="background"/>
+      <img
+        src={`${API_IMAGE_URL}/image/${doctor?.avatar.filename}`}
+        alt=""
+        className="avatar"
+      />
+      <h1>{`${doctor?.degree} ${doctor?.fullname}`} </h1>
+
       <div className="doctorProfileContent">
         <div className="profileLeft">
           <div className="profileItem">

@@ -9,27 +9,26 @@ import { useContext } from "react";
 import { AuthContext } from "~/context/authContext";
 import { Calendar, fo } from "react-calendar";
 import { format, parseISO } from "date-fns";
-import API_URL from "~/api/Router";
+import API_URL, { API_IMAGE_URL } from "~/api/Router";
 import axios from "axios";
 
 export default function UserInfo(props) {
-  const {image, hanldeUploadImage} = props;
-  const { currentUser } = useContext(AuthContext);
-
+  const { currentUser, update } = useContext(AuthContext);
+  const [showAvatar, setShowAvatar] = useState(`${API_IMAGE_URL}/image/${currentUser.avatar.filename}`);
   const [userInfo, setUserInfo] = useState({
     fullname:currentUser?.fullname,
     email: currentUser?.email,
-    address: currentUser?.address || '',
+    address: currentUser?.address,
     gender: currentUser?.gender,
     phone: currentUser?.phone,
-    dateOfBirth: currentUser?.dateOfBirth
+    dateOfBirth: currentUser?.dateOfBirth,
   })
 
-  useEffect(() => {
-    return () => {
-      image && image.avatar && URL.revokeObjectURL(image.avatar);
-    }
-  }, [image])
+  const onSelectAvatar = (e) => {
+    const chosenFile = e.target.files[0]
+    if (!chosenFile) return;
+    setShowAvatar(URL.createObjectURL(chosenFile));
+}
 
   // Functions 
   const handleTextInputChange = (e) => {
@@ -39,13 +38,9 @@ export default function UserInfo(props) {
     }))
   }
 
-  // todo-func: call api update
+  //When Click Save button
   const handleUpdateClick =async () => {
-    try {
-      await axios.put(`${API_URL}/users/${currentUser._id}`, userInfo);
-    } catch(err) {
-      console.log(err);
-    }
+    await update(userInfo);
   }
 
   console.log(userInfo);
@@ -105,19 +100,6 @@ export default function UserInfo(props) {
                 Nữ
               </label>
             </div>
-            {/* <div className="checkbox-group">
-              <input
-                // className="form-check-input"
-                type="radio"
-                name="flexRadioDefault"
-                id="flexRadioDefault1"
-                value={gender}
-                onChange={(e) => setGender(e.target.checked)}
-              />
-              <label className="form-check-label" htmlFor="flexRadioDefault1">
-                Khác
-              </label>
-            </div> */}
           </div>
             <div className="phone mt-1">
               <strong>Số Điện Thoại</strong>
@@ -131,31 +113,19 @@ export default function UserInfo(props) {
             <div className="recall-date">
               <strong htmlFor="birthday">Ngày Sinh</strong>
               <input 
-                name="dateOfBirth" 
-                placeholder="Ngày sinh"
-                value={currentUser.dateOfBirth}
-                onChange={handleTextInputChange}
-              />
-              {/* <input 
                 type="date" 
                 id="birthday" 
-                name="birthday" 
-                value={birthday}
-                onChange={(e) => setBirthday(e.target.value)}
-              /> */}
-              {/* <Calendar
-                onChange={(date) => setBirthday(date)}
-                value={birthday}
-                maxDate={new Date()}
-                // formatLongDate={(locale, date) => formatDate(date, 'dd/MM/yyyy')}
-            /> */}
+                name="dateOfBirth" 
+                defaultValue={userInfo.dateOfBirth}
+                onChange={handleTextInputChange}
+              />
             </div>
         </div>
         <div className="accountAvatar">
           <div className="avata">
             {            
-              image && image.avatar ?  (
-                <img src={image.avatar} alt="account avarta" className="avata" />
+              showAvatar ?  (
+                <img src={showAvatar} alt="account avarta" className="avata" />
               ) : 'upload your avatar here'          
             } 
           </div>
@@ -169,11 +139,11 @@ export default function UserInfo(props) {
           <input 
             type='file' 
             hidden id="imageFile"
-            onChange={(e) => hanldeUploadImage(e)}
+            onChange={onSelectAvatar}
           />
         </div>
       </div>
-      <button onClick={() => console.log(userInfo)}>LƯU</button>
+      <button onClick={handleUpdateClick}>LƯU</button>
     </div>
   );
 }

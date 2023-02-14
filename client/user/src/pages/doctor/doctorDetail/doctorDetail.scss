@@ -1,21 +1,26 @@
 .doctorDetail {
-  .doctorVisual {
-    background-image: url("../../../assets/images/doctor_background.jpg");
-    padding-top: 20px;
-    display: flex;
-    align-items: center;
-    gap: 20px;
+  > .background {
+    height: 200px;
+    width: 100%;
+  }
 
-    > img {
-      width: 200px;
-      height: 200px;
-      object-fit: cover;
-    }
+  > img.avatar {
+    width: 150px;
+    height: 150px;
+    border-radius: 100rem;
+    object-fit: cover;
+    transform: translateY(-50%);
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    border: 3px solid rgb(255, 243, 113);
+    background-image: linear-gradient(45deg, #878fb7, #c4b9b9);
+  }
 
-    > h1 {
-      font-size: 26px;
-      font-weight: bold;
-    }
+  > h1 {
+    text-align: center;
+    font-size: 26px;
+    font-weight: bold;
   }
 
   .doctorProfileContent {
@@ -35,8 +40,8 @@
     }
 
     .profileItem {
-        border: 1px solid #EEEEEE;
-        border-radius: 5px;
+      border: 1px solid #eeeeee;
+      border-radius: 5px;
 
       > .header {
         display: flex;
@@ -45,8 +50,8 @@
         padding: 10px;
       }
 
-      >.devideLine {
-        border-top: 0.5px solid #EEEEEE;
+      > .devideLine {
+        border-top: 0.5px solid #eeeeee;
       }
 
       > p {

@@ -25,14 +25,6 @@ function Blogs() {
   const [blogsFiltered, setBlogsFiltered] = useState([]);
   const [categoryName, setCategoryName] = useState('Tổng Hợp Các Bài Viết');
 
-  console.log('check blog filtered : ', blogsFiltered);
-
-  const location = useLocation();
-
-  console.log(location);
-
-  const navigate = useNavigate();
-
   useEffect(() => {
     fetchListCategoryBlogs();
     fetchBlogs();
@@ -40,16 +32,16 @@ function Blogs() {
 
 
   const fetchListCategoryBlogs = async () => {
-    const res = await axios.get(API_URL+'/category');
-    console.log('check res cate: ', res);
+    const res = await axios.get(API_URL+'/categorys');
+    // console.log('check res cate: ', res);
     if(res && res.data && res.data.category && res.data.category.length > 0) {
       setBlogCategory(res.data.category);
     }
   }
 
   const fetchBlogs = async () => {
-    const res = await axios.get(API_URL+'/blog');
-    console.log('check res blog: ', res);
+    const res = await axios.get(API_URL+'/blogs');
+    // console.log('check res blog: ', res);
     if(res && res.data && res.data.blogs && res.data.blogs.length > 0) {
       setBlogs(res.data.blogs)
     }
@@ -102,7 +94,7 @@ function Blogs() {
                       <img
                         className="blog-image"
                         src={blog.image}
-                        alt="blog-image"
+                        alt="blog-img"
                       />
                     </Link>
                     <div className="blog-item-body">
@@ -115,9 +107,6 @@ function Blogs() {
                           __html: DOMPurify.sanitize(blog.content),
                         }}
                       >
-                        {
-                          // blog.content
-                        }
                       </p>
                     </div>
                   </div>

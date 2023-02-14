@@ -15,15 +15,9 @@ export default function Customer() {
 
   const { currentUser } = useContext(AuthContext);
 
-  const [image, setImage] = useState(currentUser?.avatar);
 
-  const hanldeUploadImage = (e) => {
-    if(e && e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      file.avatar = URL.createObjectURL(file); 
-      setImage(file);
-    }
-  };
+
+
 
   const handleOptionClick = (option) => {
     setUserContent(option);
@@ -73,7 +67,7 @@ export default function Customer() {
         </div>
       </div>
       <div className="userContent">
-        {userContent === "info" && <UserInfo hanldeUploadImage={hanldeUploadImage} image={image}/>}
+        {userContent === "info" && <UserInfo />}
         {userContent === "history" && <MedicalHistory />}
         {userContent === "apmSchedule" && <AppointmentSchedule />}
         {userContent === "pSaved" && <BlogsSaved />}
