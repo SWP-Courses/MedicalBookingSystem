@@ -21,7 +21,7 @@ export default function UserInfo(props) {
     address: currentUser?.address,
     gender: currentUser?.gender,
     phone: currentUser?.phone,
-    dateOfBirth: currentUser?.dateOfBirth,
+    dateOfBirth: currentUser?.dateOfBirth?.split('/')?.reverse()?.join('-'),
   })
 
   const onSelectAvatar = (e) => {

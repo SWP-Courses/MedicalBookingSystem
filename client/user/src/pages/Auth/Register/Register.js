@@ -36,7 +36,6 @@ function Register() {
   };
 
   const handleRegister = async () => {
-    console.log(registerInfo);
     // validate
     const {
       phone,
@@ -71,11 +70,13 @@ function Register() {
       inputRef.current["phone"].className = "input-box error";
       inputRef.current["isValidPhone"].innerText = "SDT không được chứa kí tự";
       return;
-    } else if (+phone.charAt(0) !== 0) {
+    }
+    if (+phone.charAt(0) !== 0) {
       inputRef.current["phone"].className = "input-box error";
       toast.error("SDT phải bắt đầu bằng số 0");
       return;
-    } else if (phone.length < 10 || phone.length > 11) {
+    }
+    if (phone.length < 10 || phone.length > 11) {
       inputRef.current["phone"].className = "input-box error";
       toast.error("SDT phải có 10 hoặc 11 số ");
       return;
@@ -116,7 +117,12 @@ function Register() {
       return;
     }
 
-    // call api
+    // convert date
+    // const userRegister = {
+    //   ...registerInfo, ['dateOfBirth']: dateOfBirth.replaceAll('-', '/')
+    // }
+
+    //call api
     try {
       const res = await axios.post(API_URL+"/auth/register", registerInfo);
       setRegisterInfo({
@@ -128,11 +134,14 @@ function Register() {
         password: "",
         confirmPassword: "",
       });
+      if(res) {
+        toast.success('Đăng kí Thành Công');
+      }
       navigate("/login")
     } catch (err) {
+      toast.error(err?.response?.data);
       console.log(err);
     }
-    console.log(registerInfo);
   };
 
   const hanldeEmptyInput = (e) => {
@@ -141,7 +150,7 @@ function Register() {
     } else {
       e.target.className = "input-box";
     }
-    if(e.target.checked) {
+    if (e.target.checked) {
       inputRef.current["isValidGender"].innerText = "";
     }
   };
@@ -158,10 +167,10 @@ function Register() {
   };
 
   const hanldeCheckEmptyCheckBox = (e) => {
-    if(e.target.value) {
-      inputRef.current["isValidGender"].innerText = '';
+    if (e.target.value) {
+      inputRef.current["isValidGender"].innerText = "";
     }
-  }
+  };
 
   return (
     <div className="Login-Wrapper animate__animated animate__fadeInDown">
@@ -384,7 +393,6 @@ function Register() {
                     }}
                     className="errorAlert mt-2"
                   ></span>
-
                 </center>
               </div>
               <button className="btn-register mt-3" onClick={handleRegister}>
