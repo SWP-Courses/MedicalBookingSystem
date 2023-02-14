@@ -5,8 +5,20 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import DOMPurify from "dompurify";
 import API_URL from "~/api/Router";
+import Pagination from 'react-bootstrap/Pagination';
 
 function Blogs() {
+
+  let active = 2;
+  let items = [];
+  for (let number = 1; number <= 5; number++) {
+    items.push(
+      <Pagination.Item key={number} active={number === active}>
+        {number}
+      </Pagination.Item>,
+    );
+  }
+
 
   const [blogCategory, setBlogCategory] = useState([]);
   const [blogs, setBlogs] = useState([]);
@@ -149,7 +161,9 @@ function Blogs() {
           </div>
         </div>
         <div className="paginate">
-          <h1>Paginate</h1>
+          <span>
+            <Pagination size="lg">{items}</Pagination>
+          </span>
         </div>
       </div>
     </div>

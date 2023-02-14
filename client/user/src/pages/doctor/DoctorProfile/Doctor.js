@@ -60,7 +60,7 @@ export default function Doctor() {
               handleOptionClick("prescription");
             }}
           >
-            Kê Đơn
+            Kê Đơn Thuốc  
           </h4>
           <h4
             className={

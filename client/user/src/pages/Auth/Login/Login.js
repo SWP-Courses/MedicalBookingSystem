@@ -75,7 +75,7 @@ function Login() {
           phone: user,
           password: password,
         }
-        console.log(loginUser);
+        // console.log(loginUser);
         login(loginUser, setIsLoading);
         return;
       }
@@ -88,7 +88,7 @@ function Login() {
         email: user,
         password: password,
       };    
-      console.log(loginUser);
+      // console.log(loginUser);
       login(loginUser);
     }else {
       toast.error('sai email')
