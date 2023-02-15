@@ -19,7 +19,7 @@ export default function MedicalHistory(props) {
         <button className="currentSchedule">Lịch Hôm Nay</button>
       </div>
       <div className="table-responsive">
-        <Table striped className="table-history">
+        <Table striped  className="table-history">
         <thead>
           <tr>
             <th>ID</th>
@@ -28,14 +28,13 @@ export default function MedicalHistory(props) {
             <th>Bác sỹ</th>
             <th>Ngày Tái Khám</th>
             <th>Chi tiết</th>
-            <th>Chi tiết</th>
           </tr>
         </thead>
         <tbody>
           {
             historyPatients.map((item, index) => {
               return (
-                <tr>
+                <tr key={index}>
                   <td>{index}</td>
                   <td>Mark</td>
                   <td>Otto</td>

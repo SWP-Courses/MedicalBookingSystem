@@ -1,7 +1,7 @@
 import "./Blog.scss";
 
 import { useLocation, useNavigate, Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import DOMPurify from "dompurify";
 import API_URL from "~/api/Router";
@@ -19,7 +19,6 @@ function Blogs() {
     );
   }
 
-
   const [blogCategory, setBlogCategory] = useState([]);
   const [blogs, setBlogs] = useState([]);
   const [blogsFiltered, setBlogsFiltered] = useState([]);
@@ -29,7 +28,6 @@ function Blogs() {
     fetchListCategoryBlogs();
     fetchBlogs();
   }, [])
-
 
   const fetchListCategoryBlogs = async () => {
     const res = await axios.get(API_URL+'/categorys');
@@ -43,13 +41,14 @@ function Blogs() {
     const res = await axios.get(API_URL+'/blogs');
     // console.log('check res blog: ', res);
     if(res && res.data && res.data.blogs && res.data.blogs.length > 0) {
+      listBlog.current = res.data.blogs;
       setBlogs(res.data.blogs)
     }
   }
 
   const handleFilterBlogByCategoryId = (category) => {
-    let newBlogList = blogs.filter((blog) => blog.category_id === category._id);
-    setBlogsFiltered(newBlogList);
+    let newBlogList = listBlog.current.filter((blog) => blog.category_id === category._id);
+    setBlogs(newBlogList);
     setCategoryName(category.name);
   }
 
@@ -86,34 +85,7 @@ function Blogs() {
             <h1 className="type">{categoryName}</h1>
             <hr />
             {
-              blogsFiltered.length > 0 ? 
-              blogsFiltered.map((blog, index) => {
-                return (
-                  <div key={index} className="blog-item">
-                  <Link  to={`/blogs/${blog._id}`}>
-                      <img
-                        className="blog-image"
-                        src={blog.image}
-                        alt="blog-img"
-                      />
-                    </Link>
-                    <div className="blog-item-body">
-                      <h2 className="bolg-item-title line-clamp">
-                        {blog.title}
-                      </h2>
-                      <p 
-                        className="line-clamp line-4"
-                        dangerouslySetInnerHTML={{
-                          __html: DOMPurify.sanitize(blog.content),
-                        }}
-                      >
-                      </p>
-                    </div>
-                  </div>
-                )
-              })
-              :
-              blogs.map((blog, index) => {
+               blogs.map((blog, index) => {
                 return (
                   <div key={index} className="blog-item">
                     <Link  to={`/blogs/${blog._id}`}>

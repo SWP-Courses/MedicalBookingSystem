@@ -28,8 +28,8 @@ export default function UserInfo(props) {
     const chosenFile = e.target.files[0]
     if (!chosenFile) return;
     setShowAvatar(URL.createObjectURL(chosenFile));
-}
-
+  }
+ 
   // Functions 
   const handleTextInputChange = (e) => {
     setUserInfo(prev => ({
@@ -42,8 +42,6 @@ export default function UserInfo(props) {
   const handleUpdateClick =async () => {
     await update(userInfo);
   }
-
-  console.log(userInfo);
 
   return (
     <div className="userInfoContainer">

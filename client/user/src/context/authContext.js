@@ -1,10 +1,9 @@
 import { useState, createContext, useEffect, useContext } from "react";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
-
 import { toast } from "react-toastify";
-import API_URL from "~/api/Router";
 
+import API_URL from "~/api/Router";
 
 export const AuthContext = createContext();
 
