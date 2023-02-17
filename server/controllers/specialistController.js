@@ -13,7 +13,7 @@ const getAllSpecialists = async (req, res) => {
 };
 
 // GET /api/specialists/:specialistId
-// Get single specialists by id
+// Get single specialists by id, join with User
 const getSingleSpecialist = async (req, res) => {
   const specialistId = req.params.id;
   try {

@@ -29,7 +29,7 @@ const Doctor = () => {
 
   const getAllDoctor = async () => {
     try {
-      const result = await axios.get(`${ROUTER}/api/users/doctor`);
+      const result = await axios.get(`${ROUTER}/api/users/doctors`);
       if (result.status === 200) {
         setDoctorList(result.data);
       }

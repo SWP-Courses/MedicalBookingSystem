@@ -81,12 +81,28 @@
                     .form-content {
                         padding: 28px 17px;
 
-                        .errorAlert {
-                            margin-left: 5px;
-                            font-size: 15px;
-                            margin-top: 5px;
-                            display: block; 
-                            color: red;
+                        // .errorAlert {
+                        //     margin-left: 5px;
+                        //     font-size: 15px;
+                        //     margin-top: 5px;
+                        //     display: block; 
+                        //     color: red;
+                        // }
+
+                        .loader-icon {
+                            margin-right: 7px;
+                            top: 2px;
+                            font-size: 20px;
+                            animation: spin 1s infinite linear;
+                        }
+                
+                        @keyframes spin {
+                            from {
+                                transform: scale(1) rotate(0deg);
+                            }
+                            to {
+                                transform: scale(1) rotate(360deg);
+                            }
                         }
                     }
 
@@ -128,6 +144,11 @@
                         font-weight: 500;
                         background-color: #286ba6;
                         color: #fff;
+
+                        &:disabled {
+                            cursor: no-drop;
+                            opacity: 0.6;
+                        }
                     }
 
                     .separate {

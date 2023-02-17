@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
+import API_URL from "~/api/Router";
 import "./options.scss";
 
 export default function Options() {
@@ -20,7 +21,7 @@ export default function Options() {
   const fetchSpecialists = () => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("/specialists");
+        const res = await axios.get(API_URL+"/specialists");
         setSpecialists(res.data);
       } catch (err) {
         console.log(err);
@@ -28,7 +29,7 @@ export default function Options() {
     };
     fetchData();
   };
-  console.log(specialists);
+  
   return (
     <div className="topbarOptions">
       <div className="optionItem-wrapper container-fluid">
@@ -54,10 +55,6 @@ export default function Options() {
           <Link to="/blogs">
             <span>Bài viết - Tin Tức</span>
           </Link>
-        </div>
-        <div className="optionItem col-sm-2.5">
-          <span>Khác</span>
-          <FontAwesomeIcon icon={faChevronDown} className="optionIcon" />
         </div>
         <div className="optionItem">
           <span>

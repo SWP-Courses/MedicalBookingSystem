@@ -1,17 +1,20 @@
 import { useState, createContext, useEffect, useContext } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+
+import { toast } from "react-toastify";
+import API_URL from "~/api/Router";
+
 
 export const AuthContext = createContext();
 
 export default function AuthContextProvider({ children }) {
+
+  const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState(
     JSON.parse(localStorage.getItem("user") || null)
   );
-  const [routingHistory, setRoutingHistory] = useState({
-    beforeLogin: "",
-  });
-  const navigate = useNavigate();
+  const location = useLocation();
 
   // Side Effect
   useEffect(() => {
@@ -20,25 +23,36 @@ export default function AuthContextProvider({ children }) {
   }, [currentUser]);
 
   // Functions
-  const login = async (inputs) => {
-    const res = await axios.post("/auth/login", {
-      role_code: "R3",
-      phone: "0123456789",
-      password: "111111",
-    });
-    // console.log(res.data);
-    setCurrentUser(res.data);
-    navigate("/");
+  const login = async (inputs, setIsLoading) => {
+    try {
+      const res = await axios.post(API_URL+"/auth/login", {
+        ...inputs
+      });
+      setCurrentUser(res.data);
+      // setIsLoading(false);
+      navigate("/");
+    } catch (error) {
+        toast.error(error?.response?.data);
+        if(error?.response?.data) {
+          setIsLoading(false);
+        }
+    }
   };
 
   const logout = async () => {
-    await axios.post("/auth/logout");
-    setCurrentUser(null);
+    try {
+      await axios.post(API_URL+"/auth/logout");
+      setCurrentUser(null);
+      if(location.pathname === '/doctor' || location.pathname === '/customer')
+        navigate("/")
+    } catch(err) {
+      console.log(err);
+    }
   };
 
   return (
     <AuthContext.Provider
-      value={{ currentUser, login, logout, routingHistory, setRoutingHistory }}
+      value={{ currentUser, login, logout }}
     >
       {children}
     </AuthContext.Provider>

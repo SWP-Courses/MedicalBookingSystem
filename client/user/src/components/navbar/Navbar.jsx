@@ -4,15 +4,22 @@ import "./navbar.scss";
 import blankAvatar from "../../assets/images/blank_avatar.jpg";
 import Options from "../options/Options";
 import { Link, useLocation } from "react-router-dom";
+
 import { useContext } from "react";
 import { AuthContext } from "~/context/authContext";
-import { Dropdown } from "react-bootstrap";
 
-// const user = "doctor";
-const user = null;
-// const user = "customer";
+import { Dropdown } from "react-bootstrap";
+import API_URL, { API_IMAGE_URL } from "~/api/Router";
+
+
 export default function Navbar() {
+
   const { currentUser, logout } = useContext(AuthContext);
+
+  //Functions 
+  const handleLogout =() => {
+    logout()
+  }
 
   return (
     <div className="navbarContainer">
@@ -61,11 +68,11 @@ export default function Navbar() {
                     className="avatarContainer"
                     as="div"
                   >
-                    <img src={blankAvatar} alt="" />
+                    <img src={`${API_IMAGE_URL}/image/${currentUser?.avatar.filename}`} alt="" />
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu>
-                    <Dropdown.Item href="#/action-1">
+                    <Dropdown.Item as="div">
                       <Link
                         className="dropdown-item"
                         to={"/" + currentUser.role}
@@ -73,8 +80,8 @@ export default function Navbar() {
                         Thông tin cá nhân
                       </Link>
                     </Dropdown.Item>
-                    <Dropdown.Item href="#/action-2">
-                      <button className="dropdown-item text-danger" href="#">
+                    <Dropdown.Item as="div">
+                      <button className="dropdown-item text-danger" onClick={handleLogout}>
                         Đăng xuất
                       </button>
                     </Dropdown.Item>

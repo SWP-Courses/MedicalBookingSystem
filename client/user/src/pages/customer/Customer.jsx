@@ -1,23 +1,41 @@
 import "./customer.scss";
 import blankAvatar from "../../assets/images/blank_avatar.jpg";
-import UserInfo from "./userInfo/UserInfo";
+import UserInfo from "../../components/userInfo/UserInfo";
 import { useState } from "react";
 import MedicalHistory from "./medicalHistory/MedicalHistory";
 import AppointmentSchedule from "./appointmentSchedule/AppointmentSchedule";
 import BlogsSaved from "./blogsSaved/BlogsSaved";
 
+import { useContext } from "react";
+import { AuthContext } from "~/context/authContext";
+import { API_IMAGE_URL } from "~/api/Router";
+
 export default function Customer() {
   const [userContent, setUserContent] = useState("info");
+
+  const { currentUser } = useContext(AuthContext);
+
+  const [image, setImage] = useState(currentUser?.avatar);
+
+  const hanldeUploadImage = (e) => {
+    if(e && e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      file.avatar = URL.createObjectURL(file); 
+      setImage(file);
+    }
+  };
 
   const handleOptionClick = (option) => {
     setUserContent(option);
   };
+
   return (
     <div className="customer">
       <div className="userSidebar">
         <div className="userInfo">
-          <img src={blankAvatar} alt="" />
-          <span>Anh Anh</span>
+            <img src={`${API_IMAGE_URL}/image/${currentUser?.avatar?.filename}`} alt=""/> 
+          
+          <span className="userName">{currentUser?.fullname}</span>
         </div>
         <div className="profileActions">
           <h4
@@ -55,7 +73,7 @@ export default function Customer() {
         </div>
       </div>
       <div className="userContent">
-        {userContent === "info" && <UserInfo />}
+        {userContent === "info" && <UserInfo hanldeUploadImage={hanldeUploadImage} image={image}/>}
         {userContent === "history" && <MedicalHistory />}
         {userContent === "apmSchedule" && <AppointmentSchedule />}
         {userContent === "pSaved" && <BlogsSaved />}

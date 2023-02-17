@@ -71,6 +71,13 @@
                     margin-right: 80px;
                     opacity: 0.8;
                 }
+
+                .checkbox-group {
+                    margin-right: 10px;
+                    >input {
+                        margin-right: 5px;
+                    }
+                }
             }
 
             .phone {
