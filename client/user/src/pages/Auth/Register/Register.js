@@ -7,6 +7,7 @@ import axios from "axios";
 import API_URL from "~/api/Router";
 import { checkStringContainInPhoneNumber, validateUsername } from "~/utils";
 import { validateEmail } from "~/utils";
+import logo from '~/assets/images/logo.jpg'
 
 function Register() {
   const [registerInfo, setRegisterInfo] = useState({
@@ -177,16 +178,15 @@ function Register() {
       <div className="Login-header">
         <div className="logo">
           <img
-            src=""
+            src={logo}
             alt="logo"
             onClick={() => navigate("/")}
             className="logo"
           />
-          <div>Đăng Kí</div>
         </div>
       </div>
       <div className="login-main">
-        <div className="login-body">
+        <div className="login-body height">
           <h2>Đăng Kí</h2>
           <div className="form-body">
             <div className="form-content">

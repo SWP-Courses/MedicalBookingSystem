@@ -19,7 +19,7 @@ export default function MedicalHistory(props) {
         <button className="currentSchedule">Lịch Hôm Nay</button>
       </div>
       <div className="table-responsive">
-        <Table striped  className="table-history">
+        <Table striped   className="table-history">
         <thead>
           <tr>
             <th>ID</th>
@@ -40,7 +40,7 @@ export default function MedicalHistory(props) {
                   <td>Otto</td>
                   <td>@mdo</td>
                   <td>@mdo</td>
-                  <td><FontAwesomeIcon icon={faEllipsis} /></td>
+                  <td><FontAwesomeIcon icon={faEllipsis} className='btn-action' /></td>
                 </tr>
               )
             })

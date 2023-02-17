@@ -24,6 +24,10 @@
                 position: absolute;
                 transform: translateX(-50%);
 
+                &.height {
+                    padding: 0 0;
+                }
+
                 .select {
                     align-self: center;
                     outline: none;

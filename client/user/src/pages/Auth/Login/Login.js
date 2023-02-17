@@ -11,9 +11,9 @@ import { toast } from "react-toastify";
 import "animate.css";
 import { validateEmail } from "~/utils";
 import { checkStringContainInPhoneNumber } from "~/utils";
-
 import "./Login.scss";
 import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import logo from '~/assets/images/logo.jpg'
 
 function Login() {
   const { login } = useContext(AuthContext);
@@ -127,7 +127,7 @@ function Login() {
       <div className="Login-header">
         <div className="logo">
           <img
-            src=""
+            src={logo}
             alt="logo"
             onClick={() => navigate("/")}
             className="logo"
