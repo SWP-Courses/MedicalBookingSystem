@@ -25,23 +25,27 @@ const getBlogById = asyncHandler(async (req, res, next) => {
 //@route POST /api/blog
 //@access private
 const createBlog = asyncHandler(async (req, res, next) => {
-  const { author, title, createdAt, content, image, category_id } = req.body;
+  try {
+    const { title, content, category_id, author } = req.body;
 
-  if (!author || !title || !createdAt || !content || !image || !category_id) {
+    if (!title || !content || !category_id) {
+      res.status(400);
+      throw new Error("All field not be empty!");
+    }
+
+
+    const blogs = await Blog.create({
+      title,
+      content,
+      category_id,
+      author
+    });
+
+    res.status(200).json({ blogs });
+  } catch (error) {
+    console.log(error);
     res.status(400);
-    throw new Error("All field not be empty!");
   }
-
-  const blogs = await Blog.create({
-    author,
-    title,
-    createdAt,
-    content,
-    image,
-    category_id
-  });
-
-  res.status(200).json({ blogs });
 });
 
 //@desc Update blog
@@ -56,17 +60,15 @@ const updateBlog = asyncHandler(async (req, res, next) => {
     throw new Error("Blog Not Found!");
   }
 
-  const { author, title, createdAt, content, image, category_id } = req.body;
-  const updateBlog = await Blog.findByIdAndUpdate(blogId, {
+  const { author, title, content, category_id } = req.body;
+  const blogs = await Blog.findByIdAndUpdate(blogId, {
     author,
     title,
-    createdAt,
     content,
-    image,
     category_id
-  });
+  }, { new: true });
 
-  res.status(200).json({ updateBlog });
+  res.status(200).json({ blogs });
 });
 
 //@desc Delete blog
