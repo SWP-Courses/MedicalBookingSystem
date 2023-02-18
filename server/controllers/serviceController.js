@@ -25,22 +25,17 @@ const getServiceById = asyncHandler(async (req, res, next) => {
 //@route POST /api/service
 //@access private
 const createService = asyncHandler(async (req, res, next) => {
-  const { name, price, description, specialist_id} = req.body;
+  const { name, price, description} = req.body;
 
   if (!name || !price || !description) {
     res.status(400);
     throw new Error("All field not be empty!");
   }
 
-  if (!specialist_id) {
-    specialist_id == null
-  }
-
   const services = await Service.create({
     name,
     price,
     description,
-    specialist_id
   });
 
   res.status(200).json({ services });
@@ -58,17 +53,12 @@ const updateService = asyncHandler(async (req, res, next) => {
     throw new Error("Service Not Found!");
   }
 
-  const { name, price, description, specialist_id } = req.body;
+  const { name, price, description} = req.body;
 
-  if (!specialist_id) {
-    specialist_id == null
-  }
-  
   const services = await Service.findByIdAndUpdate(serviceId, {
     name,
     price,
     description,
-    specialist_id
   }, { new: true });
 
   res.status(200).json({ services });
