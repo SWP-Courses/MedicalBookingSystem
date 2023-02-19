@@ -4,9 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import DOMPurify from "dompurify";
 import API_URL from "~/api/Router";
-// import Pagination from 'react-bootstrap/Pagination';
 import ReactPaginate from "react-paginate";
-import slider from '~/assets/images/slider.jpg'
+import slider from "~/assets/images/slider.jpg";
+import Pagination from "./Pagination";
 
 // const items = [...Array(33).keys()];
 
@@ -80,7 +80,6 @@ import slider from '~/assets/images/slider.jpg'
 
 function Blogs() {
   const listBlogRef = useRef();
-  const [pageCount, setPageCount] = useState(0); // total page we have
   const [blogCategory, setBlogCategory] = useState([]);
   const [blogs, setBlogs] = useState([]);
   const [blogsFiltered, setBlogsFiltered] = useState([]);
@@ -116,21 +115,11 @@ function Blogs() {
     setCategoryName(category.name);
   };
 
-  const handlePageClick = (event) => {
-    // console.log("event.selected: ", event.selected, itemsPerPage);
-
-    // const newOffset = (event.selected * itemsPerPage) % items.length;
-    console.log(
-      `User requested page number ${event.selected}`
-    );
-    // setItemOffset(newOffset);
-  };
-
   return (
     <div className="Blog-wrapper">
       <div className="blog-content">
         <div className="slider">
-          <img src={slider} alt='slider' className="slider-body"/>
+          <img src={slider} alt="slider" className="slider-body" />
         </div>
         <div className="blog-body">
           <div className="major-list">
@@ -156,65 +145,11 @@ function Blogs() {
           <div className="blog-list">
             <h1 className="type">{categoryName}</h1>
             <hr />
-            {blogs.map((blog, index) => {
-              return (
-                <div key={index} className="blog-item">
-                  <Link to={`/blogs/${blog._id}`}>
-                    <img
-                      className="blog-image"
-                      src={blog.image}
-                      alt="blog-image"
-                    />
-                  </Link>
-                  <div className="blog-item-body">
-                    <Link to={`/blogs/${blog._id}`}>
-                      <h2
-                        className="bolg-item-title line-clamp"
-                        style={{ fontSize: "25px", cursor: "pointer" }}
-                      >
-                        {blog.title}
-                      </h2>
-                    </Link>
-                    <p
-                      className="line-clamp line-4"
-                      dangerouslySetInnerHTML={{
-                        __html: DOMPurify.sanitize(blog.subTitle),
-                      }}
-                    >
-                      {
-                        // blog.content
-                      }
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
+            <Pagination data={blogs}/>
           </div>
         </div>
         <div className="paginate">
-          <span>
-            {/* <PaginatedItems itemsPerPage={5} /> */}
-            <ReactPaginate
-              nextLabel="next >"
-              onPageChange={handlePageClick}
-              pageRangeDisplayed={3}
-              marginPagesDisplayed={2}
-              pageCount={10}
-              previousLabel="< previous"
-              pageClassName="page-item"
-              pageLinkClassName="page-link"
-              previousClassName="page-item"
-              previousLinkClassName="page-link"
-              nextClassName="page-item"
-              nextLinkClassName="page-link"
-              breakLabel="..."
-              breakClassName="page-item"
-              breakLinkClassName="page-link"
-              containerClassName="pagination"
-              activeClassName="active"
-              renderOnZeroPageCount={null}
-            />
-          </span>
+          <span></span>
         </div>
       </div>
     </div>
