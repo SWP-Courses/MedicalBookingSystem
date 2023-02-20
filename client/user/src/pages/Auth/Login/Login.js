@@ -146,7 +146,7 @@ function Login() {
               </div>
               <p
                 className="forgot-password"
-                onClick={() => navigate("/forgot-password")}
+                onClick={() => navigate("/forgotPassword")}
               >
                 Quên mật khẩu
               </p>

@@ -82,3 +82,7 @@ input, select {
     box-shadow: none;
 }
 
+::selection {
+	color: red;
+	background: yellow;
+}
