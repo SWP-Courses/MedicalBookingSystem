@@ -175,7 +175,7 @@ function Register() {
 
   return (
     <div className="Login-Wrapper animate__animated animate__fadeInDown">
-      <div className="Login-header">
+      {/* <div className="Login-header">
         <div className="logo">
           <img
             src={logo}
@@ -184,7 +184,7 @@ function Register() {
             className="logo"
           />
         </div>
-      </div>
+      </div> */}
       <div className="login-main">
         <div className="login-body height">
           <h2>Đăng Kí</h2>

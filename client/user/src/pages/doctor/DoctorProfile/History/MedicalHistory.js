@@ -26,8 +26,8 @@ export default function MedicalHistory(props) {
             <th>Bệnh Nhân</th>
             <th>Tên Bệnh</th>
             <th>Bác sỹ</th>
-            <th>Ngày Tái Khám</th>
-            <th>Chi tiết</th>
+            <th >Ngày Tái Khám</th>
+            <th width='100'>Chi tiết</th>
           </tr>
         </thead>
         <tbody>
@@ -40,7 +40,11 @@ export default function MedicalHistory(props) {
                   <td>Otto</td>
                   <td>@mdo</td>
                   <td>@mdo</td>
-                  <td><FontAwesomeIcon icon={faEllipsis} className='btn-action' /></td>
+                  <td>
+                    <center>
+                      <FontAwesomeIcon icon={faEllipsis} className='btn-action' />
+                    </center>
+                  </td>
                 </tr>
               )
             })

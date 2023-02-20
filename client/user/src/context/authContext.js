@@ -21,19 +21,18 @@ export default function AuthContextProvider({ children }) {
   }, [currentUser]);
 
   // Functions
-  const login = async (inputs, setIsLoading) => {
+  const login = async (inputs) => {
     try {
       const res = await axios.post(API_URL+"/auth/login", {
         ...inputs
       });
       setCurrentUser(res.data);
-      // setIsLoading(false);
       navigate("/");
     } catch (error) {
         toast.error(error?.response?.data);
-        if(error?.response?.data) {
-          setIsLoading(false);
-        }
+        // if(error?.response?.data) {
+          // setIsLoading(false);
+        // }
     }
   };
 
