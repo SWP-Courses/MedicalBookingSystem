@@ -40,7 +40,7 @@ const UserSchema = new mongoose.Schema(
     password: {
       type: String,
       min: 6,
-      required: true,
+      // required: true, //login by google not need
     },
     nationalId: {
       type: String,
@@ -53,6 +53,9 @@ const UserSchema = new mongoose.Schema(
     specialist_id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Specialist",
+    },
+    service_id:{
+      type: mongoose.Schema.Types.ObjectId,
     },
     degree: {
       type: String,

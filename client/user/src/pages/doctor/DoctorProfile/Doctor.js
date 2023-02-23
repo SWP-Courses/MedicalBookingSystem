@@ -32,7 +32,7 @@ export default function Doctor() {
     <div className="doctor">
       <div className="doctorSidebar">
         <div className="userInfo">
-          <img src={`${API_IMAGE_URL}/image/${currentUser?.avatar?.filename}`} alt="avartar" />
+          <img src={`${API_IMAGE_URL}/${currentUser?.avatar?.filename}`} alt="avartar" />
           <span className="doctorName">{currentUser?.fullname}</span>
         </div>
         <div className="profileActions">

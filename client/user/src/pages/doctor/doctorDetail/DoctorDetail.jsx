@@ -34,7 +34,7 @@ export default function DoctorDetail() {
     <div className="doctorDetail">
       <img src={background} alt="" className="background"/>
       <img
-        src={`${API_IMAGE_URL}/image/${doctor?.avatar.filename}`}
+        src={`${API_IMAGE_URL}/${doctor?.avatar.filename}`}
         alt=""
         className="avatar"
       />

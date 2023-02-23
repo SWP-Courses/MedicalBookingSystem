@@ -1,7 +1,10 @@
-import { useState } from "react";
+import axios from "axios";
+import { useContext, useEffect, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
+import API_URL from "~/api/Router";
 import BookingConfirm from "~/components/bookingConfirm/BookingConfirm";
 import BookingFill from "~/components/bookingFill/BookingFill";
+import { AuthContext } from "~/context/authContext";
 import "./booking.scss";
 
 export default function Booking() {
@@ -9,8 +12,13 @@ export default function Booking() {
     number: 1,
     title: "THÔNG TIN KHÁM BỆNH",
   });
+  const {currentUser} = useContext(AuthContext);
   const [booking, setBooking] = useState({ date: new Date() });
   const [payModal, setPayModal] = useState(false);
+  const [services, setServices] = useState();
+  const [freeDoctors, setFreeDoctors] = useState()
+  const [freeSlots, setFreeSlots] = useState()
+  // const [bookedService, setBookedService] = useState();
 
   const handleNext = () => {
     setPart({ number: 2, title: "XÁC NHẬN THÔNG TIN" });
@@ -22,6 +30,62 @@ export default function Booking() {
     });
   };
 
+  // Side Effects
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const res = await axios.get(`${API_URL}/services`);
+        setServices(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchServices();
+  }, []);
+
+  useEffect(() => {
+    const fetchFreeDoctors = async () => {
+      try {
+        const res = await axios.get(`${API_URL}/booking/doctors?date=${booking.date}`)
+        setFreeDoctors(res.data)
+      } catch(err) {
+        console.log(err);
+      }
+    };
+    // thêm debounce sau
+    booking.date && fetchFreeDoctors();
+  }, [booking.date])
+
+  useEffect(() => {
+    const fetchFreeSlots = async () => {
+      try {
+        const res = await axios.get(`${API_URL}/booking/slots/${booking.doctor._id}?date=${booking.date}`)
+        setFreeSlots(res.data)
+      } catch(err) {
+        console.log(err);
+      }
+    };
+    // thêm debounce sau
+    booking.doctor && fetchFreeSlots();
+  }, [booking.date, booking.doctor])
+
+  const hanleBookService = async () => {
+    // mới chỉ làm lấy thông tin từ đăng nhập
+    const passData = {
+      user_id: currentUser._id,
+      doctor_id: booking.doctor._id,
+      date: booking.date,
+      slot_time: booking.slot.time,
+      service_id: booking.service._id
+    }
+    // console.log(passData);
+    try {
+      await axios.post(`${API_URL}/bookedservices`, passData);
+    } catch(err) {
+      console.log(err);
+    }
+  }
+
   return (
     <div className="bookingPage">
       <div className="bookingBanner">
@@ -30,7 +94,13 @@ export default function Booking() {
       <div className="bookingBlock">
         <h2 className="bookingStep">{part.title}</h2>
         {part.number === 1 && (
-          <BookingFill booking={booking} setBooking={setBooking} />
+          <BookingFill
+            booking={booking}
+            setBooking={setBooking}
+            services={services}
+            freeDoctors={freeDoctors}
+            freeSlots={freeSlots}
+          />
         )}
         {part.number === 2 && <BookingConfirm booking={booking} />}
         <div className="bookingDirection">
@@ -38,7 +108,11 @@ export default function Booking() {
           {part.number === 2 && (
             <>
               <button onClick={handleBack}>QUAY LẠI</button>
-              <button onClick={() => setPayModal(true)}>THANH TOÁN</button>
+              <button 
+              // onClick={() => setPayModal(true)}
+              onClick={hanleBookService}
+              >
+              XÁC NHẬN ĐẶT LỊCH</button>
             </>
           )}
         </div>

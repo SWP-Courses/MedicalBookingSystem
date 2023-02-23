@@ -35,10 +35,7 @@
         }
       }
 
-      > .timeAvailable {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
+
         > .title {
           font-weight: 500;
           font-size: 18px;
@@ -51,11 +48,12 @@
           .groupTime {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 14px;
             > .timeItem {
               padding: 5px 15px;
               background-color: rgb(243, 243, 243);
               border-radius: 5px;
+              border: 2px solid transparent;
               cursor: pointer;
 
               &.active {
@@ -66,7 +64,7 @@
             }
           }
         }
-      }
+      
     }
 
     .userFillPart {

@@ -13,7 +13,7 @@ export default function DoctorItem({ doctor }) {
   return (
     <div className="doctorItem">
       <div className="doctorImg">
-        <img src={`${API_IMAGE_URL}/image/${doctor.avatar.filename}`} alt="" />
+        <img src={`${API_IMAGE_URL}/${doctor.avatar.filename}`} alt="" />
       </div>
       <div className="doctorTitle">
         <Link to={`/doctors/${doctor._id}`} className="doctorName">

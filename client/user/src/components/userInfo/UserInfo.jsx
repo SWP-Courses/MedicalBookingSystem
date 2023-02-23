@@ -1,7 +1,7 @@
 import "./userInfo.scss";
 import blankAvatar from "../../assets/images/blank_avatar.jpg";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { faArrowUpFromBracket } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -11,22 +11,28 @@ import { Calendar, fo } from "react-calendar";
 import { format, parseISO } from "date-fns";
 import API_URL, { API_IMAGE_URL } from "~/api/Router";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function UserInfo(props) {
   const { currentUser, update } = useContext(AuthContext);
-  const [showAvatar, setShowAvatar] = useState(`${API_IMAGE_URL}/image/${currentUser.avatar.filename}`);
+  const [showAvatar, setShowAvatar] = useState(`${API_IMAGE_URL}/${currentUser.avatar.filename}`);
   const [userInfo, setUserInfo] = useState({
     fullname:currentUser?.fullname,
     email: currentUser?.email,
-    address: currentUser?.address,
+    address: currentUser?.address || "",
     gender: currentUser?.gender,
     phone: currentUser?.phone,
     dateOfBirth: currentUser?.dateOfBirth,
   })
+  const navigate = useNavigate();
 
+  const formData = useMemo(() => new FormData(), [])
+   
+  
   const onSelectAvatar = (e) => {
     const chosenFile = e.target.files[0]
     if (!chosenFile) return;
+    formData.append("avatar", chosenFile);
     setShowAvatar(URL.createObjectURL(chosenFile));
 }
 
@@ -40,7 +46,18 @@ export default function UserInfo(props) {
 
   //When Click Save button
   const handleUpdateClick =async () => {
-    await update(userInfo);
+    for (const key in userInfo) {
+      if (Object.hasOwnProperty.call(userInfo, key)) {
+        let value = userInfo[key];
+        formData.append(key, value);
+      }
+    }
+
+    for (const key of formData.keys()) {
+      console.log(key, formData.get(key));
+    }
+    console.log(formData);
+    await update(formData);
   }
 
   console.log(userInfo);
