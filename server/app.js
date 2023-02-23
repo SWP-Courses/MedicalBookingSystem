@@ -28,10 +28,10 @@ var app = express();
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
-const corsOptions = {
-  origin: 'http://localhost:3000',
-  credentials: true
-};
+// const corsOptions = {
+//   origin: 'http://localhost:3000',
+//   credentials: true
+// };
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
@@ -42,7 +42,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cookieParser());
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 
 // connect to database
 connectToDb();
