@@ -1,4 +1,4 @@
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faBook, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./navbar.scss";
 import blankAvatar from "../../assets/images/blank_avatar.jpg";
@@ -6,16 +6,27 @@ import Options from "../options/Options";
 import { Link, useLocation } from "react-router-dom";
 import logo from '~/assets/images/logo.jpg'
 
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { AuthContext } from "~/context/authContext";
 
 import { Dropdown } from "react-bootstrap";
 import API_URL, { API_IMAGE_URL } from "~/api/Router";
 
+import Tippy from '@tippyjs/react/headless';
+import 'tippy.js/dist/tippy.css'; 
+
 
 export default function Navbar() {
 
   const { currentUser, logout } = useContext(AuthContext);
+
+  const [searchResult, setSearchResult] = useState([]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setSearchResult([1,2,3,4,5])
+    }, 5000)
+  }, [])
 
   //Functions 
   const handleLogout =() => {
@@ -36,15 +47,34 @@ export default function Navbar() {
             </Link>
           </div>
           <div className="navbar-center col-lg-4 col-sm-9">
-            <label htmlFor="meme" className="searchBar">
-              <FontAwesomeIcon icon={faSearch} className="searchIcon" />
-              <input
-                type="text"
-                className="searchInput"
-                placeholder="Tìm kiếm bài viết"
-                id="meme"
-              />
-            </label>
+            <Tippy
+              visible={false && searchResult.length > 0}
+              interactive={true}
+              render={attrs => (
+                <div className="searchResult">
+                  <div className="box" tabIndex="-1" {...attrs}>
+                    <h6 className="titleSearch">
+                    <FontAwesomeIcon icon={faBook} />
+                      <span className="ml-3">
+                        Bài Viết 
+                      </span>
+                    </h6>
+                  </div>
+                </div>
+              )}
+            >
+              <label htmlFor="meme" className="searchBar">
+                <Tippy content='Tìm Kiếm'>
+                  <FontAwesomeIcon icon={faSearch} className="searchIcon" />
+                </Tippy>
+                <input
+                  type="text"
+                  className="searchInput"
+                  placeholder="Tìm kiếm bài viết"
+                  id="meme"
+                />
+              </label>
+            </Tippy>
           </div>
           <div className="navbar-right col-lg-5">
             <div className="navItemContainer">

@@ -2,7 +2,6 @@ import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 
 import "./BlogDetail.scss";
-import doctor from "~/assets/images/doctor.jpg";
 import { AuthContext } from "~/context/authContext";
 import { useContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
@@ -18,8 +17,7 @@ function BlogDetail() {
   const refBlog = useRef();
   const [isSaved, setIsSaved] = useState(false);
   const navigate = useNavigate();
-
-  console.log(blog);
+  const [sameContent, setSameContent] = useState([]);
 
   useEffect(() => {
     const fetchBlogById = async () => {
@@ -38,6 +36,21 @@ function BlogDetail() {
   useEffect(() => {
     refBlog.current.innerHTML = blog.content;
   });
+
+  useEffect(() => {
+    const filterBlogSameCategory = async() => {
+      try {
+        const res = await axios.get(API_URL + "/blogs");
+        if (res && res.data && res.data.blogs && res.data.blogs.length > 0) {
+            const subBlogs = res.data.blogs.filter((item) => item._id === id);
+            setSameContent(subBlogs);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    filterBlogSameCategory();
+ }, [])
 
   // Khoa
   useEffect(() => {
@@ -99,7 +112,7 @@ function BlogDetail() {
               <Link to="/blogs">Blogs</Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item active>
-              <Link to="/blogs/:id">Blog Detail</Link>
+              <Link to='#'>Blog Detail</Link>
             </Breadcrumb.Item>
           </Breadcrumb>
         </div>
@@ -115,7 +128,7 @@ function BlogDetail() {
               </button>
             ))}
             <h1 className="blog-title">{blog?.title}</h1>
-            <h6>Ngày đăng: {blog.createdAt}</h6>
+            
             <img className="blog-detail-image" src={blog?.image} alt="" />
             <div className="content-box" ref={refBlog}>
               <h2 className="sub-title">1. Vai trò của Vitamin D</h2>
@@ -126,65 +139,37 @@ function BlogDetail() {
           </div>
           <div className="sub-infor">
             <div className="doctor-info">
-              <Link to="/">
-                <img src={doctor} alt="doctor-img" className="doctor-avarta" />
-              </Link>
-              <span className="doctor-name">{blog.author}</span>
-              <p className="desc">
-                Khoa Gây mê giảm đau - Bệnh viện Đa khoa Quốc tế Vinmec Times
-                City
-              </p>
-              <Link to="/doctors/id" className="link-to-detail">
-                Xem thông tin bác sĩ &gt;&gt;
-              </Link>
+              <div className="date-section">
+                <span className="post-date">Ngày đăng:</span>
+                <span className="date">{blog.createdAt}</span>
+              </div>
+              <div className="author"> 
+                <span className="title">Thuộc Chủ Đề</span>
+              </div>  
+              <div className="author">
+                <span className="title">Tác Giả</span>
+                <span className="doctor-name">{blog.author}</span>
+              </div>
             </div>
             <div className="more-blogs">
               <div className="single-blog">
-                <h3 className="single-blog-title">Có thể bạn quan tâm</h3>
-                <div className="sub-blog">
-                  <a href="">
-                    <img className="blog-sub-image" src={doctor} />
-                  </a>
-                  <div className="blog-sub-title">
-                    <a href="" className="blog-sub-title-link">
-                      Cortisol là gì và làm thế nào để điều chỉnh mức độ
-                      Cortisol?
-                    </a>
-                  </div>
-                </div>
-                <div className="sub-blog">
-                  <a href="">
-                    <img className="blog-sub-image" src={doctor} />
-                  </a>
-                  <div className="blog-sub-title">
-                    <a href="" className="blog-sub-title-link">
-                      Cortisol là gì và làm thế nào để điều chỉnh mức độ
-                      Cortisol?
-                    </a>
-                  </div>
-                </div>
-                <div className="sub-blog">
-                  <a href="">
-                    <img className="blog-sub-image" src={doctor} />
-                  </a>
-                  <div className="blog-sub-title">
-                    <a href="" className="blog-sub-title-link">
-                      Cortisol là gì và làm thế nào để điều chỉnh mức độ
-                      Cortisol?
-                    </a>
-                  </div>
-                </div>
-                <div className="sub-blog">
-                  <a href="">
-                    <img className="blog-sub-image" src={doctor} />
-                  </a>
-                  <div className="blog-sub-title">
-                    <a href="" className="blog-sub-title-link">
-                      Cortisol là gì và làm thế nào để điều chỉnh mức độ
-                      Cortisol?
-                    </a>
-                  </div>
-                </div>
+                <h4 className="single-blog-title">Có thể bạn quan tâm</h4>
+                {
+                  sameContent.map((item) => {
+                    return (
+                      <div className="sub-blog">
+                        <Link to={`/blogs/${blog._id}`}>
+                          <img className="blog-sub-image" src={item.image} />
+                        </Link>
+                        <div className="blog-sub-title ">
+                          <Link to={`/blogs/${blog._id}`} className="blog-sub-title-link line-clamp line-4">
+                            {item.subTitle}
+                          </Link>
+                        </div>
+                      </div>
+                    )
+                  })
+                }
               </div>
             </div>
           </div>

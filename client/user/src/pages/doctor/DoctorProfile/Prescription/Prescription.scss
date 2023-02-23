@@ -153,17 +153,19 @@
     // footer
 
     .btn-prescription {
-        border: 1px solid #337AB7;
+        background-color: #337AB7;
         padding: 10px 20px;
         display: block; 
         border-radius: 5px;
+        color: #fff;
         flex: 1;
         width: fit-content;
+        opacity: 0.8;
 
         &:hover {
             background-color: #337AB7;
-            color: #fff;
             transition: right linear 0.4s;
+            opacity: 1;
         }
     }
 

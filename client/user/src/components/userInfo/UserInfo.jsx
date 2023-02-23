@@ -22,7 +22,7 @@ export default function UserInfo(props) {
     address: currentUser?.address || "",
     gender: currentUser?.gender,
     phone: currentUser?.phone,
-    dateOfBirth: currentUser?.dateOfBirth,
+    dateOfBirth: currentUser?.dateOfBirth?.split('/')?.reverse()?.join('-'),
   })
   const navigate = useNavigate();
 
@@ -34,8 +34,8 @@ export default function UserInfo(props) {
     if (!chosenFile) return;
     formData.append("avatar", chosenFile);
     setShowAvatar(URL.createObjectURL(chosenFile));
-}
-
+  }
+ 
   // Functions 
   const handleTextInputChange = (e) => {
     setUserInfo(prev => ({
@@ -60,11 +60,9 @@ export default function UserInfo(props) {
     await update(formData);
   }
 
-  console.log(userInfo);
-
   return (
     <div className="userInfoContainer">
-      <h1 className="title">Thông tin khách hàng</h1>
+      <h1 className="title">Thông tin cá nhân</h1>
       <hr/>
       <div className="userInfo">
           <div className="infoList">
@@ -160,7 +158,7 @@ export default function UserInfo(props) {
           />
         </div>
       </div>
-      <button onClick={handleUpdateClick}>LƯU</button>
+      <button onClick={handleUpdateClick}>Cập Nhật</button>
     </div>
   );
 }

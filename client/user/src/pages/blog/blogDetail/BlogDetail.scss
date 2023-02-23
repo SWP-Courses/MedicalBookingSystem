@@ -6,7 +6,6 @@
 
         .bread-crumb {
             margin-top: 20px;
-
         }
 
         .blog-content {
@@ -34,9 +33,8 @@
                     width: 508px;
                     height: 340px;
                     object-fit: cover;
-                    margin: 0 auto;
+                    margin: 20px auto;
                     display: block;
-                   
                 }
 
                 .blog-title {
@@ -44,6 +42,8 @@
                     font-weight: 700;
                     font-size: 32px;
                     width: 80%;
+
+                   
                 }
             }
 
@@ -54,7 +54,40 @@
                     box-shadow: 0 6px 16px 0 rgb(0 0 0 / 8%);
                     border: 1px solid #ddd;
                     border-radius: 12px;
-                    height: 400px;
+                    min-height: 219px;
+
+
+                    .date-section {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        
+                        .date,
+                        .post-date {
+                            padding: 20px 0px 20px 20px;
+                            display: block;
+                            font-size: 21px;
+                        }
+                    }
+                    
+                    >.author {
+                        padding: 20px 15px 20px 20px;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        .title {
+                            padding: 10px 0;
+                            color: #2b7caf;
+                            font-weight: 500;
+                            font-size: 20px;
+                        }
+                    }
+
+                    .category {
+                        display: flex;
+                        justify-content: center;
+                        margin-top: 12px;   
+                    }
 
                     .doctor-avarta {
                         width: 150px;
@@ -69,9 +102,9 @@
 
                     .doctor-name {
                         display: block;
-                        font-weight: 600;
-                        text-align: center;
+                        font-weight: 500;
                         font-size: 20px;
+                        text-align: center;
                     }
 
                     .link-to-detail {
@@ -105,6 +138,7 @@
                     display: flex;
                     gap: 14px;
                     margin-bottom: 20px;
+                    height: 82px;
 
                     .blog-sub-image {
                         width: 130px;
@@ -115,14 +149,19 @@
                     }
 
                     .blog-sub-title-link {
-                        font-size: 16px;
-                        font-weight: 700;
+                        font-size: 17px;
+                        font-weight: 500;
                         font-stretch: normal;
                         line-height: 1.25;
                         letter-spacing: normal;
                         text-decoration: none;
                         color: #212529;
-                        display: block;
+                        opacity: 0.9;
+
+                        &.line-clamp.line-4 {
+                            --line-clamp: 3;
+                        }
+                        
                     }
 
                 }

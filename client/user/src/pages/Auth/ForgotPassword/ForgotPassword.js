@@ -16,33 +16,15 @@ function ForgotPassword() {
 
   const hanldeLogin = (type) => {
     if(type === 'default') {
-      alert('login default')
-    }
-
-    if(type === 'google') {
-      alert('login google')
+      navigate('/login')
     }
   }
 
   return (
     <div className="Login-Wrapper">
-      <div className="Login-header">
-        <div className="logo">
-          <img src="" alt="logo" 
-            onClick={() => navigate('/')}
-            className='logo'
-          />
-          <div>Quên Mật Khẩu</div>
-        </div>
-      </div>
-      <div className="login-main">
+      <div className="login-main animate__animated animate__fadeInDown">
         {/* <div className="login-title">Đăng Nhập</div> */}
-        <div className="login-body">
-          <select className="select">
-            <option>Khách Hàng</option>
-            <option>Bác Sỹ</option>
-            <option>Quản Trị Viên</option>
-          </select>
+        <div className="Forgot-body">
           <div className="form-body">
             <div className="form-content">
               <h2>Quên Mật Khẩu</h2>

@@ -1,10 +1,9 @@
 import { useState, createContext, useEffect, useContext } from "react";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
-
 import { toast } from "react-toastify";
-import API_URL from "~/api/Router";
 
+import API_URL from "~/api/Router";
 
 export const AuthContext = createContext();
 
@@ -22,19 +21,18 @@ export default function AuthContextProvider({ children }) {
   }, [currentUser]);
 
   // Functions
-  const login = async (inputs, setIsLoading) => {
+  const login = async (inputs) => {
     try {
       const res = await axios.post(API_URL+"/auth/login", {
         ...inputs
       });
       setCurrentUser(res.data);
-      // setIsLoading(false);
       navigate("/");
     } catch (error) {
         toast.error(error?.response?.data);
-        if(error?.response?.data) {
-          setIsLoading(false);
-        }
+        // if(error?.response?.data) {
+          // setIsLoading(false);
+        // }
     }
   };
 

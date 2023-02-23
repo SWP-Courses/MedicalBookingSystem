@@ -19,29 +19,32 @@ export default function MedicalHistory(props) {
         <button className="currentSchedule">Lịch Hôm Nay</button>
       </div>
       <div className="table-responsive">
-        <Table striped className="table-history">
+        <Table striped   className="table-history">
         <thead>
           <tr>
             <th>ID</th>
             <th>Bệnh Nhân</th>
             <th>Tên Bệnh</th>
             <th>Bác sỹ</th>
-            <th>Ngày Tái Khám</th>
-            <th>Chi tiết</th>
-            <th>Chi tiết</th>
+            <th >Ngày Tái Khám</th>
+            <th width='100'>Chi tiết</th>
           </tr>
         </thead>
         <tbody>
           {
             historyPatients.map((item, index) => {
               return (
-                <tr>
+                <tr key={index}>
                   <td>{index}</td>
                   <td>Mark</td>
                   <td>Otto</td>
                   <td>@mdo</td>
                   <td>@mdo</td>
-                  <td><FontAwesomeIcon icon={faEllipsis} /></td>
+                  <td>
+                    <center>
+                      <FontAwesomeIcon icon={faEllipsis} className='btn-action' />
+                    </center>
+                  </td>
                 </tr>
               )
             })
