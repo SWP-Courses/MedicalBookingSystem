@@ -31,6 +31,18 @@ function validateUsername(username) {
   return pattern.test(username);
 }
 
+const convertServiceName = (serviceId, services) =>{
+  
+  const service = services.find(service => service._id === serviceId)
+return service.name
+}
+
+const convertDoctorName = (serviceId, services) =>{
+  
+  const service = services.find(service => service._id === serviceId)
+return service.name
+}
+
 export {
   shortenText,
   validateEmail,

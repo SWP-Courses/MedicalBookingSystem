@@ -8,6 +8,7 @@ export default function StoreContextProvider({ children }) {
   const [routingHistory, setRoutingHistory] = useState({
     beforeLogin: "",
   });
+  const [booking, setBooking] = useState();
   const navigate = useNavigate();
 
   // Side Effects

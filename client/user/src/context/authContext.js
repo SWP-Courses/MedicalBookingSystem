@@ -48,12 +48,13 @@ export default function AuthContextProvider({ children }) {
   };
 
   //todo
- const update = async (userInfo) => {
+ const update = async (formData) => {
   try {
     // check api phải gửi after change object
-    const res =  await axios.put(`${API_URL}/users/${currentUser._id}`, userInfo);
+    const res =  await axios.put(`${API_URL}/users/${currentUser._id}`, formData);
     console.log(res.data);
     setCurrentUser(res.data);
+    navigate(0);
   } catch(err) {
     console.log(err);
   }

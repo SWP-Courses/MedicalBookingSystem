@@ -103,7 +103,7 @@ export default function Navbar() {
                     className="avatarContainer"
                     as="div"
                   >
-                    <img src={`${API_IMAGE_URL}/image/${currentUser?.avatar?.filename}`} alt="" />
+                    <img src={`${API_IMAGE_URL}/${currentUser?.avatar?.filename}`} alt="" />
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu>

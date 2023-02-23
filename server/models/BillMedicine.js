@@ -1,13 +1,12 @@
 const mongoose = require("mongoose");
-
+const Schema = mongoose.Schema;
 const BillMedicineSchema = new mongoose.Schema({
   medicine_id: {
-    type: String,
+    type: Schema.Types.ObjectId,
     required: true,
-    ref: "Medicine",
   },
   drugbill_id: {
-    type: String,
+    type: Schema.Types.ObjectId,
     required: true,
   },
   quantity: {

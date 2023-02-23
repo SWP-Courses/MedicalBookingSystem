@@ -18,7 +18,7 @@ export default function Specialist() {
   const [doctorList, setDoctorList] = useState([]);
   const [doctorShow, setDoctorShow] = useState();
   const [specialistInfo, setSpecialistInfo] = useState({});
-  
+
   const { speId } = useParams();
   const [specialists, setSpecialists] = useState([]);
 
@@ -26,7 +26,7 @@ export default function Specialist() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(API_URL+"/specialists/" + speId);
+        const res = await axios.get(API_URL + "/specialists/" + speId);
         const { doctor_list, ...speInfo } = res.data;
         setSpecialistInfo(speInfo);
         setDoctorList(doctor_list);
@@ -50,7 +50,7 @@ export default function Specialist() {
   const fetchSpecialists = () => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(API_URL+"/specialists");
+        const res = await axios.get(API_URL + "/specialists");
         setSpecialists(res.data);
       } catch (err) {
         console.log(err);
@@ -62,24 +62,40 @@ export default function Specialist() {
   const handleDoctorMiniClick = (doctor) => {
     setDoctorShow(doctor);
   };
+  console.log(specialistInfo);
 
   return (
     <div className="singleSpecialist">
       <div className="introImages">
-        <h1
-          className="speIntroThumbnail"
-          style={{ backgroundImage: `url(${specialistInfo?.thumbnail})` }}
-        >
-          Chuyên khoa <b>{specialistInfo.title?.toUpperCase()}</b>
+        <h1 className="speIntroThumbnail">
+          <img
+            src={
+              specialistInfo?.images &&
+              `${API_IMAGE_URL}/${specialistInfo?.images[0].filename}`
+            }
+            alt=""
+          />
+          <span>
+            Chuyên khoa <b>{specialistInfo.title?.toUpperCase()}</b>
+          </span>
         </h1>
-        <img src={specialistInfo?.banner} alt="" />
+        <img
+          src={
+            specialistInfo?.images &&
+            `${API_IMAGE_URL}/${specialistInfo?.images[1].filename}`
+          }
+          alt=""
+        />
       </div>
       <h2 className="speTitle">Đội ngũ chuyên gia của chúng tôi</h2>
       {doctorList.length && (
         <div className="doctorStaff">
           <div className="doctorShow">
             <div className="imgShow">
-              <img src={`${API_IMAGE_URL}/image/${doctorShow?.avatar.filename}`} alt="" />
+              <img
+                src={`${API_IMAGE_URL}/${doctorShow?.avatar.filename}`}
+                alt=""
+              />
               <h1>{doctorShow?.fullname}</h1>
               <span>{doctorShow?.degree}</span>
             </div>
@@ -118,7 +134,7 @@ export default function Specialist() {
                 key={index}
               >
                 <img
-                  src={`${API_IMAGE_URL}/image/${doctor?.avatar.filename}`}
+                  src={`${API_IMAGE_URL}/${doctor?.avatar.filename}`}
                   alt=""
                   className={
                     doctorShow?.fullname === doctor?.fullname ? "active" : ""
@@ -135,16 +151,20 @@ export default function Specialist() {
       )}
       <h2 className="speTitle">Chuyên khoa khác</h2>
       <div className="otherSpecialist">
-        {specialists?.map((spe) => (
-          <Link
-            to={"/specialists/" + spe._id}
-            className="speBlock"
-            key={spe._id}
-            style={{ backgroundImage: `url(${spe.thumbnail})` }}
-          >
-            {spe.title}
-          </Link>
-        ))}
+        {specialists?.map((spe) => {
+          console.log(spe)
+          let bgurl =`url(${API_IMAGE_URL}/${spe?.images[0].filename})`;
+          return (
+            <Link
+              to={"/specialists/" + spe._id}
+              className="speBlock"
+              key={spe._id}
+              style={{ backgroundImage: bgurl }}
+            >
+              {spe.title}
+            </Link>
+          );
+        })}
       </div>
     </div>
   );

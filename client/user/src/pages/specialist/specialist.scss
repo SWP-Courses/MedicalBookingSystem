@@ -10,12 +10,16 @@
       align-items: center;
       justify-content: center;
       gap: 20px;
-      background-image: url("../../assets//images/heart_line.jpg");
-      background-size: contain;
-      background-repeat: no-repeat;
+      // background-size: contain;
+      // background-repeat: no-repeat;
       height: 200px;
 
-      > b {
+      > img {
+        min-width: 100px;
+        height: 50%;
+        border-radius: 10px;
+      }
+       b {
         font-size: 36px;
         color: rgb(185, 125, 35);
       }

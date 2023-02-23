@@ -6,7 +6,7 @@ const Service = require("../models/service");
 //@access private
 const getService = asyncHandler(async (req, res, next) => {
   const services = await Service.find();
-  res.status(200).json({ services });
+  res.status(200).json(services);
 });
 
 //@desc Get service

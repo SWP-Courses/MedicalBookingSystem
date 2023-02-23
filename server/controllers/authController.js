@@ -7,7 +7,7 @@ const { deleteImageById } = require("./imageController.js");
 
 // POST /api/resgiter
 // Với role là R2 (doctor) thì gửi thêm 3 fields là degree, specialist_id, profile
-// REGISTER
+// REGISTERserver/controllers/authController.js
 const register = async (req, res, next) => {
   try {
     const user = await UserModel.findOne({ phone: req.body.phone });
@@ -33,7 +33,7 @@ const register = async (req, res, next) => {
       };
       
       // If create a doctor account
-      // Pass role_code="R2"
+      // Send role_code="R2"
       if (req.body.role_code === "R2")
       document = {
         role_code: "R2",
