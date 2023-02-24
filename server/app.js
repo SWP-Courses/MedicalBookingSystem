@@ -56,7 +56,7 @@ app.use("/api/", indexRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/specialists", specialistRouter);
-app.use('/api/drugbill', drugBillRouter)
+app.use('/api/drugbill', drugBillRouter),
 app.use("/api/absent", async (req, res) => {
   try {
     const absent = await Absent.create({
