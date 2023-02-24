@@ -29,7 +29,7 @@
         border: 1px solid #ccc;
 
         :focus {
-          outline: 1px solid #337ab7;
+          outline: 1px solid var(--secondary-color);
         }
       }
 
@@ -144,7 +144,7 @@
   }
 
   > button {
-    background-color: #4a8bc4;
+    background-color: var(--secondary-color);
     padding: 10px 30px;
     border-radius: 5px;
     font-size: 16px;
@@ -154,7 +154,7 @@
     color: #fff;
 
     &:hover {
-      background-color:#337AB7 ;
+      background-color: var(--secondary-color) ;
       transition: right linear 0.4s;
       opacity: 1;
     }

@@ -4,7 +4,7 @@
   align-items: center;
   padding: 20px 50px 30px;
   gap: 50px;
-  background-color: #ffff;
+  background-color: var(--white-color);
 
   .doctorSidebar {
     flex: 1;
@@ -48,13 +48,13 @@
       gap: 20px;
       padding: 18px 20px;
       border-radius: 10px;
-      background: #ffffff;
+      background: var(--white-color);
       box-shadow:  15px 15px 30px #949494,
-                  -15px -15px 30px #ffffff;
+                  -15px -15px 30px var(--white-color);
 
         > .action {
             text-align: center;
-            background-color: #F2F2F2;
+            background-color: var(--white-color);
             height: 50px;
             line-height: 50px;
             user-select: none;
@@ -63,8 +63,8 @@
             cursor: pointer;
 
             &.active {
-                background-color: #286ba6;
-                color: #fff;
+                background-color: var(--secondary-color);
+                color: var(--white-color);
             }
         }
         
@@ -76,8 +76,8 @@
     background-color: #F2F2F2;
     min-height: 500px;
     border-radius: 10px;
-    background: #ffffff;
+    background: var(--white-color);
     box-shadow:  21px 21px 83px #b5b5b5,
-                -21px -21px 83px #ffffff;
+                -21px -21px 83px var(--white-color);
   }
 }

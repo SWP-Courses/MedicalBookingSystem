@@ -47,7 +47,7 @@
 
             .login__form-body {
                 margin: 30px;
-                background-color: #fff;
+                background-color: var(--white-color);
                 border-radius: 8px;
                 margin: 30px;
                 border: none;
@@ -73,13 +73,12 @@
 
                     >h2 {
                         font-size: 24px;
-                        color: #10375C; 
+                        color: var(--primary-color); 
                     }
 
                     .login__errorAlert {
                         color: red;
                         font-size: 15px;
-                        // margin: 5px 0px 0px 5px;
                         display: block;
                     }
                 }
@@ -108,12 +107,11 @@
 
                 .btn-sign-in {
                     padding: 13px 27px;
-                    border: 1px solid #286ba6;
                     border-radius: 8px;
                     width: 100%;
                     font-weight: 500;
                     background-color: #286ba6;
-                    color: #fff;
+                    color: var(--white-color);
 
                     &:disabled {
                         cursor: no-drop;
@@ -141,7 +139,7 @@
                     border: 1px solid #ccc;
                     text-align: center;
                     padding: 10px;
-                    background: #fff;
+                    background: var(--white-color);
                     border-radius: 8px;
                     cursor: pointer;
 
