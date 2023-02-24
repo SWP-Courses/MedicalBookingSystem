@@ -43,9 +43,18 @@ const convertDoctorName = (serviceId, services) =>{
 return service.name
 }
 
+const formatDate = (value) => {
+  const year = value.getFullYear();
+  const month = (value.getMonth() + 1).toString().padStart(2, '0');
+  const day = value.getDate().toString().padStart(2, '0');
+  const formattedDate = `${day}-${month}-${year}`;
+  return formattedDate;
+}
+
 export {
   shortenText,
   validateEmail,
   checkStringContainInPhoneNumber,
-  validateUsername
+  validateUsername,
+  formatDate
 }

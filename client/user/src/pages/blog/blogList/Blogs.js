@@ -21,7 +21,7 @@ function Blogs() {
   }, []);
 
   const fetchListCategoryBlogs = async () => {
-    const res = await axios.get(API_URL + "/categorys");
+    const res = await axios.get(API_URL + "/category");
     // console.log('check res cate: ', res);
     if (res && res.data && res.data.category && res.data.category.length > 0) {
       setBlogCategory(res.data.category);

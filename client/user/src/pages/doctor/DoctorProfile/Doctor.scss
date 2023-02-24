@@ -54,7 +54,7 @@
 
         > .action {
             text-align: center;
-            background-color: var(--white-color);
+            background-color: #ccc;
             height: 50px;
             line-height: 50px;
             user-select: none;
@@ -79,5 +79,6 @@
     background: var(--white-color);
     box-shadow:  21px 21px 83px #b5b5b5,
                 -21px -21px 83px var(--white-color);
+    position: relative;
   }
 }
