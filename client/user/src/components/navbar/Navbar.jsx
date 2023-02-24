@@ -81,7 +81,7 @@ export default function Navbar() {
               {(currentUser?.role === "customer" || !currentUser) && (
                 <>
                   <svg xmlns="http://www.w3.org/2000/svg" fill="#337AB7" width="24" height="22" viewBox="0 0 24 22">
-                    <g fill="none" fill-rule="#337AB7" >
+                    <g fill="none" fillRule="#337AB7" >
                                             <g transform="translate(-1436 -112) translate(0 50) translate(0 33) translate(1436 29)">
                                                 <rect width="22.6" height="19.6" x=".7" y="1.7" stroke="#292940" stroke-width="1.4" rx="4"/>
                                                 <path fill="#337AB7" d="M0 6H24V7.6H0z"/>
