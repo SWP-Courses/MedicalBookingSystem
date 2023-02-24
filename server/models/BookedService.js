@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Schema= mongoose.Schema;
+const Schema = mongoose.Schema;
 
 const BookedServiceSchema = new mongoose.Schema(
   {
@@ -14,7 +14,18 @@ const BookedServiceSchema = new mongoose.Schema(
     date: Date,
     slot_time: String,
     // room: String,
-    services: [{service_id: Schema.Types.ObjectId, quantity: Number}],
+    services: [
+      {
+        service_id: {
+          type: Schema.Types.ObjectId,
+          unique : true, required : true, dropDups: true
+        },
+        quantity: Number,
+        _id:false
+      },
+    ],
+    total_price: Number,
+    drugbill_id: Schema.Types.ObjectId,
   },
   { versionKey: false }
 );

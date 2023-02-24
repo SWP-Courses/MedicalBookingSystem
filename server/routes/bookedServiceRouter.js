@@ -15,6 +15,15 @@ router
   .post(bookService)
 
 router
+  .route("/:id/:serviceId")
+  .all((req, res, next) => {
+    res.statusCode = 200;
+    res.setHeader("Content-Type", "json/plain");
+    next();
+  })
+  .put(updateAddedService)
+
+router
   .route("/:id")
   .all((req, res, next) => {
     res.statusCode = 200;

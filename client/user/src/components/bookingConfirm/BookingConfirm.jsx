@@ -40,12 +40,12 @@ export default function BookingConfirm({ booking }) {
       <div className="infoItem">
         <span className="bookingKey">Thời gian khám</span>
         <span className="bookingValue">
-          15:00, {format(booking.date, "yyyy-MM-dd")}
+          {booking.slot.time}, {format(booking.date, "yyyy-MM-dd")}
         </span>
       </div>
       <div className="infoItem">
         <span className="bookingKey">Địa điểm</span>
-        <span className="bookingValue">BV DKQT Human Heal Hồ Chí Minh</span>
+        <span className="bookingValue">Phòng khám răng Miss White Hồ Chí Minh</span>
       </div>
     </div>
   );
