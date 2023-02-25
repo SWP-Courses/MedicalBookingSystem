@@ -16,7 +16,7 @@
         width: 100%;
         .dropdownText {
           width: 100%;
-          background-color: #fff;
+          background-color: var(--white-color);
           color: #333;
           border: 1px solid lightgray;
           display: flex;
@@ -58,7 +58,7 @@
 
               &.active {
                 border: 2px solid #e5a724;
-                background-color: #fff;
+                background-color: var(--white-color);
                 color: #e5a724;
               }
             }

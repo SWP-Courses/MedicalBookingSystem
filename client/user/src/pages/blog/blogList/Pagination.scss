@@ -17,12 +17,12 @@
 }
   
 .pagination .page-num:hover {
-    background-color: #337AB7;
+    background-color: var(--secondary-color);
     color: #fff;
 }
   
 .pagination .active {
-    background-color: #337AB7;
+    background-color: var(--secondary-color);
     color: #fff;
 }
   
