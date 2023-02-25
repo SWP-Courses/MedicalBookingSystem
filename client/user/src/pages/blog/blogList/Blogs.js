@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import DOMPurify from "dompurify";
 import API_URL from "~/api/Router";
+import ReactHtmlParser from 'react-html-parser';
 
 function Blogs() {
 
@@ -17,7 +18,7 @@ function Blogs() {
 
   const location = useLocation();
 
-  console.log(location);
+  console.log(blogs);
 
   const navigate = useNavigate();
 
@@ -28,17 +29,17 @@ function Blogs() {
 
 
   const fetchListCategoryBlogs = async () => {
-    const res = await axios.get(API_URL+'/category');
+    const res = await axios.get(API_URL + '/category');
     console.log('check res cate: ', res);
-    if(res && res.data && res.data.category && res.data.category.length > 0) {
+    if (res && res.data && res.data.category && res.data.category.length > 0) {
       setBlogCategory(res.data.category);
     }
   }
 
   const fetchBlogs = async () => {
-    const res = await axios.get(API_URL+'/blog');
+    const res = await axios.get(API_URL + '/blog');
     console.log('check res blog: ', res);
-    if(res && res.data && res.data.blogs && res.data.blogs.length > 0) {
+    if (res && res.data && res.data.blogs && res.data.blogs.length > 0) {
       setBlogs(res.data.blogs)
     }
   }
@@ -66,7 +67,7 @@ function Blogs() {
                 blogCategory.map((category, index) => {
                   return (
                     <li className="item" key={index}>
-                      <span 
+                      <span
                         onClick={() => handleFilterBlogByCategoryId(category)}
                       >
                         {category.name}
@@ -82,69 +83,75 @@ function Blogs() {
             <h1 className="type">{categoryName}</h1>
             <hr />
             {
-              blogsFiltered.length > 0 ? 
-              blogsFiltered.map((blog, index) => {
-                return (
-                  <div key={index} className="blog-item">
-                  <Link  to={`/blogs/${blog._id}`}>
-                      <img
-                        className="blog-image"
-                        src={blog.image}
-                        alt="blog-image"
-                      />
-                    </Link>
-                    <div className="blog-item-body">
-                      <h2 className="bolg-item-title line-clamp">
-                        {blog.title}
-                      </h2>
-                      <p 
-                        className="line-clamp line-4"
-                        dangerouslySetInnerHTML={{
-                          __html: DOMPurify.sanitize(blog.content),
-                        }}
-                      >
-                        {
-                          // blog.content
-                        }
-                      </p>
-                    </div>
-                  </div>
-                )
-              })
-              :
-              blogs.map((blog, index) => {
-                return (
-                  <div key={index} className="blog-item">
-                    <Link  to={`/blogs/${blog._id}`}>
-                      <img
-                        className="blog-image"
-                        src={blog.image}
-                        alt="blog-image"
-                      />
-                    </Link>
-                    <div className="blog-item-body">
+              blogsFiltered.length > 0 ?
+                blogsFiltered.map((blog, index) => {
+                  const imgString = blog.content.match(/<img([\w\W]+?)>/g);
+                  const content = blog.content.replace(/<img[^>]*>/g, "");
+
+                  return (
+                    <div key={index} className="blog-item">
                       <Link to={`/blogs/${blog._id}`}>
-                        <h2  
-                          className="bolg-item-title line-clamp"
-                          style={{ fontSize: '25px', cursor: 'pointer' }}
-                        >
+                        {imgString ? ReactHtmlParser(imgString[0]) : undefined}
+                      </Link>
+                      <div className="blog-item-body">
+                        <h2 className="bolg-item-title line-clamp">
                           {blog.title}
                         </h2>
-                      </Link>
-                      <p 
-                        className="line-clamp line-4"
-                        dangerouslySetInnerHTML={{
-                          __html: DOMPurify.sanitize(blog.content),
-                        }}
-                      >
-                        {
-                          // blog.content
-                        }
-                      </p>
+                        <p
+                          className="line-clamp line-4"
+                          dangerouslySetInnerHTML={{
+                            __html: DOMPurify.sanitize(content),
+                          }}
+                        >
+                          {
+                            // blog.content
+                          }
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                )
-              })
+                  )
+                })
+                :
+                blogs.map((blog, index) => {
+                  const imgString = blog.content.match(/<img([\w\W]+?)>/g);
+                  const content = blog.content.replace(/<img[^>]*>/g, "");
+
+                  return (
+                    <div key={index} className="blog-item">
+                      <Link to={`/blogs/${blog._id}`}>
+                        {/* <img
+                          className="blog-image"
+                          src={blog.image}
+                          alt="blog-image"
+                        /> */}
+
+                        {imgString ? ReactHtmlParser(imgString[0]) : undefined}
+
+
+                      </Link>
+                      <div className="blog-item-body">
+                        <Link to={`/blogs/${blog._id}`}>
+                          <h2
+                            className="bolg-item-title line-clamp"
+                            style={{ fontSize: '25px', cursor: 'pointer' }}
+                          >
+                            {blog.title}
+                          </h2>
+                        </Link>
+                        <p
+                          className="line-clamp line-4"
+                          dangerouslySetInnerHTML={{
+                            __html: DOMPurify.sanitize(content),
+                          }}
+                        >
+                          {
+                            // blog.content
+                          }
+                        </p>
+                      </div>
+                    </div>
+                  )
+                })
             }
           </div>
         </div>

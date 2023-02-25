@@ -23,6 +23,10 @@ const Blog = () => {
 
   const onCreateBlog = () => {
     if (BlogDetail) setBlogDetail(null);
+    setAuthor("");
+    setNewTitle("");
+    setNewValue("");
+    setCatagoryId("");
     setCreateBlog(true);
   }
 

@@ -65,7 +65,6 @@ function BlogDetail() {
           <div className="blog-wrapper">
             <div className="blog-detail">
               <h1 className="blog-title">{blog?.title}</h1>
-              <img className="blog-detail-image" src={blog?.image} />
               <div className="content-box" ref={refBlog}>
                 <h2 className="sub-title">1. Vai trò của Vitamin D</h2>
                 {

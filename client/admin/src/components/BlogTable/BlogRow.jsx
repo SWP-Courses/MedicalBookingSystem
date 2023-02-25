@@ -35,7 +35,7 @@ function BlogRow({ onClickEditBlog, stt, blog, onDeleteBlogById }) {
             <tr className='position-relative'>
                 <th scope="row">{stt}</th>
                 <td className='mw-50 overflow-hidden'>{blog.title}</td>
-                <td className='text-center'> {dayjs(blog.createdAt).format('MMM D, YYYY')} </td>
+                <td className='text-center'> {dayjs(blog.createdAt).format('MMM DD, YYYY')} </td>
                 <td className='text-center blog-action'><HiOutlineDotsHorizontal className='fs-4' /></td>
                 <div className='popup-action'>
                     <button onClick={() => setDeletePopup(true)} className='btn bg-light text-danger text-center w-100'>Delete</button>
