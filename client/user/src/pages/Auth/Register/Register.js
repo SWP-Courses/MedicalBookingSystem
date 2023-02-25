@@ -25,7 +25,7 @@ function Register() {
   const inputRef = useRef({});
 
   useEffect(() => {
-    inputRef.current["name"].focus();
+    inputRef.current["email"].focus();
   }, []);
 
   // Functions
@@ -48,11 +48,24 @@ function Register() {
       gender,
     } = registerInfo;
 
+    if (!email) {
+      inputRef.current["email"].className = "input-box error";
+      return;
+    }
+
+    // validate email
+    const isValidEmail = validateEmail(email);
+    if (!isValidEmail) {
+      toast.error("Email sai định dạng");
+      return;
+    }
+
     // username
     if (!fullname) {
       inputRef.current["name"].className = "input-box error";
       return;
     }
+
     if (!validateUsername(fullname)) {
       inputRef.current["isValidName"].innerText =
         "Tên không được chứa số, kí tự đặc biệt";
@@ -66,6 +79,11 @@ function Register() {
     }
 
     //validate phone number
+    if(!phone) {
+      inputRef.current["phone"].className = "input-box error";
+      return;
+    }
+
     const isContainsString = checkStringContainInPhoneNumber(phone);
     if (isContainsString) {
       inputRef.current["phone"].className = "input-box error";
@@ -81,14 +99,6 @@ function Register() {
       inputRef.current["phone"].className = "input-box error";
       toast.error("SDT phải có 10 hoặc 11 số ");
       return;
-    }
-
-    // validate email
-    if (email) {
-      const isValidEmail = validateEmail(email);
-      if (!isValidEmail) {
-        toast.error("Email sai định dạng");
-      }
     }
 
     // validate password
@@ -117,11 +127,6 @@ function Register() {
       inputRef.current["isValidGender"].innerText = "Chọn giới tính của bạn";
       return;
     }
-
-    // convert date
-    // const userRegister = {
-    //   ...registerInfo, ['dateOfBirth']: dateOfBirth.replaceAll('-', '/')
-    // }
 
     //call api
     try {
@@ -179,6 +184,24 @@ function Register() {
         <div className="form-body">
           <div className="form-content">
             <h2>Đăng Kí</h2>
+
+            <div className="form-group mt-3">
+              <span>Email (*)</span>
+              <input
+                name="email"
+                placeholder="Nhập email"
+                className="input-box"
+                value={registerInfo.email}
+                ref={(element) => {
+                  inputRef.current["email"] = element;
+                }}
+                onChange={handleTextInputChange}
+                onInput={(e) => {
+                  hanldeOnBlurInput(e);
+                }}
+              />
+            </div>
+
             <div className="form-group">
               <span>Họ và tên (*)</span>
               <input
@@ -195,6 +218,9 @@ function Register() {
                 onChange={handleTextInputChange}
                 onInput={(e) => {
                   hanldeOnBlurInput(e);
+                }}
+                onBlur={(e) => {
+                  hanldeEmptyInput(e);
                 }}
               />
               <span
@@ -249,23 +275,6 @@ function Register() {
                 }}
                 className="errorAlert mt-2"
               ></span>
-            </div>
-
-            <div className="form-group mt-3">
-              <span>Email</span>
-              <input
-                name="email"
-                placeholder="Nhập email"
-                className="input-box"
-                value={registerInfo.email}
-                ref={(element) => {
-                  inputRef.current["email"] = element;
-                }}
-                onChange={handleTextInputChange}
-                onInput={(e) => {
-                  hanldeOnBlurInput(e);
-                }}
-              />
             </div>
 
             <div className="form-group mt-3">

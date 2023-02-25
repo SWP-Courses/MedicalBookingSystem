@@ -22,7 +22,7 @@ function Blogs() {
   }, []);
 
   const fetchListCategoryBlogs = async () => {
-    const [error, res] = await hanlderRequest(axios.get(API_URL + "/category"));
+    const [error, res] = await hanlderRequest(axios.get(API_URL + "/categories"));
     if (res && res.data && res.data.category && res.data.category.length > 0) {
       setBlogCategory(res.data.category);
     } else {
