@@ -14,7 +14,7 @@ function BlogRow({ onClickEditBlog, stt, blog, onDeleteBlogById }) {
     const onConfilmDelete = async () => {
         if (!blog._id) return;
         try {
-            const result = await axios.delete(`${ROUTER}/api/blog/${blog._id}`);
+            const result = await axios.delete(`${ROUTER}/api/blogs/${blog._id}`);
             if (result.status === 200) {
                 toast.success("Susscess!", toastOption);
                 onDeleteBlogById(blog._id);
