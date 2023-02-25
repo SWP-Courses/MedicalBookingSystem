@@ -7,76 +7,6 @@ import API_URL from "~/api/Router";
 import ReactPaginate from "react-paginate";
 import slider from "~/assets/images/slider.jpg";
 import Pagination from "./Pagination";
-
-// const items = [...Array(33).keys()];
-
-// function Items({ currentItems }) {
-//   return (
-//     <div className="items">
-//     {currentItems && currentItems.map((item) => (
-//       <div>
-//         <h3>Item #{item}</h3>
-//       </div>
-//     ))}
-//       </div>
-//   );
-// }
-
-// function PaginatedItems({ itemsPerPage }) {
-//   // We start with an empty list of items.
-//   const [currentItems, setCurrentItems] = useState(null);
-//   const [pageCount, setPageCount] = useState(0);
-//   // Here we use item offsets; we could also use page offsets
-//   // following the API or data you're working with.
-//   const [itemOffset, setItemOffset] = useState(0);
-
-//   useEffect(() => {
-//     // Fetch items from another resources.
-//     const endOffset = itemOffset + itemsPerPage;
-//     console.log('item offset:' , itemOffset);
-//     console.log(`Loading items from ${itemOffset} to ${endOffset}`);
-
-//     setCurrentItems(items.slice(itemOffset, endOffset));
-//     setPageCount(Math.ceil(items.length / itemsPerPage));
-//   }, [itemOffset, itemsPerPage]);
-
-//   // Invoke when user click to request another page.
-//   const handlePageClick = (event) => {
-
-//     console.log('event.selected: ', event.selected, itemsPerPage);
-
-//     const newOffset = event.selected * itemsPerPage % items.length;
-//     console.log(`User requested page number ${event.selected}, which is offset ${newOffset}`);
-//     setItemOffset(newOffset);
-//   };
-
-//   return (
-//     <>
-//       <Items currentItems={currentItems} />
-//       <ReactPaginate
-//         nextLabel="next >"
-//         onPageChange={handlePageClick}
-//         pageRangeDisplayed={3}
-//         marginPagesDisplayed={2}
-//         pageCount={pageCount}
-//         previousLabel="< previous"
-//         pageClassName="page-item"
-//         pageLinkClassName="page-link"
-//         previousClassName="page-item"
-//         previousLinkClassName="page-link"
-//         nextClassName="page-item"
-//         nextLinkClassName="page-link"
-//         breakLabel="..."
-//         breakClassName="page-item"
-//         breakLinkClassName="page-link"
-//         containerClassName="pagination"
-//         activeClassName="active"
-//         renderOnZeroPageCount={null}
-//       />
-//     </>
-//   );
-
-// }
 import ReactHtmlParser from 'react-html-parser';
 
 function Blogs() {
@@ -100,7 +30,7 @@ function Blogs() {
   }, []);
 
   const fetchListCategoryBlogs = async () => {
-    const res = await axios.get(API_URL + '/category');
+    const res = await axios.get(API_URL + '/categories');
     console.log('check res cate: ', res);
     if (res && res.data && res.data.category && res.data.category.length > 0) {
       setBlogCategory(res.data.category);
@@ -156,75 +86,7 @@ function Blogs() {
             <hr />
             <Pagination data={blogs}/>
             {
-              blogsFiltered.length > 0 ?
-                blogsFiltered.map((blog, index) => {
-                  const imgString = blog.content.match(/<img([\w\W]+?)>/g);
-                  const content = blog.content.replace(/<img[^>]*>/g, "");
-
-                  return (
-                    <div key={index} className="blog-item">
-                      <Link to={`/blogs/${blog._id}`}>
-                        {imgString ? ReactHtmlParser(imgString[0]) : undefined}
-                      </Link>
-                      <div className="blog-item-body">
-                        <h2 className="bolg-item-title line-clamp">
-                          {blog.title}
-                        </h2>
-                        <p
-                          className="line-clamp line-4"
-                          dangerouslySetInnerHTML={{
-                            __html: DOMPurify.sanitize(content),
-                          }}
-                        >
-                          {
-                            // blog.content
-                          }
-                        </p>
-                      </div>
-                    </div>
-                  )
-                })
-                :
-                blogs.map((blog, index) => {
-                  const imgString = blog.content.match(/<img([\w\W]+?)>/g);
-                  const content = blog.content.replace(/<img[^>]*>/g, "");
-
-                  return (
-                    <div key={index} className="blog-item">
-                      <Link to={`/blogs/${blog._id}`}>
-                        {/* <img
-                          className="blog-image"
-                          src={blog.image}
-                          alt="blog-image"
-                        /> */}
-
-                        {imgString ? ReactHtmlParser(imgString[0]) : undefined}
-
-
-                      </Link>
-                      <div className="blog-item-body">
-                        <Link to={`/blogs/${blog._id}`}>
-                          <h2
-                            className="bolg-item-title line-clamp"
-                            style={{ fontSize: '25px', cursor: 'pointer' }}
-                          >
-                            {blog.title}
-                          </h2>
-                        </Link>
-                        <p
-                          className="line-clamp line-4"
-                          dangerouslySetInnerHTML={{
-                            __html: DOMPurify.sanitize(content),
-                          }}
-                        >
-                          {
-                            // blog.content
-                          }
-                        </p>
-                      </div>
-                    </div>
-                  )
-                })
+              
             }
           </div>
         </div>

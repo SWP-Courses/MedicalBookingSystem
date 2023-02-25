@@ -32,7 +32,7 @@ const Blog = () => {
 
   const getAllBlog = async () => {
     try {
-      const result = await axios.get(`${ROUTER}/api/blog`);
+      const result = await axios.get(`${ROUTER}/api/blogs`);
       if (result.status === 200) {
         setBlogList(result.data.blogs);
       }
@@ -44,7 +44,7 @@ const Blog = () => {
 
   const getAllCategory = async () => {
     try {
-      const result = await axios.get(`${ROUTER}/api/category`);
+      const result = await axios.get(`${ROUTER}/api/categories`);
       if (result.status === 200) {
         setCategoryList(result.data.category);
       }
@@ -87,7 +87,7 @@ const Blog = () => {
     // return;
 
     try {
-      const result = BlogDetail ? await axios.put(`${ROUTER}/api/blog/${BlogDetail._id}`, data) : await axios.post(`${ROUTER}/api/blog`, data);
+      const result = BlogDetail ? await axios.put(`${ROUTER}/api/blogs/${BlogDetail._id}`, data) : await axios.post(`${ROUTER}/api/blogs`, data);
       console.log(result);
       if (result.status === 200) {
         const newBlog = result.data.blogs;
