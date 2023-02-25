@@ -16,7 +16,6 @@ export default function AuthContextProvider({ children }) {
 
   // Side Effect
   useEffect(() => {
-    // console.log(currentUser);
     localStorage.setItem("user", JSON.stringify(currentUser));
   }, [currentUser]);
 
@@ -30,9 +29,6 @@ export default function AuthContextProvider({ children }) {
       navigate("/");
     } catch (error) {
         toast.error(error?.response?.data);
-        // if(error?.response?.data) {
-          // setIsLoading(false);
-        // }
     }
   };
 

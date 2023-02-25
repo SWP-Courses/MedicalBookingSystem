@@ -2,7 +2,7 @@ const asyncHandler = require("express-async-handler");
 const Service = require("../models/service");
 
 //@desc Get all service
-//@route GET /api/service
+//@route GET /api/services
 //@access private
 const getService = asyncHandler(async (req, res, next) => {
   const services = await Service.find();
