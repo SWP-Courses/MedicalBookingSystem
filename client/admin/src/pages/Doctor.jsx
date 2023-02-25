@@ -9,65 +9,6 @@ import DoctorDetail from '../components/DoctorDetail/DoctorDetail';
 import DoctorTable from '../components/DoctorTable/DoctorTable';
 import toastOption from '../config/toast';
 
-const demoBlogList = [
-  {
-    _id: faker.datatype.uuid(),
-    avatar: faker.image.avatar(),
-    fullname: faker.name.fullName(),
-    email: faker.internet.email(),
-    password: faker.internet.password(),
-    dateOfBirth: faker.date.birthdate(),
-    address: faker.address.city(),
-    special: faker.word.adjective(),
-    phone: faker.phone.phoneNumber(),
-    username: faker.name.firstName(),
-    sex: faker.name.sex(),
-    description: faker.commerce.productDescription()
-  },
-  {
-    _id: faker.datatype.uuid(),
-    avatar: faker.image.avatar(),
-    fullname: faker.name.fullName(),
-    email: faker.internet.email(),
-    password: faker.internet.password(),
-    dateOfBirth: faker.date.birthdate(),
-    address: faker.address.city(),
-    special: faker.word.adjective(),
-    phone: faker.phone.phoneNumber(),
-    username: faker.name.firstName(),
-    sex: faker.name.sex(),
-    description: faker.commerce.productDescription()
-  },
-  {
-    _id: faker.datatype.uuid(),
-    avatar: faker.image.avatar(),
-    fullname: faker.name.fullName(),
-    email: faker.internet.email(),
-    password: faker.internet.password(),
-    dateOfBirth: faker.date.birthdate(),
-    address: faker.address.city(),
-    special: faker.word.adjective(),
-    phone: faker.phone.phoneNumber(),
-    username: faker.name.firstName(),
-    sex: faker.name.sex(),
-    description: faker.commerce.productDescription()
-  },
-  {
-    _id: faker.datatype.uuid(),
-    avatar: faker.image.avatar(),
-    fullname: faker.name.fullName(),
-    email: faker.internet.email(),
-    password: faker.internet.password(),
-    dateOfBirth: faker.date.birthdate(),
-    address: faker.address.city(),
-    special: faker.word.adjective(),
-    phone: faker.phone.phoneNumber(),
-    username: faker.name.firstName(),
-    sex: faker.name.sex(),
-    description: faker.commerce.productDescription()
-  }
-]
-
 const Doctor = () => {
   const [doctorList, setDoctorList] = useState();
   const [createDoctor, setCreateDoctor] = useState(false);
@@ -179,8 +120,6 @@ const Doctor = () => {
     formData.current.delete('degree');
     formData.current.delete('password');
     formData.current.delete('email');
-
-
   }
 
   return (

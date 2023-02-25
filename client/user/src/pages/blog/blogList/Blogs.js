@@ -77,13 +77,22 @@ import Pagination from "./Pagination";
 //   );
 
 // }
+import ReactHtmlParser from 'react-html-parser';
 
 function Blogs() {
   const listBlogRef = useRef();
   const [blogCategory, setBlogCategory] = useState([]);
   const [blogs, setBlogs] = useState([]);
   const [blogsFiltered, setBlogsFiltered] = useState([]);
-  const [categoryName, setCategoryName] = useState("Tổng Hợp Các Bài Viết");
+  const [categoryName, setCategoryName] = useState('Tổng Hợp Các Bài Viết');
+
+  console.log('check blog filtered : ', blogsFiltered);
+
+  const location = useLocation();
+
+  console.log(blogs);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchListCategoryBlogs();
@@ -91,8 +100,8 @@ function Blogs() {
   }, []);
 
   const fetchListCategoryBlogs = async () => {
-    const res = await axios.get(API_URL + "/categorys");
-    // console.log('check res cate: ', res);
+    const res = await axios.get(API_URL + '/category');
+    console.log('check res cate: ', res);
     if (res && res.data && res.data.category && res.data.category.length > 0) {
       setBlogCategory(res.data.category);
     }
@@ -146,6 +155,77 @@ function Blogs() {
             <h1 className="type">{categoryName}</h1>
             <hr />
             <Pagination data={blogs}/>
+            {
+              blogsFiltered.length > 0 ?
+                blogsFiltered.map((blog, index) => {
+                  const imgString = blog.content.match(/<img([\w\W]+?)>/g);
+                  const content = blog.content.replace(/<img[^>]*>/g, "");
+
+                  return (
+                    <div key={index} className="blog-item">
+                      <Link to={`/blogs/${blog._id}`}>
+                        {imgString ? ReactHtmlParser(imgString[0]) : undefined}
+                      </Link>
+                      <div className="blog-item-body">
+                        <h2 className="bolg-item-title line-clamp">
+                          {blog.title}
+                        </h2>
+                        <p
+                          className="line-clamp line-4"
+                          dangerouslySetInnerHTML={{
+                            __html: DOMPurify.sanitize(content),
+                          }}
+                        >
+                          {
+                            // blog.content
+                          }
+                        </p>
+                      </div>
+                    </div>
+                  )
+                })
+                :
+                blogs.map((blog, index) => {
+                  const imgString = blog.content.match(/<img([\w\W]+?)>/g);
+                  const content = blog.content.replace(/<img[^>]*>/g, "");
+
+                  return (
+                    <div key={index} className="blog-item">
+                      <Link to={`/blogs/${blog._id}`}>
+                        {/* <img
+                          className="blog-image"
+                          src={blog.image}
+                          alt="blog-image"
+                        /> */}
+
+                        {imgString ? ReactHtmlParser(imgString[0]) : undefined}
+
+
+                      </Link>
+                      <div className="blog-item-body">
+                        <Link to={`/blogs/${blog._id}`}>
+                          <h2
+                            className="bolg-item-title line-clamp"
+                            style={{ fontSize: '25px', cursor: 'pointer' }}
+                          >
+                            {blog.title}
+                          </h2>
+                        </Link>
+                        <p
+                          className="line-clamp line-4"
+                          dangerouslySetInnerHTML={{
+                            __html: DOMPurify.sanitize(content),
+                          }}
+                        >
+                          {
+                            // blog.content
+                          }
+                        </p>
+                      </div>
+                    </div>
+                  )
+                })
+            }
           </div>
         </div>
         <div className="paginate">

@@ -121,7 +121,7 @@ function BlogDetail() {
         </div>
         <div className="blog-content">
           <div className="blog-wrapper">
-            {currentUser?.role !== "doctor" && (!isSaved ? (
+{currentUser?.role !== "doctor" && (!isSaved ? (
               <>
                 <FontAwesomeIcon icon={faBookmark} className="saveBlog" onClick={handleSaveBlogClick}/>
                 {/* <button className="saveBlog" onClick={handleSaveBlogClick}>
@@ -136,14 +136,14 @@ function BlogDetail() {
                 </button> */}
               </>
             ))}
-            <h1 className="blog-title">{blog?.title}</h1>
-            
-            <img className="blog-detail-image" src={blog?.image} alt="" />
-            <div className="content-box" ref={refBlog}>
-              <h2 className="sub-title">1. Vai trò của Vitamin D</h2>
-              {
-                // refBlog.current.innerHTML = blog.content
-              }
+            <div className="blog-detail">
+              <h1 className="blog-title">{blog?.title}</h1>
+              <div className="content-box" ref={refBlog}>
+                <h2 className="sub-title">1. Vai trò của Vitamin D</h2>
+                {
+                  // refBlog.current.innerHTML = blog.content
+                }
+              </div>
             </div>
           </div>
           <div className="sub-infor">
