@@ -31,8 +31,10 @@ export default function BlogsSaved() {
 
   const handleUnSaveBlogClick = async (blogId) => {
     try {
-      await axios.delete(`${API_URL}/blogs/unsave/${blogId}/${currentUser._id}`);
-      setBlogSaved(prev => prev.filter(blog => blog._id !== blogId));
+      await axios.delete(
+        `${API_URL}/blogs/unsave/${blogId}/${currentUser._id}`
+      );
+      setBlogSaved((prev) => prev.filter((blog) => blog._id !== blogId));
     } catch (err) {
       console.log(err);
     }
@@ -46,16 +48,23 @@ export default function BlogsSaved() {
             <Col xs={14} md={3} key={blog._id}>
               <Card
                 border="secondary"
-                style={{ width: "15rem", cursor: "pointer", height: "100%" }}
+                style={{ width: "100%", cursor: "pointer", height: "100%" }}
               >
-                <Card.Header className="text-center">{blog.cate}</Card.Header>
+                <Card.Header className="text-center h-25 text-middle">{blog.cate}</Card.Header>
                 <Card.Body className="d-flex flex-column">
-                  <Card.Title style={{minHeight: "80px"}}>
+                  <Card.Title style={{ minHeight: "80px" }}>
                     <Link to={`/blogs/${blog._id}`}>{blog.title}</Link>
                   </Card.Title>
-                  <Card.Text >Tác giả: {blog.author}</Card.Text>
-                  <Card.Text>Ngày đăng: {blog.createdAt}</Card.Text>
-                  <Button variant="warning" size="sm" className="btn-block mt-auto" onClick={() => handleUnSaveBlogClick(blog._id)}> 
+                  <Card.Body>
+                    <Card.Text>Tác giả: {blog.author}</Card.Text>
+                    <Card.Text>Ngày đăng: {blog.createdAt}</Card.Text>
+                  </Card.Body>
+                  <Button
+                    variant="warning"
+                    size="sm"
+                    className="btn-block mt-auto"
+                    onClick={() => handleUnSaveBlogClick(blog._id)}
+                  >
                     Bỏ lưu
                   </Button>
                 </Card.Body>

@@ -1,4 +1,3 @@
-import { doctorList } from "~/fakeData";
 import "./doctorList.scss";
 
 import stethoscope from "~/assets/images/stethoscope.jpg";
@@ -11,18 +10,6 @@ export default function DoctorList() {
   const [doctorList, setDoctorList] = useState();
   const [specialists, setSpecialists] = useState([]);
   const [filterId, setFilterId] = useState();
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get(API_URL + "/specialists");
-        setSpecialists(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchData();
-  }, []);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -43,22 +30,6 @@ export default function DoctorList() {
         <img src={stethoscope} alt="" />
       </div>
       <div className="doctorsWrapper">
-        <div className="filter">
-          <h2>Chuyên khoa</h2>
-          <div className="divideLine" />
-          <ul>
-            {specialists?.map((spe) => (
-              <li
-                key={spe._id}
-                className={filterId === spe._id && "active"}
-                onClick={() => setFilterId(spe._id)}
-              >
-                {spe.title}
-              </li>
-            ))}
-          </ul>
-        </div>
-        <div className="divideLine" />
         <div className="doctorList">
           {filterId
             ? doctorList.filter((doctor) => (

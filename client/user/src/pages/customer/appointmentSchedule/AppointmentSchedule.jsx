@@ -1,43 +1,123 @@
-import { useState } from "react";
-import { Tab, Tabs } from "react-bootstrap";
+import { useCallback, useContext, useEffect, useState } from "react";
+import { Button, Modal, Tab, Table, Tabs } from "react-bootstrap";
 import "./appointmentSchedule.scss";
 import { customerAppointmentSchedule as cusApmSchedule } from "../../../fakeData";
+import { AuthContext } from "~/context/authContext";
+import axios from "axios";
+import API_URL from "~/api/Router";
+import { addDays, format, parseISO } from "date-fns";
+
+function MyVerticallyCenteredModal(props) {
+  const { handleCancel, bservice, show, onHide } = props;
+  return (
+    <Modal
+      show={show}
+      onHide={onHide}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">
+          Xác nhận huỷ lịch
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <h4>{bservice.services[0].name}</h4>
+        <p>Ngày đặt: {format(new Date(bservice?.date), "dd/MM/yyyy")}</p>
+        <p>Lúc: {bservice.slot_time}</p>
+        <p>Bác sĩ: {bservice?.doctor[0].fullname}</p>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={props.onHide}>Đóng</Button>
+        <Button variant="danger" onClick={() => handleCancel(bservice._id)}>
+          Xác nhận
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
+}
 
 export default function AppointmentSchedule() {
-  const [key, setKey] = useState(
-    cusApmSchedule.length && cusApmSchedule[0].date
-  );
+  const [upBookedServices, setUpServives] = useState();
+  const { currentUser } = useContext(AuthContext);
+  const [modalShow, setModalShow] = useState(false);
+
+  const fetchUpBservices = useCallback(async () => {
+    try {
+      const res = await axios.get(
+        `${API_URL}/bookedservices/users/${currentUser._id}`
+      );
+      setUpServives(res.data);
+    } catch (err) {
+      console.log(err);
+    }
+  }, [currentUser._id]);
+
+  // Side effects
+  useEffect(() => {
+    fetchUpBservices();
+  }, [fetchUpBservices]);
+
+  // Functions
+  const handleCancelBookedService = async (id) => {
+    try {
+      await axios.delete(`${API_URL}/bookedservices/${id}`);
+      // await fetchUpBservices()
+      setUpServives((prev) => prev.filter((item) => item._id !== id));
+      setModalShow(false);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="appointmentSchedule">
-      <Tabs
-        id="controlled-tab-example"
-        activeKey={key}
-        onSelect={(k) => setKey(k)}
-        className="mb-3"
-      >
-        {cusApmSchedule?.map((order) => (
-          <Tab eventKey={order.date} title={order.date}>
-            <div className="orderSchedule">
-              <div className="orderInfoItem">
-                <span className="key">Thời gian:</span>
-                <span className="value">{order.time}</span>
-              </div>
-              <div className="orderInfoItem">
-                <span className="key">Phòng:</span>
-                <span className="value">{order.room}</span>
-              </div>
-              <div className="orderInfoItem">
-                <span className="key">Dịch vụ:</span>
-                <span className="value">{order.service}</span>
-              </div>
-              <div className="orderInfoItem">
-                <span className="key">Bác sĩ:</span>
-                <span className="value">{order.doctor}</span>
-              </div>
-            </div>
-          </Tab>
-        ))}
-      </Tabs>
+      <h1 className="title">Lịch sử khám bệnh</h1>
+      <Table striped hover responsive>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Ngày khám</th>
+            <th>Giờ khám</th>
+            <th>Dịch vụ</th>
+            <th>Bác sĩ</th>
+            <th className="text-center">Huỷ lịch</th>
+          </tr>
+        </thead>
+        <tbody>
+          {upBookedServices?.map((bservice, index) => {
+            console.log(typeof bservice?.services[0].name);
+
+            return (
+              <tr>
+                <td className="align-middle">{index}</td>
+                <td className="align-middle">
+                  {format(new Date(bservice?.date), "dd/MM/yyyy")}
+                </td>
+                <td className="align-middle">{bservice.slot_time}</td>
+                <td className="align-middle">{bservice?.services[0].name}</td>
+                <td className="align-middle">{bservice?.doctor[0].fullname}</td>
+                <td className="text-center">
+                  <Button
+                    size="sm"
+                    variant="danger"
+                    onClick={() => setModalShow(true)}
+                  >
+                    Xác nhận
+                  </Button>
+                  <MyVerticallyCenteredModal
+                    show={modalShow}
+                    onHide={() => setModalShow(false)}
+                    bservice={bservice}
+                    handleCancel={handleCancelBookedService}
+                  />
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </Table>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { format } from "date-fns";
 import { useContext, useEffect, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
@@ -80,7 +81,7 @@ export default function Booking() {
     const passData = {
       user_id: currentUser._id,
       doctor_id: booking.doctor._id,
-      date: booking.date,
+      date: format(booking.date, "yyyy-MM-dd"),
       slot_time: booking.slot.time,
       service_id: booking.service._id,
     };

@@ -7,6 +7,9 @@ import { useContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import API_URL from "~/api/Router";
 import { StoreContext } from "~/context/storeContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBookmark } from "@fortawesome/free-regular-svg-icons";
+import { faBookmark as solid } from "@fortawesome/free-solid-svg-icons";
 
 function BlogDetail() {
   const { setRoutingHistory } = useContext(StoreContext);
@@ -50,7 +53,7 @@ function BlogDetail() {
       }
     }
     filterBlogSameCategory();
- }, [])
+ }, [id])
 
   // Khoa
   useEffect(() => {
@@ -119,13 +122,19 @@ function BlogDetail() {
         <div className="blog-content">
           <div className="blog-wrapper">
             {currentUser?.role !== "doctor" && (!isSaved ? (
-              <button className="saveBlog" onClick={handleSaveBlogClick}>
-                LƯU
-              </button>
+              <>
+                <FontAwesomeIcon icon={faBookmark} className="saveBlog" onClick={handleSaveBlogClick}/>
+                {/* <button className="saveBlog" onClick={handleSaveBlogClick}>
+                  LƯU
+                </button> */}
+              </>
             ) : (
-              <button className="saveBlog" onClick={handleUnSaveBlogClick}>
-                HUỶ LƯU
-              </button>
+              <>
+              <FontAwesomeIcon icon={solid} className="saveBlog" onClick={handleUnSaveBlogClick}/>
+                {/* <button className="saveBlog" onClick={handleUnSaveBlogClick}>
+                  HUỶ LƯU
+                </button> */}
+              </>
             ))}
             <h1 className="blog-title">{blog?.title}</h1>
             
