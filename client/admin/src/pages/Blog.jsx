@@ -12,6 +12,7 @@ const Blog = () => {
   const [blogList, setBlogList] = useState();
   const [BlogDetail, setBlogDetail] = useState();
   const [categoryList, setCategoryList] = useState();
+  const [description, setDescription] = useState();
 
   const [newValue, setNewValue] = useState('');
   const [newTitle, setNewTitle] = useState('');
@@ -27,6 +28,7 @@ const Blog = () => {
     setNewTitle("");
     setNewValue("");
     setCatagoryId("");
+    setDescription("");
     setCreateBlog(true);
   }
 
@@ -80,11 +82,9 @@ const Blog = () => {
       title: newTitle,
       category_id: catagoryId,
       content: newValue,
-      author: author
+      author: author,
+      description: description
     }
-
-    console.log(BlogDetail);
-    // return;
 
     try {
       const result = BlogDetail ? await axios.put(`${ROUTER}/api/blog/${BlogDetail._id}`, data) : await axios.post(`${ROUTER}/api/blog`, data);
@@ -132,7 +132,7 @@ const Blog = () => {
         {/* Table */}
         {
           createBlog ?
-            <BlogEditor BlogDetail={BlogDetail} newValue={newValue} newTitle={newTitle} catagoryId={catagoryId} author={author} categoryList={categoryList} setAuthor={setAuthor} setCatagoryId={setCatagoryId} setNewValue={setNewValue} setNewTitle={setNewTitle} /> :
+            <BlogEditor setDescription={setDescription} description={description} BlogDetail={BlogDetail} newValue={newValue} newTitle={newTitle} catagoryId={catagoryId} author={author} categoryList={categoryList} setAuthor={setAuthor} setCatagoryId={setCatagoryId} setNewValue={setNewValue} setNewTitle={setNewTitle} /> :
             <BlogTable onDeleteBlogById={onDeleteBlogById} onClickEditBlog={onClickEditBlog} blogs={blogList} />
         }
       </div>

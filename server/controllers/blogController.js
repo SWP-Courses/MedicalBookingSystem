@@ -26,7 +26,7 @@ const getBlogById = asyncHandler(async (req, res, next) => {
 //@access private
 const createBlog = asyncHandler(async (req, res, next) => {
   try {
-    const { title, content, category_id, author } = req.body;
+    const { title, content, category_id, author, description } = req.body;
 
     if (!title || !content || !category_id) {
       res.status(400);
@@ -38,7 +38,8 @@ const createBlog = asyncHandler(async (req, res, next) => {
       title,
       content,
       category_id,
-      author
+      author,
+      description
     });
 
     res.status(200).json({ blogs });
@@ -60,12 +61,13 @@ const updateBlog = asyncHandler(async (req, res, next) => {
     throw new Error("Blog Not Found!");
   }
 
-  const { author, title, content, category_id } = req.body;
+  const { author, title, content, category_id, description } = req.body;
   const blogs = await Blog.findByIdAndUpdate(blogId, {
     author,
     title,
     content,
-    category_id
+    category_id,
+    description
   }, { new: true });
 
   res.status(200).json({ blogs });

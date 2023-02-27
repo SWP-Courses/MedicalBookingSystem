@@ -21,6 +21,7 @@ const blogRouter = require('./routes/blogRouter');
 const categoryRouter = require('./routes/categoryRouter');
 const serviceRouter = require('./routes/serviceRouter');
 const imageRouter = require('./routes/imageRouter');
+const roomRouter = require('./routes/roomRouter');
 
 var app = express();
 app.use(cors());
@@ -54,6 +55,7 @@ app.use("/api/medicine", medicineRouter);
 app.use("/api/blog", blogRouter);
 app.use("/api/category", categoryRouter);
 app.use("/api/service", serviceRouter);
+app.use("/api/room", roomRouter);
 app.use('/image', imageRouter);
 
 

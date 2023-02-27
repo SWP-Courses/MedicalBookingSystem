@@ -20,7 +20,7 @@ const register = async (req, res, next) => {
       const salt = bcrypt.genSaltSync(10);
       console.log('resgiter');
       const hash = bcrypt.hashSync(req.body.password, salt);
-      
+
       // default: role_code = "R3"
       let document = {
         fullname: req.body.fullname,
@@ -29,20 +29,21 @@ const register = async (req, res, next) => {
         password: hash,
         phone: req.body.phone,
         role_code: req.body.role_code,
-        avatar: avatar
+        avatar: avatar,
+        room_id: req.body.room_id,
       };
-      
+
       // If create a doctor account
       // Pass role_code="R2"
       if (req.body.role_code === "R2")
-      document = {
-        role_code: "R2",
-        ...document,
-        degree: req.body.degree,
-        specialist_id: req.body.specialist_id,
-        profile: req.body.profile,
-      };
-      
+        document = {
+          role_code: "R2",
+          ...document,
+          degree: req.body.degree,
+          room: req.body.room,
+          profile: req.body.profile,
+        };
+
       const newUser = new UserModel(
         !req.body.email
           ? document
@@ -66,7 +67,6 @@ const register = async (req, res, next) => {
     }
   } catch (err) {
     console.log(err);
-    await deleteImageById(avatar.id);
     res.status(500).json(err);
   }
 };
@@ -84,7 +84,7 @@ const login = async (req, res, next) => {
         email: req.body.email,
       };
     }
-    
+
     // degree, profile, spe_id của doctor chỉ được admin thay đổi
     const user = await UserModel.findOne(userQuery);
     // const result = await UserModel.aggregate([

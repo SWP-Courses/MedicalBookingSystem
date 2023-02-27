@@ -5,7 +5,7 @@ import { AiOutlinePlus } from "react-icons/ai"
 import "./doctordetail.css";
 import ROUTER from '../../api/Router';
 
-function DoctorDetail({ specialistId, profile, formData, doctorDetail, fullname, dateOfBirth, phone, gender, specialist, email, degree, address }) {
+function DoctorDetail({ roomId, emptyRoom, profile, formData, doctorDetail, fullname, dateOfBirth, phone, gender, email, degree, address }) {
     const [Avatar, setAvatar] = useState();
     const formatDate = (date) => {
         const formatDate = date.split("/").reverse().join("-");
@@ -94,11 +94,11 @@ function DoctorDetail({ specialistId, profile, formData, doctorDetail, fullname,
 
                             <div className="input-group w-50">
                                 <div className="input-group-prepend w-100">
-                                    <span className="w-25" id="basic-addon1">Specialist</span>
+                                    <span className="w-25" id="basic-addon1">Room</span>
                                 </div>
-                                <select className="form-select" defaultValue={doctorDetail.special._id} aria-label="Default select example">
+                                <select className="form-select" defaultValue={doctorDetail.room_id} aria-label="Default select example">
                                     {
-                                        specialist.map(special => <option value={special._id}>{special.title}</option>)
+                                        emptyRoom.map(item => <option value={item._id}>{item.room}</option>)
                                     }
                                 </select>
                             </div>
@@ -200,11 +200,11 @@ function DoctorDetail({ specialistId, profile, formData, doctorDetail, fullname,
 
                         <div className="input-group w-50">
                             <div className="input-group-prepend w-100">
-                                <span className="w-25" id="basic-addon1">Specialist</span>
+                                <span className="w-25" id="basic-addon1">Room</span>
                             </div>
-                            <select ref={specialistId} className="form-select" aria-label="Default select example">
+                            <select className="form-select" ref={roomId} aria-label="Default select example">
                                 {
-                                    specialist.map(special => <option value={special._id}>{special.title}</option>)
+                                    emptyRoom.map(item => <option value={item._id}>{item.room}</option>)
                                 }
                             </select>
                         </div>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
-function BlogEditor({ BlogDetail, categoryList, setNewValue, setNewTitle, setCatagoryId, setAuthor, catagoryId, author, newTitle, newValue }) {
+function BlogEditor({ description, setDescription, BlogDetail, categoryList, setNewValue, setNewTitle, setCatagoryId, setAuthor, catagoryId, author, newTitle, newValue }) {
     const modules = {
         toolbar: [
             [{ 'header': [1, 2, false] }],
@@ -25,6 +25,7 @@ function BlogEditor({ BlogDetail, categoryList, setNewValue, setNewTitle, setCat
             setCatagoryId(BlogDetail.category_id);
             setNewTitle(BlogDetail.newTitle);
             setNewValue(BlogDetail.content);
+            setDescription(BlogDetail.description);
         }
     }, [BlogDetail])
 
@@ -48,6 +49,10 @@ function BlogEditor({ BlogDetail, categoryList, setNewValue, setNewTitle, setCat
                         <span class="input-group-text" id="basic-addon1">Title</span>
                         <input type="text" class="form-control" defaultValue={BlogDetail.title} onChange={(e) => setNewTitle(e.target.value)} placeholder="" aria-label="" aria-describedby="basic-addon1" />
                     </div>
+                </div>
+                <div class="mb-3">
+                    <label for="exampleFormControlTextarea1" class="form-label">Description</label>
+                    <textarea class="form-control" defaultValue={BlogDetail.description} onChange={(e) => setDescription(e.target.value)} id="exampleFormControlTextarea1" rows="3"></textarea>
                 </div>
                 <ReactQuill theme="snow"
                     modules={modules}
@@ -77,6 +82,10 @@ function BlogEditor({ BlogDetail, categoryList, setNewValue, setNewTitle, setCat
                     <span class="input-group-text" id="basic-addon1">Title</span>
                     <input type="text" class="form-control" value={newTitle} onChange={(e) => setNewTitle(e.target.value)} placeholder="" aria-label="" aria-describedby="basic-addon1" />
                 </div>
+            </div>
+            <div class="mb-3">
+                <label for="exampleFormControlTextarea1" class="form-label">Description</label>
+                <textarea class="form-control" value={description} onChange={(e) => setDescription(e.target.value)} id="exampleFormControlTextarea1" rows="3"></textarea>
             </div>
             <ReactQuill theme="snow"
                 modules={modules}

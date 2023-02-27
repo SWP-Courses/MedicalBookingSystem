@@ -21,7 +21,6 @@ const UserSchema = new mongoose.Schema(
     },
     dateOfBirth: {
       type: String,
-      required: true,
     },
     address: {
       type: String,
@@ -60,6 +59,13 @@ const UserSchema = new mongoose.Schema(
     profile: {
       type: String,
     },
+    status: {
+      type: Boolean,
+      default: true
+    },
+    room_id: {
+      type: mongoose.Schema.Types.ObjectId,
+    }
   },
   {
     versionKey: false,

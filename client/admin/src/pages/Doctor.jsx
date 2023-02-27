@@ -13,7 +13,7 @@ const Doctor = () => {
   const [doctorList, setDoctorList] = useState();
   const [createDoctor, setCreateDoctor] = useState(false);
   const [doctorDetail, setDoctorDetail] = useState(null);
-  const [specialist, setSpecialist] = useState();
+  const [room, setRoom] = useState();
 
   const formData = useRef(new FormData());
   const fullname = useRef();
@@ -24,7 +24,7 @@ const Doctor = () => {
   const degree = useRef();
   const address = useRef();
   const profile = useRef();
-  const specialistId = useRef();
+  const roomId = useRef();
 
 
   const getAllDoctor = async () => {
@@ -39,11 +39,11 @@ const Doctor = () => {
     }
   }
 
-  const getAllSpecialist = async () => {
+  const getAllEmptyRoom = async () => {
     try {
-      const result = await axios.get(`${ROUTER}/api/specialists`);
+      const result = await axios.get(`${ROUTER}/api/room`);
       if (result.status === 200) {
-        setSpecialist(result.data);
+        setRoom(result.data.room);
       }
 
     } catch (error) {
@@ -53,7 +53,7 @@ const Doctor = () => {
 
   useEffect(() => {
     getAllDoctor();
-    getAllSpecialist();
+    getAllEmptyRoom();
   }, [])
 
   const onClickEditDoctor = (id) => {
@@ -90,9 +90,9 @@ const Doctor = () => {
     formData.current.append('role_code', "R2");
     formData.current.append('degree', degree.current.value);
     formData.current.append('profile', profile.current.value);
-    formData.current.append('specialist_id', specialistId.current.value);
     formData.current.append('email', email.current.value);
     formData.current.append('password', "123456");
+    formData.current.append('room_id', roomId.current.value);
 
     try {
       const result = false ? await axios.post(`${ROUTER}/api/auth/register/${doctorDetail._id}`, formData.current) : await axios.post(`${ROUTER}/api/auth/register`, formData.current);
@@ -115,7 +115,7 @@ const Doctor = () => {
     formData.current.delete('phone');
     formData.current.delete('role_code');
     formData.current.delete('profile');
-    formData.current.delete('specialist_id');
+    formData.current.delete('room_id');
     formData.current.delete('avatar');
     formData.current.delete('degree');
     formData.current.delete('password');
@@ -139,7 +139,7 @@ const Doctor = () => {
 
         {
           createDoctor ?
-            <DoctorDetail specialistId={specialistId} formData={formData} profile={profile} address={address} email={email} degree={degree} fullname={fullname} gender={gender} specialist={specialist} phone={phone} dateOfBirth={dateOfBirth} doctorDetail={doctorDetail} /> :
+            <DoctorDetail roomId={roomId} emptyRoom={room} formData={formData} profile={profile} address={address} email={email} degree={degree} fullname={fullname} gender={gender} phone={phone} dateOfBirth={dateOfBirth} doctorDetail={doctorDetail} /> :
             <DoctorTable onClickEditDoctor={onClickEditDoctor} onDeleteBlogById={onDeleteBlogById} doctors={doctorList} />
         }
       </div>

@@ -6,7 +6,7 @@ const { deleteImageById } = require("./imageController");
 // Update a user by id (customer, doctor)
 const updateUser = async (req, res, next) => {
   try {
-    const updatedUser = await UserModel.findByIdAndUpdate(req.params.id, req.body, {new:true});
+    const updatedUser = await UserModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
     // if (!doctor) return res.status(404).send("Doctor not found!");
     // const specialist = await SpecialistModel.findById(doctor._doc.specialist_id);
     res.status(200).json(updatedUser);
@@ -19,7 +19,7 @@ const updateUser = async (req, res, next) => {
 // Get a doctor info for page
 const getDoctorById = async (req, res, next) => {
   try {
-    const doctor = await UserModel.findOne({_id: req.params.id, role_code: "R2"}, "_id fullname degree profile avatar specialist_id");
+    const doctor = await UserModel.findOne({ _id: req.params.id, role_code: "R2" }, "_id fullname degree profile avatar specialist_id");
     if (!doctor) return res.status(404).send("Doctor not found!");
     const specialist = await SpecialistModel.findById(doctor._doc.specialist_id);
     res.status(200).json({ ...doctor._doc, specialist: specialist.title });
@@ -35,17 +35,10 @@ const getDoctors = async (req, res, next) => {
       {
         "$match": {
           "role_code": "R2",
+          "status": true
         }
       },
-      {
-        "$lookup": {
-          "from": "specialists",
-          "localField": "specialist_id",
-          "foreignField": "_id",
-          "as": "special"
-        }
-      },
-      { "$unwind": '$special' },
+
     ])
     console.log(user);
     res.status(200).json(user);
@@ -57,13 +50,11 @@ const getDoctors = async (req, res, next) => {
 const deleteDoctorAccount = async (req, res, next) => {
   try {
     const doctorId = req.params.id;
-    const deleteDoctor = await UserModel.findOneAndDelete({ _id: doctorId, role_code: "R2" });
+    const deleteDoctor = await UserModel.findOneAndUpdate({ _id: doctorId }, { status: false });
     if (!deleteDoctor) {
       res.status(404);
     }
-    console.log(deleteDoctor);
-    await UserModel.deleteOne({ _id: doctorId });
-    console.log(deleteDoctor);
+    // await UserModel.deleteOne({ _id: doctorId });
     await deleteImageById(deleteDoctor.avatar.id);
     res.status(200).json({ deleteDoctor });
   } catch (error) {
