@@ -2,15 +2,13 @@ const mongoose = require("mongoose");
 
 const SlotSchema = new mongoose.Schema(
   {
-    slot_number: {
+    time: {
       type: Number,
       required: true,
-    },
-    time: {
-      type: String,
-      maxLength: 255,
-      required: [true, "Please add the slot time"],
-    },
+      unique:true,
+      min:8,
+      max:17
+    }
   },
   { versionKey: false }
 );

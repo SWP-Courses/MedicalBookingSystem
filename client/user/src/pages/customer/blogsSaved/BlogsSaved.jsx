@@ -1,11 +1,23 @@
 import axios from "axios";
-import { useContext, useEffect, useState } from "react";
-import { Button, Card, Col, Container, Row } from "react-bootstrap";
+import { useContext, useEffect, useMemo, useState } from "react";
+import {
+  Button,
+  Card,
+  Col,
+  Container,
+  Form,
+  InputGroup,
+  Row,
+} from "react-bootstrap";
+import DataTable, { filter } from "react-data-table-component";
 import { Link } from "react-router-dom";
 import API_URL from "~/api/Router";
 import { AuthContext } from "~/context/authContext";
-import { blogsSaved } from "../../../fakeData";
+import ReactHtmlParser from "react-html-parser";
 import "./blogsSaved.scss";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
 
 export default function BlogsSaved() {
   const [blogsSaved, setBlogSaved] = useState();
@@ -29,50 +41,133 @@ export default function BlogsSaved() {
     }
   }, [currentUser]);
 
-  const handleUnSaveBlogClick = async (blogId) => {
-    try {
-      await axios.delete(
-        `${API_URL}/blogs/unsave/${blogId}/${currentUser._id}`
-      );
-      setBlogSaved((prev) => prev.filter((blog) => blog._id !== blogId));
-    } catch (err) {
-      console.log(err);
-    }
-  };
-  // console.log(blogsSaved);
+  const [filterText, setFilterText] = useState("");
+
+  const columns = useMemo(() => {
+    const handleUnSaveBlogClick = async (blogId) => {
+      try {
+        await axios.delete(
+          `${API_URL}/blogs/unsave/${blogId}/${currentUser._id}`
+        );
+        toast.success("Đã ")
+        setBlogSaved((prev) => prev.filter((blog) => blog._id !== blogId));
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    return [
+      {
+        name: "Minh hoạ",
+        cell: (row) => {
+          const imgString = row.content.match(/<img([\w\W]+?)>/g);
+          if (imgString) {
+            return (
+              <div
+                className="blog-save-banner"
+                dangerouslySetInnerHTML={{ __html: imgString[0] }}
+              />
+            );
+          } else return undefined;
+        },
+      },
+      {
+        name: "Tiêu đề",
+        selector: (row) => row.title,
+      },
+      {
+        name: "Ngày đăng",
+        selector: (row) => row.createdAt,
+        sortable: true,
+      },
+      {
+        name: "Tác giả",
+        selector: (row) => row.author,
+      },
+      {
+        name: "Hành động",
+        selector: (row) => (
+          <Button
+            variant="warning"
+            size="sm"
+            className="btn-block mt-auto"
+            onClick={() => handleUnSaveBlogClick(row._id)}
+          >
+            Bỏ lưu
+          </Button>
+        ),
+      },
+    ];
+  }, [currentUser._id]);
+  console.log(blogsSaved);
   return (
     <div className="blogsSaved">
-      <Container className="mt-3">
+      <InputGroup className="mb-3 search-saved-blog w-25">
+        <InputGroup.Text id="basic-addon1">
+          <FontAwesomeIcon icon={faSearch} />
+        </InputGroup.Text>
+        <Form.Control
+          placeholder="Tiêu đề"
+          aria-label="Username"
+          aria-describedby="basic-addon1"
+          value={filterText}
+          onChange={(e) => setFilterText(e.target.value)}
+        />
+      </InputGroup>
+      <DataTable
+        title="Bài viết đã lưu"
+        columns={columns}
+        data={blogsSaved?.filter((item) => {
+          if (filterText === "") {
+            return true;
+          } else if (
+            item.title.toLowerCase().includes(filterText.toLowerCase())
+          ) {
+            return true;
+          }
+          return false;
+        })}
+        pagination
+      />
+      {/* <Container className="mt-3">
         <Row>
-          {blogsSaved?.map((blog) => (
-            <Col xs={14} md={3} key={blog._id}>
-              <Card
-                border="secondary"
-                style={{ width: "100%", cursor: "pointer", height: "100%" }}
-              >
-                <Card.Header className="text-center h-25 text-middle">{blog.cate}</Card.Header>
-                <Card.Body className="d-flex flex-column">
-                  <Card.Title style={{ minHeight: "80px" }}>
-                    <Link to={`/blogs/${blog._id}`}>{blog.title}</Link>
-                  </Card.Title>
-                  <Card.Body>
-                    <Card.Text>Tác giả: {blog.author}</Card.Text>
-                    <Card.Text>Ngày đăng: {blog.createdAt}</Card.Text>
+          {blogsSaved?.map((blog) => {
+            const imgString = blog.content.match(/<img([\w\W]+?)>/g);
+            const imgSrc = imgString[0].match(/"([^"]*)"/);
+            console.log(imgSrc);
+            return (
+              <Col xs={14} md={3} key={blog._id}>
+                <Card
+                  border="secondary"
+                  style={{ width: "100%", cursor: "pointer", height: "100%", maxHeight:"300px" }}
+                >
+                  <Card.Img variant="top" src="asdada" />
+                  <Card.Header className="text-center h-25 text-middle">
+                    {blog.cate}
+                  </Card.Header>
+                  <Card.Body className="d-flex flex-column">
+                    <Card.Title style={{ minHeight: "80px" }}>
+                      <Link to={`/blogs/${blog._id}`}>{blog.title}</Link>
+                    </Card.Title>
+                    <Card.Body>
+                      <Card.Text>Tác giả: {blog.author}</Card.Text>
+                      <Card.Text>Ngày đăng: {blog.createdAt}</Card.Text>
+                    </Card.Body>
+                    <Button
+                      variant="warning"
+                      size="sm"
+                      className="btn-block mt-auto"
+                      onClick={() => handleUnSaveBlogClick(blog._id)}
+                    >
+                      Bỏ lưu
+                    </Button>
                   </Card.Body>
-                  <Button
-                    variant="warning"
-                    size="sm"
-                    className="btn-block mt-auto"
-                    onClick={() => handleUnSaveBlogClick(blog._id)}
-                  >
-                    Bỏ lưu
-                  </Button>
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
+                </Card>
+              </Col>
+            );
+          })}
         </Row>
-      </Container>
+      </Container> */}
     </div>
   );
 }

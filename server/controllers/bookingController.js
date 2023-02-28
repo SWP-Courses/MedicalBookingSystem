@@ -36,24 +36,36 @@ const getFreeDoctors = asyncHandler(async (req, res, next) => {
 //@access private
 const getFreeSlots = asyncHandler(async (req, res, next) => {
   const viewDate = req.query.date;
-  const fullSlots = await Slot.find();
-  const bookedSlots = await BookedService.find(
-    {
-      doctor_id: req.params.doctorId,
-      date: {
-        $gte: startOfDay(new Date(viewDate)),
-        $lte: endOfDay(new Date(viewDate)),
-      },
-    }
-  ).select("slot_time");
+  const fullSlotss = await Slot.find();
+  const bookedSlots = await BookedService.find({
+    doctor_id: req.params.doctorId,
+    date: {
+      $gte: startOfDay(new Date(viewDate)),
+      $lte: endOfDay(new Date(viewDate)),
+    },
+  }).select("slot_time");
+
+  const today = new Date();
+  const fullSlots =
+    today.getDate() === new Date(viewDate).getDate()
+      ? fullSlotss?.filter((fslot) => {
+          let keep = true;
+          let slotNum = parseInt(fslot?.time.slice(0, 2));
+          if (today.getHours() > slotNum) {
+            keep = false;
+          }
+          return keep;
+        })
+      : fullSlotss;
+
   if (bookedSlots.length === 0) {
     return res.status(200).json(fullSlots);
   } else {
     const leftSlots = fullSlots.filter((fslot) => {
       let keep = true;
-      bookedSlots.forEach((bslot) => {
+      bookedSlots?.forEach((bslot) => {
         if (bslot.slot_time === fslot.time) {
-          return keep = false;
+          return (keep = false);
         }
       });
       return keep;

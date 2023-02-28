@@ -18,10 +18,9 @@ const BookedServiceSchema = new mongoose.Schema(
       {
         service_id: {
           type: Schema.Types.ObjectId,
-          unique : true, required : true, dropDups: true
+          required: true,
         },
         quantity: Number,
-        _id:false
       },
     ],
     total_price: Number,

@@ -82,7 +82,7 @@ export default function AppointmentSchedule() {
             <th>Giờ khám</th>
             <th>Dịch vụ</th>
             <th>Bác sĩ</th>
-            <th className="text-center">Huỷ lịch</th>
+            <th className="text-center font-weight-bold">Huỷ lịch</th>
           </tr>
         </thead>
         <tbody>
@@ -91,7 +91,7 @@ export default function AppointmentSchedule() {
 
             return (
               <tr>
-                <td className="align-middle">{index}</td>
+                <td className="align-middle">{index+1}</td>
                 <td className="align-middle">
                   {format(new Date(bservice?.date), "dd/MM/yyyy")}
                 </td>
@@ -100,11 +100,11 @@ export default function AppointmentSchedule() {
                 <td className="align-middle">{bservice?.doctor[0].fullname}</td>
                 <td className="text-center">
                   <Button
-                    size="sm"
+                    size="md"
                     variant="danger"
                     onClick={() => setModalShow(true)}
                   >
-                    Xác nhận
+                    Huỷ
                   </Button>
                   <MyVerticallyCenteredModal
                     show={modalShow}

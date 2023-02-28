@@ -1,15 +1,9 @@
 import "./bookingFill.scss";
-import { compareAsc, compareDesc, isAfter, isEqual } from "date-fns";
 import { useContext, useEffect, useState } from "react";
 import { Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBriefcase,
-  faCalendar,
-  faEnvelope,
-  faIdCard,
-  faPhone,
-  faUser,
 } from "@fortawesome/free-solid-svg-icons";
 import { Calendar } from "react-calendar";
 import { format } from "date-fns";
@@ -27,18 +21,18 @@ export default function BookingFill({
   const { currentUser } = useContext(AuthContext);
   const [step, setStep] = useState(1);
 
-  useEffect(() => {
-    currentUser &&
-      setBooking((prev) => ({
-        ...prev,
-        fullname: currentUser.fullname,
-        gender: currentUser.gender,
-        dateOfBirth: currentUser.dateOfBirth,
-        phone: currentUser.phone,
-        email: currentUser.email,
-      }));
-  }, [currentUser, setBooking]);
-  console.log(currentUser);
+  // useEffect(() => {
+  //   currentUser &&
+  //     setBooking((prev) => ({
+  //       ...prev,
+  //       fullname: currentUser.fullname,
+  //       gender: currentUser.gender,
+  //       dateOfBirth: currentUser.dateOfBirth,
+  //       phone: currentUser.phone,
+  //       email: currentUser.email,
+  //     }));
+  // }, [currentUser, setBooking]);
+  // console.log(currentUser);
 
   const handleTextInput = (e, field) =>
     setBooking((prev) => ({ ...prev, [field]: e.target.value }));
@@ -48,8 +42,8 @@ export default function BookingFill({
     setBooking((prev) => ({ ...prev, service: { name, _id } }));
   };
 
-  const handleTimeClick = (slot) => {
-    setBooking((prev) => ({ ...prev, slot: slot }));
+  const handleTimeClick = (time) => {
+    setBooking((prev) => ({ ...prev, slot: time }));
   };
   console.log(booking);
   return (
@@ -79,12 +73,23 @@ export default function BookingFill({
           <Calendar
             onChange={(item) => setBooking((prev) => ({ ...prev, date: item }))}
             value={booking.date}
-            // tileDisabled={({ date }) => {
-            //   let newDate = new Date();
-            //   if(isEqual(date, newDate)) return false;
-            //   return date.getDay() === 0 || isAfter(newDate, date)
-            // }
-            // }
+            tileDisabled={({ date }) => {
+              let newDate = new Date();
+              // enable today
+              if (
+                date.getDate() === newDate.getDate() &&
+                date.getMonth() === newDate.getMonth() &&
+                date.getFullYear() === newDate.getFullYear()
+              )
+                return false;
+
+              // if sunday, last days, over next 7 days
+              return (
+                date.getDay() === 0 ||
+                newDate > date ||
+                date > newDate.setDate(newDate.getDate() + 7)
+              );
+            }}
           />
         </div>
         <Dropdown className="dropdownContain">
@@ -117,7 +122,7 @@ export default function BookingFill({
                 className={`timeItem ${
                   booking?.slot?.slot_number === slot?.slot_number && "active"
                 }`}
-                onClick={() => handleTimeClick(slot)}
+                onClick={() => handleTimeClick(slot.time)}
               >
                 {slot.time}
               </span>
@@ -130,68 +135,6 @@ export default function BookingFill({
 
       <div className="userFillPart">
         <h2>Thông tin cá nhân</h2>
-        <div className="twoInfoInput">
-          <div className="fillInput">
-            <FontAwesomeIcon icon={faUser} />
-            <input
-              type="text"
-              placeholder="Họ và tên (*)"
-              required
-              value={booking.fullname}
-              onChange={(e) => handleTextInput(e, "fullname")}
-            />
-          </div>
-          <input
-            type="radio"
-            name="gender"
-            id="male"
-            onClick={(e) =>
-              setBooking((prev) => ({ ...prev, gender: e.target.id }))
-            }
-            checked={booking.gender === "male" && "checked"}
-          />
-          Nam
-          <input
-            type="radio"
-            name="gender"
-            id="female"
-            checked={booking.gender === "female" && "checked"}
-            onClick={(e) =>
-              setBooking((prev) => ({ ...prev, gender: e.target.id }))
-            }
-          />
-          Nữ
-        </div>
-        <div className="fillInput">
-          <FontAwesomeIcon icon={faCalendar} />
-          <input
-            type="text"
-            placeholder="Ngày sinh (*)"
-            required
-            value={booking.dateOfBirth}
-            onChange={(e) => handleTextInput(e, "birth")}
-          />
-        </div>
-        <div className="fillInput">
-          <FontAwesomeIcon icon={faPhone} />
-          <input
-            type="text"
-            placeholder="Số điện thoại liên lạc (*)"
-            required
-            value={booking.phone}
-            onChange={(e) => handleTextInput(e, "phone")}
-          />
-        </div>
-        <div className="fillInput">
-          <FontAwesomeIcon icon={faEnvelope} />
-          <input
-            type="text"
-            placeholder="Email"
-            required
-            value={booking.email}
-            onChange={(e) => handleTextInput(e, "email")}
-          />
-        </div>
       </div>
     </div>
   );

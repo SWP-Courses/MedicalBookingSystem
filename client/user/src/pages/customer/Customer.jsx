@@ -15,10 +15,6 @@ export default function Customer() {
 
   const { currentUser } = useContext(AuthContext);
 
-
-
-
-
   const handleOptionClick = (option) => {
     setUserContent(option);
   };

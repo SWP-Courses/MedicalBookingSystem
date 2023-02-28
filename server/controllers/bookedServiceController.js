@@ -3,6 +3,7 @@ const { default: mongoose } = require("mongoose");
 const BookedService = require("../models/BookedService");
 const Service = require("../models/service");
 const { startOfDay, endOfDay } = require("date-fns");
+const Absent = require("../models/Absent");
 
 const mergeService = async (bookedService) => {
   return await Promise.all(
@@ -108,15 +109,59 @@ const getIncomingBookedByUser = asyncHandler(async (req, res, next) => {
 //@access private
 const bookService = asyncHandler(async (req, res, next) => {
   const { user_id, doctor_id, date, slot_time, service_id } = req.body;
-console.log(date);
-  const bService = await BookedService.create({
-    user_id,
-    doctor_id,
-    date: new Date(date+"T12:00:00"),
-    slot_time: slot_time,
-    services: [{ service_id, quantity: 1 }],
-  });
-  res.status(200).json(bService);
+
+  try {
+    // chặn book bác sĩ đã nghỉ của ngày
+    const absentDoctor = await Absent.findOne({
+      doctor_id: doctor_id,
+      date: {
+        $gte: startOfDay(new Date(date)),
+        $lte: endOfDay(new Date(date)),
+      },
+    });
+    if (absentDoctor) return res.status(403).json(`Doctor absent in ${date}`);
+
+    // chặn slot đã qua trong ngày, check cùng ngày
+    // nếu slot là number thì sài $gte dễ check hơn
+    // const fullSlots =
+    // today.getDate() === new Date(viewDate).getDate()
+    //   ? fullSlotss?.filter((fslot) => {
+    //       let keep = true;
+    //       let slotNum = parseInt(fslot?.time.slice(0, 2));
+    //       if (today.getHours() > slotNum) {
+    //         keep = false;
+    //       }
+    //       return keep;
+    //     })
+    //   : fullSlotss;
+
+    // chặn bookedservice đã có thì sẽ bị duplicate
+    const existBservice = await BookedService.findOne({
+      date: {
+        $gte: startOfDay(new Date(date)),
+        $lte: endOfDay(new Date(date)),
+      },
+      user_id: user_id,
+      doctor_id: doctor_id,
+      slot_time: slot_time,
+    });
+    if (existBservice)
+      return res.status(409).json("This slot is already booked");
+    if (new Date(date) < new Date()) return res.status(400).json("Outdated");
+
+    const bService = new BookedService({
+      user_id,
+      doctor_id,
+      date: new Date(date),
+      slot_time: slot_time,
+      services: [{ service_id, quantity: 1 }],
+    });
+    // console.log(bService);
+    const savedbService = await bService.save();
+    res.status(200).json(savedbService);
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 //@desc Update blog

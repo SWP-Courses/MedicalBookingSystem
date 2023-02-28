@@ -1,5 +1,4 @@
 import {
-  faFacebook,
   faFacebookF,
   faYoutube,
 } from "@fortawesome/free-brands-svg-icons";
@@ -32,7 +31,7 @@ export default function Options() {
   
   return (
     <div className="topbarOptions">
-      <div className="optionItem-wrapper container-fluid">
+      <div className="optionItem-wrapper container-xl">
         <div className="optionItem col-sm-2.5">
           <span>Chuyên khoa trọng điểm</span>
           <FontAwesomeIcon icon={faChevronDown} className="optionIcon" />
