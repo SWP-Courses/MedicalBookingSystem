@@ -77,18 +77,8 @@ const register = async (req, res, next) => {
 // LOGIN
 const login = async (req, res, next) => {
   try {
-    let userQuery = { role_code: req.body.role_code };
-    if (req.body.phone) {
-      userQuery = { ...userQuery, phone: req.body.phone };
-    } else if (req.body.email) {
-      userQuery = {
-        ...userQuery,
-        email: req.body.email,
-      };
-    }
-
-    // degree, profile, spe_id của doctor chỉ được admin thay đổi
-    const user = await UserModel.findOne(userQuery);
+    // profile của doctor chỉ được admin thay đổi
+    const user = await UserModel.findOne({ email: req.body.email });
 
     if (!user) return res.status(404).send("Tài khoản không tồn tại!");
 
@@ -131,11 +121,11 @@ const logout = (req, res) => {
   delete req.user;
   // req.logout();
   req.session = null;
-  res.clearCookie("session")
-  res.clearCookie("session.sig")
+  res.clearCookie("session");
+  res.clearCookie("session.sig");
   console.log("asdasd");
   // res.redirect(CLIENT_URL);
-  res.status(200).json("logged out")
+  res.status(200).json("logged out");
   // res
   //   // .clearCookie("access_token", {
   //   //   sameSite: "none",

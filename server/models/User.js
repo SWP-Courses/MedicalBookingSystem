@@ -32,6 +32,7 @@ const UserSchema = new mongoose.Schema(
     },
     phone: {
       type: String,
+      sparse:true
     },
     password: {
       type: String,
@@ -52,6 +53,10 @@ const UserSchema = new mongoose.Schema(
     profile: {
       type: String,
     },
+    status:{
+      type: Boolean,
+      default:true
+    }
   },
   {
     versionKey: false,
