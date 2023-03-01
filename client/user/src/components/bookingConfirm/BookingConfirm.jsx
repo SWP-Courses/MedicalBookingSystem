@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { format } from "date-fns";
 import { useContext } from "react";
 import { AuthContext } from "~/context/authContext";
+import { formatSlot } from "~/utils";
 import "./bookingConfirm.scss";
 
 export default function BookingConfirm({ booking }) {
@@ -47,7 +48,7 @@ export default function BookingConfirm({ booking }) {
       <div className="infoItem">
         <span className="bookingKey">Thời gian khám</span>
         <span className="bookingValue">
-          {booking.slot}, {format(booking.date, "dd/MM/yyy")}
+          {formatSlot(booking.slot)}, {format(booking.date, "dd/MM/yyy")}
         </span>
       </div>
       <div className="infoItem">

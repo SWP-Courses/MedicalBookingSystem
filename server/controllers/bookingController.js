@@ -19,6 +19,7 @@ const getFreeDoctors = asyncHandler(async (req, res, next) => {
     },
   });
   const doctors = await User.find({ role_code: "R2", status: true }, "_id fullname");
+  // console.log(doctors);
   const freeDoctors = doctors.filter((doctor) => {
     let keep = true;
     absents.forEach((ab) => {
@@ -58,6 +59,7 @@ const getFreeSlots = asyncHandler(async (req, res, next) => {
       : fullSlotss;
 
   if (bookedSlots.length === 0) {
+    console.log(fullSlots);
     return res.status(200).json(fullSlots);
   } else {
     const leftSlots = fullSlots.filter((fslot) => {

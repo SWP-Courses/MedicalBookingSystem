@@ -119,7 +119,7 @@ export default function BookingFill({
             {freeSlots?.map((slot) => (
               <span
                 className={`timeItem ${
-                  booking?.slot?.slot_number === slot?.slot_number && "active"
+                  booking?.slot === slot?.time && "active"
                 }`}
                 onClick={() => handleTimeClick(slot.time)}
               >

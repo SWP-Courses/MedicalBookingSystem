@@ -122,11 +122,11 @@ const logout = (req, res) => {
   delete req.user;
   // req.logout();
   req.session = null;
-  res.clearCookie("session")
-  res.clearCookie("session.sig")
+  res.clearCookie("session");
+  res.clearCookie("session.sig");
   console.log("asdasd");
   // res.redirect(CLIENT_URL);
-  res.status(200).json("logged out")
+  res.status(200).json("logged out");
   // res
   //   // .clearCookie("access_token", {
   //   //   sameSite: "none",
