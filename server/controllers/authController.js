@@ -150,7 +150,7 @@ const loginSuccess = (req, res) => {
   if (req.user) {
     res.header("Access-Control-Allow-Origin", "http://localhost:3000");
     res.header("Access-Control-Allow-Credentials", true);
-    res.status(200).json(req.user);
+    res.status(200).json(req.user._doc || req.user);
   } else {
     res.status(404).json({});
   }

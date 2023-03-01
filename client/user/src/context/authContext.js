@@ -15,12 +15,19 @@ export default function AuthContextProvider({ children }) {
   const location = useLocation();
 
   // Side Effect
+
+  useEffect(() => {
+    // console.log(currentUser);
+    localStorage.setItem("user", JSON.stringify(currentUser));
+  }, [currentUser]);
+
   useEffect(() => {
     const fetchLoginSuccess = async () => {
       try {
         const res = await axios.get(`${API_URL}/auth/login/success`, {
           withCredentials: true,
         });
+        console.log(res.data);
         setCurrentUser(res.data);
         navigate('/customer')
       } catch (err) {
@@ -28,13 +35,8 @@ export default function AuthContextProvider({ children }) {
       }
     };
     !JSON.parse(localStorage.getItem("user")) && fetchLoginSuccess();
-  }, []);
-
-  useEffect(() => {
-    // console.log(currentUser);
-    localStorage.setItem("user", JSON.stringify(currentUser));
-  }, [currentUser]);
-
+  }, [navigate]);
+  console.log(currentUser);
   // Functions
   const login = async (inputs) => {
     try {

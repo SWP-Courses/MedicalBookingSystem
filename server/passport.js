@@ -57,10 +57,10 @@ passport.use(
             fullname: name,
           });
           const savedUser = await newUser.save();
-          return cb(null, { ...savedUser, role: "customer" });
+          return cb(null, { ...savedUser._doc, role: "customer" });
         }
       } catch (err) {
-        // console.log(err);
+        console.log(err);
         return cb(err);
       }
     }
