@@ -117,6 +117,15 @@ function DoctorSchedule() {
           </>
         )}
       </div>
+
+      {/* 
+        this modal gonna mouted by the time the component Doctorschedule was called 
+        so if this modal have any logic setState in it,  
+        it will cause the component re-render directly inside component DoctorSchedule 
+        but we can not see it happen, 
+        but place console.log in the modal we can see it 
+        ===> this re-render is not nessesary 
+      */}
       <ModalEditServices
         modalShow={modalShow}
         setModalShow={setModalShow}
