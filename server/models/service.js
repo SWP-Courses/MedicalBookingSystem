@@ -12,12 +12,7 @@ const serviceSchema = new mongoose.Schema({
   },
   description: {
     type: String,
-    required: [true, "Please add the description service"],
   },
-  // khoa add
-  spe_id: {
-    type: mongoose.Schema.Types.ObjectId
-  }
 }, {versionKey: false});
 
 module.exports = mongoose.model('Service', serviceSchema);

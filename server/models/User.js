@@ -46,13 +46,6 @@ const UserSchema = new mongoose.Schema(
       required: true,
       default: "R3",
     },
-    specialist_id: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Specialist",
-    },
-    service_id:{
-      type: mongoose.Schema.Types.ObjectId,
-    },
     degree: {
       type: String,
     },

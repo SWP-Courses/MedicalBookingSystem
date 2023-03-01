@@ -7,10 +7,15 @@ const { deleteImageById } = require("./imageController");
 // Update a user by id (customer, doctor)
 const updateUser = async (req, res, next) => {
   try {
-    const avatar = req.file && req.file;
     const user = await UserModel.findById(req.params.id);
     if(!user) return res.status(404).json("User not found!");
+    
+    const otherEmailUser = await UserModel.findOne({email:req.body.email});
+    if(otherEmailUser) return res.status(409).json("Email này đã được sử dụng!");
+
+    const avatar = req.file && req.file;
     if(avatar) await deleteImageById(user.avatar.id);
+    
     let document = {
       fullname: req.body.fullname,
       gender: req.body.gender,

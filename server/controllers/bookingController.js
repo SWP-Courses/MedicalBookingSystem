@@ -18,7 +18,7 @@ const getFreeDoctors = asyncHandler(async (req, res, next) => {
       $lte: endOfDay(new Date(viewDate)),
     },
   });
-  const doctors = await User.find({ role_code: "R2" }, "_id fullname");
+  const doctors = await User.find({ role_code: "R2", status: true }, "_id fullname");
   const freeDoctors = doctors.filter((doctor) => {
     let keep = true;
     absents.forEach((ab) => {
@@ -50,8 +50,7 @@ const getFreeSlots = asyncHandler(async (req, res, next) => {
     today.getDate() === new Date(viewDate).getDate()
       ? fullSlotss?.filter((fslot) => {
           let keep = true;
-          let slotNum = parseInt(fslot?.time.slice(0, 2));
-          if (today.getHours() > slotNum) {
+          if (today.getHours() > fslot.time) {
             keep = false;
           }
           return keep;

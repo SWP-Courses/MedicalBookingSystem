@@ -4,6 +4,7 @@ const BookedService = require("../models/BookedService");
 const Service = require("../models/service");
 const { startOfDay, endOfDay } = require("date-fns");
 const Absent = require("../models/Absent");
+const Slot = require("../models/Slot");
 
 const mergeService = async (bookedService) => {
   return await Promise.all(
@@ -111,6 +112,26 @@ const bookService = asyncHandler(async (req, res, next) => {
   const { user_id, doctor_id, date, slot_time, service_id } = req.body;
 
   try {
+    //chặn ngày cũ
+    if (new Date(date) < new Date().setHours(0, 0, 0, 0))
+      return res.status(400).json("Outdated");
+
+    // chặn slot ko có trong slot đã đặt ra. vd: 12, 13, 18, 19,...
+    if (new Date(date) === new Date().setHours(0, 0, 0, 0)) {
+      // chặn slot đã qua trong ngày, check cùng ngày
+      if (parseInt(slot_time) < new Date().getHours())
+        return res.status(422).json(`Slot ${slot_time} is expired.`);
+    }
+
+    const fullSlots = await Slot.find();
+    if (fullSlots.length) {
+      const isinSlots = fullSlots.some(
+        (slot) => slot.time === parseInt(slot_time)
+      );
+      if (!isinSlots)
+        return res.status(404).json("Slot này ko nằm trong những slot được book.");
+    }
+
     // chặn book bác sĩ đã nghỉ của ngày
     const absentDoctor = await Absent.findOne({
       doctor_id: doctor_id,
@@ -121,21 +142,8 @@ const bookService = asyncHandler(async (req, res, next) => {
     });
     if (absentDoctor) return res.status(403).json(`Doctor absent in ${date}`);
 
-    // chặn slot đã qua trong ngày, check cùng ngày
-    // nếu slot là number thì sài $gte dễ check hơn
-    // const fullSlots =
-    // today.getDate() === new Date(viewDate).getDate()
-    //   ? fullSlotss?.filter((fslot) => {
-    //       let keep = true;
-    //       let slotNum = parseInt(fslot?.time.slice(0, 2));
-    //       if (today.getHours() > slotNum) {
-    //         keep = false;
-    //       }
-    //       return keep;
-    //     })
-    //   : fullSlotss;
-
     // chặn bookedservice đã có thì sẽ bị duplicate
+    // trường hợp book lại cùng slot, doctor, date
     const existBservice = await BookedService.findOne({
       date: {
         $gte: startOfDay(new Date(date)),
@@ -147,7 +155,6 @@ const bookService = asyncHandler(async (req, res, next) => {
     });
     if (existBservice)
       return res.status(409).json("This slot is already booked");
-    if (new Date(date) < new Date()) return res.status(400).json("Outdated");
 
     const bService = new BookedService({
       user_id,

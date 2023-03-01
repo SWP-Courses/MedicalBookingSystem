@@ -2,12 +2,11 @@ import "./bookingFill.scss";
 import { useContext, useEffect, useState } from "react";
 import { Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faBriefcase,
-} from "@fortawesome/free-solid-svg-icons";
+import { faBriefcase } from "@fortawesome/free-solid-svg-icons";
 import { Calendar } from "react-calendar";
 import { format } from "date-fns";
 import { AuthContext } from "~/context/authContext";
+import { formatSlot } from "~/utils";
 
 const getServiceName = () => {};
 
@@ -124,7 +123,7 @@ export default function BookingFill({
                 }`}
                 onClick={() => handleTimeClick(slot.time)}
               >
-                {slot.time}
+                {formatSlot(slot.time)}
               </span>
             ))}
           </div>

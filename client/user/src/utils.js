@@ -29,15 +29,11 @@ function validateUsername(username) {
   return pattern.test(username);
 }
 
-const convertServiceName = (serviceId, services) => {
-  const service = services.find((service) => service._id === serviceId);
-  return service.name;
-};
-
-const convertDoctorName = (serviceId, services) => {
-  const service = services.find((service) => service._id === serviceId);
-  return service.name;
-};
+export const formatSlot = (hour) => {
+  if(hour< 10 && hour >=0 ) return `0${hour}:00`
+  if(hour>=10 && hour <=24 ) return `${hour}:00`
+  return hour+" is not in 0-24"
+}
 
 const formatDate = (value) => {
   const year = value.getFullYear();
