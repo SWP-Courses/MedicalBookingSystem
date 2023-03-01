@@ -149,7 +149,6 @@ const bookService = asyncHandler(async (req, res, next) => {
         $gte: startOfDay(new Date(date)),
         $lte: endOfDay(new Date(date)),
       },
-      user_id: user_id,
       doctor_id: doctor_id,
       slot_time: slot_time,
     });

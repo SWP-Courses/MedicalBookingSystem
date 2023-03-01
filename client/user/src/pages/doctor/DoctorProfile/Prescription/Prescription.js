@@ -180,7 +180,7 @@ function Prescription() {
                   >
                     <Form.Control
                       type="text"
-                      placeholder="Liều Dùng"
+                      placeholder="số lượng"
                       value={drug.dosage}
                       onChange={(e) =>
                         handleOnChangeValue("dosage", drug.id, e.target.value)
@@ -195,7 +195,7 @@ function Prescription() {
                   >
                     <Form.Control
                       type="text"
-                      placeholder="số lượng"
+                      placeholder="Liều Dùng"
                       value={drug.quantity}
                       onChange={(e) =>
                         handleOnChangeValue("quantity", drug.id, e.target.value)

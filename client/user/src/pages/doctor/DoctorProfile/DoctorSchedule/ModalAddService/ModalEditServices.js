@@ -1,40 +1,45 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import axios from "axios";
 import { toast } from "react-toastify";
 import _ from "lodash";
+import { formatPrice } from "~/utils";
 
 import { hanlderRequest } from "~/utils";
 import API_URL from "~/api/Router";
 
 function ModalEditServices(props) {
+
   const { modalShow, setModalShow, bookedUser } = props;
-  const [quantity, setQuatity] = useState('');
+
   const [listServices, setListServices] = useState([]);
-  const [services, setServices] = useState(() => {
-    const cloneBookedUser = _.cloneDeep(bookedUser);
-    return cloneBookedUser;
+  const [userBookedServices, setUserBookedServices] = useState(() => {
+      const cloned = _.cloneDeep(bookedUser);
+      // if(!_.isEmpty(cloned)) {
+        return cloned
+      // }
   });
   const [additionService, setAdditionService] = useState([
     {
-      unique_id: '',
-      service_id: '',
-      price: '',
-      quantity: '',
-    }
+      unique_id: "",
+      service_id: "",
+      price: "",
+      quantity: "",
+    },
   ]);
+
+  // useEffect(() => {
+  //   if(!_.isEmpty(bookedUser)) {
+
+  //   }
+  // }, [bookedUser])
 
   useEffect(() => {
     fetchAllServices();
   }, []);
 
-  useEffect(() => {
-    if(bookedUser) {
-      setQuatity(bookedUser)
-    }
-  }, [bookedUser])
-
+  // need add extra service 
   const fetchAllServices = async () => {
     const [error, res] = await hanlderRequest(axios.get(API_URL + "/services"));
     if (res && res.data) {
@@ -45,19 +50,26 @@ function ModalEditServices(props) {
   };
 
   const handleUpdateServices = async (bookedUser) => {
-    Promise.all(bookedUser?.services?.map(async(service) => {
-      const [error, res] = await hanlderRequest(axios.put(API_URL + `/bookedservices/${bookedUser._id}/${service.service_id}`));
-      if(res && res.data) {
-        console.log(res.data);
-        setModalShow(false);
-      } else {
-        toast.error(error.message)
-      }
-    }))
+    Promise.all(
+      bookedUser?.services?.map(async (service) => {
+        const [error, res] = await hanlderRequest(
+          axios.put(
+            API_URL + `/bookedservices/${bookedUser._id}/${service.service_id}`
+          )
+        );
+        if (res && res.data) {
+          console.log(res.data);
+          setModalShow(false);
+        } else {
+          toast.error(error.message);
+        }
+      })
+    );
+  };
 
-  }
-
-  console.log(bookedUser);
+  // console.log('>> check clone booked: ', userBookedServices, '>> check ! clone: ', bookedUser, '>> compare: ', userBookedServices === bookedUser);
+  console.log('>> check not clone: ', bookedUser);
+  console.log('>> check clone booked: ', userBookedServices);
   return (
     <Modal
       show={modalShow}
@@ -80,51 +92,59 @@ function ModalEditServices(props) {
               return (
                 <input
                   key={index}
-                  type="email"
+                  type="text"
                   className="form-control"
                   id="inputEmail4"
                   value={item.fullname}
                   onChange={() => {}}
+                  disabled
+                  style={{ cursor: "no-drop" }}
                 />
               );
             })}
-            {/* {
-              
-              <input
-                  type="email"
-                  className="form-control"
-                  id="inputEmail4"
-                  value={bookedUser?.customer[0]?.fullname}
-                  onChange={() => {}}
-                />
-            } */}
+            {
+              // <input
+              //     type="email"
+              //     className="form-control"
+              //     id="inputEmail4"
+              //     value={bookedUser?.customer[0]?.fullname}
+              //     onChange={() => {}}
+              //     disabled
+              //     // style={{cursor: 'no-drop'}}
+              // />
+            }
           </div>
           <div className="col-md-6">
             <label className="form-label">Giờ Khám</label>
             <input
               type="text"
               className="form-control"
-              value={bookedUser.slot_time}
-              onChange={() => {}}
+              style={{ cursor: "no-drop" }}
+              defaultValue={bookedUser.slot_time}
+              disabled
             />
           </div>
           {bookedUser &&
             bookedUser.services &&
             bookedUser.services.map((service, index) => {
               return (
-                <span key={index} className="d-flex">
+                <React.Fragment key={index}>
                   <div className="col-md-6">
                     <label htmlFor="inputCity" className="form-label">
                       {`Dịch Vụ - ${index + 1}`}
                     </label>
-                    <select id="inputState" className="form-select" value={service.service_id}>
+                    <select
+                      id="inputState"
+                      className="form-select"
+                      value={service.service_id}
+                    >
                       {listServices &&
                         listServices.length > 0 &&
                         listServices.map((item, index) => {
                           return (
-                            <option 
-                                key={index}
-                                value={item._id}
+                            <option
+                              key={index}
+                              value={item._id}
                             >{`${item.name} - ${service.service_id}`}</option>
                           );
                         })}
@@ -138,8 +158,10 @@ function ModalEditServices(props) {
                       type="text"
                       className="form-control"
                       id="inputQnt"
-                      value={service.price}
+                      value={formatPrice(service.price)}
+                      disabled
                       onChange={() => {}}
+                      style={{cursor: 'no-drop'}}
                     />
                   </div>
                   <div className="col-md-2">
@@ -150,20 +172,22 @@ function ModalEditServices(props) {
                       type="text"
                       className="form-control"
                       id="inputQnt"
-                      value={quantity}
+                      value={service.quantity}
                       onChange={() => {}}
                     />
                   </div>
-                </span>
+                </React.Fragment>
               );
             })}
         </form>
       </Modal.Body>
       <Modal.Footer>
-        <Button 
-          onClick={() => handleUpdateServices(bookedUser)}
-        >Cập Nhật</Button>
-        <Button className="btn btn-danger" onClick={() => setModalShow(false)}>Đóng</Button>
+        <Button onClick={() => handleUpdateServices(bookedUser)}>
+          Cập Nhật
+        </Button>
+        <Button className="btn btn-danger" onClick={() => setModalShow(false)}>
+          Đóng
+        </Button>
       </Modal.Footer>
     </Modal>
   );

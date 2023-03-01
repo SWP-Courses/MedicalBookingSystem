@@ -39,7 +39,7 @@ function DoctorSchedule() {
     if (res && res.data) {
       setCurrentSchedule(res.data);
     } else {
-      console.log(`${error.message} - ${error.coe}`);
+      console.log(`${error.message} - ${error.code}`);
     }
   };
 
@@ -49,7 +49,7 @@ function DoctorSchedule() {
   }
 
   // console.log("check date value: ", date);
-  // console.log("check current schedule: ", currentschedule);
+  // console.log(">>>check current schedule: ", currentschedule);
   return (
     <div className="schedule ">
       <div className="schedule__calender animate__animated  animate__zoomIn">
@@ -69,6 +69,8 @@ function DoctorSchedule() {
                   <th>user ID</th>
                   <th>Khung Giờ</th>
                   <th>Dịch Vụ</th>
+                  <th>Thanh Toán</th>
+                  <th>Kê Thuốc</th>
                   <th>Sửa</th>
                 </tr>
               </thead>
@@ -93,6 +95,8 @@ function DoctorSchedule() {
                           ) 
                         })}
                       </td>
+                      <td>done</td>
+                      <td>kê đơn</td>
                       <td>
                         <span
                           className="schedule__calender-icon"
