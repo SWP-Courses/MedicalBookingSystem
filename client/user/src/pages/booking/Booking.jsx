@@ -1,4 +1,5 @@
 import axios from "axios";
+import { format } from "date-fns";
 import { useContext, useEffect, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
@@ -7,6 +8,7 @@ import BookingConfirm from "~/components/bookingConfirm/BookingConfirm";
 import BookingFill from "~/components/bookingFill/BookingFill";
 import { AuthContext } from "~/context/authContext";
 import "./booking.scss";
+import { toast } from "react-toastify";
 
 export default function Booking() {
   const [part, setPart] = useState({
@@ -23,7 +25,11 @@ export default function Booking() {
   // const [bookedService, setBookedService] = useState();
 
   const handleNext = () => {
-    setPart({ number: 2, title: "XÁC NHẬN THÔNG TIN" });
+    if (booking.date && booking.service && booking.doctor && booking.slot) {
+      setPart({ number: 2, title: "XÁC NHẬN THÔNG TIN" });
+    } else {
+      toast.error("Vui lòng chọn đầy đủ thông tin khám trước khi tiếp tục!");
+    }
   };
   const handleBack = () => {
     setPart({
@@ -59,7 +65,6 @@ export default function Booking() {
     // thêm debounce sau
     booking.date && fetchFreeDoctors();
   }, [booking.date]);
-
   useEffect(() => {
     const fetchFreeSlots = async () => {
       try {
@@ -80,8 +85,8 @@ export default function Booking() {
     const passData = {
       user_id: currentUser._id,
       doctor_id: booking.doctor._id,
-      date: booking.date,
-      slot_time: booking.slot.time,
+      date: format(booking.date, "yyyy-MM-dd"),
+      slot_time: booking.slot,
       service_id: booking.service._id,
     };
     // console.log(passData);

@@ -7,6 +7,7 @@ import API_URL from "~/api/Router";
 import ReactPaginate from "react-paginate";
 import slider from "~/assets/images/slider.jpg";
 import Pagination from "./Pagination";
+import ReactHtmlParser from 'react-html-parser';
 import { hanlderRequest } from "~/utils";
 
 function Blogs() {
@@ -14,7 +15,15 @@ function Blogs() {
   const [blogCategory, setBlogCategory] = useState([]);
   const [blogs, setBlogs] = useState([]);
   const [blogsFiltered, setBlogsFiltered] = useState([]);
-  const [categoryName, setCategoryName] = useState("Tổng Hợp Các Bài Viết");
+  const [categoryName, setCategoryName] = useState('Tổng Hợp Các Bài Viết');
+
+  console.log('check blog filtered : ', blogsFiltered);
+
+  const location = useLocation();
+
+  console.log(blogs);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchListCategoryBlogs();

@@ -34,57 +34,8 @@
         padding: 20px 100px;
         display: flex;
         gap: 20px;
-        width: 1170px;
+        max-width: 1170px;
         margin: 0 auto;
-
-        .filter {
-            flex: 1;
-            position: sticky;
-            top: 150px;
-            padding: 10px;
-            border: 2px solid #EEEEEE;
-            border-radius: 5px;
-            height: max-content;
-//             box-shadow: 5px 8px 10px -1px rgba(110,102,102,0.73);
-// -webkit-box-shadow: 5px 8px 10px -1px rgba(110,102,102,0.73);
-// -moz-box-shadow: 5px 8px 10px -1px rgba(110,102,102,0.73);
-
-
-
-            >h2 {
-                font-size: 18px;
-                text-align: center;
-            }
-
-            > ul {
-                list-style: none;
-                padding: 0px;
-                margin-bottom: 0px;
-
-                > li {
-                    padding: 10px;
-                    border-bottom: 1px solid #EEEEEE;
-                    cursor: pointer;
-
-                    &:hover {
-                        color: rgb(21, 74, 221);
-                    }
-                }
-
-                >li:last-of-type {
-                    border-bottom: none;
-                }
-
-                >.active {
-                    // background-color: rgb(241, 250, 255);
-                    color:rgb(21, 74, 221)
-                }
-            }
-        }
-
-        >.divideLine {
-            border: 0.25px solid #EEEEEE;
-        }
 
         .doctorList {
             flex: 3;

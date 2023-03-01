@@ -12,7 +12,7 @@ function DoctorRow({ onDeleteBlogById, doctor, stt, onClickEditDoctor }) {
     const onConfilmDelete = async () => {
         if (!doctor._id) return;
         try {
-            const result = await axios.delete(`${ROUTER}/api/users/doctor/${doctor._id}`);
+            const result = await axios.delete(`${ROUTER}/api/users/doctors/${doctor._id}`);
             if (result.status === 200) {
                 toast.success("Susscess!", toastOption);
                 onDeleteBlogById(doctor._id);
@@ -33,7 +33,6 @@ function DoctorRow({ onDeleteBlogById, doctor, stt, onClickEditDoctor }) {
             <tr className='position-relative'>
                 <th scope="row">{stt}</th>
                 <td className='mw-50 overflow-hidden'> {doctor.fullname} </td>
-                <td className='text-center'> {doctor.special.title} </td>
                 <td className='text-center'> {doctor.email} </td>
                 <td className='text-center blog-action'><HiOutlineDotsHorizontal className='fs-4' /></td>
                 <div className='popup-action'>

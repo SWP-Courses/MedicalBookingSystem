@@ -3,6 +3,7 @@ const { default: mongoose } = require("mongoose");
 const BookedService = require("../models/BookedService");
 const Service = require("../models/service");
 const { startOfDay, endOfDay } = require("date-fns");
+const Absent = require("../models/Absent");
 
 const mergeService = async (bookedService) => {
   return await Promise.all(
@@ -66,10 +67,19 @@ const getBookedByDoctor = asyncHandler(async (req, res, next) => {
   return res.status(200).json(bookedServicesFull);
 });
 
-const getBookedByUser = asyncHandler(async (req, res, next) => {
+const getIncomingBookedByUser = asyncHandler(async (req, res, next) => {
   const orders = await BookedService.aggregate([
     {
-      $match: { user_id: mongoose.Types.ObjectId(req.params.id) },
+      $match: {
+        $and: [
+          { user_id: mongoose.Types.ObjectId(req.params.id) },
+          {
+            date: {
+              $gte: startOfDay(new Date()),
+            },
+          },
+        ],
+      },
     },
     {
       $lookup: {
@@ -85,10 +95,6 @@ const getBookedByUser = asyncHandler(async (req, res, next) => {
   const bookedServicesFull = await Promise.all(
     orders.map(async (order) => {
       const servicesFull = await mergeService(order);
-      // console.log({
-      //   ...order,
-      //   services: servicesFull,
-      // });
       return {
         ...order,
         services: servicesFull,
@@ -104,14 +110,58 @@ const getBookedByUser = asyncHandler(async (req, res, next) => {
 const bookService = asyncHandler(async (req, res, next) => {
   const { user_id, doctor_id, date, slot_time, service_id } = req.body;
 
-  const bService = await BookedService.create({
-    user_id,
-    doctor_id,
-    date,
-    slot_time: slot_time,
-    services: [{ service_id, quantity: 1 }],
-  });
-  res.status(200).json(bService);
+  try {
+    // chặn book bác sĩ đã nghỉ của ngày
+    const absentDoctor = await Absent.findOne({
+      doctor_id: doctor_id,
+      date: {
+        $gte: startOfDay(new Date(date)),
+        $lte: endOfDay(new Date(date)),
+      },
+    });
+    if (absentDoctor) return res.status(403).json(`Doctor absent in ${date}`);
+
+    // chặn slot đã qua trong ngày, check cùng ngày
+    // nếu slot là number thì sài $gte dễ check hơn
+    // const fullSlots =
+    // today.getDate() === new Date(viewDate).getDate()
+    //   ? fullSlotss?.filter((fslot) => {
+    //       let keep = true;
+    //       let slotNum = parseInt(fslot?.time.slice(0, 2));
+    //       if (today.getHours() > slotNum) {
+    //         keep = false;
+    //       }
+    //       return keep;
+    //     })
+    //   : fullSlotss;
+
+    // chặn bookedservice đã có thì sẽ bị duplicate
+    const existBservice = await BookedService.findOne({
+      date: {
+        $gte: startOfDay(new Date(date)),
+        $lte: endOfDay(new Date(date)),
+      },
+      user_id: user_id,
+      doctor_id: doctor_id,
+      slot_time: slot_time,
+    });
+    if (existBservice)
+      return res.status(409).json("This slot is already booked");
+    if (new Date(date) < new Date()) return res.status(400).json("Outdated");
+
+    const bService = new BookedService({
+      user_id,
+      doctor_id,
+      date: new Date(date),
+      slot_time: slot_time,
+      services: [{ service_id, quantity: 1 }],
+    });
+    // console.log(bService);
+    const savedbService = await bService.save();
+    res.status(200).json(savedbService);
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 //@desc Update blog
@@ -137,12 +187,7 @@ const addExtraService = asyncHandler(async (req, res, next) => {
   //     )
   //   )
   //     return res.status(409).json("Duplicate service id");
-  // console.log("asdsad");
-  //   bookedService._doc.services.push({
-  //     service_id: req.body.service_id,
-  //     quantity: req.body.quantity,
-  //   });
-  // const updated = await bookService.save();
+
   res.status(200).json(bookedService);
 });
 
@@ -154,10 +199,32 @@ const updateAddedService = asyncHandler(async (req, res, next) => {
   res.status(200).json(result);
 });
 
+const completeBooked = asyncHandler(async (req, res, next) => {
+  const booked = await BookedService.findById(req.params.id);
+
+  let totalPrice = 0;
+  for (const bservice of booked.services) {
+    console.log("asdasd");
+    const service = await Service.findById(bservice.service_id);
+    totalPrice = bservice.quantity * service.price;
+  }
+
+  booked.total_price = totalPrice;
+  const completeBooked = await booked.save();
+  res.status(200).json(completeBooked);
+});
+
+const cancelBookedService = asyncHandler(async (req, res, next) => {
+  const result = await BookedService.findByIdAndDelete(req.params.id);
+  res.status(200).json(result);
+});
+
 module.exports = {
   bookService,
   addExtraService,
   getBookedByDoctor,
-  getBookedByUser,
+  getIncomingBookedByUser,
   updateAddedService,
+  completeBooked,
+  cancelBookedService,
 };

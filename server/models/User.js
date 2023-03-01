@@ -17,11 +17,9 @@ const UserSchema = new mongoose.Schema(
     },
     gender: {
       type: String,
-      required: true,
     },
     dateOfBirth: {
       type: String,
-      required: true,
     },
     address: {
       type: String,
@@ -34,8 +32,6 @@ const UserSchema = new mongoose.Schema(
     },
     phone: {
       type: String,
-      required: true,
-      unique: true,
     },
     password: {
       type: String,

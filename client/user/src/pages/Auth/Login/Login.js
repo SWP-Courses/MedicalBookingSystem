@@ -61,6 +61,11 @@ function Login() {
     }
   };
 
+  // login by google
+  const handleLoginByGoogle = () => {
+    window.open("http://localhost:8800/api/auth/google","_self");
+  };
+
   return (
     <div className="Login-Wrapper ">
       <div className="Login animate__animated animate__fadeInDown">
@@ -80,6 +85,7 @@ function Login() {
                   }}
                   ref={inputRef}
                 />
+                <span ref={errorAlert}>{/* error alert */}</span>
                 <span ref={errorAlert}>{/* error alert */}</span>
               </div>
               <div className="login__form-group">
@@ -116,10 +122,7 @@ function Login() {
                 <span>Hoặc</span>
                 <div className="line"></div>
               </div>
-              <div
-                className="login__google mt-3"
-                onClick={() => hanldeValidateLogin("google")}
-              >
+              <div className="login__google mt-3" onClick={handleLoginByGoogle}>
                 <img className="google-icon" src={googleIcon} />
               </div>
               <div className="sign-up mt-3">

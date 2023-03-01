@@ -91,9 +91,9 @@
       .navbar-right {
         display: flex;
         align-items: center;  
-        width: fit-content;
+        // width: fit-content;
         margin: 0 auto;
-        position: relative;
+        // position: relative;
 
         >.navItemContainer {
           margin: 0 20px;
@@ -120,6 +120,7 @@
           width: 1px;
           height: 30px;
           background: var(--secondary-color);
+          margin: 0px 50px;
         }
   
         .avatarContainer {
@@ -153,5 +154,8 @@
     border-top: 2px solid #CCA469;
     background-color: lightgray;
     padding: 20px;
+
+    width: 100% !important;
+    justify-content: center;
   }
 }

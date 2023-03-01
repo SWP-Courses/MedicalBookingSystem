@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { BsPlus } from 'react-icons/bs';
 import BlogRow from './BlogRow';
 import "./blogtable.css";
@@ -36,13 +36,17 @@ const demoBlogList = [
     }
 ]
 
-function BlogTable({ onClickEditBlog }) {
-    const [blogList, setBlogList] = useState(demoBlogList);
+function BlogTable({ onClickEditBlog, blogs, onDeleteBlogById }) {
+    const [blogList, setBlogList] = useState();
 
-    const onDeleteBlogById = (id) => {
-        if (!id) return
-        setBlogList(list => list.filter(list => list.id !== id));
-    }
+    useEffect(() => {
+        if (!blogs) return;
+        setBlogList(blogs);
+    }, [blogs])
+
+    if (!blogList) return (
+        <p>Loading...</p>
+    )
 
     return (
         <>

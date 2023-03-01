@@ -1,34 +1,42 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import ReactPaginate from 'react-paginate';
 import DOMPurify from "dompurify";
 import { useLocation, useNavigate, Link } from "react-router-dom";
-import './Pagination.scss'
-
+import ReactPaginate from "react-paginate";
+import "./Pagination.scss";
+import ReactHtmlParser from 'react-html-parser';
 
 function Pagination(props) {
   const { data } = props;
 
-  // items show in a current page 
+  // items show in a current page
   const [currentItems, setCurrentItems] = useState([]);
 
   // total page
   const [pageCount, setPageCount] = useState(0);
 
-  // index of first item in a current page 
+  // index of first item in a current page
   const [itemOffset, setItemOffset] = useState(0);
   const itemsPerPage = 4;
 
   useEffect(() => {
-    // index of the last item in a current page 
+    // index of the last item in a current page
     const endOffset = itemOffset + itemsPerPage;
     setCurrentItems(data.slice(itemOffset, endOffset));
     setPageCount(Math.ceil(data.length / itemsPerPage));
-
   }, [itemOffset, itemsPerPage, data]); // each time each of these change useEffect executed
 
   const handlePageClick = (event) => {
-    console.log('event.selected: ', event.selected, 'item perpage: ', itemsPerPage, 'result :', (event.selected * itemsPerPage) % data.length, 'page cpunt', pageCount);
+    console.log(
+      "event.selected: ",
+      event.selected,
+      "item perpage: ",
+      itemsPerPage,
+      "result :",
+      (event.selected * itemsPerPage) % data.length,
+      "page cpunt",
+      pageCount
+    );
 
     // caculate the first index in a current Page
     const newOffset = (event.selected * itemsPerPage) % data.length;
@@ -39,10 +47,13 @@ function Pagination(props) {
     <>
       <div className="images">
         {currentItems.map((blog, index) => {
+          const imgString = blog.content.match(/<img([\w\W]+?)>/g);
+          const content = blog.content.replace(/<img[^>]*>/g, "");
+
           return (
             <div key={index} className="blog-item">
               <Link to={`/blogs/${blog._id}`}>
-                <img className="blog-image" src={blog.image} alt="blog-image" />
+                {imgString ? ReactHtmlParser(imgString[0]) : undefined}
               </Link>
               <div className="blog-item-body">
                 <Link to={`/blogs/${blog._id}`}>

@@ -1,53 +1,39 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const { bookService, addExtraService, getBookedByDoctor, getBookedByUser, updateAddedService } = require("../controllers/bookedServiceController");
+const {
+  bookService,
+  addExtraService,
+  getBookedByDoctor,
+  getIncomingBookedByUser,
+  updateAddedService,
+  completeBooked,
+  cancelBookedService,
+} = require("../controllers/bookedServiceController");
 const router = express.Router();
 
 router.use(bodyParser.json());
+router.all((req, res, next) => {
+  res.statusCode = 200;
+  res.setHeader("Content-Type", "json/plain");
+  next();
+});
 
-router
-  .route("/")
-  .all((req, res, next) => {
-    res.statusCode = 200;
-    res.setHeader("Content-Type", "json/plain");
-    next();
-  })
-  .post(bookService)
+router.route("/").post(bookService);
 
-router
-  .route("/:id/:serviceId")
-  .all((req, res, next) => {
-    res.statusCode = 200;
-    res.setHeader("Content-Type", "json/plain");
-    next();
-  })
-  .put(updateAddedService)
+router.route("/:id/:serviceId").put(updateAddedService);
+
+// customer và doctor cùng tìm theo user_id
+// doctor search ra customer rồi mới fetch lịch sử
+// router.route('/history/:userId', getBookedsByUserId)
+
+router.route("/doctors/:id").get(getBookedByDoctor);
+
+router.route("/users/:id").get(getIncomingBookedByUser);
 
 router
   .route("/:id")
-  .all((req, res, next) => {
-    res.statusCode = 200;
-    res.setHeader("Content-Type", "json/plain");
-    next();
-  })
   .put(addExtraService)
-
-router
-  .route("/doctors/:id")
-  .all((req, res, next) => {
-    res.statusCode = 200;
-    res.setHeader("Content-Type", "json/plain");
-    next();
-  })
-  .get(getBookedByDoctor)
-
-router
-  .route("/users/:id")
-  .all((req, res, next) => {
-    res.statusCode = 200;
-    res.setHeader("Content-Type", "json/plain");
-    next();
-  })
-  .get(getBookedByUser)
+  .patch(completeBooked)
+  .delete(cancelBookedService);
 
 module.exports = router;

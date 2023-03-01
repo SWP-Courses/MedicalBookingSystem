@@ -52,7 +52,6 @@ function DoctorTable({ onClickEditDoctor, doctors, onDeleteBlogById }) {
                         <tr>
                             <th scope="col">#</th>
                             <th scope="col">Name</th>
-                            <th className='text-center' scope="col">Specialist</th>
                             <th className='text-center' scope="col">Email</th>
                             <th className='text-center' scope="col">Action</th>
                         </tr>

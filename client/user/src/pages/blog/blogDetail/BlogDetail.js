@@ -7,6 +7,10 @@ import { useContext, useEffect, useRef, useState } from "react";
 import axios from "axios";
 import API_URL from "~/api/Router";
 import { StoreContext } from "~/context/storeContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBookmark } from "@fortawesome/free-regular-svg-icons";
+import { faBookmark as solid } from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
 
 function BlogDetail() {
   const { setRoutingHistory } = useContext(StoreContext);
@@ -38,19 +42,19 @@ function BlogDetail() {
   });
 
   useEffect(() => {
-    const filterBlogSameCategory = async() => {
+    const filterBlogSameCategory = async () => {
       try {
         const res = await axios.get(API_URL + "/blogs");
         if (res && res.data && res.data.blogs && res.data.blogs.length > 0) {
-            const subBlogs = res.data.blogs.filter((item) => item._id === id);
-            setSameContent(subBlogs);
+          const subBlogs = res.data.blogs.filter((item) => item._id === id);
+          setSameContent(subBlogs);
         }
       } catch (error) {
         console.log(error);
       }
-    }
+    };
     filterBlogSameCategory();
- }, [])
+  }, [id]);
 
   // Khoa
   useEffect(() => {
@@ -84,6 +88,7 @@ function BlogDetail() {
     } else {
       try {
         await axios.post(`${API_URL}/blogs/save/${id}/${currentUser._id}`);
+        toast.success("Lưu bài viết thành công")
         setIsSaved(true);
       } catch (err) {
         console.log(err);
@@ -95,6 +100,7 @@ function BlogDetail() {
     try {
       await axios.delete(`${API_URL}/blogs/unsave/${id}/${currentUser._id}`);
       setIsSaved(false);
+      toast.success("Đã bỏ theo dõi bài viết")
     } catch (err) {
       console.log(err);
     }
@@ -112,29 +118,40 @@ function BlogDetail() {
               <Link to="/blogs">Blogs</Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item active>
-              <Link to='#'>Blog Detail</Link>
+              <Link to="#">Blog Detail</Link>
             </Breadcrumb.Item>
           </Breadcrumb>
         </div>
         <div className="blog-content">
           <div className="blog-wrapper">
-            {currentUser?.role !== "doctor" && (!isSaved ? (
-              <button className="saveBlog" onClick={handleSaveBlogClick}>
-                LƯU
-              </button>
-            ) : (
-              <button className="saveBlog" onClick={handleUnSaveBlogClick}>
-                HUỶ LƯU
-              </button>
-            ))}
-            <h1 className="blog-title">{blog?.title}</h1>
-            
-            <img className="blog-detail-image" src={blog?.image} alt="" />
-            <div className="content-box" ref={refBlog}>
-              <h2 className="sub-title">1. Vai trò của Vitamin D</h2>
-              {
-                // refBlog.current.innerHTML = blog.content
-              }
+            {currentUser?.role !== "doctor" &&
+              (!isSaved ? (
+                <>
+                  <FontAwesomeIcon
+                    icon={faBookmark}
+                    className="saveBlog"
+                    onClick={handleSaveBlogClick}
+                    title="Lưu"
+                  />
+                </>
+              ) : (
+                <>
+                  <FontAwesomeIcon
+                    icon={solid}
+                    className="saveBlog"
+                    onClick={handleUnSaveBlogClick}
+                    title="Huỷ Lưu"
+                  />
+                </>
+              ))}
+            <div className="blog-detail">
+              <h1 className="blog-title">{blog?.title}</h1>
+              <div className="content-box" ref={refBlog}>
+                <h2 className="sub-title">1. Vai trò của Vitamin D</h2>
+                {
+                  // refBlog.current.innerHTML = blog.content
+                }
+              </div>
             </div>
           </div>
           <div className="sub-infor">
@@ -143,9 +160,9 @@ function BlogDetail() {
                 <span className="post-date">Ngày đăng:</span>
                 <span className="date">{blog.createdAt}</span>
               </div>
-              <div className="author"> 
+              <div className="author">
                 <span className="title">Thuộc Chủ Đề</span>
-              </div>  
+              </div>
               <div className="author">
                 <span className="title">Tác Giả</span>
                 <span className="doctor-name">{blog.author}</span>
@@ -154,22 +171,23 @@ function BlogDetail() {
             <div className="more-blogs">
               <div className="single-blog">
                 <h4 className="single-blog-title">Có thể bạn quan tâm</h4>
-                {
-                  sameContent.map((item) => {
-                    return (
-                      <div className="sub-blog">
-                        <Link to={`/blogs/${blog._id}`}>
-                          <img className="blog-sub-image" src={item.image} />
+                {sameContent.map((item) => {
+                  return (
+                    <div className="sub-blog">
+                      <Link to={`/blogs/${blog._id}`}>
+                        <img className="blog-sub-image" src={item.image} />
+                      </Link>
+                      <div className="blog-sub-title ">
+                        <Link
+                          to={`/blogs/${blog._id}`}
+                          className="blog-sub-title-link line-clamp line-4"
+                        >
+                          {item.subTitle}
                         </Link>
-                        <div className="blog-sub-title ">
-                          <Link to={`/blogs/${blog._id}`} className="blog-sub-title-link line-clamp line-4">
-                            {item.subTitle}
-                          </Link>
-                        </div>
                       </div>
-                    )
-                  })
-                }
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
