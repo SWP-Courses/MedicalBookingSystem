@@ -1,0 +1,19 @@
+.actions {
+    display: flex !important;
+    align-items: flex-end;
+    margin-bottom: 14px;
+
+    .delete-btn,
+    .add-btn {
+        cursor: pointer;
+        font-size: 26px;
+    }
+
+    .add-btn {
+        color: var(--secondary-color);
+    }
+
+    .delete-btn {
+        color: #ff3d00;
+    }
+}

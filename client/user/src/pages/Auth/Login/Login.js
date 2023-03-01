@@ -21,16 +21,20 @@ function Login() {
   const inputRef = useRef();
 
   const [password, setPassword] = useState("");
-  const [user, setUser] = useState("");
-  const [userType, setUserType] = useState("R3");
+  const [email, setEmail] = useState("");
   const [isloading, setIsLoading] = useState(false);
 
   const hanldeValidateLogin = () => {
-    // case phone or email is empty
-    if (!user) {
+    //email is empty
+    if (!email) {
       errorAlert.current.className = "login__errorAlert";
-      errorAlert.current.innerText = "Vui lòng nhập số điện thoại hoặc email";
+      errorAlert.current.innerText = "Vui lòng nhập email";
       inputRef.current.focus();
+      return;
+    }
+
+    if (!validateEmail(email)) {
+      errorAlert.current.innerText = "Email sai định dạng";
       return;
     }
 
@@ -40,51 +44,12 @@ function Login() {
       return;
     }
 
-    // validate phone
-    let isPhoneNumber = true;
-    let phone = user.trim();
-    if (!validateEmail(user) && !user.includes("@")) {
-      const isContainsString = checkStringContainInPhoneNumber(phone);
-
-      if (isContainsString) {
-        toast.error("SDT không được chứa kí tự");
-        isPhoneNumber = false;
-        return;
-      }
-      if (+phone.charAt(0) !== 0) {
-        toast.error("SDT phải bắt đầu bằng số 0");
-        isPhoneNumber = false;
-        return;
-      }
-      if (phone.length < 10 || phone.length > 11) {
-        toast.error("SDT phải có 10 hoặc 11 số ");
-        isPhoneNumber = false;
-        return;
-      }
-
-      if (isPhoneNumber) {
-        const loginUser = {
-          role_code: userType,
-          phone: user,
-          password: password,
-        };
-        login(loginUser, setIsLoading);
-        return;
-      }
-    }
-
     // validate email
-    if (validateEmail(user)) {
-      let loginUser = {
-        role_code: userType,
-        email: user,
-        password: password,
-      };
-      login(loginUser);
-    } else {
-      toast.error("sai email");
-      return;
-    }
+    let loginUser = {
+      email: email,
+      password: password,
+    };
+    login(loginUser);
   };
 
   const hanldeOnInput = (e) => {
@@ -105,30 +70,22 @@ function Login() {
     <div className="Login-Wrapper ">
       <div className="Login animate__animated animate__fadeInDown">
         <div className="login-body">
-          <div className="login__selectRole">
-            <select
-              className="select"
-              onChange={(e) => setUserType(e.target.value)}
-            >
-              <option value="R3">Khách Hàng</option>
-              <option value="R2">Bác Sỹ</option>
-            </select>
-          </div>
           <div className="login__form-body">
             <div className="login__form-content">
               <h2>Đăng Nhập</h2>
               <div className="login_form-group">
                 <input
-                  type="text"
-                  placeholder="Số điện thoại hoặc Email"
+                  type="email"
+                  placeholder="Email"
                   className="login__input-box mt-4"
-                  value={user}
-                  onChange={(e) => setUser(e.target.value)}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   onInput={(e) => {
                     hanldeOnInput(e);
                   }}
                   ref={inputRef}
                 />
+                <span ref={errorAlert}>{/* error alert */}</span>
                 <span ref={errorAlert}>{/* error alert */}</span>
               </div>
               <div className="login__form-group">

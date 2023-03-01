@@ -88,7 +88,9 @@ function DoctorSchedule() {
                       <td>{item.slot_time}</td>
                       <td>
                         {item?.services.map((service, index) => {
-                          return <p key={index}>{`${service.name}`}</p>;
+                          return (
+                            <p key={index}>{`${service.name}`}</p>
+                          ) 
                         })}
                       </td>
                       <td>
@@ -114,7 +116,7 @@ function DoctorSchedule() {
       <ModalEditServices
         modalShow={modalShow}
         setModalShow={setModalShow}
-        user={userService}
+        bookedUser={userService}
       />
     </div>
   );
