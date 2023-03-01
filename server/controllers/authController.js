@@ -77,18 +77,9 @@ const register = async (req, res, next) => {
 // LOGIN
 const login = async (req, res, next) => {
   try {
-    let userQuery = { role_code: req.body.role_code };
-    if (req.body.phone) {
-      userQuery = { ...userQuery, phone: req.body.phone };
-    } else if (req.body.email) {
-      userQuery = {
-        ...userQuery,
-        email: req.body.email,
-      };
-    }
 
     // degree, profile, spe_id của doctor chỉ được admin thay đổi
-    const user = await UserModel.findOne(userQuery);
+    const user = await UserModel.findOne({email: req.body.email});
 
     if (!user) return res.status(404).send("Tài khoản không tồn tại!");
 
