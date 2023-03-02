@@ -26,7 +26,7 @@ const sendMail = async (req, res, next) => {
       secure: true,
       auth: {
         user: "thongkhoa2002@gmail.com",
-        pass: "ufqyktkfcfaxlndo",
+        pass: process.env.GMAIL_APP_PASS,
       },
     });
 
