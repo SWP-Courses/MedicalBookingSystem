@@ -6,6 +6,7 @@ import { AuthContext } from "~/context/authContext";
 import axios from "axios";
 import API_URL from "~/api/Router";
 import { addDays, format, parseISO } from "date-fns";
+import { formatSlot } from "~/utils";
 
 function MyVerticallyCenteredModal(props) {
   const { handleCancel, bservice, show, onHide } = props;
@@ -25,7 +26,7 @@ function MyVerticallyCenteredModal(props) {
       <Modal.Body>
         <h4>{bservice.services[0].name}</h4>
         <p>Ngày đặt: {format(new Date(bservice?.date), "dd/MM/yyyy")}</p>
-        <p>Lúc: {bservice.slot_time}</p>
+        <p>Lúc: {formatSlot(bservice.slot_time)}</p>
         <p>Bác sĩ: {bservice?.doctor[0].fullname}</p>
       </Modal.Body>
       <Modal.Footer>
@@ -91,11 +92,13 @@ export default function AppointmentSchedule() {
 
             return (
               <tr>
-                <td className="align-middle">{index+1}</td>
+                <td className="align-middle">{index + 1}</td>
                 <td className="align-middle">
                   {format(new Date(bservice?.date), "dd/MM/yyyy")}
                 </td>
-                <td className="align-middle">{bservice.slot_time}</td>
+                <td className="align-middle">
+                  {formatSlot(bservice.slot_time)}
+                </td>
                 <td className="align-middle">{bservice?.services[0].name}</td>
                 <td className="align-middle">{bservice?.doctor[0].fullname}</td>
                 <td className="text-center">

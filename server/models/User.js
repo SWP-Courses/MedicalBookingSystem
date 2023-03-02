@@ -5,6 +5,7 @@ const UserSchema = new mongoose.Schema(
     avatar: {
       type: Object,
       default: {
+        bucketName:"photos",
         filename: "defaultAvatar.jpg",
       }
     },

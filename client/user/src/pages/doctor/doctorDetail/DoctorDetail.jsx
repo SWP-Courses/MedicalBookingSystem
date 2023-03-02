@@ -11,6 +11,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import API_URL, { API_IMAGE_URL } from "~/api/Router";
 import background from "~/assets/images/doctor_background.jpg";
+import { shortenText } from "~/utils";
 
 export default function DoctorDetail() {
   const [moreOpen, setMoreOpen] = useState(false);
@@ -32,8 +33,29 @@ export default function DoctorDetail() {
 
   return (
     <div className="doctorDetail">
-      <img src={background} alt="" className="background"/>
-      <img
+      <img src={background} alt="" className="background" />
+      <div className="container-md mt-5">
+        <div className=" row d-flex justify-content-center">
+          <div className="col-lg-10 row col-md-12 doctorShow">
+            <div className="col-lg-5 col-sm-5 imgShow col-12">
+              <img src={`${API_IMAGE_URL}/${doctor?.avatar.filename}`} alt="" />
+              <h1>{doctor?.fullname}</h1>
+            </div>
+            <div className="col-lg-7 col-sm-7 col-12">
+              <div className="profileItem">
+                <div className="header">
+                  <FontAwesomeIcon icon={faInfoCircle} />
+                  <span>Giới thiệu</span>
+                </div>
+                <p>{doctor?.profile}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* LÀM THÊM OTHER DOCTORS */}
+
+      {/* <img
         src={`${API_IMAGE_URL}/${doctor?.avatar.filename}`}
         alt=""
         className="avatar"
@@ -77,7 +99,7 @@ export default function DoctorDetail() {
             <p>{doctor?.profile}</p>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

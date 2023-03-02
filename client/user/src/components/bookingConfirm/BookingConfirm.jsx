@@ -27,7 +27,9 @@ export default function BookingConfirm({ booking }) {
       </div>
       <div className="infoItem">
         <span className="bookingKey">Giới tính</span>
-        <span className="bookingValue">{currentUser?.gender}</span>
+        <span className="bookingValue">
+          {currentUser?.gender === "male" ? "Nam" : "Nữ"}
+        </span>
       </div>
       <div className="infoItem">
         <span className="bookingKey">Ngày sinh</span>

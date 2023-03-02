@@ -9,7 +9,6 @@ import API_URL from "~/api/Router";
 export default function DoctorList() {
   const [doctorList, setDoctorList] = useState();
   const [specialists, setSpecialists] = useState([]);
-  const [filterId, setFilterId] = useState();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -31,15 +30,9 @@ export default function DoctorList() {
       </div>
       <div className="doctorsWrapper">
         <div className="doctorList">
-          {filterId
-            ? doctorList.filter((doctor) => (
-                doctor.specialist_id === filterId
-              ))?.map((doctor, index) => (
-                <DoctorItem doctor={doctor} key={index} />
-              ))
-            : doctorList?.map((doctor, index) => (
-                <DoctorItem doctor={doctor} key={index} />
-              ))}
+          {doctorList?.map((doctor, index) => (
+            <DoctorItem doctor={doctor} key={index} />
+          ))}
         </div>
       </div>
     </div>

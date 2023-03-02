@@ -36,7 +36,7 @@ export default function AuthContextProvider({ children }) {
     };
     !JSON.parse(localStorage.getItem("user")) && fetchLoginSuccess();
   }, [navigate]);
-  console.log(currentUser);
+  // console.log(currentUser);
   // Functions
   const login = async (inputs) => {
     try {
@@ -72,11 +72,12 @@ export default function AuthContextProvider({ children }) {
         `${API_URL}/users/${currentUser._id}`,
         formData
       );
-      console.log(res.data);
+      // console.log(res.data);
       setCurrentUser(res.data);
       navigate(0);
+      toast.success("Cập nhật thành công.")
     } catch (err) {
-      console.log(err);
+      throw err
     }
   };
 

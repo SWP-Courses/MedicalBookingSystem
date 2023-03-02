@@ -123,6 +123,9 @@ const bookService = asyncHandler(async (req, res, next) => {
         return res.status(422).json(`Slot ${slot_time} is expired.`);
     }
 
+    // check doctor va user co ton tai
+
+
     const fullSlots = await Slot.find();
     if (fullSlots.length) {
       const isinSlots = fullSlots.some(
@@ -149,7 +152,6 @@ const bookService = asyncHandler(async (req, res, next) => {
         $gte: startOfDay(new Date(date)),
         $lte: endOfDay(new Date(date)),
       },
-      user_id: user_id,
       doctor_id: doctor_id,
       slot_time: slot_time,
     });

@@ -65,7 +65,7 @@ const getFreeSlots = asyncHandler(async (req, res, next) => {
     const leftSlots = fullSlots.filter((fslot) => {
       let keep = true;
       bookedSlots?.forEach((bslot) => {
-        if (bslot.slot_time === fslot.time) {
+        if (bslot.slot_time == fslot.time) {
           return (keep = false);
         }
       });

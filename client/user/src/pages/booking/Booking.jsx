@@ -25,10 +25,30 @@ export default function Booking() {
   // const [bookedService, setBookedService] = useState();
 
   const handleNext = () => {
+    const infoArr = [
+      "fullname",
+      "email",
+      "address",
+      "gender",
+      "phone",
+      "dateOfBirth",
+    ];
+    let isInfoFull = true;
+    for (const key of infoArr) {
+      if (!currentUser[key]) {
+        isInfoFull = false;
+        break;
+      }
+    }
+    if (!isInfoFull) {
+      toast.info("Vui lòng cập nhật tài khoản trước khi đặt lịch");
+      return;
+    }
+
     if (booking.date && booking.service && booking.doctor && booking.slot) {
       setPart({ number: 2, title: "XÁC NHẬN THÔNG TIN" });
     } else {
-      toast.error("Vui lòng chọn đầy đủ thông tin khám trước khi tiếp tục!");
+      toast.info("Vui lòng chọn đầy đủ thông tin khám trước khi tiếp tục!");
     }
   };
   const handleBack = () => {
@@ -103,7 +123,7 @@ export default function Booking() {
       <div className="bookingBanner">
         <h1 className="title">Đăng ký khám</h1>
       </div>
-      <div className="bookingBlock">
+      <div className="bookingBlock container">
         <h2 className="bookingStep">{part.title}</h2>
         {part.number === 1 && (
           <BookingFill
@@ -120,12 +140,7 @@ export default function Booking() {
           {part.number === 2 && (
             <>
               <button onClick={handleBack}>QUAY LẠI</button>
-              <button
-                // onClick={() => setPayModal(true)}
-                onClick={hanleBookService}
-              >
-                XÁC NHẬN ĐẶT LỊCH
-              </button>
+              <button onClick={hanleBookService}>XÁC NHẬN ĐẶT LỊCH</button>
             </>
           )}
         </div>

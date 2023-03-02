@@ -12,7 +12,7 @@ const BookedServiceSchema = new mongoose.Schema(
       required: true,
     },
     date: Date,
-    slot_time: String,
+    slot_time: Number,
     // room: String,
     services: [
       {
