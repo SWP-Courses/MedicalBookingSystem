@@ -19,7 +19,6 @@ function Prescription() {
   const [reExamDate, setReExamDate] = useState('');
   const [drugs, setDrugs] = useState([
     {
-      id: uuidv4(),
       drugId: "",
       drugName: "",
       dosage: "",

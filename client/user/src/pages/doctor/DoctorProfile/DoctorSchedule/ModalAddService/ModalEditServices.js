@@ -5,11 +5,15 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import _ from "lodash";
 import { useRef } from "react";
+import { faCirclePlus, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { hanlderRequest } from "~/utils";
 import API_URL from "~/api/Router";
 import { v4 as uuidv4 } from "uuid";
 import { memo } from "react";
+
+import "./ModalEditServices.scss";
 
 function ModalEditServices(props) {
   const { modalShow, setModalShow, bookedUser, fetchSchedule } = props;
@@ -24,15 +28,6 @@ function ModalEditServices(props) {
     }
   }, [bookedUser]);
 
-  // const [services, setServices] = useState([
-  //   {
-  //     unique_id: uuidv4(),
-  //     service_id: bookedUser.services.,
-  //     service_Name: serviceName,
-  //     quantity: +serviceQty,
-  //   },
-  // ]);
-
   const hanldeOnChangeValue = (event, id) => {
     const cloneUserServices = _.cloneDeep(userServices);
     if (!_.isEmpty(cloneUserServices)) {
@@ -42,6 +37,8 @@ function ModalEditServices(props) {
     setUserServices(cloneUserServices);
     console.log("check clone onChange value: ", cloneUserServices);
   };
+
+
 
   useEffect(() => {
     userServicesRef.current = userServices;
@@ -81,17 +78,32 @@ function ModalEditServices(props) {
     }
   };
 
+  const hanldeAddExtraService = () => {
+    const newEmptyServices = {
+      unique: uuidv4(),
+      name: '',
+      quantity: ''
+    }
+    setUserServices([...userServices, newEmptyServices]);
+  }
+
+  const handleDeleteExtraService = (id) => {
+    const newUserServices =  userServices.filter((item) => item.unique !== id);
+    setUserServices(newUserServices);
+  }
+
   const hanldeCloseModal = () => {
     setModalShow(false);
     // setUserServices([])
   };
 
-  console.log(
-    "current userService: ",
-    userServices,
-    "prev userService: ",
-    userServicesRef.current
-  );
+  console.log('log ser: ', userServices);
+  // console.log(
+  //   "current userService: ",
+  //   userServices,
+  //   "prev userService: ",
+  //   userServicesRef.current
+  // );
   return (
     <Modal
       show={modalShow}
@@ -146,35 +158,24 @@ function ModalEditServices(props) {
                     id="inputState"
                     className="form-select"
                     value={service.service_id}
-                  >
+                    >
+                    <option>--- Chọn dịch vụ ---</option>
                     {listServices &&
                       listServices.length > 0 &&
                       listServices.map((item, index) => {
                         return (
-                          <option
-                            key={index}
-                            value={item._id}
-                          >{`${item.name} - ${service.service_id}`}</option>
+                         <>
+                            <option
+                              key={index}
+                              value={item._id}
+                            >{`${item.name}`}</option>
+                         </>
                         );
                       })}
                   </select>
                 </div>
-                {/* <div className="col-md-4">
-                    <label htmlFor="inputQnt" className="form-label">
-                      Giá
-                    </label>
-                    <input
-                      type="text"
-                      className="form-control"
-                      id="inputQnt"
-                      value={formatPrice(service.price)}
-                      disabled
-                      onChange={() => {}}
-                      style={{cursor: 'no-drop'}}
-                    />
-                  </div> */}
                 <div className="col-md-2">
-                  <label htmlFor="inputQnt" className="form-label">
+                  <label htmlFor="inputQnt" className="form-label testcss">
                     sửa số lượng
                   </label>
                   <input
@@ -188,6 +189,21 @@ function ModalEditServices(props) {
                     min="1"
                     max="32"
                   />
+                </div>
+                <div className="col-md-2 plus-service">
+                  <span
+                    // className="note-icon"
+                    className={service.service_id ? 'note-icon__disable' : 'note-icon'}
+                    onClick={() => handleDeleteExtraService(service.unique)}
+                  >
+                    <FontAwesomeIcon icon={faTrashCan} />
+                  </span>
+                  <span 
+                    className="add-extra-icon"
+                    onClick={hanldeAddExtraService}
+                  >
+                    <FontAwesomeIcon icon={faCirclePlus} />
+                  </span>
                 </div>
               </React.Fragment>
             );
