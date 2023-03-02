@@ -4,28 +4,25 @@ import Modal from "react-bootstrap/Modal";
 import axios from "axios";
 import { toast } from "react-toastify";
 import _ from "lodash";
-import { formatPrice } from "~/utils";
+import { useRef } from "react";
 
 import { hanlderRequest } from "~/utils";
 import API_URL from "~/api/Router";
 import { v4 as uuidv4 } from "uuid";
-import { memo } from "react"
-
+import { memo } from "react";
 
 function ModalEditServices(props) {
-
-  const { modalShow, setModalShow, bookedUser } = props;
+  const { modalShow, setModalShow, bookedUser, fetchSchedule } = props;
   const [listServices, setListServices] = useState([]);
   const [userServices, setUserServices] = useState([]);
+  const userServicesRef = useRef();
 
   useEffect(() => {
     const cloneUserBooked = _.cloneDeep(bookedUser);
-    if(!_.isEmpty(cloneUserBooked)) {
+    if (!_.isEmpty(cloneUserBooked)) {
       setUserServices(cloneUserBooked.services);
     }
-  }, [bookedUser]) // trigger useEffect when bookedUser is available
-
-  console.log('user: ', userServices);
+  }, [bookedUser]);
 
   // const [services, setServices] = useState([
   //   {
@@ -37,19 +34,24 @@ function ModalEditServices(props) {
   // ]);
 
   const hanldeOnChangeValue = (event, id) => {
-    const cloneUserBooked = _.cloneDeep(bookedUser);
-    if(!_.isEmpty(cloneUserBooked)) {
-      const service = cloneUserBooked.services.find((item) => item.service_id === id);
-      service.quantity = event.target.value;
-      setUserServices(cloneUserBooked.services);
+    const cloneUserServices = _.cloneDeep(userServices);
+    if (!_.isEmpty(cloneUserServices)) {
+      const service = cloneUserServices.find((item) => item.service_id === id);
+      service.quantity = +event.target.value;
     }
-  }
+    setUserServices(cloneUserServices);
+    console.log("check clone onChange value: ", cloneUserServices);
+  };
+
+  useEffect(() => {
+    userServicesRef.current = userServices;
+  }, [userServices]);
 
   useEffect(() => {
     fetchAllServices();
   }, []);
 
-  // need add extra service 
+  // need add extra service
   const fetchAllServices = async () => {
     const [error, res] = await hanlderRequest(axios.get(API_URL + "/services"));
     if (res && res.data) {
@@ -60,31 +62,36 @@ function ModalEditServices(props) {
   };
 
   const handleUpdateServices = async (bookedUser) => {
-    Promise.all(
-      bookedUser?.services?.map(async (service) => {
-        const [error, res] = await hanlderRequest(
-          axios.put(
-            API_URL + `/bookedservices/${bookedUser._id}/${service.service_id}`
-          )
-        );
-        if (res && res.data) {
-          console.log(res.data);
-          setModalShow(false);
-        } else {
-          toast.error(error.message);
-        }
-      })
-    );
+    let error, res;
+    for (const service of userServices) {
+      [error, res] = await hanlderRequest(
+        axios.put(
+          API_URL + `/bookedservices/${bookedUser._id}/${service.service_id}`,
+          { quantity: `${service.quantity}` }
+        )
+      );
+    }
+    if (res && res.data) {
+      console.log(res.data);
+      toast.success("cập nhật thành công");
+      setModalShow(false);
+      await fetchSchedule();
+    } else {
+      toast.error(error.message);
+    }
   };
 
   const hanldeCloseModal = () => {
-    setModalShow(false)
+    setModalShow(false);
     // setUserServices([])
-  }
+  };
 
-  // console.log('>> check clone booked: ', userBookedServices, '>> check ! clone: ', bookedUser, '>> compare: ', userBookedServices === bookedUser);
-  console.log('>> check not clone: ', bookedUser);
-  // console.log('>> check clone booked: ', userBookedServices);
+  console.log(
+    "current userService: ",
+    userServices,
+    "prev userService: ",
+    userServicesRef.current
+  );
   return (
     <Modal
       show={modalShow}
@@ -117,17 +124,6 @@ function ModalEditServices(props) {
                 />
               );
             })}
-            {
-              // <input
-              //     type="email"
-              //     className="form-control"
-              //     id="inputEmail4"
-              //     value={bookedUser?.customer[0]?.fullname}
-              //     onChange={() => {}}
-              //     disabled
-              //     // style={{cursor: 'no-drop'}}
-              // />
-            }
           </div>
           <div className="col-md-6">
             <label className="form-label">Giờ Khám</label>
@@ -139,32 +135,31 @@ function ModalEditServices(props) {
               disabled
             />
           </div>
-          {
-            userServices.map((service, index) => {
-              return (
-                <React.Fragment key={index}>
-                  <div className="col-md-6">
-                    <label htmlFor="inputCity" className="form-label">
-                      {`Dịch Vụ - ${index + 1}`}
-                    </label>
-                    <select
-                      id="inputState"
-                      className="form-select"
-                      value={service.service_id}
-                    >
-                      {listServices &&
-                        listServices.length > 0 &&
-                        listServices.map((item, index) => {
-                          return (
-                            <option
-                              key={index}
-                              value={item._id}
-                            >{`${item.name} - ${service.service_id}`}</option>
-                          );
-                        })}
-                    </select>
-                  </div>
-                  {/* <div className="col-md-4">
+          {userServices.map((service, index) => {
+            return (
+              <React.Fragment key={index}>
+                <div className="col-md-6">
+                  <label htmlFor="inputCity" className="form-label">
+                    {`Dịch Vụ - ${index + 1}`}
+                  </label>
+                  <select
+                    id="inputState"
+                    className="form-select"
+                    value={service.service_id}
+                  >
+                    {listServices &&
+                      listServices.length > 0 &&
+                      listServices.map((item, index) => {
+                        return (
+                          <option
+                            key={index}
+                            value={item._id}
+                          >{`${item.name} - ${service.service_id}`}</option>
+                        );
+                      })}
+                  </select>
+                </div>
+                {/* <div className="col-md-4">
                     <label htmlFor="inputQnt" className="form-label">
                       Giá
                     </label>
@@ -178,22 +173,25 @@ function ModalEditServices(props) {
                       style={{cursor: 'no-drop'}}
                     />
                   </div> */}
-                  <div className="col-md-2">
-                    <label htmlFor="inputQnt" className="form-label">
-                      sửa số lượng
-                    </label>
-                    <input
-                      type="number"
-                      className="form-control"
-                      id="inputQnt"
-                      value={service.quantity}
-                      onChange={(event) => hanldeOnChangeValue(event, service.service_id)}
-                    />
-                  </div>
-                </React.Fragment>
-              );
-            })
-          }
+                <div className="col-md-2">
+                  <label htmlFor="inputQnt" className="form-label">
+                    sửa số lượng
+                  </label>
+                  <input
+                    type="number"
+                    className="form-control"
+                    id="inputQnt"
+                    value={service.quantity}
+                    onChange={(event) =>
+                      hanldeOnChangeValue(event, service.service_id)
+                    }
+                    min="1"
+                    max="32"
+                  />
+                </div>
+              </React.Fragment>
+            );
+          })}
         </form>
       </Modal.Body>
       <Modal.Footer>

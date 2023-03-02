@@ -130,6 +130,7 @@ function DoctorSchedule() {
         modalShow={modalShow}
         setModalShow={setModalShow}
         bookedUser={userService}
+        fetchSchedule={fetchSchedule}
       />
     </div>
   );
