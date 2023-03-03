@@ -32,13 +32,16 @@ function ModalEditServices(props) {
     const cloneUserServices = _.cloneDeep(userServices);
     if (!_.isEmpty(cloneUserServices)) {
       const service = cloneUserServices.find((item) => item.service_id === id);
-      service.quantity = +event.target.value;
+      if(event.target.name === 'quantity') {
+        service.quantity = +event.target.value;
+      }
+      if(event.target.name === 'select-service') {
+        const extraService = cloneUserServices.find((item) => item.unique_id === id);
+        extraService.service_id = event.target.value;
+      }
     }
     setUserServices(cloneUserServices);
-    console.log("check clone onChange value: ", cloneUserServices);
   };
-
-
 
   useEffect(() => {
     userServicesRef.current = userServices;
@@ -80,8 +83,8 @@ function ModalEditServices(props) {
 
   const hanldeAddExtraService = () => {
     const newEmptyServices = {
-      unique: uuidv4(),
-      name: '',
+      unique_id: uuidv4(),
+      service_id: '',
       quantity: ''
     }
     setUserServices([...userServices, newEmptyServices]);
@@ -158,8 +161,10 @@ function ModalEditServices(props) {
                     id="inputState"
                     className="form-select"
                     value={service.service_id}
+                    onChange={(event) => hanldeOnChangeValue(event, service.unique_id)}
+                    name='select-service'
                     >
-                    <option>--- Chọn dịch vụ ---</option>
+                    <option>--- Thêm dịch vụ ---</option>
                     {listServices &&
                       listServices.length > 0 &&
                       listServices.map((item, index) => {
@@ -183,6 +188,7 @@ function ModalEditServices(props) {
                     className="form-control"
                     id="inputQnt"
                     value={service.quantity}
+                    name='quantity'
                     onChange={(event) =>
                       hanldeOnChangeValue(event, service.service_id)
                     }
