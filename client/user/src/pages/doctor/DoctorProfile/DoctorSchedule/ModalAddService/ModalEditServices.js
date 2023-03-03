@@ -28,18 +28,38 @@ function ModalEditServices(props) {
     }
   }, [bookedUser]);
 
+  // validate select duplicate service
+  const validateDuplicateService = (id) => {
+    const cloneUserServices = _.cloneDeep(userServices);
+    for (const service of cloneUserServices) {
+      if (service.service_id === id) {
+        toast.error("Dịch vụ này đã được chọn");
+        return true;
+      }
+    }
+  };
+
   const hanldeOnChangeValue = (event, id) => {
     const cloneUserServices = _.cloneDeep(userServices);
+    let isDuplicate = false;
     if (!_.isEmpty(cloneUserServices)) {
       const service = cloneUserServices.find((item) => item.service_id === id);
-      if (event.target.name === "quantity") {
+      if (event.target.name === "quantity" && service) {
         service.quantity = +event.target.value;
       }
+
       if (event.target.name === "select-service") {
-        const extraService = cloneUserServices.find(
-          (item) => item.unique_id === id
-        );
+        const extraService = cloneUserServices.find((item) => {
+          return item.unique_id === id;
+        });
+        if (extraService === cloneUserServices[0]) {
+          return;
+        }
         extraService.service_id = event.target.value;
+      }
+      // select duplicate service
+      if (validateDuplicateService(event.target.value, isDuplicate)) {
+        return;
       }
     }
     setUserServices(cloneUserServices);
@@ -108,8 +128,14 @@ function ModalEditServices(props) {
   };
 
   const handleDeleteExtraService = (id) => {
-    const newUserServices = userServices.filter((item) => item.unique !== id);
-    setUserServices(newUserServices);
+    console.log("on click delete", id);
+    const newUserServices = userServices.filter(
+      (item) => item.unique_id !== id
+    );
+    console.log("check newUser Service: ", newUserServices, "id: ", id);
+    if (newUserServices) {
+      setUserServices(newUserServices);
+    }
   };
 
   const hanldeCloseModal = () => {
@@ -118,12 +144,6 @@ function ModalEditServices(props) {
   };
 
   console.log("log ser: ", userServices);
-  // console.log(
-  //   "current userService: ",
-  //   userServices,
-  //   "prev userService: ",
-  //   userServicesRef.current
-  // );
   return (
     <Modal
       show={modalShow}
@@ -216,27 +236,38 @@ function ModalEditServices(props) {
                   />
                 </div>
                 <div className="col-md-2 plus-service">
-                  <span
-                    // className="note-icon"
-                    className={
-                      service.service_id ? "note-icon__disable" : "note-icon"
-                    }
-                    onClick={() => handleDeleteExtraService(service.unique)}
-                  >
-                    <FontAwesomeIcon icon={faTrashCan} />
-                  </span>
-                  <span
-                    className="add-extra-icon"
-                    onClick={hanldeAddExtraService}
-                  >
-                    <FontAwesomeIcon icon={faCirclePlus} />
-                  </span>
+                  {service.unique_id && (
+                    <span
+                      // className="note-icon"
+                      className="note-icon"
+                      onClick={() =>
+                        handleDeleteExtraService(service.unique_id)
+                      }
+                    >
+                      <FontAwesomeIcon icon={faTrashCan} />
+                    </span>
+                  )}
                 </div>
               </React.Fragment>
             );
           })}
         </form>
       </Modal.Body>
+      <center
+        style={{
+          padding: "10px 0",
+          color: "var(--secondary-color)",
+          cursor: "pointer",
+        }}
+      >
+        {userServices.length >= 7 ? (
+          ""
+        ) : (
+          <span className="add-extra-icon" onClick={hanldeAddExtraService}>
+            <FontAwesomeIcon icon={faCirclePlus} />
+          </span>
+        )}
+      </center>
       <Modal.Footer>
         <Button onClick={() => handleUpdateServices(bookedUser)}>
           Cập Nhật
