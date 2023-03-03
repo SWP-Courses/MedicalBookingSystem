@@ -32,11 +32,13 @@ function ModalEditServices(props) {
     const cloneUserServices = _.cloneDeep(userServices);
     if (!_.isEmpty(cloneUserServices)) {
       const service = cloneUserServices.find((item) => item.service_id === id);
-      if(event.target.name === 'quantity') {
+      if (event.target.name === "quantity") {
         service.quantity = +event.target.value;
       }
-      if(event.target.name === 'select-service') {
-        const extraService = cloneUserServices.find((item) => item.unique_id === id);
+      if (event.target.name === "select-service") {
+        const extraService = cloneUserServices.find(
+          (item) => item.unique_id === id
+        );
         extraService.service_id = event.target.value;
       }
     }
@@ -63,6 +65,8 @@ function ModalEditServices(props) {
 
   const handleUpdateServices = async (bookedUser) => {
     let error, res;
+
+    // update quantity
     for (const service of userServices) {
       [error, res] = await hanlderRequest(
         axios.put(
@@ -71,6 +75,19 @@ function ModalEditServices(props) {
         )
       );
     }
+
+    // update add extra service
+    for (const extraService of userServices) {
+      if (extraService.unique_id) {
+        [error, res] = await hanlderRequest(
+          axios.put(API_URL + `/bookedservices/${bookedUser._id}`, {
+            service_id: `${extraService.service_id}`,
+            quantity: `${extraService.quantity}`,
+          })
+        );
+      }
+    }
+
     if (res && res.data) {
       console.log(res.data);
       toast.success("cập nhật thành công");
@@ -84,23 +101,23 @@ function ModalEditServices(props) {
   const hanldeAddExtraService = () => {
     const newEmptyServices = {
       unique_id: uuidv4(),
-      service_id: '',
-      quantity: ''
-    }
+      service_id: "",
+      quantity: "",
+    };
     setUserServices([...userServices, newEmptyServices]);
-  }
+  };
 
   const handleDeleteExtraService = (id) => {
-    const newUserServices =  userServices.filter((item) => item.unique !== id);
+    const newUserServices = userServices.filter((item) => item.unique !== id);
     setUserServices(newUserServices);
-  }
+  };
 
   const hanldeCloseModal = () => {
     setModalShow(false);
     // setUserServices([])
   };
 
-  console.log('log ser: ', userServices);
+  console.log("log ser: ", userServices);
   // console.log(
   //   "current userService: ",
   //   userServices,
@@ -161,20 +178,22 @@ function ModalEditServices(props) {
                     id="inputState"
                     className="form-select"
                     value={service.service_id}
-                    onChange={(event) => hanldeOnChangeValue(event, service.unique_id)}
-                    name='select-service'
-                    >
+                    onChange={(event) =>
+                      hanldeOnChangeValue(event, service.unique_id)
+                    }
+                    name="select-service"
+                  >
                     <option>--- Thêm dịch vụ ---</option>
                     {listServices &&
                       listServices.length > 0 &&
                       listServices.map((item, index) => {
                         return (
-                         <>
+                          <>
                             <option
                               key={index}
                               value={item._id}
                             >{`${item.name}`}</option>
-                         </>
+                          </>
                         );
                       })}
                   </select>
@@ -188,7 +207,7 @@ function ModalEditServices(props) {
                     className="form-control"
                     id="inputQnt"
                     value={service.quantity}
-                    name='quantity'
+                    name="quantity"
                     onChange={(event) =>
                       hanldeOnChangeValue(event, service.service_id)
                     }
@@ -199,12 +218,14 @@ function ModalEditServices(props) {
                 <div className="col-md-2 plus-service">
                   <span
                     // className="note-icon"
-                    className={service.service_id ? 'note-icon__disable' : 'note-icon'}
+                    className={
+                      service.service_id ? "note-icon__disable" : "note-icon"
+                    }
                     onClick={() => handleDeleteExtraService(service.unique)}
                   >
                     <FontAwesomeIcon icon={faTrashCan} />
                   </span>
-                  <span 
+                  <span
                     className="add-extra-icon"
                     onClick={hanldeAddExtraService}
                   >
