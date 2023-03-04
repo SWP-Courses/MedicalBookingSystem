@@ -17,9 +17,7 @@ const DrugBillSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    re_exam_date: {
-      type: Date,
-    },
+    re_exam_date: Date,
     doctor_id: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
@@ -31,6 +29,7 @@ const DrugBillSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    versionKey: false
   }
 );
 

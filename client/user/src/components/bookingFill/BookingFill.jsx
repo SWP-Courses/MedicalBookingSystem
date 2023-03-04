@@ -68,7 +68,7 @@ export default function BookingFill({
         </Dropdown>
         <span className="title">Thời gian khám</span>
         <div className="date">
-          <span>Ngày khám: {format(booking.date, "yyyy-MM-dd")}</span>
+          <span className="d-block mb-2 fs-5">Ngày khám: {format(booking.date, "dd/MM/yyyy")}</span>
           <Calendar
             onChange={(item) => setBooking((prev) => ({ ...prev, date: item }))}
             value={booking.date}
@@ -128,12 +128,6 @@ export default function BookingFill({
             ))}
           </div>
         </div>
-      </div>
-
-      <div className="divideLine"></div>
-
-      <div className="userFillPart">
-        <h2>Thông tin cá nhân</h2>
       </div>
     </div>
   );

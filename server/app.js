@@ -46,7 +46,7 @@ app.use(passport.session());
 app.use(logger("dev"));
 app.use(
   cors({
-    origin: "*",
+    origin: true,
     methods: "GET,POST,PUT,DELETE,PATCH",
     credentials: true,
   })

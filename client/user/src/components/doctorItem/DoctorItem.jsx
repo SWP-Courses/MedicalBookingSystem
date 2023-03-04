@@ -19,16 +19,12 @@ export default function DoctorItem({ doctor }) {
         <Link to={`/doctors/${doctor._id}`} className="doctorName">
           Bác sĩ {fullname}
         </Link>
-        <div className="titleItem">
+        {/* <div className="titleItem">
           <FontAwesomeIcon icon={faGraduationCap} />
           <span>{degree}</span>
-        </div>
-        {/* <div className="titleItem">
-          <FontAwesomeIcon icon={faStethoscope} />
-          <span>{major}</span>
         </div> */}
+        <p className="doctorShortIntro">{shortenText(profile, 145)}</p>
       </div>
-      <p className="doctorShortIntro">{shortenText(profile, 145)}</p>
     </div>
   );
 }

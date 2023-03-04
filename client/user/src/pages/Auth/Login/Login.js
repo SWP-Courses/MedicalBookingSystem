@@ -1,9 +1,9 @@
-import { useContext, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "~/context/authContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-
+import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import "animate.css";
@@ -19,12 +19,19 @@ function Login() {
   const errorAlert = useRef();
   const errorPassword = useRef();
   const inputRef = useRef();
-
+  const [cookies, setCookie, removeCookie] = useCookies(["error"]);
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
   const [isloading, setIsLoading] = useState(false);
 
-  const hanldeValidateLogin = () => {
+  useEffect(() => {
+    console.log(cookies?.error);
+    cookies?.error && toast.error(cookies?.error);
+    removeCookie("error");
+  }, [cookies?.error, removeCookie]);
+
+  const hanldeValidateLogin = (e) => {
+    e.preventDefault();
     //email is empty
     if (!email) {
       errorAlert.current.className = "login__errorAlert";
@@ -63,7 +70,7 @@ function Login() {
 
   // login by google
   const handleLoginByGoogle = () => {
-    window.open("http://localhost:8800/api/auth/google","_self");
+    window.open("http://localhost:8800/api/auth/google", "_self");
   };
 
   return (
@@ -71,7 +78,10 @@ function Login() {
       <div className="Login animate__animated animate__fadeInDown">
         <div className="login-body">
           <div className="login__form-body">
-            <div className="login__form-content">
+            <form
+              className="login__form-content"
+              onSubmit={hanldeValidateLogin}
+            >
               <h2>Đăng Nhập</h2>
               <div className="login_form-group">
                 <input
@@ -100,17 +110,9 @@ function Login() {
                 />
                 <span ref={errorPassword}>{/* error alert */}</span>
               </div>
-              <p
-                className="forgot-password"
-                onClick={() => navigate("/forgotPassword")}
-              >
-                Quên mật khẩu
-              </p>
-              <button
-                className="btn-sign-in"
-                onClick={() => hanldeValidateLogin()}
-                disabled={isloading}
-              >
+              <Link to="/forgotPassword" className="forgot-password mb-2 d-block">Quên mật khẩu</Link>
+              <Link to="/"  className="forgot-password my-2 d-block">Trang chủ</Link>
+              <button className="btn-sign-in" disabled={isloading}>
                 {isloading && (
                   <FontAwesomeIcon icon={faSpinner} className="loader-icon" />
                 )}
@@ -128,7 +130,7 @@ function Login() {
                 <span>Bạn Chưa Có Tài Khoản ?</span>
                 <Link to="/register">Đăng Kí</Link>
               </div>
-            </div>
+            </form>
           </div>
         </div>
       </div>

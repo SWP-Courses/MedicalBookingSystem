@@ -33,19 +33,7 @@ export default function Options() {
     <div className="topbarOptions">
       <div className="optionItem-wrapper container-xl">
         <div className="optionItem col-sm-2.5">
-          <span>Chuyên khoa trọng điểm</span>
-          <FontAwesomeIcon icon={faChevronDown} className="optionIcon" />
-          <div className="dropdown">
-            {specialists.map((spe) => (
-              <Link
-                to={`/specialists/${spe._id}`}
-                className="dropItem"
-                key={spe._id}
-              >
-                {spe.title}
-              </Link>
-            ))}
-          </div>
+          <Link to="/intro">Giới thiệu</Link>
         </div>
         <div className="optionItem col-sm-2.5">
           <Link to="/doctors">Danh sách bác sĩ</Link>

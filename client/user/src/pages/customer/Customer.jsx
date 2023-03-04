@@ -23,8 +23,15 @@ export default function Customer() {
     <div className="customer">
       <div className="userSidebar">
         <div className="userInfo">
-            <img src={`${API_IMAGE_URL}/${currentUser?.avatar?.filename}`} alt=""/> 
-          
+          {currentUser?.avatar?.bucketName ? (
+            <img
+              src={`${API_IMAGE_URL}/${currentUser?.avatar?.filename}`}
+              alt=""
+            />
+          ) : (
+            <img src={currentUser?.avatar?.filename} alt="" />
+          )}
+
           <span className="userName">{currentUser?.fullname}</span>
         </div>
         <div className="profileActions">

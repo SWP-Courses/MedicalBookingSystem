@@ -16,6 +16,7 @@ import Specialist from "~/pages/specialist/Specialist";
 import AuthContextProvider, { AuthContext } from "../context/authContext";
 
 import "react-toastify/dist/ReactToastify.css";
+import Intro from "~/components/intro/Intro";
 
 export default function UserRouter() {
   const { currentUser } = useContext(AuthContext);
@@ -31,6 +32,7 @@ export default function UserRouter() {
           {currentUser?.role === "doctor" && (
             <Route path="/doctor" element={<Doctor />} />
           )}
+          <Route path="/intro" element={<Intro />} />
           <Route path="/doctors" element={<DoctorList />} />
           <Route path="/doctors/:id" element={<DoctorDetail />} />
           <Route path="/specialists/:speId" element={<Specialist />} />
@@ -43,9 +45,15 @@ export default function UserRouter() {
         {!currentUser && (
           <Route path="/forgotPassword" element={<ForgotPassword />} />
         )}
-        <Route path="*" element={<><h1>404 Page not found</h1>
-        <Link to="/">Trang chủ</Link>
-        </>} />
+        <Route
+          path="*"
+          element={
+            <>
+              <h1>404 Page not found</h1>
+              <Link to="/">Trang chủ</Link>
+            </>
+          }
+        />
       </Routes>
     </>
   );

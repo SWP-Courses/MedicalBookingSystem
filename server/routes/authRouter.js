@@ -4,17 +4,27 @@ var {
   register,
   loginFailed,
   loginSuccess,
+  sendMail,
+  verifyResetCode,
+  updateNewPassword,
 } = require("../controllers/authController");
 const updateImage = require("../config/multerConfig");
 const passport = require("passport")
 const CLIENT_URL = "http://localhost:3000";
-
+const cookieParser = require('cookie-parser')
 var express = require("express");
 const router = express.Router();
+router.use(cookieParser());
+
+// router.get("/forgot-password", sendMail );
+router.post("/send-reset-code", sendMail );
+router.post('/verify-code', verifyResetCode)
+router.post('/reset-password', updateNewPassword)
 
 router.post("/register", updateImage.single("avatar"), register);
 router.post("/login", login);
 router.get("/logout", logout);
+
 router.get("/login/success", loginSuccess);
 router.get("/login/failed", loginFailed);
 
@@ -27,6 +37,7 @@ router.get(
   "/google/callback",
   passport.authenticate("google", {
     failureRedirect: "/api/auth/login/failed",
+    failureMessage:true,
     successRedirect:CLIENT_URL,
   }),
   // (req, res) => {

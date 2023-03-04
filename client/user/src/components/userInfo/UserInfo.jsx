@@ -7,6 +7,7 @@ import { useContext } from "react";
 import { AuthContext } from "~/context/authContext";
 import API_URL, { API_IMAGE_URL } from "~/api/Router";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function UserInfo(props) {
   const { currentUser, update } = useContext(AuthContext);
@@ -17,9 +18,9 @@ export default function UserInfo(props) {
     fullname: currentUser?.fullname,
     email: currentUser?.email,
     address: currentUser?.address || "",
-    gender: currentUser?.gender,
-    phone: currentUser?.phone,
-    dateOfBirth: currentUser?.dateOfBirth?.split("/")?.reverse()?.join("-"),
+    gender: currentUser?.gender || "male",
+    phone: currentUser?.phone || "",
+    dateOfBirth: currentUser?.dateOfBirth,
   });
   const navigate = useNavigate();
 
@@ -44,18 +45,44 @@ export default function UserInfo(props) {
   const handleUpdateClick = async (e) => {
     e.preventDefault();
 
+    let isFillFulll = true;
     for (const key in userInfo) {
       if (Object.hasOwnProperty.call(userInfo, key)) {
         let value = userInfo[key];
-        formData.append(key, value);
+        if (!value) {
+          isFillFulll = false;
+          break;
+        }
+      }
+    }
+    if (!isFillFulll) {
+      toast.info("Vui lòng nhập đầy đủ thông tin.");
+      return;
+    }
+
+    for (const key in userInfo) {
+      if (Object.hasOwnProperty.call(userInfo, key)) {
+        let value = userInfo[key];
+        value && formData.append(key, value);
+        // console.log(key, value);
+        // if(value) {
+        //   formData.get(key) !== value && formData.append(key, value)
+        // }
       }
     }
 
     for (const key of formData.keys()) {
       console.log(key, formData.get(key));
     }
-    console.log(formData);
-    await update(formData);
+    // console.log(formData);
+    try {
+      await update(formData);
+    } catch (err) {
+      toast.error(err.response.data);
+      for (const key in userInfo) {
+        formData.delete(key);
+      }
+    }
   };
 
   return (

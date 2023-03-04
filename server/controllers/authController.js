@@ -4,8 +4,96 @@ var UserModel = require("../models/User.js");
 var RoleModel = require("../models/Role.js");
 var SpecialistModel = require("../models/Specialist");
 const { deleteImageById } = require("./imageController.js");
+var nodemailer = require("nodemailer");
 
 const CLIENT_URL = "http://localhost:3000";
+
+const sendMail = async (req, res, next) => {
+  try {
+    const user = await UserModel.findOne({
+      email: req.body.email,
+      password: { $exists: true },
+    });
+    if (!user) return res.status(404).json("Tài khoản không tồn tại.");
+
+    // check email address is valid ?
+    let code = (Math.random() + 1).toString(36).substring(6);
+
+    var transporter = nodemailer.createTransport({
+      service: "gmail",
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: {
+        user: "thongkhoa2002@gmail.com",
+        pass: process.env.GMAIL_APP_PASS,
+      },
+    });
+
+    var mailOptions = {
+      from: "thongkhoa2002@gmail.com",
+      to: req.body.email.trim(),
+      subject: "Give back password",
+      text: "Nã xác nhận là " + code,
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        return console.log(error);
+      }
+      console.log("Message sent " + info.response);
+
+      const token = jwt.sign(
+        { id: user._id, reset_code: code },
+        process.env.JWT,
+        { expiresIn: "10m" }
+      );
+
+      res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+      res.header("Access-Control-Allow-Credentials", true);
+      res.cookie("reset_token", token, {
+        httpOnly: false,
+      });
+
+      res.status(200).json("Đã gửi mã xác nhận đến " + req.body.email);
+    });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
+
+const verifyResetCode = async (req, res, next) => {
+  try {
+    const reset_token = req.cookies["reset_token"];
+    jwt.verify(reset_token, process.env.JWT, (err, user) => {
+      if (err) return res.status(403).send("Sai mã code");
+      // console.log(user);
+      if (user.reset_code === req.body.resetInput)
+        return res.status(200).send("Xác thực thành công");
+    });
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
+
+const updateNewPassword = async (req, res, next) => {
+  try {
+    const reset_token = req.cookies["reset_token"];
+    jwt.verify(reset_token, process.env.JWT, async (err, user) => {
+      if (err) return res.status(403).send("Mã code đã quá hạn");
+
+      const salt = bcrypt.genSaltSync(10);
+      const hash = bcrypt.hashSync(req.body.newPassword, salt);
+
+      await UserModel.findByIdAndUpdate(user.id, {
+        password: hash,
+      });
+      return res.status(200).send("Cập nhật thành công");
+    });
+  } catch (err) {
+    res.status(500).err;
+  }
+};
 
 // POST /api/resgiter
 // Với role là R2 (doctor) thì gửi thêm 3 fields là degree, specialist_id, profile
@@ -76,6 +164,7 @@ const register = async (req, res, next) => {
 // POST /api/login
 // LOGIN
 const login = async (req, res, next) => {
+  console.log("login");
   try {
 
     // degree, profile, spe_id của doctor chỉ được admin thay đổi
@@ -148,7 +237,19 @@ const loginSuccess = (req, res) => {
 };
 
 const loginFailed = (req, res) => {
+  console.log(req.session.messages);
+  res.cookie("error", "Đã có tài khoản đăng nhập đăng kí với email này!");
   res.redirect(CLIENT_URL + "/login");
+  // res.render("asdashd")
 };
 
-module.exports = { register, login, logout, loginSuccess, loginFailed };
+module.exports = {
+  register,
+  login,
+  logout,
+  loginSuccess,
+  loginFailed,
+  sendMail,
+  verifyResetCode,
+  updateNewPassword,
+};
