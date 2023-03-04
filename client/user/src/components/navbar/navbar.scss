@@ -98,7 +98,7 @@
         margin: 0 auto;
 
         >.navItemContainer {
-          margin: 0 20px;
+          // margin: 0 20px;
         }
   
         .navbar-button {
@@ -116,7 +116,7 @@
           width: 1px;
           height: 30px;
           background: var(--secondary-color);
-          margin: 0px 50px;
+          margin: 0px 30px;
         }
   
         .user-border {
@@ -148,7 +148,7 @@
             top: 50%;
             transform: translateY(-50%);
             display: block;
-            border: 1px solid var(--primary-color);
+            border: 1px solid var(--secondary-color);
           }
 
         .dropdown-toggle::after {
@@ -166,7 +166,7 @@
           width: 200px;
           position: absolute;
           top: 129%;
-          right: 0;
+          right: 114px;
           z-index: 1;
           border-radius: 8px;
           border: 1.5px solid rgb(47, 146, 207);

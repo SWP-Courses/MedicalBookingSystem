@@ -2,56 +2,74 @@ import { useEffect, useState } from "react";
 import "./Prescription.scss";
 import Select, { colourOptions } from "react-select";
 import Form from "react-bootstrap/Form";
-import {
-  faCirclePlus,
-  faTrashCan,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCirclePlus, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { v4 as uuidv4 } from "uuid";
 import _ from "lodash";
 import axios from "axios";
 import API_URL from "~/api/Router";
+import { hanlderRequest } from "~/utils";
+import { toast } from "react-toastify";
 
-function Prescription() {
+function Prescription(props) {
+  const { patient, listUsers, currentUser } = props;
   const [drugsOption, setDrugsOption] = useState([]);
-  const [desease, setDesease] = useState('');
-  const [note, setNote] = useState('');
-  const [reExamDate, setReExamDate] = useState('');
+  const [desease, setDesease] = useState("");
+  const [note, setNote] = useState("");
+  const [reExamDate, setReExamDate] = useState("");
   const [drugs, setDrugs] = useState([
     {
-      drugId: "",
-      drugName: "",
-      dosage: "",
+      medicine_id: "",
       quantity: "",
+      dose: "",
     },
   ]);
+  const [user, setUser] = useState([])
+  const [listUserInDay, setListUserInDay] = useState([]);
 
-  const optionListUsers = [
-    {
-      value: 1,
-      label: "An",
-    },
-    {
-      value: 2,
-      label: "Bình",
-    },
-    {
-      value: 3,
-      label: "Cường",
-    },
-    {
-      value: 4,
-      label: "Dũng",
-    },
-  ];
+  const optionListUsers = listUserInDay.map((user) => {
+    return {
+      value: user._id,
+      label: user.fullname
+    };
+  })
+
+  const reset = () => {
+    setDrugs([
+      {
+        medicine_id: "",
+        quantity: "",
+        dose: "",
+      },
+    ]);
+    setNote("");
+    setDesease("");
+    setUser([]);
+    setReExamDate("");
+  }
 
   useEffect(() => {
     try {
-      fetchAllMedicine();
+      fetchAllMedicine(); 
     } catch (error) {
       console.log(error);
     }
   }, []);
+
+  useEffect(() => {
+    if(!_.isEmpty(patient)) {
+      // setUser(() => {
+      //   return patient[0];
+      // })
+      setUser(patient)
+    }
+  }, [patient])
+
+  useEffect(() => {
+    if(!_.isEmpty(listUsers)) {
+      setListUserInDay(listUsers)
+    }
+  }, [listUsers])
 
   const fetchAllMedicine = async () => {
     let res = await axios.get(`${API_URL}/medicine`);
@@ -72,20 +90,19 @@ function Prescription() {
     switch (type) {
       case "drug":
         if (newDrug) {
-          newDrug.drugId = valueSelected.value;    // valueSelected.value --> id of drug
-          newDrug.drugName = valueSelected.label;  // valueSelected.label --> name of drug
+          newDrug.medicine_id = valueSelected.value; // valueSelected.value --> id of drug
         }
         setDrugs(cloneDrugs);
         break;
-      case "dosage":
+      case "dose":
         if (newDrug) {
-          newDrug.dosage = valueSelected;
+          newDrug.dose = valueSelected;
         }
         setDrugs(cloneDrugs);
         break;
       case "quantity":
         if (newDrug) {
-          newDrug.quantity = valueSelected;
+          newDrug.quantity = +valueSelected;
         }
         setDrugs(cloneDrugs);
         break;
@@ -97,10 +114,9 @@ function Prescription() {
   const handleAddNewEmptyDrug = () => {
     const newEmptyDrug = {
       id: uuidv4(),
-      drugId: "",
-      drugName: "",
-      dosage: "",
+      medicine_id: "",
       quantity: "",
+      dose: "",
     };
     setDrugs([...drugs, newEmptyDrug]);
   };
@@ -115,14 +131,26 @@ function Prescription() {
     }
   };
 
-  const handleSubmitPrescription = () => {
+  const handleSubmitPrescription = async () => {
     const prescription = {
-      medicine: drugs,
+      bill_medicines: drugs,
       note: note,
-      desease: desease,
+      disease: desease,
       re_exam_date: reExamDate,
+      bookedserviceid: user._id,
+    };
+    const [error, res] = await hanlderRequest(
+      axios.post(
+        API_URL +
+          `/drugbill/${currentUser._id}/${user._id}`, {...prescription}
+      )
+    );
+    if(res && res.status === 200) {
+      toast.success('Tạo đơn thuốc thành công');
+      reset();
+    }else {
+      console.log(error.message);
     }
-    console.log('check final data: ', prescription);
   };
 
   return (
@@ -139,8 +167,11 @@ function Prescription() {
         </div>
         <div className="user-detail">
           <div className="name">
-            <span className="title">Tên: </span>
-            <span>Vũ Văn Lãm</span>
+            <span className="title">Bệnh Nhân: </span>
+            <span>{user?.customer?.length > 0 ? user?.customer[0]?.fullname : ''}</span >
+            {/* {user.customer.map((item) => {
+              return item.fullname
+            })} */}
           </div>
           <div className="age">
             <span className="title">Tuổi: </span>
@@ -174,30 +205,31 @@ function Prescription() {
                 </div>
                 <div className="qty">
                   <Form.Group
-                    className="mb-3"
+                    className="mb-2"
                     controlId="exampleForm.ControlInput1"
                   >
                     <Form.Control
-                      type="text"
+                      type="number"
+                      min="1"
                       placeholder="số lượng"
-                      value={drug.dosage}
+                      value={drug.quantity}
                       onChange={(e) =>
-                        handleOnChangeValue("dosage", drug.id, e.target.value)
+                        handleOnChangeValue("quantity", drug.id, e.target.value)
                       }
                     />
                   </Form.Group>
                 </div>
                 <div className="qty">
                   <Form.Group
-                    className="mb-3"
+                    className="mb-4"
                     controlId="exampleForm.ControlInput1"
                   >
                     <Form.Control
                       type="text"
-                      placeholder="Liều Dùng"
-                      value={drug.quantity}
+                      placeholder="liều dùng"
+                      value={drug.dose}
                       onChange={(e) =>
-                        handleOnChangeValue("quantity", drug.id, e.target.value)
+                        handleOnChangeValue("dose", drug.id, e.target.value)
                       }
                     />
                   </Form.Group>
@@ -236,8 +268,8 @@ function Prescription() {
               rows="4"
               cols="50"
               placeholder="Loại Bệnh"
-              value={desease} 
-              onChange={e => setDesease(e.target.value)}
+              value={desease}
+              onChange={(e) => setDesease(e.target.value)}
             />
           </div>
           <div className="mt-3">
@@ -250,13 +282,13 @@ function Prescription() {
               rows="4"
               cols="50"
               placeholder="Thêm Lưu ý"
-              value={note} 
-              onChange={e => setNote(e.target.value)}
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
             />
             <div className="recall-date">
               <span>Hẹn Ngày Tái Khám</span>
-              <input 
-                type="date" 
+              <input
+                type="date"
                 value={reExamDate}
                 onChange={(e) => setReExamDate(e.target.value)}
               />

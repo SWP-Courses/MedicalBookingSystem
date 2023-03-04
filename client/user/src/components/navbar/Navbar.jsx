@@ -1,29 +1,32 @@
 import {
   faBook,
   faCalendar,
+  faCaretDown,
   faCalendarDays,
   faSearch,
 } from "@fortawesome/free-solid-svg-icons";
-import {ReactComponent as BookIcon} from '~/assets/icons/book_service_icon.svg'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import "./navbar.scss";
-import Options from "../options/Options";
 import { Link, useLocation } from "react-router-dom";
-import logo from "~/assets/images/logo.jpg";
-
 import { useContext, useState, useEffect } from "react";
-import { AuthContext } from "~/context/authContext";
-
 import { Dropdown } from "react-bootstrap";
-import API_URL, { API_IMAGE_URL } from "~/api/Router";
-
 import Tippy from "@tippyjs/react/headless";
 import "tippy.js/dist/tippy.css";
+import { useNavigate } from "react-router-dom";
+
+import {ReactComponent as BookIcon} from '~/assets/icons/book_service_icon.svg'
+import "./navbar.scss";
+import Options from "../options/Options";
+import { AuthContext } from "~/context/authContext";
+import API_URL, { API_IMAGE_URL } from "~/api/Router";
+import logo from "~/assets/images/logo.jpg";
+
 
 export default function Navbar() {
   const { currentUser, logout } = useContext(AuthContext);
 
   const [searchResult, setSearchResult] = useState([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     setTimeout(() => {
@@ -89,7 +92,12 @@ export default function Navbar() {
                     icon={faCalendarDays}
                     style={{ color: "var(--secondary-color)" }}
                   />
-                  <button className="navbar-button">LỊCH KHÁM</button>
+                  <button 
+                    className="navbar-button"
+                    onClick={() => navigate('/doctor')}
+                  >
+                    LỊCH KHÁM
+                  </button>
                 </>
               )}
             </div>
@@ -100,45 +108,36 @@ export default function Navbar() {
                   ĐĂNG NHẬP
                 </Link>
               )}
-
               {currentUser && (
-                <Dropdown>
-                  <Dropdown.Toggle
-                    variant="success"
-                    id="dropdown-basic"
-                    className="avatarContainer"
-                    as="div"
-                  >
-                    {currentUser?.avatar?.bucketName ? (
-                      <img
-                        src={`${API_IMAGE_URL}/${currentUser?.avatar?.filename}`}
-                        alt=""
-                      />
-                    ) : (
-                      <img src={currentUser?.avatar?.filename} alt="" />
-                    )}
-                  </Dropdown.Toggle>
-
-                  <Dropdown.Menu>
-                    <Dropdown.Item as="div">
-                      <Link
-                        className="dropdown-item"
-                        to={"/" + currentUser.role}
-                      >
-                        Thông tin cá nhân
-                      </Link>
-                    </Dropdown.Item>
-                    <Dropdown.Item as="div">
-                      <button
-                        className="dropdown-item text-danger"
-                        onClick={handleLogout}
-                      >
-                        Đăng xuất
-                      </button>
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              )}
+                 <>
+                   <div className="user-border">
+                    <img
+                      src={`${API_IMAGE_URL}/${currentUser?.avatar?.filename}`}
+                     alt=""
+                     className="avatar__Container"
+                     />
+                     <span className="user-name">{currentUser.fullname}</span>
+                     <span className="arrow-icon"><FontAwesomeIcon icon={faCaretDown} /></span>
+                   </div>
+                   <div className="drop-down__custome">
+                     <div className="user-profile">
+                       <Link
+                         className="drop-down__item"
+                         to={"/" + currentUser.role}
+                       >
+                         Thông tin cá nhân
+                       </Link>
+                     </div>
+                     <Dropdown.Divider />
+                     <div className="logout">
+                       <span className="drop-down__item" onClick={handleLogout}>
+                         Đăng xuất
+                       </span>
+                     </div>
+                   </div>
+                 </> 
+              )
+              }
             </div>
           </div>
         </div>

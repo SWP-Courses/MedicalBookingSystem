@@ -7,24 +7,54 @@ import "animate.css";
 import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-
 import "./DoctorSchedule.scss";
 import "react-calendar/dist/Calendar.css";
 import API_URL from "~/api/Router";
 import { formatDate } from "~/utils";
 import { hanlderRequest } from "~/utils";
 import ModalEditServices from "./ModalAddService/ModalEditServices";
+import { useNavigate } from "react-router-dom";
+import _ from "lodash";
 
-function DoctorSchedule() {
+function DoctorSchedule(props) {
+  const { handleOptionClick, setPatient, setListUsers } = props;
+
   const { currentUser } = useContext(AuthContext);
   const [date, setDate] = useState(() => {
     const newDate = new Date();
     newDate.setHours(0, 0, 0);
     return newDate;
   });
-  const [currentschedule, setCurrentSchedule] = useState([]);
   const [modalShow, setModalShow] = useState(false);
   const [userService, setUserService] = useState({});
+  const navigate = useNavigate();
+  const [currentschedule, setCurrentSchedule] = useState([]);
+
+  const handleEditService = (customer) => {
+    setModalShow(true);
+    setUserService(customer);
+  };
+
+  useEffect(() => {
+    if (!_.isEmpty(currentschedule)) {
+
+    }
+
+    setListUsers(() => {
+      let users = [];
+      for (const schedule of currentschedule) {
+        if (schedule.customer) {
+          schedule.customer.map((user) => {
+            users.push({
+              service_id: schedule._id,
+              user_data: user
+            });
+          });
+        }
+      }
+      return users;
+    });
+  }, [currentschedule]);
 
   useEffect(() => {
     fetchSchedule();
@@ -43,16 +73,11 @@ function DoctorSchedule() {
     }
   };
 
-  const handleUpdateService = (customer) => {
-    setModalShow(true);
-    setUserService(customer);
-  }
-
   // console.log("check date value: ", date);
-  // console.log(">>>check current schedule: ", currentschedule);
+  // console.log(">>>check current schedule: ", currentschedule);  
   return (
     <div className="schedule ">
-      <div className="schedule__calender animate__animated  animate__zoomIn">
+      <div className="schedule__calender animate__animated">
         <Calendar
           value={date}
           onChange={(value) => setDate(value)}
@@ -79,28 +104,39 @@ function DoctorSchedule() {
                   return (
                     <tr key={index}>
                       <td>
-                        {item?.customer.map((item, index) => {
+                        {/* {item?.customer.map((item, index) => {
                           return (
                             <p
                               key={index}
                             >{`${item._id} - ${item.fullname}`}</p>
                           );
-                        })}
+                        })} */}
+                        {
+                          item?.customer[0]?.fullname
+                        }
                       </td>
                       <td>{item.slot_time}</td>
                       <td>
                         {item?.services.map((service, index) => {
-                          return (
-                            <p key={index}>{`${service.name}`}</p>
-                          ) 
+                          return <p key={index}>{`${service.name}`}</p>;
                         })}
                       </td>
                       <td>done</td>
-                      <td>kê đơn</td>
+                      <td>
+                        <button
+                          className="btn btn-success"
+                          onClick={() => {
+                            setPatient(item);
+                            handleOptionClick("prescription");
+                          }}
+                        >
+                          kê đơn
+                        </button>
+                      </td>
                       <td>
                         <span
                           className="schedule__calender-icon"
-                          onClick={() => handleUpdateService(item)}
+                          onClick={() => handleEditService(item)}
                         >
                           <FontAwesomeIcon icon={faPenToSquare} />
                         </span>

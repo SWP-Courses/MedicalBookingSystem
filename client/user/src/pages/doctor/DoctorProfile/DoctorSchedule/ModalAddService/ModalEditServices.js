@@ -52,15 +52,11 @@ function ModalEditServices(props) {
         const extraService = cloneUserServices.find((item) => {
           return item.unique_id === id;
         });
-        if (extraService === cloneUserServices[0]) {
-          return;
-        }
+        if (extraService === cloneUserServices[0]) return;
         extraService.service_id = event.target.value;
       }
       // select duplicate service
-      if (validateDuplicateService(event.target.value, isDuplicate)) {
-        return;
-      }
+      if (validateDuplicateService(event.target.value, isDuplicate)) return;
     }
     setUserServices(cloneUserServices);
   };
@@ -143,7 +139,7 @@ function ModalEditServices(props) {
     // setUserServices([])
   };
 
-  console.log("log ser: ", userServices);
+  // console.log("log ser: ", userServices);
   return (
     <Modal
       show={modalShow}
