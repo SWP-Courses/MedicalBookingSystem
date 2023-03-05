@@ -24,15 +24,15 @@ function Prescription(props) {
       dose: "",
     },
   ]);
-  const [user, setUser] = useState([])
+  const [user, setUser] = useState([]);
   const [listUserInDay, setListUserInDay] = useState([]);
 
   const optionListUsers = listUserInDay.map((user) => {
     return {
       value: user._id,
-      label: user.fullname
+      label: user.fullname,
     };
-  })
+  });
 
   const reset = () => {
     setDrugs([
@@ -46,30 +46,30 @@ function Prescription(props) {
     setDesease("");
     setUser([]);
     setReExamDate("");
-  }
+  };
 
   useEffect(() => {
     try {
-      fetchAllMedicine(); 
+      fetchAllMedicine();
     } catch (error) {
       console.log(error);
     }
   }, []);
 
   useEffect(() => {
-    if(!_.isEmpty(patient)) {
+    if (!_.isEmpty(patient)) {
       // setUser(() => {
       //   return patient[0];
       // })
-      setUser(patient)
+      setUser(patient);
     }
-  }, [patient])
+  }, [patient]);
 
   useEffect(() => {
-    if(!_.isEmpty(listUsers)) {
-      setListUserInDay(listUsers)
+    if (!_.isEmpty(listUsers)) {
+      setListUserInDay(listUsers);
     }
-  }, [listUsers])
+  }, [listUsers]);
 
   const fetchAllMedicine = async () => {
     let res = await axios.get(`${API_URL}/medicine`);
@@ -84,13 +84,24 @@ function Prescription(props) {
     }
   };
 
+  const hanledCheckDuplicatedDrugs = (valueSelected) => {
+    const isValid = false;
+    for (const item of drugs) {
+      if (item.medicine_id === valueSelected.value) {
+        toast.error("thuốc này đã được chọn");
+        isValid = true;
+      }
+    }
+    return isValid;
+  };
+
   const handleOnChangeValue = (type, id, valueSelected) => {
     const cloneDrugs = _.clone(drugs);
     const newDrug = cloneDrugs.find((item) => item.id === id);
     switch (type) {
       case "drug":
-        if (newDrug) {
-          newDrug.medicine_id = valueSelected.value; // valueSelected.value --> id of drug
+        if (newDrug && !hanledCheckDuplicatedDrugs(valueSelected)) {
+          newDrug.medicine_id = valueSelected.value;    // valueSelected.value --> id of drug
         }
         setDrugs(cloneDrugs);
         break;
@@ -102,7 +113,7 @@ function Prescription(props) {
         break;
       case "quantity":
         if (newDrug) {
-          newDrug.quantity = +valueSelected;
+          newDrug.quantity = valueSelected;
         }
         setDrugs(cloneDrugs);
         break;
@@ -140,19 +151,19 @@ function Prescription(props) {
       bookedserviceid: user._id,
     };
     const [error, res] = await hanlderRequest(
-      axios.post(
-        API_URL +
-          `/drugbill/${currentUser._id}/${user._id}`, {...prescription}
-      )
+      axios.post(API_URL + `/drugbill/${currentUser._id}/${user._id}`, {
+        ...prescription,
+      })
     );
-    if(res && res.status === 200) {
-      toast.success('Tạo đơn thuốc thành công');
+    if (res && res.status === 200) {
+      toast.success("Tạo đơn thuốc thành công");
       reset();
-    }else {
+    } else {
       console.log(error.message);
     }
   };
 
+  console.log(">> check drug: ", drugs);
   return (
     <div className="wrapper-prescription">
       <div className="user">
@@ -168,7 +179,9 @@ function Prescription(props) {
         <div className="user-detail">
           <div className="name">
             <span className="title">Bệnh Nhân: </span>
-            <span>{user?.customer?.length > 0 ? user?.customer[0]?.fullname : ''}</span >
+            <span>
+              {user?.customer?.length > 0 ? user?.customer[0]?.fullname : ""}
+            </span>
             {/* {user.customer.map((item) => {
               return item.fullname
             })} */}

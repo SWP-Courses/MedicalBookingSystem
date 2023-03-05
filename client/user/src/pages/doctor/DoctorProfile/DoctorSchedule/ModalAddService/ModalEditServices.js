@@ -56,7 +56,7 @@ function ModalEditServices(props) {
         extraService.service_id = event.target.value;
       }
       // select duplicate service
-      if (validateDuplicateService(event.target.value, isDuplicate)) return;
+      if (validateDuplicateService(event.target.value)) return;
     }
     setUserServices(cloneUserServices);
   };
@@ -124,11 +124,9 @@ function ModalEditServices(props) {
   };
 
   const handleDeleteExtraService = (id) => {
-    console.log("on click delete", id);
     const newUserServices = userServices.filter(
       (item) => item.unique_id !== id
     );
-    console.log("check newUser Service: ", newUserServices, "id: ", id);
     if (newUserServices) {
       setUserServices(newUserServices);
     }
