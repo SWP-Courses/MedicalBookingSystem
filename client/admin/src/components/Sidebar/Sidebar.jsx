@@ -41,6 +41,11 @@ const Sidebar = () => {
       name: "Chat",
       icon: "ri-message-2-line"
     },
+    {
+      path: "/payment",
+      name: "Payment",
+      icon: "ri-bank-card-line"
+    }
   ]
 
   return (

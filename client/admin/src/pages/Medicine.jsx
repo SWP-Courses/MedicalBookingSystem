@@ -16,6 +16,20 @@ const Medicine = () => {
   const medicineType = useRef();
   const medicinePrice = useRef();
   
+  const [typeMedicineList, setTypeMedicineList] = useState();
+
+  const getAllTypeMedicine = async () => {
+    try {
+      const result = await axios.get(`${ROUTER}/api/typeMedicine`);
+      if (result.status === 200) {
+        setTypeMedicineList(result.data.typeMedicine);
+      }
+
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
+
 
   const getAllMedicine = async () => {
     try {
@@ -31,6 +45,7 @@ const Medicine = () => {
 
   useEffect(() => {
     getAllMedicine()
+    getAllTypeMedicine()
   }, [])
 
 
@@ -63,21 +78,23 @@ const Medicine = () => {
       price: medicinePrice.current.value,
     }
 
+    console.log(medicineType.current.value)
+
+
     try {
       const result = medicineInfo ? await axios.put(`${ROUTER}/api/medicine/${medicineInfo._id}`, data)
         : await axios.post(`${ROUTER}/api/medicine`, data);
       if (result.status === 200) {
-        const newMedicine = result.data.updateMedicine;
+        const newMedicine = result.data.medicines;
         setMedicineList(list => updateList(newMedicine, list));
         toast.success("Success!", toastOption);
       }
 
       // Reset input
       if (medicineInfo) return;
-
       medicineName.current.value = "";
       medicineDosageForm.current.value = "";
-      medicineType.current.value = "";
+      medicineType.current.value = "Choose...";
       medicinePrice.current.value = "";
 
     } catch (error) {
@@ -118,7 +135,10 @@ const Medicine = () => {
               medicineName={medicineName}
               medicineDosageForm={medicineDosageForm}
               medicineType={medicineType}
-              medicinePrice={medicinePrice} />
+              medicinePrice={medicinePrice} 
+              typeMedicineList={typeMedicineList}
+              // onClickAddTypeMedicine={onClickAddTypeMedicine}
+              />
             : <MedicineTable medicines={medicineList}
               onClickEditMedicine={onClickEditMedicine} />
         }

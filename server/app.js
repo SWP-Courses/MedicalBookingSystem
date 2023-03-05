@@ -6,6 +6,11 @@ var logger = require('morgan');
 const bodyParser = require("body-parser");
 var cors = require('cors');
 
+//swagger
+const swaggerJsDoc = require('swagger-jsdoc')
+const swaggerUI = require('swagger-ui-express')
+
+
 var indexRouter = require('./routes/index');
 
 /* Import endpoint */
@@ -21,6 +26,7 @@ const blogRouter = require('./routes/blogRouter');
 const categoryRouter = require('./routes/categoryRouter');
 const serviceRouter = require('./routes/serviceRouter');
 const imageRouter = require('./routes/imageRouter');
+const typeMedicineRouter = require('./routes/typeMedicineRouter')
 
 var app = express();
 app.use(cors());
@@ -55,6 +61,7 @@ app.use("/api/blog", blogRouter);
 app.use("/api/category", categoryRouter);
 app.use("/api/service", serviceRouter);
 app.use('/image', imageRouter);
+app.use('/api/typeMedicine', typeMedicineRouter)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
