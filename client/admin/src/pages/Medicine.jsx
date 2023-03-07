@@ -18,17 +18,17 @@ const Medicine = () => {
   
   const [typeMedicineList, setTypeMedicineList] = useState();
 
-  const getAllTypeMedicine = async () => {
-    try {
-      const result = await axios.get(`${ROUTER}/api/typeMedicine`);
-      if (result.status === 200) {
-        setTypeMedicineList(result.data.typeMedicine);
-      }
+  // const getAllTypeMedicine = async () => {
+  //   try {
+  //     const result = await axios.get(`${ROUTER}/api/typeMedicine`);
+  //     if (result.status === 200) {
+  //       setTypeMedicineList(result.data.typeMedicine);
+  //     }
 
-    } catch (error) {
-      console.log(error.message);
-    }
-  }
+  //   } catch (error) {
+  //     console.log(error.message);
+  //   }
+  // }
 
 
   const getAllMedicine = async () => {
@@ -45,7 +45,7 @@ const Medicine = () => {
 
   useEffect(() => {
     getAllMedicine()
-    getAllTypeMedicine()
+    // getAllTypeMedicine()
   }, [])
 
 

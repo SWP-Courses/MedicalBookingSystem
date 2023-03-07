@@ -1,48 +1,96 @@
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBook,
+  faCalendar,
+  faCalendarDays,
+  faSearch,
+} from "@fortawesome/free-solid-svg-icons";
+import {ReactComponent as BookIcon} from '~/assets/icons/book_service_icon.svg'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./navbar.scss";
-import blankAvatar from "../../assets/images/blank_avatar.jpg";
 import Options from "../options/Options";
 import { Link, useLocation } from "react-router-dom";
-import { useContext } from "react";
-import { AuthContext } from "~/context/authContext";
-import { Dropdown } from "react-bootstrap";
+import logo from "~/assets/images/logo.jpg";
 
-// const user = "doctor";
-const user = null;
-// const user = "customer";
+import { useContext, useState, useEffect } from "react";
+import { AuthContext } from "~/context/authContext";
+
+import { Dropdown } from "react-bootstrap";
+import API_URL, { API_IMAGE_URL } from "~/api/Router";
+
+import Tippy from "@tippyjs/react/headless";
+import "tippy.js/dist/tippy.css";
+
 export default function Navbar() {
   const { currentUser, logout } = useContext(AuthContext);
+
+  const [searchResult, setSearchResult] = useState([]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setSearchResult([1, 2, 3, 4, 5]);
+    }, 5000);
+  }, []);
+
+  //Functions
+  const handleLogout = () => {
+    logout();
+  };
 
   return (
     <div className="navbarContainer">
       <div className="navbarTopWrapper">
         <div className="navbarTop container-fluid row">
           <div className="navbar-left col-lg-3 col-sm-3">
-            <Link to="/" className="logo">
-              Health Care System
+            <Link to="/">
+              <img src={logo} alt="logo" className="logo" />
             </Link>
           </div>
           <div className="navbar-center col-lg-4 col-sm-9">
-            <label htmlFor="meme" className="searchBar">
-              <FontAwesomeIcon icon={faSearch} className="searchIcon" />
-              <input
-                type="text"
-                className="searchInput"
-                placeholder="Tìm kiếm bài viết"
-                id="meme"
-              />
-            </label>
+            <Tippy
+              visible={false && searchResult.length > 0}
+              interactive={true}
+              render={(attrs) => (
+                <div className="searchResult">
+                  <div className="box" tabIndex="-1" {...attrs}>
+                    <h6 className="titleSearch">
+                      <FontAwesomeIcon icon={faBook} />
+                      <span className="ml-3">Bài Viết</span>
+                    </h6>
+                  </div>
+                </div>
+              )}
+            >
+              <label htmlFor="meme" className="searchBar">
+                <Tippy content="Tìm Kiếm">
+                  <FontAwesomeIcon icon={faSearch} className="searchIcon" />
+                </Tippy>
+                <input
+                  type="text"
+                  className="searchInput"
+                  placeholder="Tìm kiếm bài viết"
+                  id="meme"
+                />
+              </label>
+            </Tippy>
           </div>
           <div className="navbar-right col-lg-5">
             <div className="navItemContainer">
               {(currentUser?.role === "customer" || !currentUser) && (
-                <Link to="/booking" className="navbar-button">
-                  ĐĂNG KÝ KHÁM
-                </Link>
+                <>
+                 <BookIcon/>
+                  <Link to="/booking" className="navbar-button">
+                    ĐĂNG KÝ KHÁM
+                  </Link>
+                </>
               )}
               {currentUser?.role === "doctor" && (
-                <button className="navbar-button">LỊCH KHÁM</button>
+                <>
+                  <FontAwesomeIcon
+                    icon={faCalendarDays}
+                    style={{ color: "var(--secondary-color)" }}
+                  />
+                  <button className="navbar-button">LỊCH KHÁM</button>
+                </>
               )}
             </div>
             <div className="devideLine"></div>
@@ -61,11 +109,18 @@ export default function Navbar() {
                     className="avatarContainer"
                     as="div"
                   >
-                    <img src={blankAvatar} alt="" />
+                    {currentUser?.avatar?.bucketName ? (
+                      <img
+                        src={`${API_IMAGE_URL}/${currentUser?.avatar?.filename}`}
+                        alt=""
+                      />
+                    ) : (
+                      <img src={currentUser?.avatar?.filename} alt="" />
+                    )}
                   </Dropdown.Toggle>
 
                   <Dropdown.Menu>
-                    <Dropdown.Item href="#/action-1">
+                    <Dropdown.Item as="div">
                       <Link
                         className="dropdown-item"
                         to={"/" + currentUser.role}
@@ -73,8 +128,11 @@ export default function Navbar() {
                         Thông tin cá nhân
                       </Link>
                     </Dropdown.Item>
-                    <Dropdown.Item href="#/action-2">
-                      <button className="dropdown-item text-danger" href="#">
+                    <Dropdown.Item as="div">
+                      <button
+                        className="dropdown-item text-danger"
+                        onClick={handleLogout}
+                      >
                         Đăng xuất
                       </button>
                     </Dropdown.Item>

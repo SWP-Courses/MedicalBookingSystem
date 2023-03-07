@@ -3,6 +3,13 @@ const mongoose = require("mongoose");
 const UserSchema = new mongoose.Schema(
   {
     avatar: {
+      type: Object,
+      default: {
+        bucketName:"photos",
+        filename: "defaultAvatar.jpg",
+      }
+    },
+    address: {
       type: String,
     },
     fullname: {
@@ -11,11 +18,9 @@ const UserSchema = new mongoose.Schema(
     },
     gender: {
       type: String,
-      required: true,
     },
     dateOfBirth: {
       type: String,
-      required: true,
     },
     address: {
       type: String,
@@ -28,13 +33,12 @@ const UserSchema = new mongoose.Schema(
     },
     phone: {
       type: String,
-      required: true,
-      unique: true,
+      sparse:true
     },
     password: {
       type: String,
       min: 6,
-      required: true,
+      // required: true, //login by google not need
     },
     nationalId: {
       type: String,
@@ -44,16 +48,16 @@ const UserSchema = new mongoose.Schema(
       required: true,
       default: "R3",
     },
-    specialist_id: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Specialist",
-    },
     degree: {
       type: String,
     },
     profile: {
       type: String,
     },
+    status:{
+      type: Boolean,
+      default:true
+    }
   },
   {
     versionKey: false,

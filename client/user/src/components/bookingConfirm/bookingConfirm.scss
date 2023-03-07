@@ -5,17 +5,19 @@
     >.infoTitle {
         font-size: 18px;
         font-weight: bold;
-        color:#337AB7;
-        margin-top: 10px;
+        color: var(--secondary-color);
+        margin-top: 15px;
+        letter-spacing: 2px;
     }
 
     >.infoItem {
         display: flex;
-        margin-bottom: 5px;
-        font-size: 14px;
+        margin-bottom: 10px;
+        font-size: 16px;
 
         >.bookingKey {
             flex: 1;
+            font-weight: 500;
         }
 
         >.bookingValue {

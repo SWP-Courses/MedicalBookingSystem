@@ -1,12 +1,26 @@
+import axios from 'axios';
 import React, { useState } from 'react'
 import { HiOutlineDotsHorizontal } from 'react-icons/hi'
+import { toast } from 'react-toastify';
+import ROUTER from '../../api/Router';
+import toastOption from '../../config/toast';
 import CofirmDeletePopup from '../BlogTable/CofirmDeletePopup';
 
 function DoctorRow({ onDeleteBlogById, doctor, stt, onClickEditDoctor }) {
     const [deletePopup, setDeletePopup] = useState(false);
 
-    const onConfilmDelete = () => {
-        onDeleteBlogById(doctor._id)
+    const onConfilmDelete = async () => {
+        if (!doctor._id) return;
+        try {
+            const result = await axios.delete(`${ROUTER}/api/users/doctors/${doctor._id}`);
+            if (result.status === 200) {
+                toast.success("Susscess!", toastOption);
+                onDeleteBlogById(doctor._id);
+            }
+        } catch (error) {
+            console.log(error.message);
+            toast.error("Error!", toastOption);
+        }
         setDeletePopup(false)
     }
 
@@ -19,7 +33,6 @@ function DoctorRow({ onDeleteBlogById, doctor, stt, onClickEditDoctor }) {
             <tr className='position-relative'>
                 <th scope="row">{stt}</th>
                 <td className='mw-50 overflow-hidden'> {doctor.fullname} </td>
-                <td className='text-center'> {doctor.special} </td>
                 <td className='text-center'> {doctor.email} </td>
                 <td className='text-center blog-action'><HiOutlineDotsHorizontal className='fs-4' /></td>
                 <div className='popup-action'>

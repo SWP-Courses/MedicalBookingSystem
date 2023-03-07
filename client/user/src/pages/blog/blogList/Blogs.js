@@ -1,18 +1,67 @@
 import "./Blog.scss";
-
-import { useLocation, useNavigate } from "react-router-dom";
-import doctor from "~/assets/images/doctor.jpg";
+import { useLocation, useNavigate, Link } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import axios from "axios";
+import DOMPurify from "dompurify";
+import API_URL from "~/api/Router";
+import ReactPaginate from "react-paginate";
+import slider from "~/assets/images/slider.jpg";
+import Pagination from "./Pagination";
+import ReactHtmlParser from 'react-html-parser';
+import { hanlderRequest } from "~/utils";
 
 function Blogs() {
+  const listBlogRef = useRef();
+  const [blogCategory, setBlogCategory] = useState([]);
+  const [blogs, setBlogs] = useState([]);
+  const [blogsFiltered, setBlogsFiltered] = useState([]);
+  const [categoryName, setCategoryName] = useState('Tổng Hợp Các Bài Viết');
+
+  console.log('check blog filtered : ', blogsFiltered);
+
   const location = useLocation();
-  console.log(location);
+
+  console.log(blogs);
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetchListCategoryBlogs();
+    fetchBlogs();
+  }, []);
+
+  const fetchListCategoryBlogs = async () => {
+    const [error, res] = await hanlderRequest(axios.get(API_URL + "/categories"));
+    if (res && res.data && res.data.category && res.data.category.length > 0) {
+      setBlogCategory(res.data.category);
+    } else {
+      console.log(error.messsage);
+    }
+  };
+
+  const fetchBlogs = async () => {
+    const [error, res] = await hanlderRequest(axios.get(API_URL + "/blogs"));
+    if (res && res.data && res.data.blogs && res.data.blogs.length > 0) {
+      listBlogRef.current = res.data.blogs;
+      setBlogs(res.data.blogs);
+    }else {
+      console.log(error);
+    }
+  };
+
+  const handleFilterBlogByCategoryId = (category) => {
+    let newBlogList = listBlogRef?.current?.filter(
+      (blog) => blog.category_id === category._id
+    );
+    setBlogs(newBlogList);
+    setCategoryName(category.name);
+  };
 
   return (
     <div className="Blog-wrapper">
       <div className="blog-content">
         <div className="slider">
-          <div className="slider-body">Slider</div>
+          <img src={slider} alt="slider" className="slider-body" />
         </div>
         <div className="blog-body">
           <div className="major-list">
@@ -21,129 +70,28 @@ function Blogs() {
                 <h5>Nội Dung</h5>
                 <div className="line"></div>
               </li>
-              <li className="item">
-                <span onClick={() => {}}>Sức khoẻ tổng quát</span>
-                <div className="line"></div>
-              </li>
-              <li className="item">
-                <span onClick={() => {}}>Dinh Dưỡng</span>
-                <div className="line"></div>
-              </li>
-              <li className="item">
-                <span onClick={() => {}}>Sống khỏe</span>
-                <div className="line"></div>
-              </li>
-              <li className="item">
-                <span onClick={() => {}}>Làm đẹp</span>
-                <div className="line"></div>
-              </li>
-              <li className="item">
-                <span onClick={() => {}}>Thông tin dược</span>
-                <div className="line"></div>
-              </li>
-              <li className="item">
-                <span onClick={() => {}}>Nhi</span>
-                <div className="line"></div>
-              </li>
+              {blogCategory.map((category, index) => {
+                return (
+                  <li className="item" key={index}>
+                    <span
+                      onClick={() => handleFilterBlogByCategoryId(category)}
+                    >
+                      {category.name}
+                    </span>
+                    <div className="line"></div>
+                  </li>
+                );
+              })}
             </ul>
           </div>
           <div className="blog-list">
-            <h1 className="type">Sức Khỏe Tổng Quát</h1>
+            <h1 className="type">{categoryName}</h1>
             <hr />
-            <div className="blog-item">
-              <img
-                className="blog-image"
-                onClick={() => navigate("/blogs/id")}
-                src={doctor}
-                alt="blog-image"
-              />
-              <div className="blog-item-body">
-                <h2 className="bolg-item-title line-clamp">
-                  Những lưu ý quan trọng trước khi khám sức khỏe tổng quát Trong
-                  thời điểm dịch bệnh Covid-19 vẫn đang diễn ra phức tạp, nhiều
-                  cha mẹ băn khoăn không biết có nên đưa con đến bệnh viện để
-                  tiêm phòng không. Loại vắc xin nào có thể được trì hoãn lịch
-                  tiêm, loại vắc xin nào không thể?
-                </h2>
-                <p className="line-clamp line-4">
-                  Trong thời điểm dịch bệnh Covid-19 vẫn đang diễn ra phức tạp,
-                  nhiều cha mẹ băn khoăn không biết có nên đưa con đến bệnh viện
-                  để tiêm phòng không. Loại vắc xin nào có thể được trì hoãn
-                  lịch tiêm, loại vắc xin nào không thể? Những lưu ý quan trọng
-                  trước khi khám sức khỏe tổng quát Trong thời điểm dịch bệnh
-                  Covid-19 vẫn đang diễn ra phức tạp, nhiều cha mẹ băn khoăn
-                  không biết có nên đưa con đến bệnh viện để tiêm phòng không.
-                  Loại vắc xin nào có thể được trì hoãn lịch tiêm, loại vắc xin
-                  nào không thể? Những lưu ý quan trọng trước khi khám sức khỏe
-                  tổng quát Trong thời điểm dịch bệnh Covid-19 vẫn đang diễn ra
-                  phức tạp, nhiều cha mẹ băn khoăn không biết có nên đưa con đến
-                  bệnh viện để tiêm phòng không. Loại vắc xin nào có thể được
-                  trì hoãn lịch tiêm, loại vắc xin nào không thể?
-                </p>
-              </div>
-            </div>
-
-            <div className="blog-item">
-              <img
-                className="blog-image"
-                onClick={() => navigate("/blogs-detail")}
-                src={doctor}
-                alt="blog-image"
-              />
-              <div className="blog-item-body">
-                <h2 className="bolg-item-title">
-                  Những lưu ý quan trọng trước khi khám sức khỏe tổng quát
-                </h2>
-                <p>
-                  Trong thời điểm dịch bệnh Covid-19 vẫn đang diễn ra phức tạp,
-                  nhiều cha mẹ băn khoăn không biết có nên đưa con đến bệnh viện
-                  để tiêm phòng không. Loại vắc xin nào có thể được trì hoãn
-                  lịch tiêm, loại vắc xin nào không thể?
-                </p>
-              </div>
-            </div>
-            <div className="blog-item">
-              <img
-                className="blog-image"
-                onClick={() => navigate("/blogs-detail")}
-                src={doctor}
-                alt="blog-image"
-              />
-              <div className="blog-item-body">
-                <h2 className="bolg-item-title">
-                  Những lưu ý quan trọng trước khi khám sức khỏe tổng quát
-                </h2>
-                <p>
-                  Trong thời điểm dịch bệnh Covid-19 vẫn đang diễn ra phức tạp,
-                  nhiều cha mẹ băn khoăn không biết có nên đưa con đến bệnh viện
-                  để tiêm phòng không. Loại vắc xin nào có thể được trì hoãn
-                  lịch tiêm, loại vắc xin nào không thể?
-                </p>
-              </div>
-            </div>
-            <div className="blog-item">
-              <img
-                className="blog-image"
-                onClick={() => navigate("/blogs-detail")}
-                src={doctor}
-                alt="blog-image"
-              />
-              <div className="blog-item-body">
-                <h2 className="bolg-item-title">
-                  Những lưu ý quan trọng trước khi khám sức khỏe tổng quát
-                </h2>
-                <p>
-                  Trong thời điểm dịch bệnh Covid-19 vẫn đang diễn ra phức tạp,
-                  nhiều cha mẹ băn khoăn không biết có nên đưa con đến bệnh viện
-                  để tiêm phòng không. Loại vắc xin nào có thể được trì hoãn
-                  lịch tiêm, loại vắc xin nào không thể?
-                </p>
-              </div>
-            </div>
+            <Pagination data={blogs} />
           </div>
         </div>
         <div className="paginate">
-          <h1>Paginate</h1>
+          <span></span>
         </div>
       </div>
     </div>

@@ -1,27 +1,50 @@
 import "./bookingFill.scss";
-import { useState } from "react";
-import { services } from "../../fakeData";
+import { useContext, useEffect, useState } from "react";
 import { Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faBriefcase,
-  faCalendar,
-  faEnvelope,
-  faIdCard,
-  faPhone,
-  faUser,
-} from "@fortawesome/free-solid-svg-icons";
+import { faBriefcase } from "@fortawesome/free-solid-svg-icons";
 import { Calendar } from "react-calendar";
 import { format } from "date-fns";
-import { doctorList } from "../../fakeData";
+import { AuthContext } from "~/context/authContext";
+import { formatSlot } from "~/utils";
 
-export default function BookingFill({ booking, setBooking }) {
-  console.log(booking);
+const getServiceName = () => {};
+
+export default function BookingFill({
+  booking,
+  setBooking,
+  services,
+  freeDoctors,
+  freeSlots,
+}) {
+  const { currentUser } = useContext(AuthContext);
   const [step, setStep] = useState(1);
+
+  // useEffect(() => {
+  //   currentUser &&
+  //     setBooking((prev) => ({
+  //       ...prev,
+  //       fullname: currentUser.fullname,
+  //       gender: currentUser.gender,
+  //       dateOfBirth: currentUser.dateOfBirth,
+  //       phone: currentUser.phone,
+  //       email: currentUser.email,
+  //     }));
+  // }, [currentUser, setBooking]);
+  // console.log(currentUser);
 
   const handleTextInput = (e, field) =>
     setBooking((prev) => ({ ...prev, [field]: e.target.value }));
 
+  const handleChooseService = (service) => {
+    const { name, _id } = service;
+    setBooking((prev) => ({ ...prev, service: { name, _id } }));
+  };
+
+  const handleTimeClick = (time) => {
+    setBooking((prev) => ({ ...prev, slot: time }));
+  };
+  console.log(booking);
   return (
     <div className="bookingContent">
       <div className="hospitalPart">
@@ -29,141 +52,81 @@ export default function BookingFill({ booking, setBooking }) {
           <Dropdown.Toggle id="dropdown-basic" className="dropdownText">
             <div className="text">
               <FontAwesomeIcon icon={faBriefcase} />
-              {!booking.specialist
+              {!booking.service
                 ? "Chọn chuyên khoa khám"
-                : booking.specialist}
+                : booking.service.name}
             </div>
           </Dropdown.Toggle>
 
           <Dropdown.Menu className="dropdownOptions">
-            {services.map((service) => (
-              <Dropdown.Item
-                href="#/action-1"
-                onClick={() =>
-                  setBooking((prev) => ({ ...prev, specialist: service }))
-                }
-              >
-                {service}
+            {services?.map((service) => (
+              <Dropdown.Item onClick={() => handleChooseService(service)}>
+                {service.name}
               </Dropdown.Item>
             ))}
           </Dropdown.Menu>
         </Dropdown>
-        <div className="timeAvailable">
-          <span className="title">Thời gian khám</span>
-          <div className="date">
-            <span>Ngày khám: {format(booking.date, "yyyy-MM-dd")}</span>
-            <Calendar
-              onChange={(item) =>
-                setBooking((prev) => ({ ...prev, date: item }))
-              }
-              value={booking.date}
-            />
-          </div>
-          <div className="time">
-            <span>Giờ khám</span>
-            <div className="groupTime">
-              <span className="timeItem active">08:00</span>
-              <span className="timeItem">09:00</span>
-              <span className="timeItem">10:00</span>
-              <span className="timeItem">11:00</span>
-            </div>
-          </div>
-        </div>
+        <span className="title">Thời gian khám</span>
+        <div className="date">
+          <span className="d-block mb-2 fs-5">Ngày khám: {format(booking.date, "dd/MM/yyyy")}</span>
+          <Calendar
+            onChange={(item) => setBooking((prev) => ({ ...prev, date: item }))}
+            value={booking.date}
+            tileDisabled={({ date }) => {
+              let newDate = new Date();
+              // enable today
+              if (
+                date.getDate() === newDate.getDate() &&
+                date.getMonth() === newDate.getMonth() &&
+                date.getFullYear() === newDate.getFullYear()
+              )
+                return false;
 
+              // if sunday, last days, over next 7 days
+              return (
+                date.getDay() === 0 ||
+                newDate > date ||
+                date > newDate.setDate(newDate.getDate() + 7)
+              );
+            }}
+          />
+        </div>
         <Dropdown className="dropdownContain">
           <Dropdown.Toggle id="dropdown-basic" className="dropdownText">
             <div className="text">
               <FontAwesomeIcon icon={faBriefcase} />
-              {!booking.doctor ? "Chọn bác sĩ muốn khám" : booking.doctor}
+              {!booking.doctor
+                ? "Chọn bác sĩ muốn khám"
+                : booking.doctor.fullname}
             </div>
           </Dropdown.Toggle>
 
           <Dropdown.Menu className="dropdownOptions">
-            {doctorList.slice(0, 3).map((doctor) => (
+            {freeDoctors?.map((doctor) => (
               <Dropdown.Item
-                href="#/action-1"
                 onClick={() =>
-                  setBooking((prev) => ({ ...prev, doctor: doctor.name }))
+                  setBooking((prev) => ({ ...prev, doctor: doctor }))
                 }
               >
-                {doctor.name}
+                {doctor.fullname}
               </Dropdown.Item>
             ))}
           </Dropdown.Menu>
         </Dropdown>
-      </div>
-
-      <div className="divideLine"></div>
-
-      <div className="userFillPart">
-        <h2>Thông tin cá nhân</h2>
-        <div className="twoInfoInput">
-          <div className="fillInput">
-            <FontAwesomeIcon icon={faUser} />
-            <input
-              type="text"
-              placeholder="Họ và tên (*)"
-              required
-              value={booking.fullname}
-              onChange={(e) => handleTextInput(e, "fullname")}
-            />
+        <div className="time">
+          <span>Giờ khám</span>
+          <div className="groupTime">
+            {freeSlots?.map((slot) => (
+              <span
+                className={`timeItem ${
+                  booking?.slot === slot?.time && "active"
+                }`}
+                onClick={() => handleTimeClick(slot.time)}
+              >
+                {formatSlot(slot.time)}
+              </span>
+            ))}
           </div>
-          <input
-            type="radio"
-            name="gender"
-            id="Nam"
-            onClick={(e) =>
-              setBooking((prev) => ({ ...prev, gender: e.target.id }))
-            }
-            checked={booking.gender === "Nam" && "checked"}
-          />
-          Nam
-          <input
-            type="radio"
-            name="gender"
-            id="Nữ"
-            checked={booking.gender === "Nữ" && "checked"}
-            onClick={(e) =>
-              setBooking((prev) => ({ ...prev, gender: e.target.id }))
-            }
-          />
-          Nữ
-        </div>
-        <div className="fillInput">
-          <FontAwesomeIcon icon={faCalendar} />
-          <input
-            type="text"
-            placeholder="Ngày sinh (*)"
-            required
-            onChange={(e) => handleTextInput(e, "birth")}
-          />
-        </div>
-        <div className="fillInput">
-          <FontAwesomeIcon icon={faPhone} />
-          <input
-            type="text"
-            placeholder="Số điện thoại liên lạc (*)"
-            required
-            onChange={(e) => handleTextInput(e, "phone")}
-          />
-        </div>
-        <div className="fillInput">
-          <FontAwesomeIcon icon={faEnvelope} />
-          <input
-            type="text"
-            placeholder="Email"
-            required
-            onChange={(e) => handleTextInput(e, "email")}
-          />
-        </div>
-        <div className="fillInput">
-          <FontAwesomeIcon icon={faIdCard} />
-          <input
-            type="text"
-            placeholder="CMND / CCCD"
-            required
-            onChange={(e) => handleTextInput(e, "nationalId")}
-          />
         </div>
       </div>
     </div>

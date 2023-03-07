@@ -1,218 +1,137 @@
 import { useContext, useEffect, useRef } from "react";
-import Form from "react-bootstrap/Form";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "~/context/authContext";
-import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
-
+import { useCookies } from "react-cookie";
 import { Link } from "react-router-dom";
-import { toast } from 'react-toastify';
-import 'animate.css';
+import { toast } from "react-toastify";
+import "animate.css";
 import { validateEmail } from "~/utils";
-import {  checkStringContainInPhoneNumber } from '~/utils'
-
+import { checkStringContainInPhoneNumber } from "~/utils";
 import "./Login.scss";
+import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import googleIcon from "../../../assets/images/google-icon.png";
 
 function Login() {
-  const { login, currentUser } = useContext(AuthContext);
+  const { login } = useContext(AuthContext);
   const navigate = useNavigate();
-  const location = useLocation();
-  // console.log(location);
-
-  const errorAlert = useRef()
-  const errorPassword = useRef()
-
+  const errorAlert = useRef();
+  const errorPassword = useRef();
   const inputRef = useRef();
-
-  console.log('error alert', errorAlert);
+  const [cookies, setCookie, removeCookie] = useCookies(["error"]);
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [isloading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    currentUser && navigate("/");
-  }, [currentUser, navigate]);
+    console.log(cookies?.error);
+    cookies?.error && toast.error(cookies?.error);
+    removeCookie("error");
+  }, [cookies?.error, removeCookie]);
 
-  const [password, setPassword] = useState("");
-  const [user, setUser] = useState('');
-  const [userType, setUserType] = useState("r3");
-
-
-  const hanldeLogin = (type) => {
-    // case phone or email is empty
-    if (!user) {
-      // toast.error("choose phone or email to login")
+  const hanldeValidateLogin = (e) => {
+    e.preventDefault();
+    //email is empty
+    if (!email) {
+      errorAlert.current.className = "login__errorAlert";
+      errorAlert.current.innerText = "Vui lòng nhập email";
       inputRef.current.focus();
       return;
     }
 
-    // case password empty
+    if (!validateEmail(email)) {
+      errorAlert.current.innerText = "Email sai định dạng";
+      return;
+    }
+
     if (!password) {
-      console.log("password can not be empty");
+      errorPassword.current.className = "login__errorAlert";
+      errorPassword.current.innerText = "Vui lòng nhập mật khẩu";
       return;
     }
 
     // validate email
-    // if(typeof(+user) === 'number') {
-    //   console.log(+user);
-    //   alert('true');
-    // }
-    const isEmail = validateEmail(user);
+    let loginUser = {
+      email: email,
+      password: password,
+    };
+    login(loginUser);
+  };
 
-    // validate phone
-    let isPhoneNumber = true;
-    let phone = user;
-    if (!isEmail) {
-      const isContainsString =  checkStringContainInPhoneNumber(phone);
-      // case contain string 
-      if(isContainsString) {
-        toast.error('phone number can not contain character!!');
-        isPhoneNumber = false;
-        return;
-      }
-
-      // case less than 10 number
-      if (phone.length != 10) {
-        toast.error('phone must contain 10 number')
-        isPhoneNumber = false;
-        return;
-      }
-
-      // case not start with number 0
-      if(+phone.charAt(0) !== 0) {
-        toast.error('phone number must start with 0');
-        isPhoneNumber = false;
-        return;
-      }
-    }else {
-      toast.error('email incorrect')
+  const hanldeOnInput = (e) => {
+    if (e.target.value) {
+      errorAlert.current.innerText = "";
     }
-
-    if (type === "default" && isEmail) {
-      let loginUser = {
-        role_code: userType,
-        email: user,
-        password: password,
-      };
-      console.log(loginUser);
-      // login(loginUser)
-    } 
-
-    if (type === "default" && isPhoneNumber) {
-      let loginUser = {
-        role_code: userType,
-        phone: user,
-        password: password,
-      };
-      login(loginUser);
-      // console.log(res);
-      // console.log(loginUser);
-    }
-
-    if (type === "google") {
-      alert("login google");
+    if (password) {
+      errorPassword.current.innerText = "";
     }
   };
 
-  const hanldeEmptyInput = (e) => {
-    if(!e.target.value) {
-      e.target.className = 'input-box mt-3 error';
-      errorAlert.current.innerText = 'Vui lòng nhập số điện thoại hoặc email';
-      if(!password) {
-        errorPassword.current.innerText = 'Vui lòng nhập mật khẩu';
-      }
-    }else {
-      e.target.className = 'input-box mt-3';
-
-    }
-  }
-  
-  const hanldeOnBlurInput = (e) => {
-    if(e.target.value) {
-      e.target.className = 'input-box mt-3';
-      errorAlert.current.innerText = '';
-      if(password) {
-        errorPassword.current.innerText = '';
-      }
-    }
-  }
+  // login by google
+  const handleLoginByGoogle = () => {
+    window.open("http://localhost:8800/api/auth/google", "_self");
+  };
 
   return (
-    <div className="Login-Wrapper animate__animated animate__fadeInDown">
-      <div className="Login-header">
-        <div className="logo">
-          <img
-            src=""
-            alt="logo"
-            onClick={() => navigate("/")}
-            className="logo"
-          />
-        </div>
-      </div>
-      <div className="login-main">
-        {/* <div className="login-title">Đăng Nhập</div> */}
+    <div className="Login-Wrapper ">
+      <div className="Login animate__animated animate__fadeInDown">
         <div className="login-body">
-          <select
-            className="select"
-            onChange={(e) => setUserType(e.target.value)}
-          >
-            <option value="r3">Khách Hàng</option>
-            <option value="r2">Bác Sỹ</option>
-          </select>
-          <div className="form-body">
-            <div className="form-content">
+          <div className="login__form-body">
+            <form
+              className="login__form-content"
+              onSubmit={hanldeValidateLogin}
+            >
               <h2>Đăng Nhập</h2>
-              <input
-                type={user}
-                placeholder="số điện thoại hoặc email"
-                className="input-box"
-                value={user}
-                onChange={(e) => setUser(e.target.value)}
-                onBlur={(e) => {hanldeEmptyInput(e)}}
-                onInput={(e) => {hanldeOnBlurInput(e)}}
-                ref={inputRef}
-              />
-              <span className="errorAlert" ref={errorAlert}></span>
-              {/* {user ?  undefined: 'Vui lòng nhập số điện thoại hoặc email'} */}
-              <input
-                type="password"
-                placeholder="mật khẩu"
-                className="input-box mt-3"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                onBlur={(e) => {hanldeEmptyInput(e)}}
-                onInput={(e) => {hanldeOnBlurInput(e)}}
-              />
-              <span className="errorAlert" ref={errorPassword}></span>
-              {/* {password ?  undefined: 'Vui lòng nhập mật khẩu'} */}
-              <p
-                className="forgot-password"
-                onClick={() => navigate("/forgot-password")}
-              >
-                Quên mật khẩu
-              </p>
-              <button
-                className="btn-sign-in"
-                onClick={() => hanldeLogin("default")}
-              >
+              <div className="login_form-group">
+                <input
+                  type="email"
+                  placeholder="Email"
+                  className="login__input-box mt-4"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  onInput={(e) => {
+                    hanldeOnInput(e);
+                  }}
+                  ref={inputRef}
+                />
+                <span ref={errorAlert}>{/* error alert */}</span>
+                <span ref={errorAlert}>{/* error alert */}</span>
+              </div>
+              <div className="login__form-group">
+                <input
+                  type="password"
+                  placeholder="Mật khẩu"
+                  className="login__input-box mt-4"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  onInput={(e) => {
+                    hanldeOnInput(e);
+                  }}
+                />
+                <span ref={errorPassword}>{/* error alert */}</span>
+              </div>
+              <Link to="/forgotPassword" className="forgot-password mb-2 d-block">Quên mật khẩu</Link>
+              <Link to="/"  className="forgot-password my-2 d-block">Trang chủ</Link>
+              <button className="btn-sign-in" disabled={isloading}>
+                {isloading && (
+                  <FontAwesomeIcon icon={faSpinner} className="loader-icon" />
+                )}
                 Đăng Nhập
               </button>
-              <div className="separate mt-3">
+              <div className="separate mt-4 mb-4">
                 <div className="line"></div>
                 <span>Hoặc</span>
                 <div className="line"></div>
               </div>
-              <div>
-                <div
-                  className="login-google mt-3"
-                  onClick={() => hanldeLogin("google")}
-                >
-                  <FontAwesomeIcon icon={faGoogle} className="google-icon" />
-                </div>
+              <div className="login__google mt-3" onClick={handleLoginByGoogle}>
+                <img className="google-icon" src={googleIcon} />
               </div>
               <div className="sign-up mt-3">
                 <span>Bạn Chưa Có Tài Khoản ?</span>
                 <Link to="/register">Đăng Kí</Link>
               </div>
-            </div>
+            </form>
           </div>
         </div>
       </div>

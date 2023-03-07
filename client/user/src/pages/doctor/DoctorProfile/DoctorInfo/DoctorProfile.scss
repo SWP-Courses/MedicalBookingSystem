@@ -28,7 +28,7 @@
                 border: 1px solid #ccc;
                 
                 :focus {
-                    outline: 1px solid #337AB7;
+                    outline: 1px solid var(--secondary-color);
                 }
             }
 
@@ -70,6 +70,13 @@
                 >strong {
                     margin-right: 80px;
                     opacity: 0.8;
+                }
+
+                .checkbox-group {
+                    margin-right: 10px;
+                    >input {
+                        margin-right: 5px;
+                    }
                 }
             }
 
@@ -137,7 +144,7 @@
     }
 
     >button {
-        border: 1px solid #337AB7;
+        border: 1px solid var(--secondary-color);
         padding: 10px 30px;
         display: block;
         border-radius: 5px;
@@ -145,7 +152,7 @@
         margin-top: 20px;
 
         &:hover {
-            background-color: #337AB7;
+            background-color: var(--secondary-color);
             color: #fff;
             transition: right linear 0.4s;
         }

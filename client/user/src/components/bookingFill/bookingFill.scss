@@ -1,11 +1,5 @@
 .bookingContent {
-    padding: 14px 32px;
-    display: flex;
-    gap: 20px;
-
-    >.divideLine {
-      border-right: 0.5px solid lightgray;
-    }
+    padding: 14px 100px;
 
     .hospitalPart {
       display: flex;
@@ -16,7 +10,7 @@
         width: 100%;
         .dropdownText {
           width: 100%;
-          background-color: #fff;
+          background-color: var(--white-color);
           color: #333;
           border: 1px solid lightgray;
           display: flex;
@@ -35,10 +29,7 @@
         }
       }
 
-      > .timeAvailable {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
+
         > .title {
           font-weight: 500;
           font-size: 18px;
@@ -51,22 +42,23 @@
           .groupTime {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 14px;
             > .timeItem {
               padding: 5px 15px;
               background-color: rgb(243, 243, 243);
               border-radius: 5px;
+              border: 2px solid transparent;
               cursor: pointer;
 
               &.active {
                 border: 2px solid #e5a724;
-                background-color: #fff;
+                background-color: var(--white-color);
                 color: #e5a724;
               }
             }
           }
         }
-      }
+      
     }
 
     .userFillPart {
@@ -78,31 +70,17 @@
           font-size: 20px;
       }
 
-      .fillInput {
+      .infoKey {
           padding: 15px;
           border: 1px solid lightgray;
           border-radius: 5px;
           display: flex;
           gap: 10px;
           align-items: center;
-          
-          input {
-              outline: none;
-              border: none;
-              font-size: 14px;
-              color: gray;
-          }
       }
 
-      .twoInfoInput {
-          display: flex;
-          gap: 10px;
-          align-items: center;
-
-          > input[type=radio] {
-              transform: scale(1.5);
-          }
+      .infoValue {
+        
       }
-
     }
   }

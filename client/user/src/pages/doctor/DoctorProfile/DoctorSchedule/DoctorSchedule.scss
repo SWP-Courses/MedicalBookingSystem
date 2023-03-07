@@ -1,3 +1,67 @@
-.wrapper {
-    // display: flex;
+.schedule {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    gap: 50px;
+    margin-left: 20px;
+
+    .schedule__calender {
+
+        .react-calendar {
+            box-shadow: 0px -1px 14px 3px rgba(51,122,183,0.59);
+            border-radius: 8px;
+            border: none;
+            padding: 5px;
+        }
+
+        .react-calendar__tile--active {
+            background: var(--secondary-color);
+            border-radius: 50%;
+            height: 50px;
+        }
+
+        .react-calendar__tile--now {
+            border-radius: 50%;
+        }
+
+        .react-calendar button:enabled:hover {
+            cursor: pointer;
+            border-radius: 50%; 
+        }
+
+        .react-calendar__month-view__days__day--weekend {
+            height: 50px;
+        }
+
+        .react-calendar__month-view__weekdays__weekday {
+            color: var(--primary-color);
+        }
+
+        abbr[title] {
+            text-decoration: none;
+        }
+    }
+
+    .schedule__calender-detail {
+        table {
+            border: 1px solid #666;
+        
+        }
+
+        table, td, th {
+            border: 1px solid #666;
+        }
+        
+        table td,
+        thead th {
+            padding: 8px;
+        }
+    }
+
+    .schedule__calender-icon {
+        cursor: pointer;
+        display: inline-block;
+        margin: 0 auto;        
+    }
 }

@@ -60,7 +60,7 @@ const Sidebar = () => {
       <div className='sidebar__middle d-flex justify-content-center flex-column'>
         {
           menuItem.map((item, index) => (
-            <NavLink to={item.path} key={index} className="link" activeClassName='active'>
+            <NavLink to={item.path} key={index} className="link" activeclassname='active'>
               <i className={item.icon}></i>
               <div className='link_text'>{item.name}</div>
             </NavLink>

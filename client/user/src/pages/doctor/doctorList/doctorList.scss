@@ -1,6 +1,7 @@
 .doctorListContainer {
     width: 100vw;
     max-width: 100%;
+    min-height: 1000px;
     .imgWrapper {
         max-width: 100%;
         width: 100vw;
@@ -33,53 +34,15 @@
         padding: 20px 100px;
         display: flex;
         gap: 20px;
-        width: 1170px;
+        max-width: 1170px;
         margin: 0 auto;
-
-        .filter {
-            flex: 1;
-            position: sticky;
-            top: 150px;
-            padding: 10px;
-            border: 0.5px solid #EEEEEE;
-            border-radius: 5px;
-            height: max-content;
-
-            >.divideLine {
-                border: 0.25px solid #EEEEEE;
-            }
-
-            >h2 {
-                font-size: 18px;
-
-            }
-
-            > ul {
-                list-style: none;
-                padding: 0px;
-                margin-bottom: 0px;
-
-                > li {
-                    padding: 10px;
-                    border-bottom: 1px solid #EEEEEE;
-                    cursor: pointer;
-
-                    &:hover {
-                        color: rgb(21, 74, 221);
-                    }
-                }
-
-                >li:last-of-type {
-                    border-bottom: none;
-                }
-            }
-        }
 
         .doctorList {
             flex: 3;
             display: flex;
             flex-direction: column;
             gap: 20px;
+            // transition: all 2s;
         }
     }
 }

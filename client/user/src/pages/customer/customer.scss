@@ -4,6 +4,7 @@
   align-items: center;
   padding: 20px 50px 30px;
   gap: 50px;
+  min-height: 500px;
 
   .userSidebar {
     flex: 1;
@@ -14,21 +15,28 @@
     .userInfo {
       display: flex;
       align-items: center;
-      gap: 20px;
+      gap: 10px;
+      margin: 0 auto;
+
+      >.userName {
+        font-size: 20px;
+        margin-left: 20px;
+        border-radius: 5px;
+        padding: 10px 20px;
+        box-shadow: -1px 0px 13px 1px rgba(0,0,0,0.21);
+        -webkit-box-shadow: -1px 0px 13px 1px rgba(0,0,0,0.21);
+        -moz-box-shadow: -1px 0px 13px 1px rgba(0,0,0,0.21);
+      } 
 
       > img {
-        width: 40px;
-        height: 40px;
+        width: 60px;
+        height: 60px;
         border-radius: 100rem;
       }
 
       > span {
         font-size: 14px;
         cursor: pointer;
-
-        &:hover {
-            text-decoration: underline;
-        }
       } 
     }
 
@@ -41,10 +49,11 @@
         border-radius: 10px;
 
         > .action {
-            text-align: center;
             background-color: #F2F2F2;
             height: 50px;
-            line-height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             user-select: none;
             border-radius: 10px;
             font-size: 20px;
@@ -52,17 +61,19 @@
 
             &.active {
               background-color: #286ba6;
-              color: #fff;
+              color: var(--white-color);
             }
-        }
-        
+        } 
     }
   }
 
   .userContent {
     flex: 3;
-    background-color: #F2F2F2;
+    border-radius: 10px;
+    overflow: hidden;
     min-height: 500px;
-    
+    -webkit-box-shadow: 0px 0px 10px 7px rgba(0, 0, 0, 0.184);
+    -moz-box-shadow: 0px 0px 10px 7px rgba(0, 0, 0, 0.184);
+    box-shadow: 0px 0px 10px 7px rgba(0, 0, 0, 0.184);
   }
 }

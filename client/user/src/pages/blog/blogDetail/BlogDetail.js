@@ -1,261 +1,193 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
 
 import "./BlogDetail.scss";
-import doctor from "~/assets/images/doctor.jpg";
 import { AuthContext } from "~/context/authContext";
-import { useContext } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
+import axios from "axios";
+import API_URL from "~/api/Router";
+import { StoreContext } from "~/context/storeContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBookmark } from "@fortawesome/free-regular-svg-icons";
+import { faBookmark as solid } from "@fortawesome/free-solid-svg-icons";
+import { toast } from "react-toastify";
 
 function BlogDetail() {
-  const { setRoutingHistory } = useContext(AuthContext);
+  const { setRoutingHistory } = useContext(StoreContext);
+  const { currentUser } = useContext(AuthContext);
   const location = useLocation();
+  const [blog, setBlog] = useState({});
+  const { id } = useParams();
+  const refBlog = useRef();
+  const [isSaved, setIsSaved] = useState(false);
+  const navigate = useNavigate();
+  const [sameContent, setSameContent] = useState([]);
+
+  useEffect(() => {
+    const fetchBlogById = async () => {
+      try {
+        const res = await axios.get(`${API_URL}/blogs/${id}`);
+        if (res && res.data && res.data.blogs) {
+          setBlog(res.data.blogs);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchBlogById();
+  }, [id]);
+
+  useEffect(() => {
+    refBlog.current.innerHTML = blog.content;
+  });
+
+  useEffect(() => {
+    const filterBlogSameCategory = async () => {
+      try {
+        const res = await axios.get(API_URL + "/blogs");
+        if (res && res.data && res.data.blogs && res.data.blogs.length > 0) {
+          const subBlogs = res.data.blogs.filter((item) => item._id === id);
+          setSameContent(subBlogs);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    filterBlogSameCategory();
+  }, [id]);
+
+  // Khoa
+  useEffect(() => {
+    // nếu có đăng nhập thì check blog đang xem có đã được lưu chưa
+    if (currentUser) {
+      const fetchSavedBlogs = async () => {
+        try {
+          const res = await axios.get(
+            `${API_URL}/blogs/saved/${currentUser._id}`
+          );
+          if (res.data) {
+            res.data.forEach(
+              (sblog) => sblog.blog_id === id && setIsSaved(true)
+            );
+          }
+        } catch (err) {
+          console.log(err);
+        }
+      };
+      fetchSavedBlogs();
+    }
+  }, [currentUser, id]);
+
+  const handleSaveBlogClick = async () => {
+    if (!currentUser) {
+      setRoutingHistory((prev) => ({
+        ...prev,
+        beforeLogin: location.pathname,
+      }));
+      navigate("/login");
+    } else {
+      try {
+        await axios.post(`${API_URL}/blogs/save/${id}/${currentUser._id}`);
+        toast.success("Lưu bài viết thành công")
+        setIsSaved(true);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+  };
+
+  const handleUnSaveBlogClick = async () => {
+    try {
+      await axios.delete(`${API_URL}/blogs/unsave/${id}/${currentUser._id}`);
+      setIsSaved(false);
+      toast.success("Đã bỏ theo dõi bài viết")
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   return (
     <div className="blog-detail-wrapper">
-      {/* <button
-        className="saveBlog"
-        onClick={() =>
-          setRoutingHistory((prev) => ({
-            ...prev,
-            beforeLogin: location.pathname,
-          }))
-        }
-      >
-        Lưu
-      </button> */}
       <div className="blog-detail-body">
         <div className="bread-crumb">
           <Breadcrumb>
-            <Breadcrumb.Item href="#">Home</Breadcrumb.Item>
-            <Breadcrumb.Item href="#">Library</Breadcrumb.Item>
-            <Breadcrumb.Item active>Data</Breadcrumb.Item>
+            <Breadcrumb.Item href="#">
+              <Link to="/">Home</Link>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item href="#">
+              <Link to="/blogs">Blogs</Link>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item active>
+              <Link to="#">Blog Detail</Link>
+            </Breadcrumb.Item>
           </Breadcrumb>
         </div>
         <div className="blog-content">
           <div className="blog-wrapper">
+            {currentUser?.role !== "doctor" &&
+              (!isSaved ? (
+                <>
+                  <FontAwesomeIcon
+                    icon={faBookmark}
+                    className="saveBlog"
+                    onClick={handleSaveBlogClick}
+                    title="Lưu"
+                  />
+                </>
+              ) : (
+                <>
+                  <FontAwesomeIcon
+                    icon={solid}
+                    className="saveBlog"
+                    onClick={handleUnSaveBlogClick}
+                    title="Huỷ Lưu"
+                  />
+                </>
+              ))}
             <div className="blog-detail">
-              <h1 className="blog-title">
-                Những lưu ý quan trọng trước khi khám sức khỏe tổng quát
-              </h1>
-              <img className="blog-detail-image" src={doctor} />
-              <div className="content-box">
+              <h1 className="blog-title">{blog?.title}</h1>
+              <div className="content-box" ref={refBlog}>
                 <h2 className="sub-title">1. Vai trò của Vitamin D</h2>
-                <p className="sub-content">
-                  Không tiêu thụ lượng vitamin D được theo đúng nhu cầu khuyến
-                  nghị. Điều này có thể xảy ra nếu sử dụng chế độ ăn thuần chay.
-                  Bởi vì hầu hết các nguồn thức ăn tự nhiên là động vật chứa
-                  nhiều vitamin D bao gồm như: cá, dầu cá, lòng đỏ trứng, sữa...
-                  không được sử dụng trong khẩu phần ăn.
-                </p>
-                <p className="sub-content">
-                  Không tiêu thụ lượng vitamin D được theo đúng nhu cầu khuyến
-                  nghị. Điều này có thể xảy ra nếu sử dụng chế độ ăn thuần chay.
-                  Bởi vì hầu hết các nguồn thức ăn tự nhiên là động vật chứa
-                  nhiều vitamin D bao gồm như: cá, dầu cá, lòng đỏ trứng, sữa...
-                  không được sử dụng trong khẩu phần ăn.
-                </p>
-                <p className="sub-content">
-                  Không tiêu thụ lượng vitamin D được theo đúng nhu cầu khuyến
-                  nghị. Điều này có thể xảy ra nếu sử dụng chế độ ăn thuần chay.
-                  Bởi vì hầu hết các nguồn thức ăn tự nhiên là động vật chứa
-                  nhiều vitamin D bao gồm như: cá, dầu cá, lòng đỏ trứng, sữa...
-                  không được sử dụng trong khẩu phần ăn.
-                </p>
-                <p className="sub-content">
-                  Không tiêu thụ lượng vitamin D được theo đúng nhu cầu khuyến
-                  nghị. Điều này có thể xảy ra nếu sử dụng chế độ ăn thuần chay.
-                  Bởi vì hầu hết các nguồn thức ăn tự nhiên là động vật chứa
-                  nhiều vitamin D bao gồm như: cá, dầu cá, lòng đỏ trứng, sữa...
-                  không được sử dụng trong khẩu phần ăn.
-                </p>
-                <h2 className="sub-title">2. Nguyên nhân thiếu vitamin D</h2>
-                <ul>
-                  <li>
-                    Không tiêu thụ lượng vitamin D được theo đúng nhu cầu khuyến
-                    nghị. Điều này có thể xảy ra nếu sử dụng chế độ ăn thuần
-                    chay. Bởi vì hầu hết các nguồn thức ăn tự nhiên là động vật
-                    chứa nhiều vitamin D bao gồm như: cá, dầu cá, lòng đỏ trứng,
-                    sữa... không được sử dụng trong khẩu phần ăn.
-                  </li>
-                  <li>
-                    Không tiêu thụ lượng vitamin D được theo đúng nhu cầu khuyến
-                    nghị. Điều này có thể xảy ra nếu sử dụng chế độ ăn thuần
-                    chay. Bởi vì hầu hết các nguồn thức ăn tự nhiên là động vật
-                    chứa nhiều vitamin D bao gồm như: cá, dầu cá, lòng đỏ trứng,
-                    sữa... không được sử dụng trong khẩu phần ăn.
-                  </li>
-                  <li>
-                    Không tiêu thụ lượng vitamin D được theo đúng nhu cầu khuyến
-                    nghị. Điều này có thể xảy ra nếu sử dụng chế độ ăn thuần
-                    chay. Bởi vì hầu hết các nguồn thức ăn tự nhiên là động vật
-                    chứa nhiều vitamin D bao gồm như: cá, dầu cá, lòng đỏ trứng,
-                    sữa... không được sử dụng trong khẩu phần ăn.
-                  </li>
-                  <li>
-                    Không tiêu thụ lượng vitamin D được theo đúng nhu cầu khuyến
-                    nghị. Điều này có thể xảy ra nếu sử dụng chế độ ăn thuần
-                    chay. Bởi vì hầu hết các nguồn thức ăn tự nhiên là động vật
-                    chứa nhiều vitamin D bao gồm như: cá, dầu cá, lòng đỏ trứng,
-                    sữa... không được sử dụng trong khẩu phần ăn.
-                  </li>
-                  <li>
-                    Không tiêu thụ lượng vitamin D được theo đúng nhu cầu khuyến
-                    nghị. Điều này có thể xảy ra nếu sử dụng chế độ ăn thuần
-                    chay. Bởi vì hầu hết các nguồn thức ăn tự nhiên là động vật
-                    chứa nhiều vitamin D bao gồm như: cá, dầu cá, lòng đỏ trứng,
-                    sữa... không được sử dụng trong khẩu phần ăn.
-                  </li>
-                  <li>
-                    Không tiêu thụ lượng vitamin D được theo đúng nhu cầu khuyến
-                    nghị. Điều này có thể xảy ra nếu sử dụng chế độ ăn thuần
-                    chay. Bởi vì hầu hết các nguồn thức ăn tự nhiên là động vật
-                    chứa nhiều vitamin D bao gồm như: cá, dầu cá, lòng đỏ trứng,
-                    sữa... không được sử dụng trong khẩu phần ăn.
-                  </li>
-                </ul>
-                <h2 className="sub-title">
-                  3. Các xét nghiệm nên làm theo từng độ tuổi
-                </h2>
-                <p className="desc">
-                  Ngoài khám lâm sàng và làm các xét nghiệm, sàng lọc nên làm
-                  khi khám sức khỏe tổng quát chung, cần khám trọng tâm theo
-                  từng độ tuổi:
-                </p>
-                <ul>
-                  <li>
-                    Tuổi từ 20-30
-                    <ul>
-                      <li>
-                        Khám và làm các xét nghiệm các bệnh truyền nhiễm như:
-                        viêm gan A, B, C, giang mai, bệnh lậu...
-                      </li>
-                      <li>
-                        Khám và làm các xét nghiệm các bệnh truyền nhiễm như:
-                        viêm gan A, B, C, giang mai, bệnh lậu...
-                      </li>
-                    </ul>
-                  </li>
-                  <li>
-                    Tuổi từ 20-30
-                    <ul>
-                      <li>
-                        Khám và làm các xét nghiệm các bệnh truyền nhiễm như:
-                        viêm gan A, B, C, giang mai, bệnh lậu...
-                      </li>
-                      <li>
-                        Khám và làm các xét nghiệm các bệnh truyền nhiễm như:
-                        viêm gan A, B, C, giang mai, bệnh lậu...
-                      </li>
-                    </ul>
-                  </li>
-                  <li>
-                    Tuổi từ 20-30
-                    <ul>
-                      <li>
-                        Khám và làm các xét nghiệm các bệnh truyền nhiễm như:
-                        viêm gan A, B, C, giang mai, bệnh lậu...
-                      </li>
-                      <li>
-                        Khám và làm các xét nghiệm các bệnh truyền nhiễm như:
-                        viêm gan A, B, C, giang mai, bệnh lậu...
-                      </li>
-                    </ul>
-                  </li>
-                  <li>
-                    Tuổi từ 20-30
-                    <ul>
-                      <li>
-                        Khám và làm các xét nghiệm các bệnh truyền nhiễm như:
-                        viêm gan A, B, C, giang mai, bệnh lậu...
-                      </li>
-                      <li>
-                        Khám và làm các xét nghiệm các bệnh truyền nhiễm như:
-                        viêm gan A, B, C, giang mai, bệnh lậu...
-                      </li>
-                    </ul>
-                  </li>
-                  <li>
-                    Tuổi từ 20-30
-                    <ul>
-                      <li>
-                        Khám và làm các xét nghiệm các bệnh truyền nhiễm như:
-                        viêm gan A, B, C, giang mai, bệnh lậu...
-                      </li>
-                      <li>
-                        Khám và làm các xét nghiệm các bệnh truyền nhiễm như:
-                        viêm gan A, B, C, giang mai, bệnh lậu...
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
+                {
+                  // refBlog.current.innerHTML = blog.content
+                }
               </div>
             </div>
           </div>
           <div className="sub-infor">
             <div className="doctor-info">
-              <Link to="/">
-                <img
-                  src={doctor}
-                  alt="doctor image"
-                  className="doctor-avarta"
-                />
-              </Link>
-              <span className="doctor-name">Thạc sĩ, Bác sĩ Đặng Tiến Đạt</span>
-              <p className="desc">
-                Khoa Gây mê giảm đau - Bệnh viện Đa khoa Quốc tế Vinmec Times
-                City
-              </p>
-              <Link to="/doctors/id" className="link-to-detail">
-                Xem thông tin bác sĩ &gt;
-              </Link>
+              <div className="date-section">
+                <span className="post-date">Ngày đăng:</span>
+                <span className="date">{blog.createdAt}</span>
+              </div>
+              <div className="author">
+                <span className="title">Thuộc Chủ Đề</span>
+              </div>
+              <div className="author">
+                <span className="title">Tác Giả</span>
+                <span className="doctor-name">{blog.author}</span>
+              </div>
             </div>
             <div className="more-blogs">
               <div className="single-blog">
-                <h3 className="single-blog-title">Có thể bạn quan tâm</h3>
-                <div className="sub-blog">
-                  <a href="">
-                    <img className="blog-sub-image" src={doctor} />
-                  </a>
-                  <div className="blog-sub-title">
-                    <a href="" className="blog-sub-title-link">
-                      Cortisol là gì và làm thế nào để điều chỉnh mức độ
-                      Cortisol?
-                    </a>
-                  </div>
-                </div>
-                <div className="sub-blog">
-                  <a href="">
-                    <img className="blog-sub-image" src={doctor} />
-                  </a>
-                  <div className="blog-sub-title">
-                    <a href="" className="blog-sub-title-link">
-                      Cortisol là gì và làm thế nào để điều chỉnh mức độ
-                      Cortisol?
-                    </a>
-                  </div>
-                </div>
-                <div className="sub-blog">
-                  <a href="">
-                    <img className="blog-sub-image" src={doctor} />
-                  </a>
-                  <div className="blog-sub-title">
-                    <a href="" className="blog-sub-title-link">
-                      Cortisol là gì và làm thế nào để điều chỉnh mức độ
-                      Cortisol?
-                    </a>
-                  </div>
-                </div>
-                <div className="sub-blog">
-                  <a href="">
-                    <img className="blog-sub-image" src={doctor} />
-                  </a>
-                  <div className="blog-sub-title">
-                    <a href="" className="blog-sub-title-link">
-                      Cortisol là gì và làm thế nào để điều chỉnh mức độ
-                      Cortisol?
-                    </a>
-                  </div>
-                </div>
+                <h4 className="single-blog-title">Có thể bạn quan tâm</h4>
+                {sameContent.map((item) => {
+                  return (
+                    <div className="sub-blog">
+                      <Link to={`/blogs/${blog._id}`}>
+                        <img className="blog-sub-image" src={item.image} />
+                      </Link>
+                      <div className="blog-sub-title ">
+                        <Link
+                          to={`/blogs/${blog._id}`}
+                          className="blog-sub-title-link line-clamp line-4"
+                        >
+                          {item.subTitle}
+                        </Link>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>

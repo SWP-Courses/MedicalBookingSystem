@@ -1,12 +1,13 @@
 import "./home.scss";
+import homePageImage from '../../assets/images/loginPage.jpg'
 
 export default function Home() {
   return (
     <div className="homeWrapper container-lg">
       <div className="slider row">
         <img
-          src="https://thumbs.dreamstime.com/b/hospital-building-modern-parking-lot-59693686.jpg"
-          alt=""
+          src={homePageImage}
+          alt="logo home page"
         />
       </div>
       <div className="introduction row">

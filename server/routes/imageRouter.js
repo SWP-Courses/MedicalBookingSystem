@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const imageRouter = express.Router();
+const { getImageController } = require("../controllers/imageController");
 
 imageRouter.use(bodyParser.json());
 
@@ -11,8 +12,8 @@ imageRouter
         res.setHeader("Content-Type", "json/plain");
         next();
     })
-imageRouter.route("/:id")
-    .get()
+imageRouter.route("/:filename")
+    .get(getImageController)
 
 
 module.exports = imageRouter;

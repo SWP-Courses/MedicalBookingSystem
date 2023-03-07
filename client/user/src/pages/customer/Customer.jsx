@@ -1,23 +1,38 @@
 import "./customer.scss";
 import blankAvatar from "../../assets/images/blank_avatar.jpg";
-import UserInfo from "./userInfo/UserInfo";
+import UserInfo from "../../components/userInfo/UserInfo";
 import { useState } from "react";
 import MedicalHistory from "./medicalHistory/MedicalHistory";
 import AppointmentSchedule from "./appointmentSchedule/AppointmentSchedule";
 import BlogsSaved from "./blogsSaved/BlogsSaved";
 
+import { useContext } from "react";
+import { AuthContext } from "~/context/authContext";
+import { API_IMAGE_URL } from "~/api/Router";
+
 export default function Customer() {
   const [userContent, setUserContent] = useState("info");
+
+  const { currentUser } = useContext(AuthContext);
 
   const handleOptionClick = (option) => {
     setUserContent(option);
   };
+
   return (
     <div className="customer">
       <div className="userSidebar">
         <div className="userInfo">
-          <img src={blankAvatar} alt="" />
-          <span>Anh Anh</span>
+          {currentUser?.avatar?.bucketName ? (
+            <img
+              src={`${API_IMAGE_URL}/${currentUser?.avatar?.filename}`}
+              alt=""
+            />
+          ) : (
+            <img src={currentUser?.avatar?.filename} alt="" />
+          )}
+
+          <span className="userName">{currentUser?.fullname}</span>
         </div>
         <div className="profileActions">
           <h4
