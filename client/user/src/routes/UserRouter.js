@@ -7,7 +7,7 @@ import Register from "~/pages/Auth/Register/Register";
 import BlogDetail from "~/pages/blog/blogDetail/BlogDetail";
 import Blogs from "~/pages/blog/blogList/Blogs";
 import Booking from "~/pages/booking/Booking";
-import Customer from "~/pages/customer/Customer";
+import Customer from "~/pages/customer/CustomerLayout";
 import DoctorDetail from "~/pages/doctor/doctorDetail/DoctorDetail";
 import DoctorList from "~/pages/doctor/doctorList/DoctorList";
 import Doctor from "~/pages/doctor/DoctorProfile/Doctor";
@@ -16,7 +16,12 @@ import Specialist from "~/pages/specialist/Specialist";
 import AuthContextProvider, { AuthContext } from "../context/authContext";
 
 import "react-toastify/dist/ReactToastify.css";
-import Intro from "~/components/intro/Intro";
+import CustomerLayout from "~/pages/customer/CustomerLayout";
+import UserInfo from "~/components/userInfo/UserInfo";
+import AppointmentSchedule from "~/pages/customer/appointmentSchedule/AppointmentSchedule";
+import MedicalHistory from "~/pages/customer/medicalHistory/MedicalHistory";
+import BlogsSaved from "~/pages/customer/blogsSaved/BlogsSaved";
+import Introduction from "~/pages/introduction/Introduction";
 
 export default function UserRouter() {
   const { currentUser } = useContext(AuthContext);
@@ -26,13 +31,21 @@ export default function UserRouter() {
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
           {currentUser?.role === "customer" && (
-            <Route path="/customer" element={<Customer />} />
+            <Route path="/customer" element={<CustomerLayout />}>
+              <Route path="profile" element={<UserInfo />} />
+              <Route
+                path="upcoming-booking"
+                element={<AppointmentSchedule />}
+              />
+              <Route path="history" element={<MedicalHistory />} />
+              <Route path="saved-blog" element={<BlogsSaved />} />
+            </Route>
           )}
           {/* doctor */}
           {currentUser?.role === "doctor" && (
             <Route path="/doctor" element={<Doctor />} />
           )}
-          <Route path="/intro" element={<Intro />} />
+          <Route path="/intro" element={<Introduction />} />
           <Route path="/doctors" element={<DoctorList />} />
           <Route path="/doctors/:id" element={<DoctorDetail />} />
           <Route path="/specialists/:speId" element={<Specialist />} />

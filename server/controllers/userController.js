@@ -3,6 +3,33 @@ var SpecialistModel = require("../models/Specialist");
 var RoleModel = require("../models/Role");
 const { deleteImageById } = require("./imageController");
 
+// Get users that done booked service
+const getUsersCuredone = async (req, res, next) => {
+  try {
+    const wordContain = req.query.name;
+
+    if (!wordContain)
+      return res.status(400).json("Vui lòng điền tên người khám!");
+
+    const users = await UserModel.find({
+      fullname: { $regex: wordContain, $options: "i" },
+      status: true, 
+      role_code: "R3"
+    }, {_id: 1, fullname: 1, email: 1}).populate("_id", "user_id");
+
+    // const filterUsers = users.filter(user => {
+      
+    // });
+
+    if (!users.length)
+      return res.status(404).json("Không có tài khoản thích hợp đã khám");
+
+    res.status(200).json(users);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
+
 // PUT /api/users/:id
 // Update a user by id (customer, doctor)
 const updateUser = async (req, res, next) => {
@@ -111,4 +138,10 @@ const deleteDoctorAccount = async (req, res, next) => {
   }
 };
 
-module.exports = { getDoctorById, getDoctors, deleteDoctorAccount, updateUser };
+module.exports = {
+  getDoctorById,
+  getDoctors,
+  deleteDoctorAccount,
+  updateUser,
+  getUsersCuredone,
+};

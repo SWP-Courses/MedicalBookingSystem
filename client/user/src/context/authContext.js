@@ -29,7 +29,7 @@ export default function AuthContextProvider({ children }) {
         });
         console.log(res.data);
         setCurrentUser(res.data);
-        navigate('/customer')
+        navigate("/customer");
       } catch (err) {
         console.log(err);
       }
@@ -57,7 +57,10 @@ export default function AuthContextProvider({ children }) {
     try {
       await axios.get(API_URL + "/auth/logout", { withCredentials: true });
       setCurrentUser(null);
-      if (location.pathname === "/doctor" || location.pathname === "/customer")
+      if (
+        location.pathname.contains("doctor") ||
+        location.pathname.contains("customer")
+      )
         navigate("/");
     } catch (err) {
       console.log(err);
@@ -75,9 +78,9 @@ export default function AuthContextProvider({ children }) {
       // console.log(res.data);
       setCurrentUser(res.data);
       navigate(0);
-      toast.success("Cập nhật thành công.")
+      toast.success("Cập nhật thành công.");
     } catch (err) {
-      throw err
+      throw err;
     }
   };
 

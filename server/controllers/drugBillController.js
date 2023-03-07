@@ -1,25 +1,25 @@
 var DrugBill = require("../models/DrugBill");
 var BillMedicine = require("../models/BillMedicine");
 var BookedService = require("../models/BookedService");
+const { default: mongoose } = require("mongoose");
 
-const getBillByUser = async (req, res) => {
+const getPresciptionByServiceId = async (req, res) => {
   try {
-    const bills = await DrugBill.aggregate([
-      {
-        $match: { customer_id: req.params.id },
-      },
-      {
-        $lookup: {
-          from: "users",
-          localField: "customer_id",
-          foreignField: "_id",
-          pipeline: [{ $project: { fullname: 1 } }],
-          as: "customer",
-        },
-      },
-    ]);
-    if (bills.length) return;
-    res.status(200).json(bills);
+    const preId =  req.params.id;
+
+    // check id có thuộc về duy nhất 1 booked service không?
+    const belongBService = await BookedService.findOne({drugbill_id: preId});
+
+    if(!belongBService) return res.status(404).json("Đơn thuốc không thuộc về lịch khám nào!")
+
+    const medicines = await BillMedicine.find({
+      drugbill_id: mongoose.Types.ObjectId(preId),
+    }, {_id: 0, __v: 0, drugbill_id:0}).populate('medicine_id', 'name type');
+
+    const bill = await DrugBill.findById(preId, {updatedAt: 0});
+
+    if (bill.length) return res.status(404).json("ko có");
+    res.status(200).json({...bill._doc, medicines});
   } catch (err) {
     res.status(500).json(err);
   }
@@ -29,6 +29,14 @@ const getBillByUser = async (req, res) => {
 const addDrugBill = async (req, res) => {
   const { bill_medicines, disease, note, re_exam_date, bookedserviceid } =
     req.body;
+
+  // check đủ req.body
+  if (!bill_medicines.length || !disease || !note || !bookedserviceid) {
+    return res
+      .status(400)
+      .json("Vui lòng điền đầy đủ thông tin trước khi tạo!");
+  }
+  // check params đúng doctor, đúng patient
 
   // re_exam_date sẽ gắn vào bookedservice
   try {
@@ -58,4 +66,4 @@ const addDrugBill = async (req, res) => {
   }
 };
 
-module.exports = { getBillByUser, addDrugBill };
+module.exports = { getPresciptionByServiceId, addDrugBill };

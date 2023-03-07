@@ -88,10 +88,8 @@ export default function AppointmentSchedule() {
         </thead>
         <tbody>
           {upBookedServices?.map((bservice, index) => {
-            console.log(typeof bservice?.services[0].name);
-
             return (
-              <tr>
+              <tr key={bservice._id}>
                 <td className="align-middle">{index + 1}</td>
                 <td className="align-middle">
                   {format(new Date(bservice?.date), "dd/MM/yyyy")}

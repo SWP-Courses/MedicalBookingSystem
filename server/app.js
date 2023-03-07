@@ -74,7 +74,7 @@ app.use("/api/", indexRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/specialists", specialistRouter);
-app.use("/api/drugbill", drugBillRouter);
+app.use("/api/prescriptions", drugBillRouter); //use drugbill model
 app.use("/api/absent", async (req, res) => {
   try {
     console.log(req.body.date);

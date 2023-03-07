@@ -33,8 +33,8 @@ const sendMail = async (req, res, next) => {
     var mailOptions = {
       from: "thongkhoa2002@gmail.com",
       to: req.body.email.trim(),
-      subject: "Give back password",
-      text: "Nã xác nhận là " + code,
+      subject: "Đổi mật khẩu",
+      text: "Mã xác nhận là " + code,
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
@@ -88,7 +88,7 @@ const updateNewPassword = async (req, res, next) => {
       await UserModel.findByIdAndUpdate(user.id, {
         password: hash,
       });
-      return res.status(200).send("Cập nhật thành công");
+      return res.status(200).send("Đã cập nhật mật khẩu mới");
     });
   } catch (err) {
     res.status(500).err;
@@ -212,7 +212,7 @@ const logout = (req, res) => {
   req.session = null;
   res.clearCookie("session");
   res.clearCookie("session.sig");
-  console.log("asdasd");
+  // console.log("asdasd");
   // res.redirect(CLIENT_URL);
   res.status(200).json("logged out");
   // res

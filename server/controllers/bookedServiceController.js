@@ -5,6 +5,7 @@ const Service = require("../models/service");
 const { startOfDay, endOfDay } = require("date-fns");
 const Absent = require("../models/Absent");
 const Slot = require("../models/Slot");
+const User = require("../models/User");
 
 const mergeService = async (bookedService) => {
   return await Promise.all(
@@ -38,6 +39,48 @@ const getBookedByDoctor = asyncHandler(async (req, res, next) => {
               $lte: endOfDay(new Date(viewDate)),
             },
           },
+        ],
+      },
+    },
+    {
+      $lookup: {
+        from: "users",
+        localField: "user_id",
+        foreignField: "_id",
+        pipeline: [{ $project: { _id: 1, fullname: 1 } }],
+        as: "customer",
+      },
+    },
+  ]).project({ user_id: 0, doctor_id: 0, date: 0 });
+  // console.log(orders);
+  const bookedServicesFull = await Promise.all(
+    orders.map(async (order) => {
+      const servicesFull = await mergeService(order);
+      // console.log({
+      //   ...order,
+      //   services: servicesFull,
+      // });
+      return {
+        ...order,
+        services: servicesFull,
+      };
+    })
+  );
+  return res.status(200).json(bookedServicesFull);
+});
+
+//@desc Get history of patient
+//@route GET /api/blog/:id
+//@access private
+const getHistoryByUserId = asyncHandler(async (req, res, next) => {
+  const viewDate = req.query.date;
+  console.log(viewDate);
+  const orders = await BookedService.aggregate([
+    {
+      $match: {
+        $and: [
+          { user_id: mongoose.Types.ObjectId(req.params.userId) },
+          { isPaid: true },
         ],
       },
     },
@@ -112,27 +155,39 @@ const bookService = asyncHandler(async (req, res, next) => {
   const { user_id, doctor_id, date, slot_time, service_id } = req.body;
 
   try {
+    // check doctor va user co ton tai
+    const patient = await User.findById(user_id);
+    if (!patient) return res.status(404).json("Người dùng không tồn tại");
+
+    const doctor = await User.findById(doctor_id);
+    if (!doctor) return res.status(404).json("Bác sĩ không tồn tạii45f");
+
+    // check đủ fields
+    if (!user_id || !doctor_id || !date || !slot_time || !service_id) {
+      return res.status(400).json("Không đủ dữ liệu yêu cầu");
+    }
+
     //chặn ngày cũ
     if (new Date(date) < new Date().setHours(0, 0, 0, 0))
       return res.status(400).json("Outdated");
 
-    // chặn slot ko có trong slot đã đặt ra. vd: 12, 13, 18, 19,...
+    // đặt trong ngày thì chỉ được đặt những slot sắp tới
     if (new Date(date) === new Date().setHours(0, 0, 0, 0)) {
       // chặn slot đã qua trong ngày, check cùng ngày
       if (parseInt(slot_time) < new Date().getHours())
         return res.status(422).json(`Slot ${slot_time} is expired.`);
     }
 
-    // check doctor va user co ton tai
-
-
+    // Ngày sắp tới thì slot phải nằm trong những slot được đặt ra
     const fullSlots = await Slot.find();
     if (fullSlots.length) {
       const isinSlots = fullSlots.some(
         (slot) => slot.time === parseInt(slot_time)
       );
       if (!isinSlots)
-        return res.status(404).json("Slot này ko nằm trong những slot được book.");
+        return res
+          .status(404)
+          .json("Slot này ko nằm trong những slot được book.");
     }
 
     // chặn book bác sĩ đã nghỉ của ngày
@@ -236,4 +291,5 @@ module.exports = {
   updateAddedService,
   completeBooked,
   cancelBookedService,
+  getHistoryByUserId,
 };

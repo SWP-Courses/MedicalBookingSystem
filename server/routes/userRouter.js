@@ -1,13 +1,15 @@
 var express = require("express");
 var router = express.Router();
 var UserModel = require("../models/User.js");
-var { getDoctorById, getDoctors, updateUser, deleteDoctorAccount } = require("../controllers/userController");
+var { getDoctorById, getDoctors, updateUser, deleteDoctorAccount, getUsersCuredone } = require("../controllers/userController");
 var {verifyUser} = require("../middlewares/verifyToken")
 const updateImage = require("../config/multerConfig");
 
-// GET doctor by id
+// GET patients who had booked service
 router.get("/doctors/:id", getDoctorById);
 
+// GET doctor by id
+router.get("/booked-service-done", getUsersCuredone);
 
 // GET all doctors
 router.get("/doctors", getDoctors);

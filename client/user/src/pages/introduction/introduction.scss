@@ -1,0 +1,76 @@
+.intro {
+  margin: auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  min-width: 400px;
+  max-width: 700px;
+  //   background-color: rgb(226, 226, 226);
+  height: max-content;
+
+  .indexTable {
+    width: 100%;
+    background-color: #F4F7FC;
+    padding: 15px 10px;
+    margin: 10px 0px;
+
+    h6 {
+      font-weight: 700;
+    }
+    > .indexList {
+      a {
+        display: block;
+        margin: 14px 0px;
+        font-weight: 400;
+        color: inherit;
+        font-size: 16px;
+
+        &:hover {
+          text-decoration: underline !important;
+        }
+      }
+    }
+  }
+
+  .list-item {
+    margin-bottom: 8px;
+    font-weight: 400;
+  }
+
+  .list {
+    text-align: justify;
+    padding-left: 35px;
+    list-style-type: disc;
+  }
+
+  .para {
+    text-align: justify;
+    font-size: 17px;
+  }
+
+  .item {
+    margin: 0 0 15px;
+    line-height: 1.618;
+  }
+
+  .bold {
+    font-weight: 500;
+  }
+
+  .main-header {
+    font-size: 24px;
+    font-weight: 500;
+    margin-bottom: 5px;
+  }
+
+  .sub-header {
+    font-size: 20px;
+    font-weight: 500;
+  }
+
+  .visual {
+    width: 90%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
