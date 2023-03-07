@@ -51,9 +51,9 @@ const Service = () => {
 
   const getAllService = async () => {
     try {
-      const result = await axios.get(`${ROUTER}/api/service`);
+      const result = await axios.get(`${ROUTER}/api/services`);
       if (result.status === 200) {
-        setServiceList(result.data.services);
+        setServiceList(result.data);
       }
 
     } catch (error) {
@@ -100,7 +100,7 @@ const Service = () => {
     }
 
     try {
-      const result = serviceDetail ? await axios.put(`${ROUTER}/api/service/${serviceDetail._id}`, data) : await axios.post(`${ROUTER}/api/service`, data);
+      const result = serviceDetail ? await axios.put(`${ROUTER}/api/services/${serviceDetail._id}`, data) : await axios.post(`${ROUTER}/api/services`, data);
       if (result.status === 200) {
         const newService = result.data.services;
         setServiceList(list => updateList(newService, list));

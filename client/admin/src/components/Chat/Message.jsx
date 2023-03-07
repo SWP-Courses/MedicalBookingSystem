@@ -1,9 +1,11 @@
 import React from 'react'
 
-function Message() {
+function Message({ msg, sender }) {
     return (
-        <div>Message</div>
+        <div className={sender !== 'admin' ? 'message-client' : 'message-admin'}>
+            {msg}
+        </div>
     )
 }
 
-export default Message
+export default Message 

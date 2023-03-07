@@ -1,15 +1,13 @@
 import "./Doctor.scss";
 import { useState } from "react";
-import DoctorProfile from "~/pages/doctor/DoctorProfile/DoctorInfo/DoctorProfile";
-import Prescription from "./Prescription/Prescription";
 import MedicalHistory from "./History/MedicalHistory";
 import DoctorSchedule from "./DoctorSchedule/DoctorSchedule";
-import doctor from "~/assets/images/doctor.jpg";
 
 import { useContext } from "react";
 import { AuthContext } from "~/context/authContext";
 import UserInfo from "~/components/userInfo/UserInfo";
 import { API_IMAGE_URL } from "~/api/Router";
+import Prescription from "./Prescription/Prescription";
 
 export default function Doctor() {
   const [userContent, setUserContent] = useState("info");
@@ -34,7 +32,7 @@ export default function Doctor() {
     <div className="doctor">
       <div className="doctorSidebar">
         <div className="userInfo">
-          <img src={`${API_IMAGE_URL}/image/${currentUser?.avatar.filename}`} alt="avartar" />
+          <img src={`${API_IMAGE_URL}/${currentUser?.avatar?.filename}`} alt="avartar" />
           <span className="doctorName">{currentUser?.fullname}</span>
         </div>
         <div className="profileActions">
@@ -62,7 +60,7 @@ export default function Doctor() {
               handleOptionClick("prescription");
             }}
           >
-            Kê Đơn
+            Kê Đơn Thuốc  
           </h4>
           <h4
             className={

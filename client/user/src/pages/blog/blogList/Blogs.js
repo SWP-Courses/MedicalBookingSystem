@@ -1,14 +1,17 @@
 import "./Blog.scss";
-
 import { useLocation, useNavigate, Link } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import DOMPurify from "dompurify";
 import API_URL from "~/api/Router";
+import ReactPaginate from "react-paginate";
+import slider from "~/assets/images/slider.jpg";
+import Pagination from "./Pagination";
 import ReactHtmlParser from 'react-html-parser';
+import { hanlderRequest } from "~/utils";
 
 function Blogs() {
-
+  const listBlogRef = useRef();
   const [blogCategory, setBlogCategory] = useState([]);
   const [blogs, setBlogs] = useState([]);
   const [blogsFiltered, setBlogsFiltered] = useState([]);
@@ -25,36 +28,40 @@ function Blogs() {
   useEffect(() => {
     fetchListCategoryBlogs();
     fetchBlogs();
-  }, [])
-
+  }, []);
 
   const fetchListCategoryBlogs = async () => {
-    const res = await axios.get(API_URL + '/category');
-    console.log('check res cate: ', res);
+    const [error, res] = await hanlderRequest(axios.get(API_URL + "/categories"));
     if (res && res.data && res.data.category && res.data.category.length > 0) {
       setBlogCategory(res.data.category);
+    } else {
+      console.log(error.messsage);
     }
-  }
+  };
 
   const fetchBlogs = async () => {
-    const res = await axios.get(API_URL + '/blog');
-    console.log('check res blog: ', res);
+    const [error, res] = await hanlderRequest(axios.get(API_URL + "/blogs"));
     if (res && res.data && res.data.blogs && res.data.blogs.length > 0) {
-      setBlogs(res.data.blogs)
+      listBlogRef.current = res.data.blogs;
+      setBlogs(res.data.blogs);
+    } else {
+      console.log(error);
     }
-  }
+  };
 
   const handleFilterBlogByCategoryId = (category) => {
-    let newBlogList = blogs.filter((blog) => blog.category_id === category._id);
-    setBlogsFiltered(newBlogList);
+    let newBlogList = listBlogRef?.current?.filter(
+      (blog) => blog.category_id === category._id
+    );
+    setBlogs(newBlogList);
     setCategoryName(category.name);
-  }
+  };
 
   return (
     <div className="Blog-wrapper">
       <div className="blog-content">
         <div className="slider">
-          <div className="slider-body">Slider</div>
+          <img src={slider} alt="slider" className="slider-body" />
         </div>
         <div className="blog-body">
           <div className="major-list">
@@ -63,100 +70,28 @@ function Blogs() {
                 <h5>Nội Dung</h5>
                 <div className="line"></div>
               </li>
-              {
-                blogCategory.map((category, index) => {
-                  return (
-                    <li className="item" key={index}>
-                      <span
-                        onClick={() => handleFilterBlogByCategoryId(category)}
-                      >
-                        {category.name}
-                      </span>
-                      <div className="line"></div>
-                    </li>
-                  )
-                })
-              }
+              {blogCategory.map((category, index) => {
+                return (
+                  <li className="item" key={index}>
+                    <span
+                      onClick={() => handleFilterBlogByCategoryId(category)}
+                    >
+                      {category.name}
+                    </span>
+                    <div className="line"></div>
+                  </li>
+                );
+              })}
             </ul>
           </div>
           <div className="blog-list">
             <h1 className="type">{categoryName}</h1>
             <hr />
-            {
-              blogsFiltered.length > 0 ?
-                blogsFiltered.map((blog, index) => {
-                  const imgString = blog.content.match(/<img([\w\W]+?)>/g);
-                  const content = blog.content.replace(/<img[^>]*>/g, "");
-
-                  return (
-                    <div key={index} className="blog-item">
-                      <Link to={`/blogs/${blog._id}`}>
-                        {imgString ? ReactHtmlParser(imgString[0]) : undefined}
-                      </Link>
-                      <div className="blog-item-body">
-                        <h2 className="bolg-item-title line-clamp">
-                          {blog.title}
-                        </h2>
-                        <p
-                          className="line-clamp line-4"
-                          dangerouslySetInnerHTML={{
-                            __html: DOMPurify.sanitize(content),
-                          }}
-                        >
-                          {
-                            // blog.content
-                          }
-                        </p>
-                      </div>
-                    </div>
-                  )
-                })
-                :
-                blogs.map((blog, index) => {
-                  const imgString = blog.content.match(/<img([\w\W]+?)>/g);
-                  const content = blog.content.replace(/<img[^>]*>/g, "");
-
-                  return (
-                    <div key={index} className="blog-item">
-                      <Link to={`/blogs/${blog._id}`}>
-                        {/* <img
-                          className="blog-image"
-                          src={blog.image}
-                          alt="blog-image"
-                        /> */}
-
-                        {imgString ? ReactHtmlParser(imgString[0]) : undefined}
-
-
-                      </Link>
-                      <div className="blog-item-body">
-                        <Link to={`/blogs/${blog._id}`}>
-                          <h2
-                            className="bolg-item-title line-clamp"
-                            style={{ fontSize: '25px', cursor: 'pointer' }}
-                          >
-                            {blog.title}
-                          </h2>
-                        </Link>
-                        <p
-                          className="line-clamp line-4"
-                          dangerouslySetInnerHTML={{
-                            __html: DOMPurify.sanitize(content),
-                          }}
-                        >
-                          {
-                            // blog.content
-                          }
-                        </p>
-                      </div>
-                    </div>
-                  )
-                })
-            }
+            <Pagination data={blogs} />
           </div>
         </div>
         <div className="paginate">
-          <h1>Paginate</h1>
+          <span></span>
         </div>
       </div>
     </div>

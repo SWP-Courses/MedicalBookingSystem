@@ -41,18 +41,18 @@ function BlogEditor({ description, setDescription, BlogDetail, categoryList, set
                 </select>
 
                 <div className='d-flex h-auto gap-2 my-2'>
-                    <div class="input-group w-50">
-                        <span class="input-group-text" id="basic-addon1">Author</span>
-                        <input type="text" class="form-control" defaultValue={BlogDetail.author} onChange={(e) => setAuthor(e.target.value)} placeholder="" aria-label="" aria-describedby="basic-addon1" />
+                    <div className="input-group w-50">
+                        <span className="input-group-text" id="basic-addon1">Author</span>
+                        <input type="text" className="form-control" defaultValue={BlogDetail.author} onChange={(e) => setAuthor(e.target.value)} placeholder="" aria-label="" aria-describedby="basic-addon1" />
                     </div>
-                    <div class="input-group w-50">
-                        <span class="input-group-text" id="basic-addon1">Title</span>
-                        <input type="text" class="form-control" defaultValue={BlogDetail.title} onChange={(e) => setNewTitle(e.target.value)} placeholder="" aria-label="" aria-describedby="basic-addon1" />
+                    <div className="input-group w-50">
+                        <span className="input-group-text" id="basic-addon1">Title</span>
+                        <input type="text" className="form-control" defaultValue={BlogDetail.title} onChange={(e) => setNewTitle(e.target.value)} placeholder="" aria-label="" aria-describedby="basic-addon1" />
                     </div>
                 </div>
-                <div class="mb-3">
-                    <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-                    <textarea class="form-control" defaultValue={BlogDetail.description} onChange={(e) => setDescription(e.target.value)} id="exampleFormControlTextarea1" rows="3"></textarea>
+                <div className="mb-3">
+                    <label for="exampleFormControlTextarea1" className="form-label">Description</label>
+                    <textarea className="form-control" defaultValue={BlogDetail.description} onChange={(e) => setDescription(e.target.value)} id="exampleFormControlTextarea1" rows="3"></textarea>
                 </div>
                 <ReactQuill theme="snow"
                     modules={modules}
@@ -74,18 +74,18 @@ function BlogEditor({ description, setDescription, BlogDetail, categoryList, set
 
             </select>
             <div className='d-flex h-auto gap-2 my-2'>
-                <div class="input-group w-50">
-                    <span class="input-group-text" id="basic-addon1">Author</span>
-                    <input type="text" class="form-control" value={author} onChange={(e) => setAuthor(e.target.value)} placeholder="" aria-label="" aria-describedby="basic-addon1" />
+                <div className="input-group w-50">
+                    <span className="input-group-text" id="basic-addon1">Author</span>
+                    <input type="text" className="form-control" value={author} onChange={(e) => setAuthor(e.target.value)} placeholder="" aria-label="" aria-describedby="basic-addon1" />
                 </div>
-                <div class="input-group w-50">
-                    <span class="input-group-text" id="basic-addon1">Title</span>
-                    <input type="text" class="form-control" value={newTitle} onChange={(e) => setNewTitle(e.target.value)} placeholder="" aria-label="" aria-describedby="basic-addon1" />
+                <div className="input-group w-50">
+                    <span className="input-group-text" id="basic-addon1">Title</span>
+                    <input type="text" className="form-control" value={newTitle} onChange={(e) => setNewTitle(e.target.value)} placeholder="" aria-label="" aria-describedby="basic-addon1" />
                 </div>
             </div>
-            <div class="mb-3">
-                <label for="exampleFormControlTextarea1" class="form-label">Description</label>
-                <textarea class="form-control" value={description} onChange={(e) => setDescription(e.target.value)} id="exampleFormControlTextarea1" rows="3"></textarea>
+            <div className="mb-3">
+                <label for="exampleFormControlTextarea1" className="form-label">Description</label>
+                <textarea className="form-control" value={description} onChange={(e) => setDescription(e.target.value)} id="exampleFormControlTextarea1" rows="3"></textarea>
             </div>
             <ReactQuill theme="snow"
                 modules={modules}

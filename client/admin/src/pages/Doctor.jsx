@@ -13,7 +13,6 @@ const Doctor = () => {
   const [doctorList, setDoctorList] = useState();
   const [createDoctor, setCreateDoctor] = useState(false);
   const [doctorDetail, setDoctorDetail] = useState(null);
-  const [room, setRoom] = useState();
 
   const formData = useRef(new FormData());
   const fullname = useRef();
@@ -39,21 +38,8 @@ const Doctor = () => {
     }
   }
 
-  const getAllEmptyRoom = async () => {
-    try {
-      const result = await axios.get(`${ROUTER}/api/room`);
-      if (result.status === 200) {
-        setRoom(result.data.room);
-      }
-
-    } catch (error) {
-      console.log(error.message);
-    }
-  }
-
   useEffect(() => {
     getAllDoctor();
-    getAllEmptyRoom();
   }, [])
 
   const onClickEditDoctor = (id) => {
@@ -95,7 +81,7 @@ const Doctor = () => {
     formData.current.append('room_id', roomId.current.value);
 
     try {
-      const result = false ? await axios.post(`${ROUTER}/api/auth/register/${doctorDetail._id}`, formData.current) : await axios.post(`${ROUTER}/api/auth/register`, formData.current);
+      const result = doctorDetail ? await axios.put(`${ROUTER}/api/users/${doctorDetail._id}`, formData.current) : await axios.post(`${ROUTER}/api/auth/register`, formData.current);
       if (result.status === 200) {
         const newDoctor = result.data;
         setDoctorList(list => updateList(newDoctor, list));
@@ -103,7 +89,7 @@ const Doctor = () => {
       }
 
       // Reset input
-      if (doctorDetail) return;
+      // if (doctorDetail) return;
     } catch (error) {
       console.log(error.message);
       toast.error("Create Error!", toastOption);
@@ -139,7 +125,7 @@ const Doctor = () => {
 
         {
           createDoctor ?
-            <DoctorDetail roomId={roomId} emptyRoom={room} formData={formData} profile={profile} address={address} email={email} degree={degree} fullname={fullname} gender={gender} phone={phone} dateOfBirth={dateOfBirth} doctorDetail={doctorDetail} /> :
+            <DoctorDetail setDoctorDetail={setDoctorDetail} roomId={roomId} formData={formData} profile={profile} address={address} email={email} degree={degree} fullname={fullname} gender={gender} phone={phone} dateOfBirth={dateOfBirth} doctorDetail={doctorDetail} /> :
             <DoctorTable onClickEditDoctor={onClickEditDoctor} onDeleteBlogById={onDeleteBlogById} doctors={doctorList} />
         }
       </div>

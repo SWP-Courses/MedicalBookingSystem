@@ -16,7 +16,7 @@
   .bookingBlock {
     width: 1024px;
     height: max-content;
-    background-color: #fff;
+    background-color: var(--white-color);
     border-radius: 10px;
     margin: 0px auto;
     margin-top: -100px;
@@ -42,7 +42,7 @@
         outline: none;
         border-radius: 5px;
         font-weight: bold;
-        color: white;
+        color: var(--white-color);
         background-color: #337AB7;
       }
     }

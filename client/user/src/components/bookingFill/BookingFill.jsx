@@ -1,6 +1,6 @@
 import "./bookingFill.scss";
-import { useState } from "react";
-import { services } from "../../fakeData";
+import { compareAsc, compareDesc, isAfter, isEqual } from "date-fns";
+import { useContext, useEffect, useState } from "react";
 import { Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -13,15 +13,45 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Calendar } from "react-calendar";
 import { format } from "date-fns";
-import { doctorList } from "../../fakeData";
+import { AuthContext } from "~/context/authContext";
 
-export default function BookingFill({ booking, setBooking }) {
-  console.log(booking);
+const getServiceName = () => {};
+
+export default function BookingFill({
+  booking,
+  setBooking,
+  services,
+  freeDoctors,
+  freeSlots,
+}) {
+  const { currentUser } = useContext(AuthContext);
   const [step, setStep] = useState(1);
+
+  useEffect(() => {
+    currentUser &&
+      setBooking((prev) => ({
+        ...prev,
+        fullname: currentUser.fullname,
+        gender: currentUser.gender,
+        dateOfBirth: currentUser.dateOfBirth,
+        phone: currentUser.phone,
+        email: currentUser.email,
+      }));
+  }, [currentUser, setBooking]);
+  console.log(currentUser);
 
   const handleTextInput = (e, field) =>
     setBooking((prev) => ({ ...prev, [field]: e.target.value }));
 
+  const handleChooseService = (service) => {
+    const { name, _id } = service;
+    setBooking((prev) => ({ ...prev, service: { name, _id } }));
+  };
+
+  const handleTimeClick = (slot) => {
+    setBooking((prev) => ({ ...prev, slot: slot }));
+  };
+  console.log(booking);
   return (
     <div className="bookingContent">
       <div className="hospitalPart">
@@ -29,68 +59,71 @@ export default function BookingFill({ booking, setBooking }) {
           <Dropdown.Toggle id="dropdown-basic" className="dropdownText">
             <div className="text">
               <FontAwesomeIcon icon={faBriefcase} />
-              {!booking.specialist
+              {!booking.service
                 ? "Chọn chuyên khoa khám"
-                : booking.specialist}
+                : booking.service.name}
             </div>
           </Dropdown.Toggle>
 
           <Dropdown.Menu className="dropdownOptions">
-            {services.map((service) => (
-              <Dropdown.Item
-                href="#/action-1"
-                onClick={() =>
-                  setBooking((prev) => ({ ...prev, specialist: service }))
-                }
-              >
-                {service}
+            {services?.map((service) => (
+              <Dropdown.Item onClick={() => handleChooseService(service)}>
+                {service.name}
               </Dropdown.Item>
             ))}
           </Dropdown.Menu>
         </Dropdown>
-        <div className="timeAvailable">
-          <span className="title">Thời gian khám</span>
-          <div className="date">
-            <span>Ngày khám: {format(booking.date, "yyyy-MM-dd")}</span>
-            <Calendar
-              onChange={(item) =>
-                setBooking((prev) => ({ ...prev, date: item }))
-              }
-              value={booking.date}
-            />
-          </div>
-          <div className="time">
-            <span>Giờ khám</span>
-            <div className="groupTime">
-              <span className="timeItem active">08:00</span>
-              <span className="timeItem">09:00</span>
-              <span className="timeItem">10:00</span>
-              <span className="timeItem">11:00</span>
-            </div>
-          </div>
+        <span className="title">Thời gian khám</span>
+        <div className="date">
+          <span>Ngày khám: {format(booking.date, "yyyy-MM-dd")}</span>
+          <Calendar
+            onChange={(item) => setBooking((prev) => ({ ...prev, date: item }))}
+            value={booking.date}
+            // tileDisabled={({ date }) => {
+            //   let newDate = new Date();
+            //   if(isEqual(date, newDate)) return false;
+            //   return date.getDay() === 0 || isAfter(newDate, date)
+            // }
+            // }
+          />
         </div>
-
         <Dropdown className="dropdownContain">
           <Dropdown.Toggle id="dropdown-basic" className="dropdownText">
             <div className="text">
               <FontAwesomeIcon icon={faBriefcase} />
-              {!booking.doctor ? "Chọn bác sĩ muốn khám" : booking.doctor}
+              {!booking.doctor
+                ? "Chọn bác sĩ muốn khám"
+                : booking.doctor.fullname}
             </div>
           </Dropdown.Toggle>
 
           <Dropdown.Menu className="dropdownOptions">
-            {doctorList.slice(0, 3).map((doctor) => (
+            {freeDoctors?.map((doctor) => (
               <Dropdown.Item
-                href="#/action-1"
                 onClick={() =>
-                  setBooking((prev) => ({ ...prev, doctor: doctor.name }))
+                  setBooking((prev) => ({ ...prev, doctor: doctor }))
                 }
               >
-                {doctor.name}
+                {doctor.fullname}
               </Dropdown.Item>
             ))}
           </Dropdown.Menu>
         </Dropdown>
+        <div className="time">
+          <span>Giờ khám</span>
+          <div className="groupTime">
+            {freeSlots?.map((slot) => (
+              <span
+                className={`timeItem ${
+                  booking?.slot?.slot_number === slot?.slot_number && "active"
+                }`}
+                onClick={() => handleTimeClick(slot)}
+              >
+                {slot.time}
+              </span>
+            ))}
+          </div>
+        </div>
       </div>
 
       <div className="divideLine"></div>
@@ -111,18 +144,18 @@ export default function BookingFill({ booking, setBooking }) {
           <input
             type="radio"
             name="gender"
-            id="Nam"
+            id="male"
             onClick={(e) =>
               setBooking((prev) => ({ ...prev, gender: e.target.id }))
             }
-            checked={booking.gender === "Nam" && "checked"}
+            checked={booking.gender === "male" && "checked"}
           />
           Nam
           <input
             type="radio"
             name="gender"
-            id="Nữ"
-            checked={booking.gender === "Nữ" && "checked"}
+            id="female"
+            checked={booking.gender === "female" && "checked"}
             onClick={(e) =>
               setBooking((prev) => ({ ...prev, gender: e.target.id }))
             }
@@ -135,6 +168,7 @@ export default function BookingFill({ booking, setBooking }) {
             type="text"
             placeholder="Ngày sinh (*)"
             required
+            value={booking.dateOfBirth}
             onChange={(e) => handleTextInput(e, "birth")}
           />
         </div>
@@ -144,6 +178,7 @@ export default function BookingFill({ booking, setBooking }) {
             type="text"
             placeholder="Số điện thoại liên lạc (*)"
             required
+            value={booking.phone}
             onChange={(e) => handleTextInput(e, "phone")}
           />
         </div>
@@ -153,16 +188,8 @@ export default function BookingFill({ booking, setBooking }) {
             type="text"
             placeholder="Email"
             required
+            value={booking.email}
             onChange={(e) => handleTextInput(e, "email")}
-          />
-        </div>
-        <div className="fillInput">
-          <FontAwesomeIcon icon={faIdCard} />
-          <input
-            type="text"
-            placeholder="CMND / CCCD"
-            required
-            onChange={(e) => handleTextInput(e, "nationalId")}
           />
         </div>
       </div>

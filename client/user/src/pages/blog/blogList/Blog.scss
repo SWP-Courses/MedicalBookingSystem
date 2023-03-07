@@ -4,9 +4,14 @@
         margin: 0 auto;
 
         .slider {
-            border: 1px solid red;
             margin-top: 20px;
             height: 200px;
+
+            >img {
+                width: 100%;
+                height: 198px;
+                object-fit: cover;
+            }
         }
         
         .blog-body {
@@ -30,7 +35,7 @@
                 .item {
                     list-style-type: none;
 
-                    h5 {
+                    >h5 {
                        text-align: center;
                     }
                     
@@ -84,11 +89,11 @@
                 >a {
                     display: block;
                     .blog-image {
-                        min-width: 260px;
+                        width: 280px;
                         height: 173px;
                         object-fit: cover;
                         cursor: pointer;
-
+                        border-radius: 5px;
                     }
                 }
 
@@ -116,9 +121,9 @@
             }
 
             .type {
-                font-size: 27px;
-                background-color: #f5f5f5;  
-                padding: 4px;
+                font-size: 18px;
+                background-color: #f5f5f5;
+                padding: 8px;
                 border-radius: 6px;
             }
         }
@@ -126,7 +131,11 @@
         .paginate {
             text-align: center;
             margin-top: 20px;
-            border: 1px solid red;
+
+            >span ul {
+                width: 200px;
+                margin: 0 auto;
+            }
         }
     }
 }

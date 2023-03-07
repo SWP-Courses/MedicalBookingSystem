@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Route, Routes, BrowserRouter } from "react-router-dom";
+import { Route, Routes, BrowserRouter, Link } from "react-router-dom";
 import Layout from "~/components/layout/Layout";
 import ForgotPassword from "~/pages/Auth/ForgotPassword/ForgotPassword";
 import Login from "~/pages/Auth/Login/Login";
@@ -16,6 +16,7 @@ import Specialist from "~/pages/specialist/Specialist";
 import AuthContextProvider, { AuthContext } from "../context/authContext";
 
 import "react-toastify/dist/ReactToastify.css";
+import Chat from "~/pages/Chat/Chat";
 
 export default function UserRouter() {
   const { currentUser } = useContext(AuthContext);
@@ -43,8 +44,11 @@ export default function UserRouter() {
         {!currentUser && (
           <Route path="/forgotPassword" element={<ForgotPassword />} />
         )}
-        <Route path="*" element={<h1>404 Page not found</h1>} />
+        <Route path="*" element={<><h1>404 Page not found</h1>
+          <Link to="/">Trang chủ</Link>
+        </>} />
       </Routes>
+
     </>
   );
 }

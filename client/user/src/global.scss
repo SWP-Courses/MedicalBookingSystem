@@ -18,6 +18,7 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
 	line-height: 1;
+	scroll-behavior: smooth;
 }
 ol, ul {
 	list-style: none;
@@ -52,18 +53,20 @@ input, select {
     overflow: hidden;
 }
 
-  ::-webkit-scrollbar {
-	width: 10px;
-  }
-  ::-webkit-scrollbar-track {
-	background: #f1f1f1; 
-  }
-  ::-webkit-scrollbar-thumb {
-	background: #c0c0c0; 
-  }
-  ::-webkit-scrollbar-thumb:hover {
-	background: #a0a0a0; 
-  }
+::-webkit-scrollbar {
+	border-radius: 0;
+	width: 8px;
+}
+  
+::-webkit-scrollbar-thumb {
+	border-radius: 4px;
+	background-color: rgba(22, 24, 35, .2);
+}
+  
+::-webkit-scrollbar-track {
+	border-radius: 0;
+	background-color: rgba(0, 0, 0, 0);
+}
 
 // error input field
 .errorAlert {
@@ -72,4 +75,19 @@ input, select {
 	margin-top: 5px;
 	display: block; 
 	color: red;
+}
+
+.form-control:focus {
+    color: #212529;
+    background-color: var(--white-color);
+    border-color: #2684ff;
+    outline: 3px;
+    box-shadow: none;
+}
+
+:root {
+	--primary-color: #10375C;
+	--secondary-color: #337AB7;
+	--third-color: #e9f0f6;
+	--white-color: #ffff;
 }

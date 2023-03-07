@@ -4,7 +4,7 @@
   position: sticky;
   top: 0px;
   z-index: 999;
-  background-color: #fff;
+  background-color: var(--white-color);
 
   .navbarTopWrapper {
     width: 77%;
@@ -25,34 +25,50 @@
         justify-content: center;
   
         .logo {
-          font-weight: bold;
-          font-size: 20px;
-          padding: 10px 20px;
-          background-color: #418ac9;
-          color: white;
-          border-radius: 5px;
-          user-select: none;
+          width: 80px;
+          height: 80px;
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
         }
       }
   
       .navbar-center {
-        // flex: 5;
+
+        .searchResult {
+          background-color: var(--white-color);
+          width: 370px;
+          min-height: 100px;
+          box-shadow: 1px 2px 6px rgb(0 0 0 / 15%);
+          border-radius: 5px;
+          border: 1px solid #ccc;
+
+          .titleSearch {
+            background-color: #f5f5f5;
+            padding: 5px 10px;
+          }
+          
+          >span {
+            margin-left: 10px;
+          }
+        }
   
         .searchBar {
           width: 100%;
-          height: 50px;
-          background-color: #fff;
-          border-radius: 10px;
+          height: 45px;
+          background-color: var(--white-color);
+          border-radius: 50px;
           display: flex;
           align-items: center;
-          border-radius: 5px;
           border: 1px solid #ebebeb;
           background-color: #f5f5f5;
           gap: 10px;
   
           .searchIcon {
-            font-size: 20px;
-            margin-left: 10px;
+            font-size: 17px;
+            margin-left: 16px;
+            opacity: 0.8;
+            cursor: pointer;
           }
   
           .searchInput {
@@ -66,31 +82,44 @@
             outline: none;
           }
         }
+
+        label {
+          margin-bottom: 0;
+        }
       }
   
       .navbar-right {
-        // flex: 4;
         display: flex;
+        align-items: center;  
+        width: fit-content;
+        margin: 0 auto;
+        position: relative;
 
         >.navItemContainer {
-          flex:1;
-          text-align: center;
+          margin: 0 20px;
         }
   
         > .devideLine {
-          border: 0.5px solid rgb(228, 224, 224);
+          // border: 0.5px solid rgb(228, 224, 224);
         }
   
         .navbar-button {
           border: none;
           padding: 10px 15px;
-          background-color: rgb(43, 124, 175);
-          color:white;
-          border-radius: 5px;
           font-size: 14px;
           font-weight: bold;
           cursor: pointer;
-          display: inline-block;
+          color: var(--secondary-color);
+          background: none;
+          font-size: 15px;
+        }
+
+        .devideLine {
+          // content: '';
+          // position: absolute;
+          width: 1px;
+          height: 30px;
+          background: var(--secondary-color);
         }
   
         .avatarContainer {

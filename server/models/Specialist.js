@@ -7,14 +7,7 @@ const SpecialistSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-    banner: {
-      type: String,
-      required: true,
-    },
-    thumbnail: {
-      type: String,
-      required: true,
-    },
+    images:[Object]
   },
   {
     versionKey: false,

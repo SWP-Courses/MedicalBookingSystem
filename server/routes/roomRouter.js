@@ -3,6 +3,6 @@ var roomRouter = express.Router();
 const { createRoom, getEmptyRoom } = require("../controllers/roomController.js");
 
 roomRouter.post("/", createRoom);
-roomRouter.get("/", getEmptyRoom);
+roomRouter.get("/:id", getEmptyRoom);
 
-module.exports = roomRouter;
+module.exports = roomRouter; 

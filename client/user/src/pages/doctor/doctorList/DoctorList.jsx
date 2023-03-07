@@ -1,4 +1,3 @@
-import { doctorList } from "~/fakeData";
 import "./doctorList.scss";
 
 import stethoscope from "~/assets/images/stethoscope.jpg";
@@ -10,23 +9,12 @@ import API_URL from "~/api/Router";
 export default function DoctorList() {
   const [doctorList, setDoctorList] = useState();
   const [specialists, setSpecialists] = useState([]);
+  const [filterId, setFilterId] = useState();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(API_URL+"/specialists");
-        setSpecialists(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get(API_URL+"/users/doctors");
+        const res = await axios.get(API_URL + "/users/doctors");
         setDoctorList(res.data);
       } catch (err) {
         console.log(err);
@@ -42,19 +30,16 @@ export default function DoctorList() {
         <img src={stethoscope} alt="" />
       </div>
       <div className="doctorsWrapper">
-        <div className="filter">
-          <h2>Chuyên khoa</h2>
-          <div className="divideLine" />
-          <ul>
-            {specialists?.map((spe) => (
-              <li key={spe._id}>{spe.title}</li>
-            ))}
-          </ul>
-        </div>
         <div className="doctorList">
-          {doctorList?.map((doctor, index) => (
-            <DoctorItem doctor={doctor} key={index} />
-          ))}
+          {filterId
+            ? doctorList.filter((doctor) => (
+                doctor.specialist_id === filterId
+              ))?.map((doctor, index) => (
+                <DoctorItem doctor={doctor} key={index} />
+              ))
+            : doctorList?.map((doctor, index) => (
+                <DoctorItem doctor={doctor} key={index} />
+              ))}
         </div>
       </div>
     </div>
