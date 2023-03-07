@@ -13,7 +13,6 @@ const Doctor = () => {
   const [doctorList, setDoctorList] = useState();
   const [createDoctor, setCreateDoctor] = useState(false);
   const [doctorDetail, setDoctorDetail] = useState(null);
-  const [specialist, setSpecialist] = useState();
 
   const formData = useRef(new FormData());
   const fullname = useRef();
@@ -24,7 +23,7 @@ const Doctor = () => {
   const degree = useRef();
   const address = useRef();
   const profile = useRef();
-  const specialistId = useRef();
+  const roomId = useRef();
 
 
   const getAllDoctor = async () => {
@@ -39,21 +38,8 @@ const Doctor = () => {
     }
   }
 
-  const getAllSpecialist = async () => {
-    try {
-      const result = await axios.get(`${ROUTER}/api/specialists`);
-      if (result.status === 200) {
-        setSpecialist(result.data);
-      }
-
-    } catch (error) {
-      console.log(error.message);
-    }
-  }
-
   useEffect(() => {
     getAllDoctor();
-    getAllSpecialist();
   }, [])
 
   const onClickEditDoctor = (id) => {
@@ -90,12 +76,12 @@ const Doctor = () => {
     formData.current.append('role_code', "R2");
     formData.current.append('degree', degree.current.value);
     formData.current.append('profile', profile.current.value);
-    formData.current.append('specialist_id', specialistId.current.value);
     formData.current.append('email', email.current.value);
     formData.current.append('password', "123456");
+    formData.current.append('room_id', roomId.current.value);
 
     try {
-      const result = false ? await axios.post(`${ROUTER}/api/auth/register/${doctorDetail._id}`, formData.current) : await axios.post(`${ROUTER}/api/auth/register`, formData.current);
+      const result = doctorDetail ? await axios.put(`${ROUTER}/api/users/${doctorDetail._id}`, formData.current) : await axios.post(`${ROUTER}/api/auth/register`, formData.current);
       if (result.status === 200) {
         const newDoctor = result.data;
         setDoctorList(list => updateList(newDoctor, list));
@@ -103,7 +89,7 @@ const Doctor = () => {
       }
 
       // Reset input
-      if (doctorDetail) return;
+      // if (doctorDetail) return;
     } catch (error) {
       console.log(error.message);
       toast.error("Create Error!", toastOption);
@@ -115,7 +101,7 @@ const Doctor = () => {
     formData.current.delete('phone');
     formData.current.delete('role_code');
     formData.current.delete('profile');
-    formData.current.delete('specialist_id');
+    formData.current.delete('room_id');
     formData.current.delete('avatar');
     formData.current.delete('degree');
     formData.current.delete('password');
@@ -139,7 +125,7 @@ const Doctor = () => {
 
         {
           createDoctor ?
-            <DoctorDetail specialistId={specialistId} formData={formData} profile={profile} address={address} email={email} degree={degree} fullname={fullname} gender={gender} specialist={specialist} phone={phone} dateOfBirth={dateOfBirth} doctorDetail={doctorDetail} /> :
+            <DoctorDetail setDoctorDetail={setDoctorDetail} roomId={roomId} formData={formData} profile={profile} address={address} email={email} degree={degree} fullname={fullname} gender={gender} phone={phone} dateOfBirth={dateOfBirth} doctorDetail={doctorDetail} /> :
             <DoctorTable onClickEditDoctor={onClickEditDoctor} onDeleteBlogById={onDeleteBlogById} doctors={doctorList} />
         }
       </div>

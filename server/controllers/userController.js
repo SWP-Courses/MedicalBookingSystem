@@ -56,6 +56,8 @@ const updateUser = async (req, res, next) => {
       email: req.body.email,
       address: req.body.address,
       avatar: avatar,
+      room_id: req.body?.room_id,
+      degree: req.body?.degree,
     };
     const updatedUser = await UserModel.findByIdAndUpdate(
       req.params.id,
@@ -80,7 +82,7 @@ const getDoctorById = async (req, res, next) => {
   try {
     const doctor = await UserModel.findOne(
       { _id: req.params.id, role_code: "R2" },
-      "_id fullname degree profile avatar specialist_id"
+      "_id fullname degree profile avatar"
     );
     if (!doctor) return res.status(404).send("Doctor not found!");
     const specialist = await SpecialistModel.findById(
@@ -97,20 +99,13 @@ const getDoctors = async (req, res, next) => {
   try {
     const user = await UserModel.aggregate([
       {
-        $match: {
-          role_code: "R2",
-        },
+        "$match": {
+          "role_code": "R2",
+          "status": true
+        }
       },
-      {
-        $lookup: {
-          from: "specialists",
-          localField: "specialist_id",
-          foreignField: "_id",
-          as: "special",
-        },
-      },
-      { $unwind: "$special" },
-    ]);
+
+    ])
     // console.log(user);
     res.status(200).json(user);
   } catch (err) {
@@ -121,16 +116,11 @@ const getDoctors = async (req, res, next) => {
 const deleteDoctorAccount = async (req, res, next) => {
   try {
     const doctorId = req.params.id;
-    const deleteDoctor = await UserModel.findOneAndDelete({
-      _id: doctorId,
-      role_code: "R2",
-    });
+    const deleteDoctor = await UserModel.findOneAndUpdate({ _id: doctorId }, { status: false });
     if (!deleteDoctor) {
       res.status(404);
     }
-    console.log(deleteDoctor);
-    await UserModel.deleteOne({ _id: doctorId });
-    console.log(deleteDoctor);
+    // await UserModel.deleteOne({ _id: doctorId });
     await deleteImageById(deleteDoctor.avatar.id);
     res.status(200).json({ deleteDoctor });
   } catch (error) {

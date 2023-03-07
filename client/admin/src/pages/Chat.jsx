@@ -1,71 +1,167 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { BsArrowLeft } from 'react-icons/bs';
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react'
+import { AiOutlineSend } from 'react-icons/ai';
+import { BsArrowLeft, BsDot } from 'react-icons/bs';
+import Converstation from '../components/Chat/Converstation';
 import ChatContent from '../components/ChatContent/ChatContent'
 import ChatList from '../components/ChatList/ChatList'
+import "../App.css"
+import Message from '../components/Chat/Message';
+import SocketContext from '../context/SocketProvider';
+import { v4 as uuidv4 } from 'uuid';
+import ROUTER from '../api/Router';
+import axios from "axios";
+import { useDispatch } from 'react-redux';
+import onMessageNotification from '../redux-action/messageNotificationAction';
+import ChatBoxMessage from '../components/Chat/ChatBoxMessage';
 
 const Chat = () => {
-  const userList = [
-    {
-      image:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU",
-      id: 1,
-      name: "Tim Hover",
-    },
-    {
-      image:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTQEZrATmgHOi5ls0YCCQBTkocia_atSw0X-Q&usqp=CAU",
-      id: 2,
-      name: "Hamaad Dejesus",
-    },
-    {
-      image:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRZ6tM7Nj72bWjr_8IQ37Apr2lJup_pxX_uZA&usqp=CAU",
-      id: 3,
-      name: "Eleni Hobbs",
-    },
-    {
-      image:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRJo1MiPQp3IIdp54vvRDXlhbqlhXW9v1v6kw&usqp=CAU",
-      id: 4,
-      name: "Elsa Black",
-    },
-    {
-      image:
-        "https://huber.ghostpool.com/wp-content/uploads/avatars/3/596dfc2058143-bpfull.png",
-      id: 5,
-      name: "Kayley Mellor",
-    },
-    {
-      image:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSM6p4C6imkewkCDW-9QrpV-MMAhOC7GnJcIQ&usqp=CAU",
-      id: 6,
-      name: "Allen Woodley",
-    },
-  ];
+  const socket = useContext(SocketContext);
+  const message = useRef();
+  const [messageList, setMessageList] = useState([]);
+  const [conversation, setConversation] = useState([]);
+  const [conversationFilter, setConversationFilter] = useState([]);
+  const [conversationID, setConversationID] = useState();
+  const [newConverstation, setNewConverstation] = useState(false);
+  const [newMessage, setNewMessage] = useState();
+  const [NewMessageUserId, setNewMessageUserId] = useState([]);
+  const dispath = useDispatch();
 
-  const [createChat, setCreateChat] = useState(false);
-  const [chatContent, setChatContent] = useState(null);
-  const userName = useRef();
+  const addNewMessageUserId = (user_id) => {
+    const isNewMessage = NewMessageUserId.includes(user_id);
+    if (!isNewMessage) {
+      setNewMessageUserId(pre => [...pre, user_id]);
+    }
+  }
+
+  const removeMessageUserId = async (user_id) => {
+    setNewMessageUserId(pre => pre.filter(id => id !== user_id));
+    try {
+      const data = {
+        "role": "admin",
+        "sender_id": user_id,
+      }
+      await axios.post(`${ROUTER}/api/message/status`, data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const sendMessage = async () => {
+    const data = {
+      message: message.current.value,
+      sender_id: "admin",
+      recipient_id: conversationID
+    }
+    setMessageList(message => [...message, data]);
+    message.current.value = "";
+    socket.emit("send_message", data)
+    await axios.post(`${ROUTER}/api/message`, data);
+  }
+
+  const onSellectConversation = useCallback(
+    async (recipientId) => {
+      try {
+        setConversationID(recipientId);
+        const data = {
+          sender_id: recipientId,
+          recipient_id: "admin"
+        }
+        const result = await axios.post(`${ROUTER}/api/message/all`, data);
+        setMessageList(result.data.message);
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    []
+  )
+
+
+  const filterConversation = (search) => {
+    if (search.length == 0) {
+      setConversationFilter(conversation)
+      return;
+    }
+    const conversationFilter = conversation.filter(item => item.fullname.includes(search));
+    console.log(conversationFilter);
+    setConversationFilter(conversationFilter)
+  }
+
+  useEffect(() => {
+    const getConversation = async () => {
+      try {
+        const result = await axios.get(`${ROUTER}/api/message/conversation`);
+        setConversation(result.data);
+        setConversationFilter(result.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getConversation();
+  }, [newConverstation])
+
+  useEffect(() => {
+    if (socket) {
+      socket.on("message_recieve", newMessage => {
+        addNewMessageUserId(newMessage.sender_id);
+        setNewMessage(newMessage);
+      });
+    }
+  }, [socket]);
+
+  useEffect(() => {
+    if (!newMessage) return;
+
+    const isNewConversation = conversation.every(item => item.sender_id !== newMessage.sender_id);
+
+    if (isNewConversation) {
+      setNewConverstation(!newConverstation);
+    }
+
+    if (!conversationID) return;
+
+    if (conversationID !== newMessage.sender_id) return;
+
+    if (conversationID == newMessage.sender_id) {
+      setMessageList(message => [...message, newMessage]);
+    }
+  }, [newMessage])
+
+  useEffect(() => {
+    const getConversationHaveNewMessage = async () => {
+      try {
+        const result = await axios.get(`${ROUTER}/api/message/new-message`);
+        setNewMessageUserId(result.data)
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    dispath(onMessageNotification(false));
+    getConversationHaveNewMessage();
+  }, [])
+
 
   return (
-    <div className='bg-light container w-100 h-100 d-flex flex-column gap-3'>
-      <div className='row'>
-        {/* Header */}
-        <div className="col-12 d-flex align-items-center py-3 justify-content-between">
-          {
-            createChat 
-              ? <button onClick={() => setCreateChat(false)} className='m-0 d-flex gap-2 back-button btn justify-content-center align-items-center'><BsArrowLeft /> BACK</button> 
-              : <h4 className='m-0'>CHAT</h4>
-          }         
-        </div>
-        
+    <div className='bg-white container w-100 h-100 d-flex gap-3'>
+      <div className='bg-light w-25 h-100 py-3 d-flex flex-column align-items-center px-3 gap-3'>
+        <input type="text" onChange={(e) => filterConversation(e.target.value)} className="form-control" placeholder="search" />
+
         {
-          createChat 
-            ? <ChatContent chatContent={chatContent}
-                            userName={userName}/> 
-            : <ChatList users={userList}/>
+          conversationFilter.map(item => <Converstation removeMessageUserId={removeMessageUserId} NewMessageUserId={NewMessageUserId} conversationID={conversationID} onClick={() => onSellectConversation(item.sender_id)} key={uuidv4()} data={item} />)
         }
 
+      </div>
+      <div className='bg-primary w-75 d-flex flex-column vh-100'>
+
+        {
+          conversationID ? <ChatBoxMessage messageList={messageList} /> : undefined
+        }
+
+        <div className='d-flex p-2 w-100 bottom-0 bg-light h-8'>
+          <input type="text" ref={message} className="form-control" placeholder="message" />
+          <button className='btn' onClick={() => sendMessage()}>
+            <AiOutlineSend />
+          </button>
+        </div>
       </div>
     </div>
   )

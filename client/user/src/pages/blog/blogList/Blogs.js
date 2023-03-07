@@ -44,7 +44,7 @@ function Blogs() {
     if (res && res.data && res.data.blogs && res.data.blogs.length > 0) {
       listBlogRef.current = res.data.blogs;
       setBlogs(res.data.blogs);
-    }else {
+    } else {
       console.log(error);
     }
   };

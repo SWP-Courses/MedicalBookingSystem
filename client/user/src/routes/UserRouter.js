@@ -22,6 +22,7 @@ import AppointmentSchedule from "~/pages/customer/appointmentSchedule/Appointmen
 import MedicalHistory from "~/pages/customer/medicalHistory/MedicalHistory";
 import BlogsSaved from "~/pages/customer/blogsSaved/BlogsSaved";
 import Introduction from "~/pages/introduction/Introduction";
+import Chat from "~/pages/Chat/Chat";
 
 export default function UserRouter() {
   const { currentUser } = useContext(AuthContext);
@@ -68,6 +69,7 @@ export default function UserRouter() {
           }
         />
       </Routes>
+
     </>
   );
 }

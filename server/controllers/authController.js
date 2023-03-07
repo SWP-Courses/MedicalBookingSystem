@@ -120,6 +120,7 @@ const register = async (req, res, next) => {
         phone: req.body.phone,
         role_code: req.body.role_code,
         avatar: avatar,
+        room_id: req.body.room_id,
       };
 
       // If create a doctor account
@@ -129,7 +130,7 @@ const register = async (req, res, next) => {
           role_code: "R2",
           ...document,
           degree: req.body.degree,
-          specialist_id: req.body.specialist_id,
+          room: req.body.room,
           profile: req.body.profile,
         };
 
@@ -156,7 +157,6 @@ const register = async (req, res, next) => {
     }
   } catch (err) {
     console.log(err);
-    await deleteImageById(avatar.id);
     res.status(500).json(err);
   }
 };

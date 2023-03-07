@@ -8,6 +8,8 @@ import { BrowserRouter } from "react-router-dom";
 import AuthContextProvider from "./context/authContext";
 import { ToastContainer } from "react-toastify";
 import StoreContextProvider from "./context/storeContext";
+import Chat from "./pages/Chat/Chat";
+import { SocketProvider } from "./context/SocketProvider";
 import { CookiesProvider } from "react-cookie";
 
 function App() {
@@ -16,19 +18,22 @@ function App() {
       <BrowserRouter>
         <StoreContextProvider>
           <AuthContextProvider>
-            <UserRouter />
-            <ToastContainer
-              position="top-right"
-              autoClose={5000}
-              hideProgressBar={false}
-              newestOnTop={false}
-              closeOnClick
-              rtl={false}
-              pauseOnFocusLoss
-              draggable
-              pauseOnHover
-              theme="light"
-            />
+            <SocketProvider>
+              <UserRouter />
+              <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="light"
+              />
+              <Chat />
+            </SocketProvider>
           </AuthContextProvider>
         </StoreContextProvider>
       </BrowserRouter>

@@ -67,7 +67,7 @@ function Pagination(props) {
                 <p
                   className="line-clamp line-4"
                   dangerouslySetInnerHTML={{
-                    __html: DOMPurify.sanitize(blog.subTitle),
+                    __html: DOMPurify.sanitize(blog.description),
                   }}
                 >
                   {
