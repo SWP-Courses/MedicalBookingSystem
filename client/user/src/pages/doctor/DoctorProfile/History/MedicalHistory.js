@@ -16,7 +16,7 @@ export default function MedicalHistory(props) {
   return (
     <div className="medicalHistory">
       <div className="header">
-        <h1 className="title">Lịch sử khám bệnh</h1>
+        {/* <h1 className="title">Lịch sử khám bệnh</h1> */}
         <input className="search" type='text' placeholder="tìm bệnh nhân"/>
         <button className="currentSchedule">Lịch Hôm Nay</button>
       </div>

@@ -5,13 +5,14 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import _ from "lodash";
 import { useRef } from "react";
-import { faCirclePlus, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { faCircleMinus, faCirclePlus, faMinus, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { hanlderRequest } from "~/utils";
 import API_URL from "~/api/Router";
 import { v4 as uuidv4 } from "uuid";
 import { memo } from "react";
+import { formatSlot } from "~/utils";
 
 import "./ModalEditServices.scss";
 
@@ -171,13 +172,13 @@ function ModalEditServices(props) {
               );
             })}
           </div>
-          <div className="col-md-6">
+          <div className="col-md-2">
             <label className="form-label">Giờ Khám</label>
             <input
               type="text"
               className="form-control"
               style={{ cursor: "no-drop" }}
-              defaultValue={bookedUser.slot_time}
+              defaultValue={formatSlot(bookedUser.slot_time)}
               disabled
             />
           </div>
@@ -232,13 +233,12 @@ function ModalEditServices(props) {
                 <div className="col-md-2 plus-service">
                   {service.unique_id && (
                     <span
-                      // className="note-icon"
                       className="note-icon"
                       onClick={() =>
                         handleDeleteExtraService(service.unique_id)
                       }
                     >
-                      <FontAwesomeIcon icon={faTrashCan} />
+                      <FontAwesomeIcon icon={faCircleMinus} style={{fontSize: '24px'}}/>
                     </span>
                   )}
                 </div>
@@ -258,16 +258,16 @@ function ModalEditServices(props) {
           ""
         ) : (
           <span className="add-extra-icon" onClick={hanldeAddExtraService}>
-            <FontAwesomeIcon icon={faCirclePlus} />
+            <FontAwesomeIcon icon={faCirclePlus} style={{fontSize: '24px'}}/>
           </span>
         )}
       </center>
       <Modal.Footer>
+        <button className="cancle-btn" onClick={hanldeCloseModal}>
+          Hủy
+        </button>
         <Button onClick={() => handleUpdateServices(bookedUser)}>
           Cập Nhật
-        </Button>
-        <Button className="btn btn-danger" onClick={hanldeCloseModal}>
-          Đóng
         </Button>
       </Modal.Footer>
     </Modal>

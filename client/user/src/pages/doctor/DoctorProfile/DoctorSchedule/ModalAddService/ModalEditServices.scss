@@ -11,6 +11,7 @@
 
     .delete-btn {
         color: #ff3d00;
+        
     }
 
     .plus-service {
@@ -21,13 +22,8 @@
             top: 54%;
             cursor: pointer;
             color: #ff3d00;
+            border-radius: 50%;
         }
-
-        // .note-icon__disable {
-        //     color: #ccc;
-        //     position: absolute;
-        //     top: 54%;
-        // }
 
         .add-extra-icon {
             position: absolute;
@@ -39,5 +35,23 @@
         }
     }
 
+    .cancle-btn {
+        background-color: #f6f6f6;
+        border: none;
+        color: #141414;
+        padding: 12px 30px;
+        border-radius: 8px;
+    }
+
+    .cancle-btn:hover {
+        background-color: #f0e6e6;
+    }
+
+
+    .btn:not(:disabled):not(.disabled) {
+        cursor: pointer;
+        padding: 6px 10px;
+        border-radius: 8px;
+    }
 
     

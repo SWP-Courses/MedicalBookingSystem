@@ -4,7 +4,11 @@ import { AuthContext } from "~/context/authContext";
 import axios from "axios";
 import "react-calendar/dist/Calendar.css";
 import "animate.css";
-import { faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCheck,
+  faPenToSquare,
+  faPills,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import "./DoctorSchedule.scss";
@@ -15,6 +19,7 @@ import { hanlderRequest } from "~/utils";
 import ModalEditServices from "./ModalAddService/ModalEditServices";
 import { useNavigate } from "react-router-dom";
 import _ from "lodash";
+import { formatSlot } from "~/utils";
 
 function DoctorSchedule(props) {
   const { handleOptionClick, setPatient, setListUsers } = props;
@@ -37,7 +42,6 @@ function DoctorSchedule(props) {
 
   useEffect(() => {
     if (!_.isEmpty(currentschedule)) {
-
     }
 
     setListUsers(() => {
@@ -47,7 +51,7 @@ function DoctorSchedule(props) {
           schedule.customer.map((user) => {
             users.push({
               service_id: schedule._id,
-              user_data: user
+              user_data: user,
             });
           });
         }
@@ -74,10 +78,10 @@ function DoctorSchedule(props) {
   };
 
   // console.log("check date value: ", date);
-  // console.log(">>>check current schedule: ", currentschedule);  
+  // console.log(">>>check current schedule: ", currentschedule);
   return (
     <div className="schedule ">
-      <div className="schedule__calender animate__animated">
+      <div className="schedule__calender">
         <Calendar
           value={date}
           onChange={(value) => setDate(value)}
@@ -85,83 +89,89 @@ function DoctorSchedule(props) {
         />
       </div>
       <div className="schedule__calender-detail">
-        <span className="mr-4">Ngày: {formatDate(date)}</span>
-        {currentschedule && currentschedule.length > 0 ? (
-          <>
-            <table className="mt-3">
-              <thead>
-                <tr>
-                  <th>user ID</th>
-                  <th>Khung Giờ</th>
-                  <th>Dịch Vụ</th>
-                  <th>Thanh Toán</th>
-                  <th>Kê Thuốc</th>
-                  <th>Sửa</th>
-                </tr>
-              </thead>
-              <tbody>
-                {currentschedule.map((item, index) => {
-                  return (
-                    <tr key={index}>
-                      <td>
-                        {/* {item?.customer.map((item, index) => {
-                          return (
-                            <p
-                              key={index}
-                            >{`${item._id} - ${item.fullname}`}</p>
-                          );
-                        })} */}
-                        {
-                          item?.customer[0]?.fullname
-                        }
-                      </td>
-                      <td>{item.slot_time}</td>
-                      <td>
-                        {item?.services.map((service, index) => {
-                          return <p key={index}>{`${service.name}`}</p>;
-                        })}
-                      </td>
-                      <td>done</td>
-                      <td>
-                        <button
-                          className="btn btn-success"
+        <span className="mr-4" style={{ color: "#a0a0a0" }}>
+          Ngày{" "}
+        </span>
+        <span style={{ fontWeight: "600" }}>{formatDate(date)}</span>
+        <table className="mt-3">
+          <thead>
+            <tr>
+              <th>Tên</th>
+              <th>Khung Giờ</th>
+              <th>Dịch Vụ</th>
+              <th>
+                <center>Thanh Toán</center>
+              </th>
+              <th>Kê Thuốc</th>
+              <th>Sửa</th>
+            </tr>
+          </thead>
+          <tbody>
+            {currentschedule.map((item, index) => {
+              return (
+                <tr key={index}>
+                  <td>{item?.customer[0]?.fullname}</td>
+                  <td>
+                    <center>{formatSlot(item.slot_time)}</center>
+                  </td>
+                  <td>
+                    {item?.services.map((service, index) => {
+                      return <p key={index}>{`${service.name}`}</p>;
+                    })}
+                  </td>
+                  <td>
+                    <center>
+                      <button className="btn-paid">
+                        <FontAwesomeIcon
+                          icon={faCheck}
+                          style={{ fontSize: "15px", marginRight: "2px" }}
+                        />
+                        hoàn thành
+                      </button>
+                    </center>
+                    {/* <button
+                          className="btn-not-paid"
                           onClick={() => {
                             setPatient(item);
                             handleOptionClick("prescription");
                           }}
                         >
-                          kê đơn
-                        </button>
-                      </td>
-                      <td>
-                        <span
-                          className="schedule__calender-icon"
-                          onClick={() => handleEditService(item)}
-                        >
-                          <FontAwesomeIcon icon={faPenToSquare} />
-                        </span>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </>
+                          chưa thanh toán
+                        </button> */}
+                  </td>
+                  <td>
+                    <center
+                      onClick={() => {
+                        setPatient(item);
+                        handleOptionClick("prescription");
+                      }}
+                    >
+                      <FontAwesomeIcon
+                        icon={faPills}
+                        style={{ fontSize: "22px", cursor: "pointer", color: 'var(--primary)' }}
+                      />
+                    </center>
+                  </td>
+                  <td>
+                    <center
+                      className="schedule__calender-icon"
+                      onClick={() => handleEditService(item)}
+                    >
+                      <FontAwesomeIcon icon={faPenToSquare} style={{color: '#2892ed'}}/>
+                    </center>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+        {currentschedule && currentschedule.length > 0 ? (
+          ""
         ) : (
-          <>
-            <span className="mt-3">hiện không có lịch</span>
-          </>
+          <span className="no-date-available">hiện không có lịch</span>
         )}
       </div>
 
-      {/* 
-        this modal gonna mouted by the time the component Doctorschedule was called 
-        so if this modal have any logic setState in it,  
-        it will cause the component re-render directly inside component DoctorSchedule 
-        but we can not see it happen, 
-        but place console.log in the modal we can see it 
-        ===> this re-render is not nessesary 
-      */}
       <ModalEditServices
         modalShow={modalShow}
         setModalShow={setModalShow}

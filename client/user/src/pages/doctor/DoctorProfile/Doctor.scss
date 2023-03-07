@@ -22,7 +22,7 @@
       >.doctorName {
         font-size: 20px;
         margin-left: 20px;
-        border-radius: 5px;
+        border-radius: 8px;
         padding: 10px 26px;
         box-shadow: -1px 0px 13px 1px rgba(0,0,0,0.21);
         -webkit-box-shadow: -1px 0px 13px 1px rgba(0,0,0,0.21);
@@ -74,7 +74,7 @@
   .doctorContent {
     flex: 3;
     background-color: #F2F2F2;
-    min-height: 500px;
+    min-height: 500px;  
     border-radius: 10px;
     background: var(--white-color);
     box-shadow:  21px 21px 83px #b5b5b5,

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./Prescription.scss";
 import Select, { colourOptions } from "react-select";
 import Form from "react-bootstrap/Form";
-import { faCirclePlus, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { faCirclePlus, faMinusCircle, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { v4 as uuidv4 } from "uuid";
 import _ from "lodash";
@@ -254,7 +254,7 @@ function Prescription(props) {
                         className="note-icon"
                         onClick={() => handleDeleteDrug(drug.id)}
                       >
-                        <FontAwesomeIcon icon={faTrashCan} />
+                        <FontAwesomeIcon icon={faMinusCircle} style={{fontSize: '20px'}}/>
                       </span>
                     )}
                   </div>
