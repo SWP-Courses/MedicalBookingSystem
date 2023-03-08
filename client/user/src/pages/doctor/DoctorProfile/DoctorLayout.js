@@ -8,12 +8,15 @@ import { AuthContext } from "~/context/authContext";
 import UserInfo from "~/components/user/userInfo/UserInfo";
 import { API_IMAGE_URL } from "~/api/Router";
 import Prescription from "./Prescription/Prescription";
-import { useEffect } from "react";
-import { hanlderRequest } from "~/utils";
-import axios from "axios";
-import API_URL from "~/api/Router";
 
-export default function Doctor() {
+const routers = [
+  { path: "/doctor/profile", title: "Thông tin cá nhân" },
+  { path: "/doctor/patient-booking", title: "Xem lịch khám" },
+  { path: "/doctor/presciption", title: "Kê đơn thuốc" },
+  { path: "/doctor/patient-history", title: "Lịch sử khám của bệnh nhân" },
+];
+
+export default function DoctorLayout() {
   const { currentUser } = useContext(AuthContext);
   const [userContent, setUserContent] = useState("info");
   const [image, setImage] = useState(currentUser?.avatar);

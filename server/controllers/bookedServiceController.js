@@ -11,7 +11,8 @@ const mergeService = async (bookedService) => {
   return await Promise.all(
     bookedService.services.map(async (serviceItem) => {
       const servicefind = await Service.findById(serviceItem.service_id);
-      let service = servicefind._doc;
+      // console.log("merge",servicefind);
+      let service = servicefind;
       return {
         name: service.name,
         price: service.price,
@@ -28,45 +29,52 @@ const mergeService = async (bookedService) => {
 const getBookedByDoctor = asyncHandler(async (req, res, next) => {
   const viewDate = req.query.date;
   console.log(viewDate);
-  const orders = await BookedService.aggregate([
-    {
-      $match: {
-        $and: [
-          { doctor_id: mongoose.Types.ObjectId(req.params.id) },
-          {
-            date: {
-              $gte: startOfDay(new Date(viewDate)),
-              $lte: endOfDay(new Date(viewDate)),
+  try {
+    const orders = await BookedService.aggregate([
+      {
+        $match: {
+          $and: [
+            { doctor_id: mongoose.Types.ObjectId(req.params.id) },
+            {
+              date: {
+                $gte: startOfDay(new Date(viewDate)),
+                $lte: endOfDay(new Date(viewDate)),
+              },
             },
-          },
-        ],
+          ],
+        },
       },
-    },
-    {
-      $lookup: {
-        from: "users",
-        localField: "user_id",
-        foreignField: "_id",
-        pipeline: [{ $project: { _id: 1, fullname: 1 } }],
-        as: "customer",
+      {
+        $lookup: {
+          from: "users",
+          localField: "user_id",
+          foreignField: "_id",
+          pipeline: [{ $project: { _id: 1, fullname: 1 } }],
+          as: "customer",
+        },
       },
-    },
-  ]).project({ user_id: 0, doctor_id: 0, date: 0 });
-  // console.log(orders);
-  const bookedServicesFull = await Promise.all(
-    orders.map(async (order) => {
-      const servicesFull = await mergeService(order);
-      // console.log({
-      //   ...order,
-      //   services: servicesFull,
-      // });
-      return {
-        ...order,
-        services: servicesFull,
-      };
-    })
-  );
-  return res.status(200).json(bookedServicesFull);
+    ]).project({ user_id: 0, doctor_id: 0, date: 0 });
+    console.log(orders);
+    if(!orders.length) return res.status(404).json("Không có lịch đặt")
+
+    const bookedServicesFull = await Promise.all(
+      orders.map(async (order) => {
+        const servicesFull = await mergeService(order);
+        // console.log({
+        //   ...order,
+        //   services: servicesFull,
+        // });
+        return {
+          ...order,
+          services: servicesFull,
+        };
+      })
+    );
+    return res.status(200).json(bookedServicesFull);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json(error);
+  }
 });
 
 //@desc Get history of patient
@@ -98,10 +106,10 @@ const getHistoryByUserId = asyncHandler(async (req, res, next) => {
   const bookedServicesFull = await Promise.all(
     orders.map(async (order) => {
       const servicesFull = await mergeService(order);
-      // console.log({
-      //   ...order,
-      //   services: servicesFull,
-      // });
+      console.log({
+        ...order,
+        services: servicesFull,
+      });
       return {
         ...order,
         services: servicesFull,

@@ -7,14 +7,11 @@ import Register from "~/pages/Auth/Register/Register";
 import BlogDetail from "~/pages/blog/blogDetail/BlogDetail";
 import Blogs from "~/pages/blog/blogList/Blogs";
 import Booking from "~/pages/booking/Booking";
-import Customer from "~/pages/customer/CustomerLayout";
 import DoctorDetail from "~/pages/doctor/doctorDetail/DoctorDetail";
 import DoctorList from "~/pages/doctor/doctorList/DoctorList";
-import Doctor from "~/pages/doctor/DoctorProfile/Doctor";
 import Home from "~/pages/home/Home";
 import Specialist from "~/pages/specialist/Specialist";
 import AuthContextProvider, { AuthContext } from "../context/authContext";
-
 import "react-toastify/dist/ReactToastify.css";
 import CustomerLayout from "~/pages/customer/CustomerLayout";
 import UserInfo from "~/components/user/userInfo/UserInfo";
@@ -23,6 +20,7 @@ import MedicalHistory from "~/pages/customer/medicalHistory/MedicalHistory";
 import BlogsSaved from "~/pages/customer/blogsSaved/BlogsSaved";
 import Introduction from "~/pages/introduction/Introduction";
 import Chat from "~/pages/Chat/Chat";
+import DoctorLayout from "~/pages/doctor/DoctorProfile/DoctorLayout";
 
 export default function UserRouter() {
   const { currentUser } = useContext(AuthContext);
@@ -47,7 +45,7 @@ export default function UserRouter() {
               )}
               {/* doctor */}
               {currentUser?.role === "doctor" && (
-                <Route path="/doctor" element={<Doctor />} />
+                <Route path="/doctor" element={<DoctorLayout />} />
               )}
               <Route path="/intro" element={<Introduction />} />
               <Route path="/doctors" element={<DoctorList />} />
