@@ -109,8 +109,8 @@ function DoctorSchedule(props) {
           <tbody>
             {currentschedule.map((item, index) => {
               return (
-                <tr key={index}>
-                  <td>{item?.customer[0]?.fullname}</td>
+                <tr key={index} >
+                  <td >{item?.customer[0]?.fullname}</td>
                   <td>
                     <center>{formatSlot(item.slot_time)}</center>
                   </td>
@@ -126,7 +126,6 @@ function DoctorSchedule(props) {
                           icon={faCheck}
                           style={{ fontSize: "15px", marginRight: "2px" }}
                         />
-                        hoàn thành
                       </button>
                     </center>
                     {/* <button
@@ -177,6 +176,7 @@ function DoctorSchedule(props) {
         setModalShow={setModalShow}
         bookedUser={userService}
         fetchSchedule={fetchSchedule}
+        
       />
     </div>
   );
