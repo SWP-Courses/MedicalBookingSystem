@@ -55,7 +55,7 @@ const getBookedByDoctor = asyncHandler(async (req, res, next) => {
       },
     ]).project({ user_id: 0, doctor_id: 0, date: 0 });
     console.log(orders);
-    if(!orders.length) return res.status(404).json("Không có lịch đặt")
+    if (!orders.length) return res.status(404).json("Không có lịch đặt");
 
     const bookedServicesFull = await Promise.all(
       orders.map(async (order) => {
@@ -240,13 +240,17 @@ const bookService = asyncHandler(async (req, res, next) => {
 //@route PUT /api/blog/:id
 //@access private
 const addExtraService = asyncHandler(async (req, res, next) => {
+  const { service_id, quantity } = req.body;
+
+  if(!service_id || !quantity) return res.status(400).json("Thêm phải có dịch vụ và số lượng!");
+
   const bookedService = await BookedService.findByIdAndUpdate(
     req.params.id,
     {
       $addToSet: {
         services: {
-          service_id: req.body.service_id,
-          quantity: req.body.quantity,
+          service_id,
+          quantity,
         },
       },
     },
@@ -264,10 +268,13 @@ const addExtraService = asyncHandler(async (req, res, next) => {
 });
 
 const updateAddedService = asyncHandler(async (req, res, next) => {
+  // check params:id có valid
+
   const result = await BookedService.updateOne(
     { _id: req.params.id, "services.service_id": req.params.serviceId },
     { $set: { "services.$.quantity": req.body.quantity } }
   );
+  
   res.status(200).json(result);
 });
 
