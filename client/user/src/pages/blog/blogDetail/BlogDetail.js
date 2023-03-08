@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark } from "@fortawesome/free-regular-svg-icons";
 import { faBookmark as solid } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
+import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
 function BlogDetail() {
   const { setRoutingHistory } = useContext(StoreContext);
@@ -88,7 +89,7 @@ function BlogDetail() {
     } else {
       try {
         await axios.post(`${API_URL}/blogs/save/${id}/${currentUser._id}`);
-        toast.success("Lưu bài viết thành công")
+        toast.success("Lưu bài viết thành công");
         setIsSaved(true);
       } catch (err) {
         console.log(err);
@@ -100,7 +101,7 @@ function BlogDetail() {
     try {
       await axios.delete(`${API_URL}/blogs/unsave/${id}/${currentUser._id}`);
       setIsSaved(false);
-      toast.success("Đã bỏ theo dõi bài viết")
+      toast.success("Đã bỏ theo dõi bài viết");
     } catch (err) {
       console.log(err);
     }
@@ -126,22 +127,33 @@ function BlogDetail() {
           <div className="blog-wrapper">
             {currentUser?.role !== "doctor" &&
               (!isSaved ? (
-                <>
+                <OverlayTrigger
+                  delay={{ hide: 450, show: 300 }}
+                  overlay={(props) => <Tooltip {...props}>Lưu</Tooltip>}
+                  placement="bottom"
+                >
                   <FontAwesomeIcon
                     icon={faBookmark}
                     className="saveBlog"
                     onClick={handleSaveBlogClick}
-                    title="Lưu"
+                    // title="Lưu"
                   />
-                </>
+                </OverlayTrigger>
               ) : (
                 <>
-                  <FontAwesomeIcon
-                    icon={solid}
-                    className="saveBlog"
-                    onClick={handleUnSaveBlogClick}
-                    title="Huỷ Lưu"
-                  />
+                  <OverlayTrigger
+                    delay={{ hide: 450, show: 300 }}
+                    overlay={(props) => <Tooltip {...props}>Huỷ lưu</Tooltip>}
+                    placement="bottom"
+                  >
+                    <FontAwesomeIcon
+                      icon={solid}
+                      className="saveBlog"
+                      onClick={handleUnSaveBlogClick}
+                      // title="Huỷ Lưu"
+                    />
+                  </OverlayTrigger>
+                  ,
                 </>
               ))}
             <div className="blog-detail">

@@ -7,16 +7,20 @@ import { AuthContext } from "~/context/authContext";
 const Layout = () => {
   const { currentUser } = useContext(AuthContext);
   return (
-    <div className="d-flex layout">
+    <>
       {["admin", "consultant", "cashier"].includes(currentUser?.role) && (
-        <>
-          <Sidebar />
-          <div className="main">
-            <AdminRouter />
-          </div>
-        </>
+        <div className="d-flex layout">
+          (
+          <>
+            <Sidebar />
+            <div className="main">
+              <AdminRouter />
+            </div>
+          </>
+          )
+        </div>
       )}
-    </div>
+    </>
   );
 };
 

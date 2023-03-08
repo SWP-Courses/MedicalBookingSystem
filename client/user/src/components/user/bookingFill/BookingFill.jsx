@@ -8,7 +8,6 @@ import { format } from "date-fns";
 import { AuthContext } from "~/context/authContext";
 import { formatSlot } from "~/utils";
 
-const getServiceName = () => {};
 
 export default function BookingFill({
   booking,
@@ -19,19 +18,6 @@ export default function BookingFill({
 }) {
   const { currentUser } = useContext(AuthContext);
   const [step, setStep] = useState(1);
-
-  // useEffect(() => {
-  //   currentUser &&
-  //     setBooking((prev) => ({
-  //       ...prev,
-  //       fullname: currentUser.fullname,
-  //       gender: currentUser.gender,
-  //       dateOfBirth: currentUser.dateOfBirth,
-  //       phone: currentUser.phone,
-  //       email: currentUser.email,
-  //     }));
-  // }, [currentUser, setBooking]);
-  // console.log(currentUser);
 
   const handleTextInput = (e, field) =>
     setBooking((prev) => ({ ...prev, [field]: e.target.value }));
@@ -48,24 +34,6 @@ export default function BookingFill({
   return (
     <div className="bookingContent">
       <div className="hospitalPart">
-        <Dropdown className="dropdownContain">
-          <Dropdown.Toggle id="dropdown-basic" className="dropdownText">
-            <div className="text">
-              <FontAwesomeIcon icon={faBriefcase} />
-              {!booking.service
-                ? "Chọn chuyên khoa khám"
-                : booking.service.name}
-            </div>
-          </Dropdown.Toggle>
-
-          <Dropdown.Menu className="dropdownOptions">
-            {services?.map((service) => (
-              <Dropdown.Item onClick={() => handleChooseService(service)}>
-                {service.name}
-              </Dropdown.Item>
-            ))}
-          </Dropdown.Menu>
-        </Dropdown>
         <span className="title">Thời gian khám</span>
         <div className="date">
           <span className="d-block mb-2 fs-5">Ngày khám: {format(booking.date, "dd/MM/yyyy")}</span>
@@ -82,9 +50,9 @@ export default function BookingFill({
               )
                 return false;
 
-              // if sunday, last days, over next 7 days
+              // if last days, over next 7 days
               return (
-                date.getDay() === 0 ||
+                // date.getDay() === 0 ||
                 newDate > date ||
                 date > newDate.setDate(newDate.getDate() + 7)
               );
@@ -109,6 +77,26 @@ export default function BookingFill({
                 }
               >
                 {doctor.fullname}
+              </Dropdown.Item>
+            ))}
+          </Dropdown.Menu>
+        </Dropdown>
+        
+        {/* Chọn dịch vụ khám */}
+        <Dropdown className="dropdownContain">
+          <Dropdown.Toggle id="dropdown-basic" className="dropdownText">
+            <div className="text">
+              <FontAwesomeIcon icon={faBriefcase} />
+              {!booking.service
+                ? "Chọn dịch vụ khám"
+                : booking.service.name}
+            </div>
+          </Dropdown.Toggle>
+
+          <Dropdown.Menu className="dropdownOptions">
+            {services?.map((service) => (
+              <Dropdown.Item onClick={() => handleChooseService(service)}>
+                {service.name}
               </Dropdown.Item>
             ))}
           </Dropdown.Menu>

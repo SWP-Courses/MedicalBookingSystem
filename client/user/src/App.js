@@ -51,7 +51,7 @@ function App() {
                 pauseOnHover
                 theme="light"
               />
-              <Chat />
+              {/* <Chat /> */}
             </SocketProvider>
           </AuthContextProvider>
         </StoreContextProvider>

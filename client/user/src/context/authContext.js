@@ -46,7 +46,7 @@ export default function AuthContextProvider({ children }) {
       setCurrentUser(res.data);
       // navigate("/");
       if (["customer", "doctor"].includes(res.data.role))
-        navigate("/" + res.data.role);
+        navigate(`/${res.data.role}/profile`);
       if (["admin", "consultant", "cashier"].includes(res.data.role))
         navigate("/staff");
     } catch (error) {
