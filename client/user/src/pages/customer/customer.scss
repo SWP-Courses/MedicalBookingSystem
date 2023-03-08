@@ -23,9 +23,9 @@
         margin-left: 20px;
         border-radius: 5px;
         padding: 10px 20px;
-        box-shadow: -1px 0px 13px 1px rgba(0,0,0,0.21);
-        -webkit-box-shadow: -1px 0px 13px 1px rgba(0,0,0,0.21);
-        -moz-box-shadow: -1px 0px 13px 1px rgba(0,0,0,0.21);
+        box-shadow: -1px 0px 8px 1px rgba(0,0,0,0.21);
+        -webkit-box-shadow: -1px 0px 8px 1px rgba(0,0,0,0.21);
+        -moz-box-shadow: -1px 0px 8px 1px rgba(0,0,0,0.21);
       } 
 
       > img {
@@ -60,7 +60,7 @@
             cursor: pointer;
 
             &.active {
-              background-color: #286ba6;
+              background-color: #0A58CA;
               color: var(--white-color);
             }
         } 

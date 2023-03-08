@@ -33,8 +33,8 @@ const sendMail = async (req, res, next) => {
     var mailOptions = {
       from: "thongkhoa2002@gmail.com",
       to: req.body.email.trim(),
-      subject: "Give back password",
-      text: "Nã xác nhận là " + code,
+      subject: "Đổi mật khẩu",
+      text: "Mã xác nhận là " + code,
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
@@ -88,7 +88,7 @@ const updateNewPassword = async (req, res, next) => {
       await UserModel.findByIdAndUpdate(user.id, {
         password: hash,
       });
-      return res.status(200).send("Cập nhật thành công");
+      return res.status(200).send("Đã cập nhật mật khẩu mới");
     });
   } catch (err) {
     res.status(500).err;
@@ -120,6 +120,7 @@ const register = async (req, res, next) => {
         phone: req.body.phone,
         role_code: req.body.role_code,
         avatar: avatar,
+        room_id: req.body.room_id,
       };
 
       // If create a doctor account
@@ -129,7 +130,7 @@ const register = async (req, res, next) => {
           role_code: "R2",
           ...document,
           degree: req.body.degree,
-          specialist_id: req.body.specialist_id,
+          room: req.body.room,
           profile: req.body.profile,
         };
 
@@ -156,7 +157,6 @@ const register = async (req, res, next) => {
     }
   } catch (err) {
     console.log(err);
-    await deleteImageById(avatar.id);
     res.status(500).json(err);
   }
 };
@@ -185,11 +185,11 @@ const login = async (req, res, next) => {
       { id: user._id, isAdmin: user.role === "admin" ? true : false },
       process.env.JWT
     );
-    console.log(token);
+    // console.log(token);
 
     const { password, role_code, ...filteredUser } = user._doc;
     res
-      .cookie("access_token", "sfasdfdf", {
+      .cookie("access_token", token, {
         httpOnly: true,
       })
       .status(200)
@@ -213,7 +213,7 @@ const logout = (req, res) => {
   req.session = null;
   res.clearCookie("session");
   res.clearCookie("session.sig");
-  console.log("asdasd");
+  // console.log("asdasd");
   // res.redirect(CLIENT_URL);
   res.status(200).json("logged out");
   // res

@@ -8,6 +8,7 @@ const {
   updateAddedService,
   completeBooked,
   cancelBookedService,
+  getHistoryByUserId,
 } = require("../controllers/bookedServiceController");
 const router = express.Router();
 
@@ -24,7 +25,7 @@ router.route("/:id/:serviceId").put(updateAddedService);
 
 // customer và doctor cùng tìm theo user_id
 // doctor search ra customer rồi mới fetch lịch sử
-// router.route('/history/:userId', getBookedsByUserId)
+router.get('/history/:userId', getHistoryByUserId);
 
 router.route("/doctors/:id").get(getBookedByDoctor);
 

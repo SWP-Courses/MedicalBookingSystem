@@ -1,21 +1,44 @@
 import dayjs from 'dayjs'
-import React, { memo, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import src from "../../assets/images/avatar.jpg"
 import { AiOutlinePlus } from "react-icons/ai"
 import "./doctordetail.css";
 import ROUTER from '../../api/Router';
+import axios from 'axios';
 
-function DoctorDetail({ specialistId, profile, formData, doctorDetail, fullname, dateOfBirth, phone, gender, specialist, email, degree, address }) {
+function DoctorDetail({ roomId, profile, formData, doctorDetail, fullname, dateOfBirth, phone, gender, email, degree, address }) {
     const [Avatar, setAvatar] = useState();
+    const [room, setRoom] = useState([]);
+
     const formatDate = (date) => {
         const formatDate = date.split("/").reverse().join("-");
         console.log(formatDate);
         return formatDate;
     }
 
+    const getAllEmptyRoom = async (doctorDetail) => {
+        try {
+            let param = doctorDetail ? doctorDetail._id : "room"
+            const result = await axios.get(`${ROUTER}/api/room/${param}`);
+            if (result.status === 200) {
+                setRoom(result.data.room);
+            }
+        } catch (error) {
+            console.log(error.message);
+        }
+    }
+
+    useEffect(() => {
+        getAllEmptyRoom(doctorDetail);
+        if (doctorDetail) {
+            setAvatar(`${ROUTER}/image/${doctorDetail.avatar.filename}`)
+        }
+    }, [])
+
+
     const onSelectAvatar = (file) => {
         if (!file) return;
-        console.log(file);
+        formData.current.delete("avatar");
         setAvatar(URL.createObjectURL(file));
         formData.current.append('avatar', file);
     }
@@ -26,7 +49,16 @@ function DoctorDetail({ specialistId, profile, formData, doctorDetail, fullname,
                 <div className='w-50 h-100'>
                     {/* avatar */}
                     <div className='w-100 h-50 d-flex justify-content-center px-5'>
-                        <img src={`${ROUTER}/image/${doctorDetail.avatar.filename}`} alt="" className='h-100' />
+                        <img src={Avatar} alt="" className='h-100' />
+                    </div>
+                    <div className='d-flex mt-2 justify-content-center align-items-center'>
+                        <label htmlFor="avatar">
+                            <div className='select-file-label'>
+                                <AiOutlinePlus />
+                            </div>
+                            <p className='text-center mt-2'>New Avatar</p>
+                        </label>
+                        <input className='d-none' onChange={e => onSelectAvatar(e.target.files[0])} type="file" id='avatar' />
                     </div>
                 </div>
 
@@ -37,14 +69,14 @@ function DoctorDetail({ specialistId, profile, formData, doctorDetail, fullname,
                             <div className="input-group-prepend w-100">
                                 <span className="w-25" id="basic-addon1">Fullname</span>
                             </div>
-                            <input type="text" className="form-control" defaultValue={doctorDetail.fullname} placeholder="Fullname" aria-label="Fullname" aria-describedby="basic-addon1" />
+                            <input type="text" className="form-control" ref={fullname} defaultValue={doctorDetail.fullname} placeholder="Fullname" aria-label="Fullname" aria-describedby="basic-addon1" />
                         </div>
 
                         <div className="input-group">
                             <div className="input-group-prepend w-100">
                                 <span className="w-25" id="basic-addon1">Address</span>
                             </div>
-                            <input type="text" className="form-control" defaultValue={doctorDetail.address} placeholder="Address" aria-label="Address" aria-describedby="basic-addon1" />
+                            <input type="text" className="form-control" ref={address} defaultValue={doctorDetail.address} placeholder="Address" aria-label="Address" aria-describedby="basic-addon1" />
                         </div>
 
                         <div className="d-flex gap-3">
@@ -52,14 +84,14 @@ function DoctorDetail({ specialistId, profile, formData, doctorDetail, fullname,
                                 <div className="input-group-prepend w-100">
                                     <span className="w-25" id="basic-addon1">Email</span>
                                 </div>
-                                <input type="text" className="form-control" defaultValue={doctorDetail.email} placeholder="Email" aria-label="Email" aria-describedby="basic-addon1" />
+                                <input type="text" className="form-control" ref={email} defaultValue={doctorDetail.email} placeholder="Email" aria-label="Email" aria-describedby="basic-addon1" />
                             </div>
 
                             <div className="input-group w-50">
                                 <div className="input-group-prepend w-100">
                                     <span className="w-25" id="basic-addon1">Degree</span>
                                 </div>
-                                <input type="text" className="form-control" defaultValue={doctorDetail.degree} placeholder="Degree" aria-label="Degree" aria-describedby="basic-addon1" />
+                                <input type="text" className="form-control" ref={degree} defaultValue={doctorDetail.degree} placeholder="Degree" aria-label="Degree" aria-describedby="basic-addon1" />
                             </div>
                         </div>
 
@@ -68,7 +100,7 @@ function DoctorDetail({ specialistId, profile, formData, doctorDetail, fullname,
                                 <div className="input-group-prepend w-100">
                                     <span className="w-25" id="basic-addon1">Sex</span>
                                 </div>
-                                <select className="form-select" defaultValue={doctorDetail.gender} aria-label="Default select example">
+                                <select className="form-select" ref={gender} defaultValue={doctorDetail.gender} aria-label="Default select example">
                                     <option value="male">Male</option>
                                     <option value="female" selected='selected' >Female</option>
                                     <option value="Other">Other</option>
@@ -79,7 +111,7 @@ function DoctorDetail({ specialistId, profile, formData, doctorDetail, fullname,
                                 <div className="input-group-prepend w-100">
                                     <span className="w-25" id="basic-addon1">Date of birth</span>
                                 </div>
-                                <input defaultValue={formatDate(doctorDetail.dateOfBirth)} type="date" className="form-control" placeholder="DateofBirth" aria-label="DateofBirth" />
+                                <input ref={dateOfBirth} defaultValue={formatDate(doctorDetail.dateOfBirth)} type="date" className="form-control" placeholder="DateofBirth" aria-label="DateofBirth" />
 
                             </div>
                         </div>
@@ -89,23 +121,24 @@ function DoctorDetail({ specialistId, profile, formData, doctorDetail, fullname,
                                 <div className="input-group-prepend w-100">
                                     <span className="w-25" id="basic-addon1">Phone</span>
                                 </div>
-                                <input type="text" defaultValue={doctorDetail.phone} className="form-control" placeholder="Phone" aria-label="Phone" aria-describedby="basic-addon1" />
+                                <input type="text" ref={phone} defaultValue={doctorDetail.phone} className="form-control" placeholder="Phone" aria-label="Phone" aria-describedby="basic-addon1" />
                             </div>
 
                             <div className="input-group w-50">
                                 <div className="input-group-prepend w-100">
-                                    <span className="w-25" id="basic-addon1">Specialist</span>
+                                    <span className="w-25" id="basic-addon1">Room</span>
                                 </div>
-                                <select className="form-select" defaultValue={doctorDetail.special._id} aria-label="Default select example">
+                                <select className="form-select" ref={roomId} defaultValue={doctorDetail.room_id} aria-label="Default select example">
                                     {
-                                        specialist.map(special => <option value={special._id}>{special.title}</option>)
+                                        room &&
+                                        room.map(item => <option value={item._id}>{item.room}</option>)
                                     }
                                 </select>
                             </div>
                         </div>
                         <div className="mb-3">
                             <label htmlFor="exampleFormControlTextarea1" className="form-label">Description</label>
-                            <textarea className="form-control" id="exampleFormControlTextarea1" defaultValue={doctorDetail.profile} rows="8"></textarea>
+                            <textarea className="form-control" ref={profile} id="exampleFormControlTextarea1" defaultValue={doctorDetail.profile} rows="8"></textarea>
                         </div>
                     </div>
 
@@ -199,11 +232,12 @@ function DoctorDetail({ specialistId, profile, formData, doctorDetail, fullname,
 
                         <div className="input-group w-50">
                             <div className="input-group-prepend w-100">
-                                <span className="w-25" id="basic-addon1">Specialist</span>
+                                <span className="w-25" id="basic-addon1">Room</span>
                             </div>
-                            <select ref={specialistId} className="form-select" aria-label="Default select example">
+                            <select className="form-select" ref={roomId} aria-label="Default select example">
                                 {
-                                    specialist.map(special => <option value={special._id}>{special.title}</option>)
+                                    room &&
+                                    room.map(item => <option value={item._id}>{item.room}</option>)
                                 }
                             </select>
                         </div>

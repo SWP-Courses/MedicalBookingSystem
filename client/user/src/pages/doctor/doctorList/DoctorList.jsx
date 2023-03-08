@@ -1,7 +1,7 @@
 import "./doctorList.scss";
 
 import stethoscope from "~/assets/images/stethoscope.jpg";
-import DoctorItem from "~/components/doctorItem/DoctorItem";
+import DoctorItem from "~/components/user/doctorItem/DoctorItem";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import API_URL from "~/api/Router";

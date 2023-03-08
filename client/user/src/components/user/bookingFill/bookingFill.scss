@@ -1,0 +1,89 @@
+.bookingContent {
+  padding: 14px 100px;
+
+  .hospitalPart {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    flex: 1;
+    .dropdownContain {
+      width: 100%;
+      .dropdownText {
+        width: 100%;
+        background-color: var(--white-color);
+        color: #333;
+        border: 1px solid lightgray;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        > .text {
+          display: flex;
+          gap: 5px;
+          align-items: center;
+        }
+      }
+
+      .dropdownOptions {
+        width: 100%;
+      }
+    }
+
+    > .title {
+      font-weight: 500;
+      font-size: 18px;
+    }
+
+    > .time {
+      display: flex;
+      flex-direction: column;
+
+      .groupTime {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        > .timeItem {
+          padding: 5px 15px;
+          background-color: rgb(243, 243, 243);
+          border-radius: 5px;
+          border: 2px solid transparent;
+          cursor: pointer;
+
+          &.active {
+            border: 2px solid #e5a724;
+            background-color: var(--white-color);
+            color: #e5a724;
+          }
+        }
+      }
+    }
+  }
+
+  .userFillPart {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    > h2 {
+      font-size: 20px;
+    }
+
+    .infoKey {
+      padding: 15px;
+      border: 1px solid lightgray;
+      border-radius: 5px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .infoValue {
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .bookingContent {
+    padding: 14px 50px;
+  }
+}

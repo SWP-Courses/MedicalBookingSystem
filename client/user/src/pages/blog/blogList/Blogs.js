@@ -7,7 +7,6 @@ import API_URL from "~/api/Router";
 import ReactPaginate from "react-paginate";
 import slider from "~/assets/images/slider.jpg";
 import Pagination from "./Pagination";
-import ReactHtmlParser from 'react-html-parser';
 import { hanlderRequest } from "~/utils";
 
 function Blogs() {
@@ -44,7 +43,7 @@ function Blogs() {
     if (res && res.data && res.data.blogs && res.data.blogs.length > 0) {
       listBlogRef.current = res.data.blogs;
       setBlogs(res.data.blogs);
-    }else {
+    } else {
       console.log(error);
     }
   };
