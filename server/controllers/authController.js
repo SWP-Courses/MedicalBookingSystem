@@ -166,8 +166,9 @@ const register = async (req, res, next) => {
 const login = async (req, res, next) => {
   console.log("login");
   try {
-    // profile của doctor chỉ được admin thay đổi
-    const user = await UserModel.findOne({ email: req.body.email });
+
+    // degree, profile, spe_id của doctor chỉ được admin thay đổi
+    const user = await UserModel.findOne({email: req.body.email});
 
     if (!user) return res.status(404).send("Tài khoản không tồn tại!");
 
