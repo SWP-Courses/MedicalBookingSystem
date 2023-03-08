@@ -9,7 +9,7 @@ const SocketContext = createContext();
 export const SocketProvider = memo(({ children, userId }) => {
     let socket;
     const { currentUser } = useContext(AuthContext);
-    userId = currentUser ? currentUser._id : uuidv4();
+    userId = currentUser?.role == "customer" ? currentUser._id : "admin";
     socket = socketio.connect(SOCKET_ROUTER, {
         query: {
             userId: userId
@@ -19,7 +19,6 @@ export const SocketProvider = memo(({ children, userId }) => {
         <SocketContext.Provider value={{ socket, userId, currentUser }}>
             {children}
         </SocketContext.Provider>
-
     )
 })
 

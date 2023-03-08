@@ -8,8 +8,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import onMessageNotification from '~/redux-action/messageNotificationAction'
 import { AuthContext } from '~/context/authContext'
 const Sidebar = () => {
-  const {socket} = useContext(SocketContext);
-  const {currentUser, logout} = useContext(AuthContext)
+  const { socket } = useContext(SocketContext);
+  const { currentUser, logout } = useContext(AuthContext)
   // console.log(socket);
   const Notification = useSelector(state => state.messageNotification);
   const dispath = useDispatch();
@@ -44,12 +44,13 @@ const Sidebar = () => {
       name: "Calendar",
       icon: "ri-calendar-2-line"
     },
-    {
-      path: "/staff/chat",
-      name: "Chat",
-      icon: "ri-message-2-line"
-    },
   ]
+
+  // {
+  //   path: "/staff/chat",
+  //     name: "Chat",
+  //       icon: "ri-message-2-line"
+  // },
 
   useEffect(() => {
     if (socket) {
@@ -70,13 +71,20 @@ const Sidebar = () => {
 
       <div className='sidebar__middle d-flex justify-content-center flex-column'>
         {
-          menuItem.map((item, index) => (
-            <NavLink to={item.path} key={index} className="link" exact={true} activeclassname='active'>
-              <i className={item.icon}></i>
-              <div className='link_text'>{item.name}</div>
-              {Notification && item.name === "Chat" ? <BsDot className='text-danger ml-auto fs-3' /> : undefined}
+          currentUser.role != "consultant" ?
+            menuItem.map((item, index) => (
+              <NavLink to={item.path} key={index} className="link" exact={true} activeclassname='active'>
+                <i className={item.icon}></i>
+                <div className='link_text'>{item.name}</div>
+                {Notification && item.name === "Chat" ? <BsDot className='text-danger ml-auto fs-3' /> : undefined}
+              </NavLink>
+
+            ))
+            :
+            <NavLink to="/staff/chat" key={"chat"} className="link" exact={true} activeclassname='active'>
+              <i className={"ri-message-2-line"}></i>
+              <div className='link_text'>Chat</div>
             </NavLink>
-          ))
         }
       </div>
 

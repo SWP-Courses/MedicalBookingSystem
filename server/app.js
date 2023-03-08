@@ -32,6 +32,7 @@ const Slot = require("./models/Slot");
 
 const socket = require("socket.io");
 const chatRouter = require('./routes/chatRouter');
+const dashBoardRouter = require("./routes/dashboardRouter");
 
 var app = express();
 
@@ -80,20 +81,20 @@ app.use("/api/auth", authRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/specialists", specialistRouter);
 app.use("/api/prescriptions", drugBillRouter); //use drugbill model
-  app.use("/api/absent", async (req, res) => {
-    try {
+app.use("/api/absent", async (req, res) => {
+  try {
     console.log(req.body.date);
     console.log(new Date(decodeURIComponent(req.body.date)));
-      const absent = await Absent.create({
-        doctor_id: req.body.id,
+    const absent = await Absent.create({
+      doctor_id: req.body.id,
       // date: new Date(req.body.date + "T12:00:00"),
-        date: new Date(decodeURIComponent(req.body.date)),
-      });
-      res.status(200).json(absent);
-    } catch  (err) {
-      console.log(err);
-    }
-  });
+      date: new Date(decodeURIComponent(req.body.date)),
+    });
+    res.status(200).json(absent);
+  } catch (err) {
+    console.log(err);
+  }
+});
 app.use("/api/booking", bookingRouter);
 app.use("/api/bookedservices", bookedServiceRouter);
 
@@ -105,6 +106,7 @@ app.use("/api/services", serviceRouter);
 app.use('/image', imageRouter);
 app.use('/api/room', roomRouter);
 app.use('/api/message', chatRouter);
+app.use('/api/dashboard', dashBoardRouter);
 
 
 // catch 404 and forward to error handler
@@ -143,6 +145,7 @@ io.on("connection", (socket) => {
   onlineUser.set(newConnectUserId, socket.id);
 
   socket.on("send_message", messageInfo => {
+    console.log(messageInfo);
     const recipientSocketId = onlineUser.get(messageInfo.recipient_id);
     if (recipientSocketId) {
       io.to(recipientSocketId).emit("message_recieve", messageInfo);
