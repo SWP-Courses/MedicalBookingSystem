@@ -36,9 +36,9 @@ function App() {
               <UserRouter />
 
               {/* admin */}
-                <Provider store={store}>
-                  <Layout />
-                </Provider>
+              <Provider store={store}>
+                <Layout />
+              </Provider>
               <ToastContainer
                 position="top-right"
                 autoClose={5000}

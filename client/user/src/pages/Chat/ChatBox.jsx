@@ -25,6 +25,7 @@ function ChatBox({ messageList, setMessageList }) {
                 email: currentUser ? currentUser.email : email,
                 fullname: currentUser ? currentUser.fullname : fullName
             }
+            console.log(data);
             setMessageList(message => [...message, data]);
             socket.emit("send_message", data)
             await axios.post(`${API_URL}/message`, data);

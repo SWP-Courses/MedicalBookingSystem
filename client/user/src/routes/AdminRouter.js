@@ -41,14 +41,15 @@ const AdminRouter = () => {
             </>
           )}
 
-          {currentUser?.role === "consultant" && (
-            <Route path="chat" element={<Chat />} />
-          )}
+          {
+            currentUser?.role === "consultant" && (
+              <Route path="chat" element={<Chat />} />
+            )}
 
           {currentUser?.role === "cashier" &&
-            {
-              /* <Route path="cashin" element={<Chat />} /> */
-            }}
+          {
+            /* <Route path="cashin" element={<Chat />} /> */
+          }}
         </Route>
       </Routes>
       <ToastContainer />

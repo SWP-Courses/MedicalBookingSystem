@@ -11,7 +11,7 @@ import onMessageNotification from '~/redux-action/messageNotificationAction';
 import ChatBoxMessage from '~/components/admin/Chat/ChatBoxMessage';
 
 const Chat = () => {
-  const {socket} = useContext(SocketContext);
+  const { socket } = useContext(SocketContext);
   const message = useRef();
   const [messageList, setMessageList] = useState([]);
   const [conversation, setConversation] = useState([]);
@@ -146,18 +146,25 @@ const Chat = () => {
         }
 
       </div>
-      <div className='bg-primary w-75 d-flex flex-column vh-100'>
+      <div className=' w-75 d-flex flex-column vh-100'>
 
         {
-          conversationID ? <ChatBoxMessage messageList={messageList} /> : undefined
+          conversationID ?
+            <>
+              <ChatBoxMessage messageList={messageList} />
+              <div className='d-flex p-2 w-100 bottom-0 bg-light h-8'>
+                <input type="text" ref={message} className="form-control" placeholder="message" />
+                <button className='btn' onClick={() => sendMessage()}>
+                  <AiOutlineSend />
+                </button>
+              </div>
+            </>
+            :
+            <div className="w-100 h-100 justify-content-center align-items-center d-flex">
+              <h4 className=''>Select Converstation</h4>
+            </div>
         }
 
-        <div className='d-flex p-2 w-100 bottom-0 bg-light h-8'>
-          <input type="text" ref={message} className="form-control" placeholder="message" />
-          <button className='btn' onClick={() => sendMessage()}>
-            <AiOutlineSend />
-          </button>
-        </div>
       </div>
     </div>
   )
