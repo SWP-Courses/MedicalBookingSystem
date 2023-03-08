@@ -55,31 +55,29 @@
                 .login__form-content {
                     padding: 28px 17px;
 
-                    .loader-icon {
-                        margin-right: 7px;
-                        top: 2px;
-                        font-size: 20px;
-                        animation: spin 1s infinite linear;
-                    }
-                
-                    @keyframes spin {
-                        from {
-                            transform: scale(1) rotate(0deg);
-                        }
-                        to {
-                            transform: scale(1) rotate(360deg);
-                        }
-                    }
-
-                    >h2 {
-                        font-size: 24px;
-                        color: var(--primary-color); 
-                    }
-
                     .login__errorAlert {
                         color: red;
                         font-size: 15px;
                         display: block;
+                    }
+
+                    .Login__header {
+                        >h2 {
+                            font-size: 24px;
+                            color: var(--primary-color); 
+                            margin-bottom: 0;
+                        }
+
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+
+                        .Login__home-icon {
+                            cursor: pointer;
+                            font-size: 23px;
+                            color: #286ba6;
+                            padding-right: 10px;
+                        }
                     }
                 }
 
@@ -89,7 +87,6 @@
                     width: 400px;
                     border-radius: 8px;
                     border: 1px solid #2dc2d0;
-                    margin-bottom: 5px;
                 }
                 
                 .forgot-password {

@@ -4,7 +4,7 @@ import DOMPurify from "dompurify";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import "./Pagination.scss";
-import parse from 'html-react-parser';
+import parse from "html-react-parser";
 
 function Pagination(props) {
   const { data } = props;
@@ -67,13 +67,18 @@ function Pagination(props) {
                 <p
                   className="line-clamp line-4"
                   dangerouslySetInnerHTML={{
-                    __html: DOMPurify.sanitize(blog.description),
+                    __html: DOMPurify.sanitize(blog?.description),
                   }}
                 >
                   {
                     // blog.content
                   }
                 </p>
+                <div className="blog-item__desc">
+                  <span>Tác giả</span> <strong style={{marginLeft: '5px'}}>{blog?.author}</strong>
+                  <span className="separate-line"></span>
+                  <span>{blog?.createdAt}</span>
+                </div>
               </div>
             </div>
           );

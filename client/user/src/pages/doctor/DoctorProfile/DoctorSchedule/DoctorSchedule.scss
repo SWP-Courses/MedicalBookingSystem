@@ -93,27 +93,26 @@
 
     .schedule__calender-icon {
         cursor: pointer;
+        font-size: 20px;
     }
 
     .btn-paid {
-        cursor: pointer;
         background: #ecfdf3;
-        border: none;
         color: #037b48;
-        height: 27px;
-        border-radius: 16px;
-        padding: 0;
-        width: 110px;
     }
   
     .btn-not-paid {
-        cursor: pointer;
         background: #fbdede;
-        border: none;
         color: #d56566;
+    }
+
+    .btn-not-paid,
+    .btn-paid {
         height: 27px;
-        border-radius: 16px;
+        line-height: 27px;
         padding: 0;
-        width: 150px;
+        width: 98px;
+        display: block;
+        border-radius: 16px;
     }
 }

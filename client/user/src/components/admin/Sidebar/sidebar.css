@@ -45,7 +45,7 @@ i {
 }
 
 .active {
-  background-image: linear-gradient(to right, #349eff, #62b4ff);
+  background-image: linear-gradient(to right, #155d9f, #62b4ff);
   border-radius: 15px;
   color: #fff !important;
 }

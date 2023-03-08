@@ -8,6 +8,7 @@ import {
   faCheck,
   faPenToSquare,
   faPills,
+  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -109,8 +110,8 @@ function DoctorSchedule(props) {
           <tbody>
             {currentschedule.map((item, index) => {
               return (
-                <tr key={index} >
-                  <td >{item?.customer[0]?.fullname}</td>
+                <tr key={index}>
+                  <td>{item?.customer[0]?.fullname}</td>
                   <td>
                     <center>{formatSlot(item.slot_time)}</center>
                   </td>
@@ -121,12 +122,21 @@ function DoctorSchedule(props) {
                   </td>
                   <td>
                     <center>
-                      <button className="btn-paid">
-                        <FontAwesomeIcon
-                          icon={faCheck}
-                          style={{ fontSize: "15px", marginRight: "2px" }}
-                        />
-                      </button>
+                      {item.isPaid ? (
+                        <span className="btn-paid">
+                          <FontAwesomeIcon
+                            icon={faCheck}
+                            style={{ fontSize: "18px", marginRight: "2px" }}
+                          />
+                        </span>
+                      ) : (
+                        <span className="btn-not-paid">
+                          <FontAwesomeIcon
+                            icon={faXmark}
+                            style={{ fontSize: "18px", marginRight: "2px" }}
+                          />
+                        </span>
+                      )}
                     </center>
                     {/* <button
                           className="btn-not-paid"
@@ -147,7 +157,11 @@ function DoctorSchedule(props) {
                     >
                       <FontAwesomeIcon
                         icon={faPills}
-                        style={{ fontSize: "22px", cursor: "pointer", color: 'var(--primary)' }}
+                        style={{
+                          fontSize: "24px",
+                          cursor: "pointer",
+                          color: "var(--primary)",
+                        }}
                       />
                     </center>
                   </td>
@@ -156,7 +170,10 @@ function DoctorSchedule(props) {
                       className="schedule__calender-icon"
                       onClick={() => handleEditService(item)}
                     >
-                      <FontAwesomeIcon icon={faPenToSquare} style={{color: '#2892ed'}}/>
+                      <FontAwesomeIcon
+                        icon={faPenToSquare}
+                        style={{ color: "#2892ed" }}
+                      />
                     </center>
                   </td>
                 </tr>
@@ -176,7 +193,6 @@ function DoctorSchedule(props) {
         setModalShow={setModalShow}
         bookedUser={userService}
         fetchSchedule={fetchSchedule}
-        
       />
     </div>
   );

@@ -129,6 +129,7 @@ function ForgotPassword() {
                 <button
                   className="btn btn-primary mt-3 w-75 mx-auto my-2 d-block"
                   onClick={() => handleSendMail("default")}
+                  style={{background: '#286ba6', border: 'none'}}
                 >
                   Gửi mã
                 </button>
@@ -145,6 +146,7 @@ function ForgotPassword() {
                 <button
                   className="btn btn-primary mt-3 w-75 mx-auto d-block"
                   onClick={handleCheckResetCode}
+                  style={{background: '#286ba6', border: 'none'}}
                 >
                   Xác nhận
                 </button>
