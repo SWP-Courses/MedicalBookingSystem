@@ -52,7 +52,8 @@
           &.active {
             border: 2px solid #e5a724;
             background-color: var(--white-color);
-            color: #e5a724;
+            background-image: linear-gradient(to right, #b8dbff, #d2efff);
+            color: #e5a724 !important;
           }
         }
       }

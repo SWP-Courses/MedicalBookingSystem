@@ -101,7 +101,16 @@ const getHistoryByUserId = asyncHandler(async (req, res, next) => {
         as: "customer",
       },
     },
-  ]).project({ user_id: 0, doctor_id: 0, date: 0 });
+    {
+      $lookup: {
+        from: "users",
+        localField: "doctor_id",
+        foreignField: "_id",
+        pipeline: [{ $project: { _id: 1, fullname: 1 } }],
+        as: "doctor",
+      },
+    },
+  ]).project({ user_id: 0, doctor_id: 0 });
   // console.log(orders);
   const bookedServicesFull = await Promise.all(
     orders.map(async (order) => {
@@ -130,6 +139,7 @@ const getIncomingBookedByUser = asyncHandler(async (req, res, next) => {
               $gte: startOfDay(new Date()),
             },
           },
+          { isPaid: false },
         ],
       },
     },
@@ -242,7 +252,8 @@ const bookService = asyncHandler(async (req, res, next) => {
 const addExtraService = asyncHandler(async (req, res, next) => {
   const { service_id, quantity } = req.body;
 
-  if(!service_id || !quantity) return res.status(400).json("Thêm phải có dịch vụ và số lượng!");
+  if (!service_id || !quantity)
+    return res.status(400).json("Thêm phải có dịch vụ và số lượng!");
 
   const bookedService = await BookedService.findByIdAndUpdate(
     req.params.id,
@@ -274,7 +285,7 @@ const updateAddedService = asyncHandler(async (req, res, next) => {
     { _id: req.params.id, "services.service_id": req.params.serviceId },
     { $set: { "services.$.quantity": req.body.quantity } }
   );
-  
+
   res.status(200).json(result);
 });
 

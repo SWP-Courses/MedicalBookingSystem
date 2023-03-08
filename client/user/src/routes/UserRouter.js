@@ -27,7 +27,7 @@ export default function UserRouter() {
   return (
     <>
       <Routes>
-        {/* layout navbar - content - footer khi guest, customer, doctor */}
+        {/* layout navbar - outlet - footer khi guest, customer, doctor */}
         {(!currentUser || ["doctor", "customer"].includes(currentUser?.role)) && (
           <>
             <Route element={<Layout />}>

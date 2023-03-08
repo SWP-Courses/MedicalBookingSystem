@@ -118,7 +118,8 @@ export default function Booking() {
     // console.log(passData);
     try {
       await axios.post(`${API_URL}/bookedservices`, passData);
-      navigate(0);
+      toast.success("Đặt lịch thành công")
+      navigate("/customer/upcoming-booking");
     } catch (err) {
       console.log(err);
     }
@@ -135,6 +136,7 @@ export default function Booking() {
             <h2 className="bookingStep">{part.title}</h2>
             {!currentUser && <Link to="/login" className="btn btn-primary">Đăng nhập</Link>}
           </div>
+          {/* Phần 1: chọn thông tin */}
           {part.number === 1 && (
             <BookingFill
               booking={booking}
@@ -144,6 +146,8 @@ export default function Booking() {
               freeSlots={freeSlots}
             />
           )}
+
+          {/* Phần 2: Xác nhận thông tin */}
           {part.number === 2 && <BookingConfirm booking={booking} />}
           <div className="bookingDirection">
             {part.number === 1 && (
