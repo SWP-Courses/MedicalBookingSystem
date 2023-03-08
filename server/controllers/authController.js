@@ -184,11 +184,11 @@ const login = async (req, res, next) => {
       { id: user._id, isAdmin: user.role === "admin" ? true : false },
       process.env.JWT
     );
-    console.log(token);
+    // console.log(token);
 
     const { password, role_code, ...filteredUser } = user._doc;
     res
-      .cookie("access_token", "sfasdfdf", {
+      .cookie("access_token", token, {
         httpOnly: true,
       })
       .status(200)

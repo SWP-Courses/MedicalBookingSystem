@@ -1,6 +1,6 @@
 import socketio from "socket.io-client";
 import React, { createContext, memo, useContext } from "react";
-import { SOCKET_ROUTER } from "../api/Router";
+import { SOCKET_ROUTER } from "~/api/Router";
 import { v4 as uuidv4 } from 'uuid';
 import { AuthContext } from "./authContext";
 

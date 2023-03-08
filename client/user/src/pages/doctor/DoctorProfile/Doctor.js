@@ -5,7 +5,7 @@ import DoctorSchedule from "./DoctorSchedule/DoctorSchedule";
 
 import { useContext } from "react";
 import { AuthContext } from "~/context/authContext";
-import UserInfo from "~/components/userInfo/UserInfo";
+import UserInfo from "~/components/user/userInfo/UserInfo";
 import { API_IMAGE_URL } from "~/api/Router";
 import Prescription from "./Prescription/Prescription";
 

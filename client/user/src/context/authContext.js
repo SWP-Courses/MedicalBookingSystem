@@ -14,10 +14,9 @@ export default function AuthContextProvider({ children }) {
   );
   const location = useLocation();
 
-  // Side Effect
+  // Side Effects
 
   useEffect(() => {
-    // console.log(currentUser);
     localStorage.setItem("user", JSON.stringify(currentUser));
   }, [currentUser]);
 
@@ -36,6 +35,7 @@ export default function AuthContextProvider({ children }) {
     };
     !JSON.parse(localStorage.getItem("user")) && fetchLoginSuccess();
   }, [navigate]);
+
   // console.log(currentUser);
   // Functions
   const login = async (inputs) => {
@@ -44,7 +44,11 @@ export default function AuthContextProvider({ children }) {
         ...inputs,
       });
       setCurrentUser(res.data);
-      navigate("/");
+      // navigate("/");
+      if (["customer", "doctor"].includes(res.data.role))
+        navigate("/" + res.data.role);
+      if (["admin", "consultant", "cashier"].includes(res.data.role))
+        navigate("/staff");
     } catch (error) {
       toast.error(error?.response?.data);
       // if(error?.response?.data) {
@@ -57,10 +61,12 @@ export default function AuthContextProvider({ children }) {
     try {
       await axios.get(API_URL + "/auth/logout", { withCredentials: true });
       setCurrentUser(null);
-      if (
-        location.pathname.contains("doctor") ||
-        location.pathname.contains("customer")
-      )
+      // if (
+      //   location.pathname.contains("doctor") ||
+      //   location.pathname.contains("customer") ||
+      //   location.pathname.contains("staff")
+      // )
+      // console.log(location.pathname);
         navigate("/");
     } catch (err) {
       console.log(err);

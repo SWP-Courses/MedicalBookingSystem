@@ -7,7 +7,6 @@ import API_URL from "~/api/Router";
 import ReactPaginate from "react-paginate";
 import slider from "~/assets/images/slider.jpg";
 import Pagination from "./Pagination";
-import ReactHtmlParser from 'react-html-parser';
 import { hanlderRequest } from "~/utils";
 
 function Blogs() {

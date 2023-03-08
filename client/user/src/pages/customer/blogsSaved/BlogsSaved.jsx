@@ -13,7 +13,6 @@ import DataTable, { filter } from "react-data-table-component";
 import { Link } from "react-router-dom";
 import API_URL from "~/api/Router";
 import { AuthContext } from "~/context/authContext";
-import ReactHtmlParser from "react-html-parser";
 import "./blogsSaved.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
@@ -85,7 +84,7 @@ export default function BlogsSaved() {
         selector: (row) => row.author,
       },
       {
-        name: "Hành động",
+        name: "Thao tác",
         selector: (row) => (
           <Button
             variant="warning"

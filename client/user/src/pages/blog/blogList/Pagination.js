@@ -4,7 +4,7 @@ import DOMPurify from "dompurify";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import "./Pagination.scss";
-import ReactHtmlParser from 'react-html-parser';
+import parse from 'html-react-parser';
 
 function Pagination(props) {
   const { data } = props;
@@ -53,7 +53,7 @@ function Pagination(props) {
           return (
             <div key={index} className="blog-item">
               <Link to={`/blogs/${blog._id}`}>
-                {imgString ? ReactHtmlParser(imgString[0]) : undefined}
+                {imgString ? parse(imgString[0]) : undefined}
               </Link>
               <div className="blog-item-body">
                 <Link to={`/blogs/${blog._id}`}>
