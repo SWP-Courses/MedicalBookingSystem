@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Outlet } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -12,6 +12,7 @@ import Calendar from "~/pages/admin/Calendar.jsx";
 import Chat from "~/pages/admin/Chat.jsx";
 import { AuthContext } from "~/context/authContext";
 import Sidebar from "~/components/admin/Sidebar/Sidebar";
+import Payment from "~/pages/admin/Payment";
 
 // const Layout = () => (
 //   <div className="d-flex layout">
@@ -41,15 +42,13 @@ const AdminRouter = () => {
             </>
           )}
 
-          {
-            currentUser?.role === "consultant" && (
-              <Route path="chat" element={<Chat />} />
-            )}
+          {currentUser?.role === "consultant" && (
+            <Route path="chat" element={<Chat />} />
+          )}
 
-          {currentUser?.role === "cashier" &&
-          {
-            /* <Route path="cashin" element={<Chat />} /> */
-          }}
+          {currentUser?.role === "cashier" && (
+            <Route path="payment" element={<Payment />} />
+          )}
         </Route>
       </Routes>
       <ToastContainer />

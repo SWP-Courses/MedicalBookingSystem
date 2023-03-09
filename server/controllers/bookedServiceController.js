@@ -309,6 +309,101 @@ const cancelBookedService = asyncHandler(async (req, res, next) => {
   res.status(200).json(result);
 });
 
+// An
+//@desc Get all bookedservice
+//@route GET /api/bookedservices
+//@access public
+const getAllBookedService = asyncHandler(async (req, res, next) => {
+  const bookedService = await BookedService.find();
+
+  const result = await Promise.all(
+    bookedService.map(async (obj) => {
+      const user = await User.findById(obj.user_id);
+      const doctor = await User.findById(obj.doctor_id);
+
+      const user_name = user ? user.fullname : "";
+      const doctor_name = doctor ? doctor.fullname : "";
+
+      return {
+        _id: obj._id,
+        user_name,
+        doctor_name,
+        date: obj.date,
+        slot_time: obj.slot_time,
+        services: obj.services,
+        isPaid: obj.isPaid,
+        total_price: obj.total_price,
+      };
+    })
+  );
+
+  res.status(200).json({
+    result,
+  });
+});
+
+//@desc Get Service Bill by id
+//@route PUT /api/bookedservices/:id
+//@access public
+const getBookedServiceById = asyncHandler(async (req, res, next) => {
+  const bookedService = await BookedService.findById(req.params.id);
+  if (!bookedService) {
+    res.status(404);
+    throw new Error("bookedService Not Found!");
+  }
+
+  const user = await User.findById(bookedService.user_id);
+  const doctor = await User.findById(bookedService.doctor_id);
+
+  const servicesList = await Promise.all(
+    bookedService.services.map(async (obj) => {
+      const service = await Service.findById(obj.service_id);
+
+      const service_name = service ? service.name : "";
+      const price = service ? service.price : 1;
+
+      return {
+        _id: obj._id,
+        service_name,
+        price,
+        quantity: obj.quantity,
+      };
+    })
+  );
+
+  const result = {
+    _id: bookedService._id,
+    user_name: user.fullname,
+    doctor_name: doctor.fullname,
+    date: bookedService.date,
+    slot_time: bookedService.slot_time,
+    services: servicesList,
+    total_price: bookedService.total_price,
+    isPaid: bookedService.isPaid,
+  };
+
+  res.status(200).json({ result });
+});
+
+//@desc Update Service Bill by id
+//@route PATCH /api/bookedservices/payment/:id
+//@access public
+const paymentBookedServices = asyncHandler(async (req, res, next) => {
+
+  const total_price = req.body.total_price;
+  const isPaid = req.body.isPaid;
+  console.log(req.body)
+
+  const completeBooked = await BookedService.findByIdAndUpdate(req.params.id, {
+    total_price,
+    isPaid,
+  }, { new: true });
+
+  // const completeBooked = await booked.save();
+
+  res.status(200).json(completeBooked);
+});
+
 module.exports = {
   bookService,
   addExtraService,
@@ -318,4 +413,7 @@ module.exports = {
   completeBooked,
   cancelBookedService,
   getHistoryByUserId,
+  getAllBookedService,
+  getBookedServiceById,
+  paymentBookedServices,
 };

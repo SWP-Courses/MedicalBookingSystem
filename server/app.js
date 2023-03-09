@@ -27,8 +27,8 @@ const bookingRouter = require("./routes/bookingRouter");
 const bookedServiceRouter = require("./routes/bookedServiceRouter");
 const imageRouter = require("./routes/imageRouter");
 const roomRouter = require('./routes/roomRouter');
-const Absent = require("./models/Absent");
 const Slot = require("./models/Slot");
+const absentRouter = require('./routes/absentRouter')
 
 const socket = require("socket.io");
 const chatRouter = require('./routes/chatRouter');
@@ -81,20 +81,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/specialists", specialistRouter);
 app.use("/api/prescriptions", drugBillRouter); //use drugbill model
-app.use("/api/absent", async (req, res) => {
-  try {
-    console.log(req.body.date);
-    console.log(new Date(decodeURIComponent(req.body.date)));
-    const absent = await Absent.create({
-      doctor_id: req.body.id,
-      // date: new Date(req.body.date + "T12:00:00"),
-      date: new Date(decodeURIComponent(req.body.date)),
-    });
-    res.status(200).json(absent);
-  } catch (err) {
-    console.log(err);
-  }
-});
+app.use("/api/absent", absentRouter);
 app.use("/api/booking", bookingRouter);
 app.use("/api/bookedservices", bookedServiceRouter);
 
