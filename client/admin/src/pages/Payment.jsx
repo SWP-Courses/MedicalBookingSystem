@@ -218,7 +218,7 @@ const Payment = () => {
       if (res.status === 200) {
         setIsOpenDrawer(false)
         window.location.reload();
-        toast.success("Payment Success!", toastOption);        
+        toast.success("Payment Success!", toastOption);
       }
     } catch (error) {
       console.log(error.message);
@@ -343,11 +343,11 @@ const Payment = () => {
               </Col>
 
               <Col span={8}>
-                Price:
+                Quantity
               </Col>
 
               <Col span={8}>
-                Quantity:
+                Price:
               </Col>
 
 
@@ -358,27 +358,27 @@ const Payment = () => {
                   </Col>
 
                   <Col span={8}>
-                    {obj.price}
+                    {obj.quantity}
                   </Col>
 
                   <Col span={8}>
-                    {obj.quantity}
+                    {obj.price}
                   </Col>
                 </>
               ))}
 
               <Divider></Divider>
 
-              <Col span={8} >
+              <Col span={6} >
               </Col>
 
-              <Col span={8}>
+              <Col span={6} offset={8}>
                 Total price:  {stateBookedServicesDetail.total_price ? stateBookedServicesDetail.total_price : calculatorTotalPrice()}
               </Col>
 
             </Row>
 
-            <Row>
+            <Row style={{marginTop:'30px'}}>
               <Col span={8}></Col>
               <Col span={8} offset={8}>
                 {!stateBookedServicesDetail.isPaid ? <Button type="primary" onClick={handlePayment}>Payment</Button> : <></>}
