@@ -6,7 +6,6 @@ import { SlUser } from "react-icons/sl";
 import { IoDocumentsOutline } from "react-icons/io5";
 import { GiMedicines } from "react-icons/gi";
 import DoughnutChart from '../components/Chart/DoughnutChart';
-import Calendar from '../components/Calendar/Calendar';
 
 const Dashboard = () => {
   return (
@@ -36,7 +35,7 @@ const Dashboard = () => {
 
       <div className='row'>
         <div className="col-12 border vh-100">
-          <Calendar />
+          
         </div>
       </div>
 

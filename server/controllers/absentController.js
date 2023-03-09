@@ -1,13 +1,25 @@
 const asyncHandler = require("express-async-handler");
 const Absent = require("../models/Absent");
+const User = require("../models/User");
 
 //@desc get all absent
 //@route GET /api/absent
 //@access public
 const getAbsent = asyncHandler(async (req, res, next) => {
-    const absents = await Absent.find();
-    res.status(200).json({ absents });
-})
+  const absents = await Absent.find();
+  const result = await Promise.all(
+    absents.map(async (obj) => {
+      const doctor = await User.findById(obj.doctor_id);
+      const doctor_name = doctor ? doctor.fullname : "";
+      return {
+        _id: obj._id,
+        doctor_name,
+        date: obj.date,
+      };
+    })
+  );
+  res.status(200).json(result); 
+});
 
 //@desc create absent
 //@route POST /api/absent/create
@@ -27,4 +39,7 @@ const createAbsent = asyncHandler(async (req, res, next) => {
   }
 });
 
-
+module.exports = {
+  createAbsent,
+  getAbsent,
+};

@@ -1,36 +1,42 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import PaymentTable from '../components/PaymentTable/PaymentTable'
 import { useQuery } from '@tanstack/react-query'
 import { useMutationHooks } from '../hooks/userMutationHook'
 import axios from "axios";
 import ROUTER from "../api/Router";
 import '../styles/Payment.css'
-import { Input, Form, DatePicker, Col, Row, Space, Button } from 'antd'
-import moment from 'moment'
+import { Input, Form, Col, Row, Space, Button, Typography, Divider } from 'antd'
 import PaymentDetail from '../components/PaymentDetail/PaymentDetail';
 import Loading from '../components/UI/Loading';
-import InputComponent from '../components/UI/InputComponent'
-
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import toastOption from '../config/toast';
+import { toast } from "react-toastify";
 
 const Payment = () => {
   const [searchText, setSearchText] = useState("")
-  const [selectedDate, setSelectedDate] = useState(moment())
+  const [date, setDate] = useState(new Date())
   const [sortedInfo, setSortedInfo] = useState({})
-  const [filterData, setFilterData] = useState([])
   const [rowSelected, setRowSelected] = useState('')
   const [isOpenDrawer, setIsOpenDrawer] = useState(false)
 
-  const getAllBookedService = async () => {
-    const res = await axios.get(`${ROUTER}/api/bookedservices`)
-    setFilterData(dataTable)
-    return res.data.bookedService
-  }
+  const [stateBookedServicesDetail, setStateBookedServicesDetail] = useState({
+    id: "",
+    user_name: "",
+    doctor_name: "",
+    date: "",
+    slot_time: "",
+    services: "",
+    total_price: "",
+    isPaid: ""
+  })
+
+
 
   const [form] = Form.useForm();
-
   const mutation = useMutationHooks(
     (data) => {
-      const { user_id, doctor_id, date, slot_time, services } = data
+      const { user_name, doctor_name, date, slot_time, services } = data
     }
   )
   // const mutationUpdate = useMutationHooks(
@@ -46,13 +52,70 @@ const Payment = () => {
   //   },
   // )
 
+  //call api
+  const getAllBookedService = async () => {
+    try {
+      const res = await axios.get(`${ROUTER}/api/bookedservices`)
+      return res.data.result
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  //call api
+  const getDetailBookedServiceId = async (rowSelected) => {
+    try {
+      const res = await axios.get(`${ROUTER}/api/bookedservices/${rowSelected}`)
+      if (res?.data.result) {
+        setStateBookedServicesDetail({
+          id: rowSelected,
+          user_name: res?.data?.result?.user_name,
+          doctor_name: res?.data?.result?.doctor_name,
+          date: res?.data?.result?.date,
+          slot_time: res?.data?.result?.slot_time,
+          services: res?.data?.result?.services,
+          total_price: res?.data?.result?.total_price,
+          isPaid: res?.data?.result?.isPaid
+        })
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(() => {
+    form.setFieldValue((stateBookedServicesDetail))
+  }, [form, stateBookedServicesDetail])
+
+  useEffect(() => {
+    if (rowSelected) {
+      getDetailBookedServiceId(rowSelected)
+    }
+  }, [rowSelected])
+
   // const { data: dataUpdated, isLoading: isLoadingUpdated, isSuccess: isSuccessUpdated, isError: isErrorUpdated } = mutationUpdate
   const { data, isLoading, isSuccess, isError } = mutation
   const queryProduct = useQuery({ queryKey: ['bookedServices'], queryFn: getAllBookedService })
   const { isLoading: isLoadingBookedService, data: bookedServices } = queryProduct
 
-  const dataTable = bookedServices?.length && bookedServices?.map((obj) => {
+  const dataTable = bookedServices?.length && bookedServices?.filter((obj) => {
+    const dateObj = new Date(obj.date);
+    const isSameDate = dateObj.toDateString() === date.toDateString();
+    return isSameDate
+  }).map((obj) => {
     return { ...obj, key: obj._id, date: new Date(obj.date).toLocaleDateString('en-GB') }
+  })?.sort((a, b) => {
+    if (a.date < b.date) {
+      return -1;
+    } else if (a.date > b.date) {
+      return 1;
+    } else if (a.slot_time < b.slot_time) {
+      return -1;
+    } else if (a.slot_time > b.slot_time) {
+      return 1;
+    } else {
+      return 0;
+    }
   })
 
   const renderAction = () => {
@@ -61,45 +124,37 @@ const Payment = () => {
     )
   }
 
+  const { Title } = Typography;
+
   const columns = [
     {
       key: "1",
       title: 'Patient',
-      dataIndex: 'user_id',
+      dataIndex: 'user_name',
     },
     {
       key: "2",
       title: 'Doctor',
-      dataIndex: 'doctor_id',
-    },
-    {
-      key: "3",
-      title: 'Date',
-      dataIndex: 'date',
-      // filteredValue: [selectedDate],
-      // onFilter: (value, record) => {
-      //   return record.date.includes(value)
-      // }
+      dataIndex: 'doctor_name',
     },
     {
       key: "4",
       title: 'Slot',
       dataIndex: 'slot_time',
       align: 'center',
-      sorter: ((a, b) => a.slot_time - b.slot_time),
+      sorter: ((a, b) => b.slot_time - a.slot_time),
       sortOrder: sortedInfo.columnKey === "slot_time" && sortedInfo.order,
-      className: 'slot_field'
     },
     {
       key: "5",
       title: 'Payment status',
-      dataIndex: 'isConfirm',
+      dataIndex: 'isPaid',
       align: 'center',
-      render: (isConfirm) => {
-        return <i className={isConfirm ? "ri-checkbox-circle-fill" : "ri-close-circle-fill"}></i>
+      render: (isPaid) => {
+        return <i className={isPaid ? "ri-checkbox-circle-fill" : "ri-close-circle-fill"}></i>
       },
-      sorter: ((a, b) => a.isConfirm - b.isConfirm),
-      sortOrder: sortedInfo.columnKey === "isConfirm" && sortedInfo.order
+      sorter: ((a, b) => a.isPaid - b.isPaid),
+      sortOrder: sortedInfo.columnKey === "isPaid" && sortedInfo.order
     },
     {
       key: "6",
@@ -110,8 +165,8 @@ const Payment = () => {
     }
   ];
 
-  const handleDateChange = () => {
-    setSelectedDate()
+  const handleDateChange = (date) => {
+    setDate(date)
   }
 
   const handleChange = (...sorter) => {
@@ -121,10 +176,8 @@ const Payment = () => {
 
   const handleReset = () => {
     setSortedInfo({})
-    setSelectedDate(moment())
-    getAllBookedService()
+    setDate(new Date())
     setSearchText("")
-    setFilterData(dataTable)
   }
 
   const handleInputChange = (e) => {
@@ -134,15 +187,44 @@ const Payment = () => {
     }
   }
 
-  const globalSearch = () => {
-    setFilterData(dataTable.filter((value) => {
-      return value.user_id.toLowerCase().includes(searchText.toLowerCase())
-    }))
-  }
-
   const handleDetailBookedService = () => {
     setIsOpenDrawer(true)
-    console.log('rowSelected', rowSelected)
+  }
+
+  const calculatorTotalPrice = () => {
+    let total = 0;
+    stateBookedServicesDetail.services?.length && stateBookedServicesDetail.services?.forEach(obj => {
+      total = total + obj.quantity * obj.price;
+    })
+    return total
+  }
+
+  const handleOnchangeDetails = (e) => {
+    setStateBookedServicesDetail({
+      ...stateBookedServicesDetail,
+      [e.target.name]: e.target.value
+    })
+  }
+
+  const handlePayment = async () => {
+    const data = {
+      total_price: calculatorTotalPrice(),
+      isPaid: true
+    }
+
+    try {
+      const res = await axios.patch(`${ROUTER}/api/bookedservices/payment/${stateBookedServicesDetail.id}`, data)
+
+      if (res.status === 200) {
+        setIsOpenDrawer(false)
+        window.location.reload();
+        toast.success("Payment Success!", toastOption);        
+      }
+    } catch (error) {
+      console.log(error.message);
+      toast.error("Payment Error!", toastOption);
+    }
+
   }
 
   return (
@@ -153,39 +235,31 @@ const Payment = () => {
         </div>
 
         <div>
-          <Row>
-            <Col span={8}>
+          <Row className='m-2'>
+            <Col span={6}>
               <Input
                 placeholder='Search Patient by Name'
-                // style={{ width: '25%' }}
                 onChange={handleInputChange}
                 value={searchText}
                 allowClear
               ></Input>
-              <Button onClick={globalSearch} type='primary'>Search</Button>
             </Col>
 
-            <Col span={8}>
+            <Col span={6}>
               <Input.Group compact>
-                <Input
-                  style={{
-                    width: '25%',
-                  }}
-                  defaultValue="Select date"
-                  disabled
-                />
                 <DatePicker
+                  showIcon
                   style={{
                     width: '50%',
                   }}
-                  format="DD/MM/YYYY"
+                  dateFormat="dd/MM/yyyy"
                   onChange={handleDateChange}
-                  defaultValue={selectedDate}
+                  selected={date}
                 />
               </Input.Group>
             </Col>
 
-            <Col span={8}>
+            <Col span={6}>
               <Space>
                 <Button onClick={handleReset}>Reset</Button>
               </Space>
@@ -194,7 +268,10 @@ const Payment = () => {
 
           <PaymentTable columns={columns}
             isLoading={isLoadingBookedService}
-            data={filterData ? filterData : dataTable}
+            data={dataTable?.length && dataTable?.filter((value) => {
+              const isMatchSearchText = value.user_name.toLowerCase().includes(searchText.toLowerCase());
+              return isMatchSearchText
+            })}
             onChange={handleChange}
             onRow={(record, rowIndex) => {
               return {
@@ -204,92 +281,115 @@ const Payment = () => {
               };
             }}
           />
-        </div>
 
+        </div>
         <PaymentDetail title='Service bill'
           isOpen={isOpenDrawer}
           onClose={() => setIsOpenDrawer(false)}
           width='70%'>
           <Loading isLoading={isLoading}>
-            <Form
-              name='basic'
-              labelCol={{ span: 2 }}
-              wrapperCol={{ span: 18 }}
-              // onFinish={}
-              autoComplete="on"
-              form={form}
-            >
-              <Form.Item
-                label="User_id"
-                name="user_id"
-                rules={[{ required: true, message: 'Please input your name!' }]}
-              >
-                <InputComponent name="name" />
-              </Form.Item>
+            <Row gutter={16}>
+              <Col span={12}>
+                <Typography.Title
+                  level={4}
+                  style={{
+                    margin: 0,
+                  }}
+                >
+                  Patient Name: {stateBookedServicesDetail.user_name}
+                </Typography.Title>
 
-              <Form.Item
-                label="Doctor_id"
-                name="doctor_id"
-                rules={[{ required: true, message: 'Please input your name!' }]}
-              >
-                <InputComponent name="doctor_id" />
-              </Form.Item>
+                <Typography.Title
+                  level={4}
+                  style={{
+                    margin: 0,
+                  }}
+                >
+                  Date: {stateBookedServicesDetail.date}
+                </Typography.Title>
+              </Col>
 
-              <Form.Item
-                label="Date"
-                name="date"
-                rules={[{ required: true, message: 'Please input your name!' }]}
-              >
-                <InputComponent name="date" />
-              </Form.Item>
+              <Col span={12}>
+                <Typography.Title
+                  level={4}
+                  style={{
+                    margin: 0,
+                  }}
+                >
+                  Doctor Name: {stateBookedServicesDetail.doctor_name}
+                </Typography.Title>
 
-              <Form.Item
-                label="Slot"
-                name="slot"
-                rules={[{ required: true, message: 'Please input your name!' }]}
-              >
-                <InputComponent name="slot" />
-              </Form.Item>
+                <Typography.Title
+                  level={4}
+                  style={{
+                    margin: 0,
+                  }}
+                >
+                  Slot: {stateBookedServicesDetail.slot_time}
+                </Typography.Title>
+              </Col>
+            </Row>
+            <Divider></Divider>
 
-              <Form.Item
-                label="Slot"
-                name="slot"
-                rules={[{ required: true, message: 'Please input your name!' }]}
-              >
-                <InputComponent name="slot" />
-              </Form.Item>
-              
-              <Form.Item
-                label="Slot"
-                name="slot"
-                rules={[{ required: true, message: 'Please input your name!' }]}
-              >
-                <InputComponent name="slot" />
-              </Form.Item>
+            <Row gutter={16}>
+              <Col span={24}>
 
-              <Form.Item
-                label="Slot"
-                name="slot"
-                rules={[{ required: true, message: 'Please input your name!' }]}
-              >
-                <InputComponent name="slot" />
-              </Form.Item>
-
-              <Form.Item
-                label="Slot"
-                name="slot"
-                rules={[{ required: true, message: 'Please input your name!' }]}
-              >
-                <InputComponent name="slot" />
-              </Form.Item>
+                <Title level={3}>Services: </Title>
+              </Col>
 
 
-            </Form>
+              <Col span={8} >
+                Name Services:
+              </Col>
+
+              <Col span={8}>
+                Price:
+              </Col>
+
+              <Col span={8}>
+                Quantity:
+              </Col>
+
+
+              {stateBookedServicesDetail.services?.length && stateBookedServicesDetail.services?.map(obj => (
+                <>
+                  <Col span={8} >
+                    {obj.service_name}
+                  </Col>
+
+                  <Col span={8}>
+                    {obj.price}
+                  </Col>
+
+                  <Col span={8}>
+                    {obj.quantity}
+                  </Col>
+                </>
+              ))}
+
+              <Divider></Divider>
+
+              <Col span={8} >
+              </Col>
+
+              <Col span={8}>
+                Total price:  {stateBookedServicesDetail.total_price ? stateBookedServicesDetail.total_price : calculatorTotalPrice()}
+              </Col>
+
+            </Row>
+
+            <Row>
+              <Col span={8}></Col>
+              <Col span={8} offset={8}>
+                {!stateBookedServicesDetail.isPaid ? <Button type="primary" onClick={handlePayment}>Payment</Button> : <></>}
+              </Col>
+            </Row>
+
           </Loading>
         </PaymentDetail>
 
       </div>
-    </div>
+    </div >
 
   )
 }

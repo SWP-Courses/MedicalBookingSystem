@@ -20,7 +20,8 @@ const BookedServiceSchema = new mongoose.Schema(
           type: Schema.Types.ObjectId,
           required: true,
         },
-        quantity: Number,
+        price: Number,
+        quantity: Number,       
       },
     ],
     isPaid: {

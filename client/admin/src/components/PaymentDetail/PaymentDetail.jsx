@@ -1,5 +1,5 @@
 import React from 'react'
-import { Drawer } from 'antd'
+import { Drawer, Divider } from 'antd'
 
 const PaymentDetail = ({ title = 'Drawer', placement = 'right', isOpen = false, children, ...rests }) => {
     return (

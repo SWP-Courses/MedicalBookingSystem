@@ -8,7 +8,9 @@ const {
   updateAddedService,
   completeBooked,
   cancelBookedService,
-  getAllBookedService
+  getAllBookedService,
+  getBookedServiceById,
+  paymentBookedServices,
 } = require("../controllers/bookedServiceController");
 const router = express.Router();
 
@@ -31,8 +33,11 @@ router.route("/doctors/:id").get(getBookedByDoctor);
 
 router.route("/users/:id").get(getIncomingBookedByUser);
 
+router.route("/payment/:id").patch(paymentBookedServices);
+
 router
   .route("/:id")
+  .get(getBookedServiceById)
   .put(addExtraService)
   .patch(completeBooked)
   .delete(cancelBookedService);
