@@ -35,6 +35,7 @@ function DoctorSchedule(props) {
   const [userService, setUserService] = useState({});
   const navigate = useNavigate();
   const [currentschedule, setCurrentSchedule] = useState([]);
+  const [isBooked, setIsBooked] = useState(false);
 
   const handleEditService = (customer) => {
     setModalShow(true);
@@ -73,8 +74,13 @@ function DoctorSchedule(props) {
     );
     if (res && res.data) {
       setCurrentSchedule(res.data);
+      setIsBooked(false);
     } else {
       console.log(`${error.message} - ${error.code}`);
+      if(error?.response?.data) {
+        setIsBooked(true);
+        setCurrentSchedule([]);
+      }
     }
   };
 
@@ -138,15 +144,6 @@ function DoctorSchedule(props) {
                         </span>
                       )}
                     </center>
-                    {/* <button
-                          className="btn-not-paid"
-                          onClick={() => {
-                            setPatient(item);
-                            handleOptionClick("prescription");
-                          }}
-                        >
-                          chưa thanh toán
-                        </button> */}
                   </td>
                   <td>
                     <center
@@ -181,11 +178,10 @@ function DoctorSchedule(props) {
             })}
           </tbody>
         </table>
-        {currentschedule && currentschedule.length > 0 ? (
-          ""
-        ) : (
-          <span className="no-date-available">hiện không có lịch</span>
-        )}
+        {
+          isBooked &&
+          <span className="no-date-available">không có lịch</span>
+        }
       </div>
 
       <ModalEditServices
