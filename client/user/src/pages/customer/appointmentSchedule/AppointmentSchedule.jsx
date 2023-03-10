@@ -7,6 +7,8 @@ import axios from "axios";
 import API_URL from "~/api/Router";
 import { addDays, format, parseISO } from "date-fns";
 import { formatSlot } from "~/utils";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCalendarXmark } from "@fortawesome/free-solid-svg-icons";
 
 function MyVerticallyCenteredModal(props) {
   const { handleCancel, bservice, show, onHide } = props;
@@ -88,10 +90,8 @@ export default function AppointmentSchedule() {
         </thead>
         <tbody>
           {upBookedServices?.map((bservice, index) => {
-            console.log(typeof bservice?.services[0].name);
-
             return (
-              <tr>
+              <tr key={bservice._id}>
                 <td className="align-middle">{index + 1}</td>
                 <td className="align-middle">
                   {format(new Date(bservice?.date), "dd/MM/yyyy")}
@@ -102,13 +102,11 @@ export default function AppointmentSchedule() {
                 <td className="align-middle">{bservice?.services[0].name}</td>
                 <td className="align-middle">{bservice?.doctor[0].fullname}</td>
                 <td className="text-center">
-                  <Button
-                    size="md"
-                    variant="danger"
-                    onClick={() => setModalShow(true)}
-                  >
-                    Huỷ
-                  </Button>
+                  <FontAwesomeIcon
+                        icon={faCalendarXmark}
+                        style={{ fontSize: "22px", cursor: "pointer", color: '#e04e4e' }}
+                        onClick={() => setModalShow(true)}
+                      />
                   <MyVerticallyCenteredModal
                     show={modalShow}
                     onHide={() => setModalShow(false)}

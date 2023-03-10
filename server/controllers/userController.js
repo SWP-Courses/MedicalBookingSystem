@@ -3,6 +3,33 @@ var SpecialistModel = require("../models/Specialist");
 var RoleModel = require("../models/Role");
 const { deleteImageById } = require("./imageController");
 
+// Get users that done booked service
+const getUsersCuredone = async (req, res, next) => {
+  try {
+    const wordContain = req.query.name;
+
+    if (!wordContain)
+      return res.status(400).json("Vui lòng điền tên người khám!");
+
+    const users = await UserModel.find({
+      fullname: { $regex: wordContain, $options: "i" },
+      status: true, 
+      role_code: "R3"
+    }, {_id: 1, fullname: 1, email: 1}).populate("_id", "user_id");
+
+    // const filterUsers = users.filter(user => {
+      
+    // });
+
+    if (!users.length)
+      return res.status(404).json("Không có tài khoản thích hợp đã khám");
+
+    res.status(200).json(users);
+  } catch (err) {
+    res.status(500).json(err);
+  }
+};
+
 // PUT /api/users/:id
 // Update a user by id (customer, doctor)
 const updateUser = async (req, res, next) => {
@@ -29,6 +56,8 @@ const updateUser = async (req, res, next) => {
       email: req.body.email,
       address: req.body.address,
       avatar: avatar,
+      room_id: req.body?.room_id,
+      degree: req.body?.degree,
     };
     const updatedUser = await UserModel.findByIdAndUpdate(
       req.params.id,
@@ -53,13 +82,10 @@ const getDoctorById = async (req, res, next) => {
   try {
     const doctor = await UserModel.findOne(
       { _id: req.params.id, role_code: "R2" },
-      "_id fullname degree profile avatar specialist_id"
+      "_id fullname degree profile avatar"
     );
     if (!doctor) return res.status(404).send("Doctor not found!");
-    const specialist = await SpecialistModel.findById(
-      doctor._doc.specialist_id
-    );
-    res.status(200).json({ ...doctor._doc, specialist: specialist.title });
+    res.status(200).json(doctor);
   } catch (err) {
     res.status(500).json(err);
   }
@@ -70,20 +96,13 @@ const getDoctors = async (req, res, next) => {
   try {
     const user = await UserModel.aggregate([
       {
-        $match: {
-          role_code: "R2",
-        },
+        "$match": {
+          "role_code": "R2",
+          "status": true
+        }
       },
-      {
-        $lookup: {
-          from: "specialists",
-          localField: "specialist_id",
-          foreignField: "_id",
-          as: "special",
-        },
-      },
-      { $unwind: "$special" },
-    ]);
+
+    ])
     // console.log(user);
     res.status(200).json(user);
   } catch (err) {
@@ -94,16 +113,11 @@ const getDoctors = async (req, res, next) => {
 const deleteDoctorAccount = async (req, res, next) => {
   try {
     const doctorId = req.params.id;
-    const deleteDoctor = await UserModel.findOneAndDelete({
-      _id: doctorId,
-      role_code: "R2",
-    });
+    const deleteDoctor = await UserModel.findOneAndUpdate({ _id: doctorId }, { status: false });
     if (!deleteDoctor) {
       res.status(404);
     }
-    console.log(deleteDoctor);
-    await UserModel.deleteOne({ _id: doctorId });
-    console.log(deleteDoctor);
+    // await UserModel.deleteOne({ _id: doctorId });
     await deleteImageById(deleteDoctor.avatar.id);
     res.status(200).json({ deleteDoctor });
   } catch (error) {
@@ -111,4 +125,10 @@ const deleteDoctorAccount = async (req, res, next) => {
   }
 };
 
-module.exports = { getDoctorById, getDoctors, deleteDoctorAccount, updateUser };
+module.exports = {
+  getDoctorById,
+  getDoctors,
+  deleteDoctorAccount,
+  updateUser,
+  getUsersCuredone,
+};

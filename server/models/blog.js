@@ -26,6 +26,9 @@ const blogSchema = new mongoose.Schema({
   category_id: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Category"
+  },
+  description: {
+    type: String,
   }
 
 }, {

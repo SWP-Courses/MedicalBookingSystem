@@ -54,9 +54,12 @@ const UserSchema = new mongoose.Schema(
     profile: {
       type: String,
     },
-    status:{
+    status: {
       type: Boolean,
-      default:true
+      default: true
+    },
+    room_id: {
+      type: mongoose.Schema.Types.ObjectId,
     }
   },
   {

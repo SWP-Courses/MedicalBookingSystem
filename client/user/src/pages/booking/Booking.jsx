@@ -2,10 +2,10 @@ import axios from "axios";
 import { format } from "date-fns";
 import { useContext, useEffect, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import API_URL from "~/api/Router";
-import BookingConfirm from "~/components/bookingConfirm/BookingConfirm";
-import BookingFill from "~/components/bookingFill/BookingFill";
+import BookingConfirm from "~/components/user/bookingConfirm/BookingConfirm";
+import BookingFill from "~/components/user/bookingFill/BookingFill";
 import { AuthContext } from "~/context/authContext";
 import "./booking.scss";
 import { toast } from "react-toastify";
@@ -15,7 +15,7 @@ export default function Booking() {
     number: 1,
     title: "THÔNG TIN KHÁM BỆNH",
   });
-  const { currentUser } = useContext(AuthContext);
+  const { currentUser, login } = useContext(AuthContext);
   const [booking, setBooking] = useState({ date: new Date() });
   const [payModal, setPayModal] = useState(false);
   const [services, setServices] = useState();
@@ -34,12 +34,18 @@ export default function Booking() {
       "dateOfBirth",
     ];
     let isInfoFull = true;
+    if (!currentUser) {
+      toast.info("Vui lòng đăng nhập trước khi đặt lịch");
+      return;
+    }
+
     for (const key of infoArr) {
       if (!currentUser[key]) {
         isInfoFull = false;
         break;
       }
     }
+
     if (!isInfoFull) {
       toast.info("Vui lòng cập nhật tài khoản trước khi đặt lịch");
       return;
@@ -112,7 +118,8 @@ export default function Booking() {
     // console.log(passData);
     try {
       await axios.post(`${API_URL}/bookedservices`, passData);
-      navigate(0);
+      toast.success("Đặt lịch thành công")
+      navigate("/customer/upcoming-booking");
     } catch (err) {
       console.log(err);
     }
@@ -123,26 +130,36 @@ export default function Booking() {
       <div className="bookingBanner">
         <h1 className="title">Đăng ký khám</h1>
       </div>
-      <div className="bookingBlock container">
-        <h2 className="bookingStep">{part.title}</h2>
-        {part.number === 1 && (
-          <BookingFill
-            booking={booking}
-            setBooking={setBooking}
-            services={services}
-            freeDoctors={freeDoctors}
-            freeSlots={freeSlots}
-          />
-        )}
-        {part.number === 2 && <BookingConfirm booking={booking} />}
-        <div className="bookingDirection">
-          {part.number === 1 && <button onClick={handleNext}>TIẾP TỤC</button>}
-          {part.number === 2 && (
-            <>
-              <button onClick={handleBack}>QUAY LẠI</button>
-              <button onClick={hanleBookService}>XÁC NHẬN ĐẶT LỊCH</button>
-            </>
+      <div className="container">
+        <div className="bookingBlock col-12 col-sm-10 col-xxl-8">
+          <div className="bookingTitle">
+            <h2 className="bookingStep">{part.title}</h2>
+            {!currentUser && <Link to="/login" className="btn btn-primary">Đăng nhập</Link>}
+          </div>
+          {/* Phần 1: chọn thông tin */}
+          {part.number === 1 && (
+            <BookingFill
+              booking={booking}
+              setBooking={setBooking}
+              services={services}
+              freeDoctors={freeDoctors}
+              freeSlots={freeSlots}
+            />
           )}
+
+          {/* Phần 2: Xác nhận thông tin */}
+          {part.number === 2 && <BookingConfirm booking={booking} />}
+          <div className="bookingDirection">
+            {part.number === 1 && (
+              <button onClick={handleNext}>TIẾP TỤC</button>
+            )}
+            {part.number === 2 && (
+              <>
+                <button onClick={handleBack}>QUAY LẠI</button>
+                <button onClick={hanleBookService}>XÁC NHẬN ĐẶT LỊCH</button>
+              </>
+            )}
+          </div>
         </div>
       </div>
 

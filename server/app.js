@@ -24,11 +24,15 @@ const blogRouter = require("./routes/blogRouter");
 const categoryRouter = require("./routes/categoryRouter");
 const serviceRouter = require("./routes/serviceRouter");
 const bookingRouter = require("./routes/bookingRouter");
-const bookedServiceRouter = require("./routes/bookedServiceRouter");
+const bookedServicesRouter = require("./routes/bookedServiceRouter");
 const imageRouter = require("./routes/imageRouter");
-const Absent = require("./models/Absent");
+const roomRouter = require('./routes/roomRouter');
 const Slot = require("./models/Slot");
 const absentRouter = require('./routes/absentRouter')
+
+const socket = require("socket.io");
+const chatRouter = require('./routes/chatRouter');
+const dashBoardRouter = require("./routes/dashboardRouter");
 
 var app = express();
 
@@ -43,6 +47,7 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
+
 
 app.use(logger("dev"));
 app.use(
@@ -75,17 +80,21 @@ app.use("/api/", indexRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/specialists", specialistRouter);
-app.use("/api/drugbill", drugBillRouter);
+app.use("/api/prescriptions", drugBillRouter); //use drugbill model
 app.use("/api/absent", absentRouter);
 app.use("/api/booking", bookingRouter);
-app.use("/api/bookedservices", bookedServiceRouter);
+app.use("/api/bookedservices", bookedServicesRouter);
 
 //  An + Minh
 app.use("/api/medicine", medicineRouter);
 app.use("/api/blogs", blogRouter);
-app.use("/api/categories", categoryRouter);
+app.use("/api/category", categoryRouter);
 app.use("/api/services", serviceRouter);
-app.use("/image", imageRouter);
+app.use('/image', imageRouter);
+app.use('/api/room', roomRouter);
+app.use('/api/message', chatRouter);
+app.use('/api/dashboard', dashBoardRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function (req, res, err, next) {
@@ -102,6 +111,34 @@ app.use(function (err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render("error");
+});
+
+const httpServer = require("http").createServer();
+const io = require("socket.io")(httpServer, {
+  cors: {
+    origin: ["http://localhost:3000", "http://localhost:3001"],
+    Credential: true,
+  }
+});
+
+httpServer.listen(8080);
+
+global.onlineUser = new Map();
+
+global.io = io;
+
+io.on("connection", (socket) => {
+  const newConnectUserId = socket.handshake.query.userId;
+  onlineUser.set(newConnectUserId, socket.id);
+
+  socket.on("send_message", messageInfo => {
+    console.log(messageInfo);
+    const recipientSocketId = onlineUser.get(messageInfo.recipient_id);
+    if (recipientSocketId) {
+      io.to(recipientSocketId).emit("message_recieve", messageInfo);
+    }
+  })
+
 });
 
 module.exports = app;

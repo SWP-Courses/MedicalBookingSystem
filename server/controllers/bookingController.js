@@ -59,7 +59,7 @@ const getFreeSlots = asyncHandler(async (req, res, next) => {
       : fullSlotss;
 
   if (bookedSlots.length === 0) {
-    console.log(fullSlots);
+    // console.log(fullSlots);
     return res.status(200).json(fullSlots);
   } else {
     const leftSlots = fullSlots.filter((fslot) => {

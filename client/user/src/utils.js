@@ -49,11 +49,16 @@ const hanlderRequest = (promise) => {
           .catch((error) => [error, undefined]);
 };
 
+function formatPrice(n) {
+  return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+}
+
 export {
   shortenText,
   validateEmail,
   checkStringContainInPhoneNumber,
   validateUsername,
   formatDate,
-  hanlderRequest
+  hanlderRequest,
+  formatPrice
 };

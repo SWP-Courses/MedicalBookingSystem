@@ -1,0 +1,58 @@
+import React, { useContext } from "react";
+import { Routes, Route, Outlet } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+import Dashboard from "~/pages/admin/Dashboard.jsx";
+import Blog from "~/pages/admin/Blog.jsx";
+import Doctor from "~/pages/admin/Doctor.jsx";
+import Service from "~/pages/admin/Service.jsx";
+import Medicine from "~/pages/admin/Medicine.jsx";
+import Calendar from "~/pages/admin/Calendar.jsx";
+import Chat from "~/pages/admin/Chat.jsx";
+import { AuthContext } from "~/context/authContext";
+import Sidebar from "~/components/admin/Sidebar/Sidebar";
+import Payment from "~/pages/admin/Payment";
+
+// const Layout = () => (
+//   <div className="d-flex layout">
+//     <Sidebar />
+//     <div className="main">
+//       <AdminRouter />
+//     </div>
+//   </div>
+// );
+
+const AdminRouter = () => {
+  const { currentUser } = useContext(AuthContext);
+  return (
+    <>
+      <Routes>
+        <Route path="/staff">
+          {currentUser?.role === "admin" && (
+            <>
+              <Route path="" element={<Dashboard />} />
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="blog" element={<Blog />} />
+              <Route path="doctor" element={<Doctor />} />
+              <Route path="service" element={<Service />} />
+              <Route path="medicine" element={<Medicine />} />
+              <Route path="calendar" element={<Calendar />} />
+            </>
+          )}
+
+          {currentUser?.role === "consultant" && (
+            <Route path="" element={<Chat />} />
+          )}
+
+          {currentUser?.role === "cashier" && (
+            <Route path="" element={<Payment />} />
+          )}
+        </Route>
+      </Routes>
+      <ToastContainer />
+    </>
+  );
+};
+
+export default AdminRouter;

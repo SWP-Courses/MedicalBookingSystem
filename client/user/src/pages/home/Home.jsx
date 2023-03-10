@@ -1,18 +1,15 @@
 import "./home.scss";
-import homePageImage from '../../assets/images/loginPage.jpg'
+import homePageImage from "../../assets/images/loginPage.jpg";
 
 export default function Home() {
   return (
     <div className="homeWrapper container-lg">
       <div className="slider row">
-        <img
-          src={homePageImage}
-          alt="logo home page"
-        />
+        <img src={homePageImage} alt="logo home page" />
       </div>
       <div className="introduction row">
         <div className="introLeft col-sm-7">
-          <h1>Human Heal</h1>
+          <h1>Nha khoa Sun Smile</h1>
           <p>
             Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sequi
             iste, et pariatur, odio officiis rerum magnam doloribus voluptatibus
