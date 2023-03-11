@@ -119,7 +119,7 @@ const AddAbsentModal = ({ isOpen, onClose, onEventAdded, customStyles, doctorLis
                             id={'date'}
                             showIcon
                             style={{
-                                width: '50%',
+                                width: '100%',
                             }}
                             dateFormat="dd/MM/yyyy"
                             onChange={handleDateChange}

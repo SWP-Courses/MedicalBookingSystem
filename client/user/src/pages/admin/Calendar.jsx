@@ -41,7 +41,7 @@ function Calendar() {
             top: '50%',
             left: '50%',
             height: '500px',
-            width: '500px',
+            width: '400px',
             right: 'auto',
             bottom: 'auto',
             marginRight: '-50%',
