@@ -12,6 +12,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import toastOption from '~/config/toast';
 import { toast } from "react-toastify";
+import { ClassNames } from '@emotion/react';
 
 const Payment = () => {
   const [searchText, setSearchText] = useState("")
@@ -55,6 +56,9 @@ const Payment = () => {
     try {
       const res = await axios.get(`${ROUTER}/api/bookedservices/${rowSelected}`)
       if (res?.data.result) {
+
+        // const formattedAmount = res?.data?.result?.total_price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+
         setStateBookedServicesDetail({
           id: rowSelected,
           user_name: res?.data?.result?.user_name,
@@ -196,14 +200,24 @@ const Payment = () => {
 
       if (res.status === 200) {
         setIsOpenDrawer(false)
-        window.location.reload();
         toast.success("Payment Success!", toastOption);
+        window.location.reload();
       }
     } catch (error) {
       console.log(error.response.data);
       toast.warning(error.response.data, toastOption);
     }
 
+  }
+
+  const formatDate = (data) => {
+    let date = new Date(data)
+    let day = date.getDate();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    let formattedDate = `${day}/${month}/${year}`;
+
+    return formattedDate
   }
 
   return (
@@ -224,12 +238,16 @@ const Payment = () => {
               ></Input>
             </Col>
 
-            <Col span={6}>
+            <Col span={4} className='input-date-payment'>
+              <label htmlFor="date"><i className="ri-calendar-fill" ></i></label>
+
               <Input.Group compact>
+
                 <DatePicker
+                  id="date"
                   showIcon
                   style={{
-                    width: '50%',
+                    width: '100px',
                   }}
                   dateFormat="dd/MM/yyyy"
                   onChange={handleDateChange}
@@ -284,7 +302,7 @@ const Payment = () => {
                     margin: 0,
                   }}
                 >
-                  Date: {stateBookedServicesDetail.date}
+                  Date: {formatDate(stateBookedServicesDetail.date)}
                 </Typography.Title>
               </Col>
 
@@ -317,31 +335,31 @@ const Payment = () => {
               </Col>
 
 
-              <Col span={8} >
+              <Col span={8} style={{ fontWeight: 'bold' }}>
                 Name Services:
               </Col>
 
-              <Col span={8}>
+              <Col span={8} style={{ fontWeight: 'bold' }}>
                 Quantity:
               </Col>
 
-              <Col span={8}>
+              <Col span={8} style={{ fontWeight: 'bold' }}>
                 Price:
               </Col>
 
 
               {stateBookedServicesDetail.services?.length && stateBookedServicesDetail.services?.map(obj => (
                 <>
-                  <Col span={8} >
+                  <Col span={8} style={{ marginTop: '5px', marginBottom: '5px' }}>
                     {obj.service_name}
                   </Col>
 
-                  <Col span={8}>
-                    {obj.quantity}
+                  <Col span={8} style={{ marginTop: '5px', marginBottom: '5px', paddingLeft: '25px' }}>
+                    {obj.quantity} cái
                   </Col>
 
-                  <Col span={8}>
-                    {obj.price}
+                  <Col span={8} style={{ marginTop: '5px', marginBottom: '5px' }}>
+                    {obj.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
                   </Col>
                 </>
               ))}
@@ -351,16 +369,16 @@ const Payment = () => {
               <Col span={6} >
               </Col>
 
-              <Col span={6} offset={8}>
-                Total price:  {stateBookedServicesDetail.total_price ? stateBookedServicesDetail.total_price : calculatorTotalPrice()}
+              <Col span={6} offset={8} className='total-price'>
+                Total price:  {stateBookedServicesDetail.total_price ? stateBookedServicesDetail.total_price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' }) : calculatorTotalPrice().toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
               </Col>
 
             </Row>
 
-            <Row style={{marginTop:'30px'}}>
+            <Row style={{ marginTop: '30px', position: 'relative' }}>
               <Col span={8}></Col>
               <Col span={8} offset={8}>
-                {!stateBookedServicesDetail.isPaid ? <Button type="primary" onClick={handlePayment}>Checkout</Button> : <></>}
+                {!stateBookedServicesDetail.isPaid ? <Button className="btn-payment" type="primary" onClick={handlePayment}>Check out</Button> : <></>}
               </Col>
             </Row>
 
