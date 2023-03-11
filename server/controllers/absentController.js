@@ -26,10 +26,9 @@ const getAbsent = asyncHandler(async (req, res, next) => {
 //@access public
 const createAbsent = asyncHandler(async (req, res, next) => {
   try {
-    console.log(req.body.date);
-    console.log(new Date(decodeURIComponent(req.body.date)));
+    // console.log(new Date(decodeURIComponent(req.body.date)));
     const absent = await Absent.create({
-      doctor_id: req.body.id,
+      doctor_id: req.body.doctor_id,
       // date: new Date(req.body.date + "T12:00:00"),
       date: new Date(decodeURIComponent(req.body.date)),
     });

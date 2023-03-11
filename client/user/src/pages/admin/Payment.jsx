@@ -184,13 +184,6 @@ const Payment = () => {
     return total
   }
 
-  const handleOnchangeDetails = (e) => {
-    setStateBookedServicesDetail({
-      ...stateBookedServicesDetail,
-      [e.target.name]: e.target.value
-    })
-  }
-
   const handlePayment = async () => {
     const data = {
       total_price: calculatorTotalPrice(),

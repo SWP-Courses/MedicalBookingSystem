@@ -1,0 +1,49 @@
+.ReactModal__Content {
+  display: flex;
+  align-items: center;
+  /* flex-direction: column  ; */
+}
+
+.ReactModal__Content form {
+  width: 500px;
+}
+
+.form-select {
+  width: 50%;
+}
+
+.input-date {
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #d0d0d0;
+  width: 50%;
+  height: 38px;
+  border-radius: 4px;
+}
+
+.input-date label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0;
+  cursor: pointer;
+}
+
+.fc-event-time {
+  display: none;
+}
+
+.fc-event-main {
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.msg-warning {
+  width: 300px;
+  margin: 20px 0px;
+}
+
+.msg-warning span {
+  color: red;
+}
