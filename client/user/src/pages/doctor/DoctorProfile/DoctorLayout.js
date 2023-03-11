@@ -45,7 +45,7 @@ export default function DoctorLayout() {
           />
           <span className="doctorName">{currentUser?.fullname}</span>
         </div>
-        <div className="profileActions">
+        <div className="profileActions shadow-lg bg-body-tertiary rounded">
           <h4
             className={userContent === "info" ? "action active" : "action"}
             onClick={() => {
@@ -84,7 +84,7 @@ export default function DoctorLayout() {
           </h4>
         </div>
       </div>
-      <div className="doctorContent">
+      <div className="doctorContent shadow-lg bg-body-tertiary rounded">
         {userContent === "info" && (
           <UserInfo hanldeUploadImage={hanldeUploadImage} image={image} />
         )}

@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 const shortenText = (text, limit) => {
   //trim the string to the maximum length
   let trimmedString = text.substr(0, limit);
@@ -53,6 +55,13 @@ function formatPrice(n) {
   return n.toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
 }
 
+const cloneData = (data) => {
+  const clonedData = _.cloneDeep(data);
+  if (clonedData) {
+    return clonedData;
+  }
+};
+
 export {
   shortenText,
   validateEmail,
@@ -60,5 +69,6 @@ export {
   validateUsername,
   formatDate,
   hanlderRequest,
-  formatPrice
+  formatPrice,
+  cloneData
 };
