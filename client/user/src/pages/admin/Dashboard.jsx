@@ -59,11 +59,11 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className='row'>
+      {/* <div className='row'>
         <div className="col-12 border vh-100">
           <Calendar />
         </div>
-      </div>
+      </div> */}
 
     </div>
   )
