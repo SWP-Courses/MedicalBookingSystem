@@ -120,9 +120,8 @@ const register = async (req, res, next) => {
         phone: req.body.phone,
         role_code: req.body.role_code,
         avatar: avatar,
-        room_id: req.body.room_id,
       };
-
+      
       // If create a doctor account
       // Send role_code="R2"
       if (req.body.role_code === "R2")
@@ -130,7 +129,8 @@ const register = async (req, res, next) => {
           role_code: "R2",
           ...document,
           degree: req.body.degree,
-          room: req.body.room,
+          // room: req.body.room,
+          room_id: req.body.room_id,
           profile: req.body.profile,
         };
 

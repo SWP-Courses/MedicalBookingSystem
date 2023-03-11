@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Routes, Route, Outlet } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -11,7 +11,6 @@ import Medicine from "~/pages/admin/Medicine.jsx";
 import Calendar from "~/pages/admin/Calendar.jsx";
 import Chat from "~/pages/admin/Chat.jsx";
 import { AuthContext } from "~/context/authContext";
-import Sidebar from "~/components/admin/Sidebar/Sidebar";
 import Payment from "~/pages/admin/Payment";
 
 // const Layout = () => (

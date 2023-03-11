@@ -58,6 +58,7 @@ const updateUser = async (req, res, next) => {
       avatar: avatar,
       room_id: req.body?.room_id,
       degree: req.body?.degree,
+      profile: req.body?.profile,
     };
     const updatedUser = await UserModel.findByIdAndUpdate(
       req.params.id,

@@ -28,7 +28,7 @@ const mergeService = async (bookedService) => {
 //@access private
 const getBookedByDoctor = asyncHandler(async (req, res, next) => {
   const viewDate = req.query.date;
-  console.log(viewDate);
+  // console.log(viewDate);
   try {
     const orders = await BookedService.aggregate([
       {
@@ -54,7 +54,7 @@ const getBookedByDoctor = asyncHandler(async (req, res, next) => {
         },
       },
     ]).project({ user_id: 0, doctor_id: 0, date: 0 });
-    console.log(orders);
+    // console.log(orders);
     if (!orders.length) return res.status(404).json("Không có lịch đặt");
 
     const bookedServicesFull = await Promise.all(
@@ -115,10 +115,10 @@ const getHistoryByUserId = asyncHandler(async (req, res, next) => {
   const bookedServicesFull = await Promise.all(
     orders.map(async (order) => {
       const servicesFull = await mergeService(order);
-      console.log({
-        ...order,
-        services: servicesFull,
-      });
+      // console.log({
+      //   ...order,
+      //   services: servicesFull,
+      // });
       return {
         ...order,
         services: servicesFull,
@@ -392,7 +392,7 @@ const paymentBookedServices = asyncHandler(async (req, res, next) => {
 
   const total_price = req.body.total_price;
   const isPaid = req.body.isPaid;
-  console.log(req.body)
+  // console.log(req.body)
 
   const completeBooked = await BookedService.findByIdAndUpdate(req.params.id, {
     total_price,

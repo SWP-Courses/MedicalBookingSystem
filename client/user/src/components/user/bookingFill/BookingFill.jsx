@@ -30,6 +30,7 @@ export default function BookingFill({
     setBooking((prev) => ({ ...prev, slot: time }));
   };
   console.log(booking);
+  console.log(freeDoctors);
   return (
     <div className="bookingContent">
       <div className="hospitalPart">
@@ -63,7 +64,7 @@ export default function BookingFill({
           <Dropdown.Toggle id="dropdown-basic" className="dropdownText">
             <div className="text">
               <FontAwesomeIcon icon={faBriefcase} />
-              {!booking.doctor
+              {!booking.doctor?._id
                 ? "Chọn bác sĩ muốn khám"
                 : booking.doctor.fullname}
             </div>

@@ -8,7 +8,6 @@ import API_URL from "~/api/Router";
 
 export default function DoctorList() {
   const [doctorList, setDoctorList] = useState();
-  const [specialists, setSpecialists] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {

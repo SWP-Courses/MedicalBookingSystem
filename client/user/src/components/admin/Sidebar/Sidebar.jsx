@@ -44,11 +44,6 @@ const Sidebar = () => {
       name: "Calendar",
       icon: "ri-calendar-2-line",
     },
-    {
-      path: "/staff/payment",
-      name: "Payment",
-      icon: "ri-bank-card-line",
-    },
   ];
 
   // {

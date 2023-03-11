@@ -1,18 +1,13 @@
 import "./medicalHistory.scss";
 import axios from "axios";
 import { useContext, useEffect, useMemo, useState } from "react";
-import {
-  Button,
-  Form,
-  InputGroup,
-} from "react-bootstrap";
+import { Button, Form, InputGroup, Modal } from "react-bootstrap";
 import DataTable, { filter } from "react-data-table-component";
 import { Link } from "react-router-dom";
 import API_URL from "~/api/Router";
 import { AuthContext } from "~/context/authContext";
-// import "./blogsSaved.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faPills, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 import { formatSlot } from "~/utils";
 import { format } from "date-fns";
@@ -32,12 +27,59 @@ import { format } from "date-fns";
 //   return false;
 // })
 
+function PrescriptionModal({ preId, show, onHide }) {
+  const [preInfo, setPreInfo] = useState();
+
+  useEffect(() => {
+    const fetchPrescription = async () => {
+      try {
+        const res = await axios.get(API_URL + "/prescriptions/" + preId);
+        setPreInfo(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    preId && fetchPrescription();
+  }, [preId]);
+
+  return (
+    <Modal
+      show={show}
+      onHide={onHide}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">Đơn thuốc</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <p>Bệnh: {preInfo?.disease}</p>
+        <p>Lưu ý: {preInfo?.note}</p>
+        <h5>Thuốc: </h5>
+        {preInfo?.medicines.map((medicine) => (
+          <p>
+          {medicine.quantity} {medicine.medicine_id.type} {medicine.medicine_id.name}{" "}
+             | Liều dùng: {medicine.dose}
+          </p>
+        ))}
+        {preInfo?.re_exam_date && <p>Ngày tái khám: {preInfo?.re_exam_date}</p>}
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={onHide}>Đóng</Button>
+      </Modal.Footer>
+    </Modal>
+  );
+}
+
 export default function MedicalHistory() {
   const [history, setHistory] = useState();
   const { currentUser } = useContext(AuthContext);
   const [filterText, setFilterText] = useState("");
   const [filteredData, setFilteredData] = useState([]);
-  const [prescription, setPrescription] = useState();
+
+  const [modalShow, setModalShow] = useState(false);
+  const [preShowId, setPreShowId] = useState();
 
   useEffect(() => {
     if (currentUser) {
@@ -46,7 +88,7 @@ export default function MedicalHistory() {
           const res = await axios.get(
             `${API_URL}/bookedservices/history/${currentUser._id}`
           );
-          // const formatRes = 
+          // const formatRes =
           setHistory(res.data);
         } catch (err) {
           console.log(err);
@@ -56,17 +98,11 @@ export default function MedicalHistory() {
     }
   }, [currentUser]);
 
-
   const columns = useMemo(() => {
     const handleViewPrescription = async (preId) => {
-      try {
-       const res = await axios.get(
-         `${API_URL}/bookedservices/history/${currentUser._id}`
-       );
-      } catch(err) {
-       toast.error(err.response.data)
-      }
-   }
+      setPreShowId(preId);
+      setModalShow(true);
+    };
 
     return [
       {
@@ -83,25 +119,34 @@ export default function MedicalHistory() {
         selector: (row) => row?.doctor[0]?.fullname,
       },
       {
-        name: "Tổng tiển",
-        selector: (row) => row.total_price,
+        name: "Chi phí",
+        selector: (row) => row.total_price+" VND",
       },
       {
         name: "Xem đơn thuốc",
         selector: (row) => (
-          <Button
-            variant="primary"
-            size="sm"
-            className="btn-block mt-auto"
-            onClick={() => handleViewPrescription(row._id)}
-          >
-            Xem đơn thuốc
-          </Button>
+          <div className="text-center">
+            {row.drugbill_id ? (
+              <FontAwesomeIcon
+                icon={faPills}
+                onClick={() => handleViewPrescription(row.drugbill_id)}
+                style={{
+                  color: "#0D6EFD",
+                  cursor: "pointer",
+                  fontSize: "20px",
+                }}
+              />
+            ) : (
+              <FontAwesomeIcon
+                icon={faPills}
+                style={{ opacity: 0.4, cursor: "not-allowed" }}
+              />
+            )}
+          </div>
         ),
       },
     ];
-  }, [currentUser._id]);
-  
+  }, []);
 
   // console.log(blogsSaved);
   return (
@@ -125,6 +170,11 @@ export default function MedicalHistory() {
         pagination
         defaultSortAsc="false"
         defaultSortFieldId="date"
+      />
+      <PrescriptionModal
+        preId={preShowId}
+        show={modalShow}
+        onHide={() => setModalShow(false)}
       />
     </div>
   );

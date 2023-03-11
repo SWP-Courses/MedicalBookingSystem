@@ -17,7 +17,6 @@ import API_URL from "~/api/Router";
 import { formatDate } from "~/utils";
 import { hanlderRequest } from "~/utils";
 import ModalEditServices from "./ModalAddService/ModalEditServices";
-import { useNavigate } from "react-router-dom";
 import _ from "lodash";
 import { formatSlot } from "~/utils";
 
@@ -32,7 +31,6 @@ function DoctorSchedule(props) {
   });
   const [modalShow, setModalShow] = useState(false);
   const [userService, setUserService] = useState({});
-  const navigate = useNavigate();
   const [currentschedule, setCurrentSchedule] = useState([]);
 
   const handleEditService = (customer) => {
@@ -70,10 +68,13 @@ function DoctorSchedule(props) {
         `${API_URL}/bookedservices/doctors/${currentUser._id}?date=${date}`
       )
     );
+    console.log(res);
     if (res && res.data) {
       setCurrentSchedule(res.data);
     } else {
-      console.log(`${error.message} - ${error.code}`);
+      // console.log(`${error.message} - ${error.code}`);
+
+      setCurrentSchedule([]);
     }
   };
 
@@ -121,15 +122,16 @@ function DoctorSchedule(props) {
                   </td>
                   <td>
                     <center>
-                      <button className="btn-paid">
-                        <FontAwesomeIcon
-                          icon={faCheck}
-                          style={{ fontSize: "15px", marginRight: "2px" }}
-                        />
-                        hoàn thành
-                      </button>
-                    </center>
-                    {/* <button
+                      {item.isPaid ? (
+                        <button className="btn-paid">
+                          <FontAwesomeIcon
+                            icon={faCheck}
+                            style={{ fontSize: "15px", marginRight: "2px" }}
+                          />
+                          hoàn thành
+                        </button>
+                      ) : (
+                        <button
                           className="btn-not-paid"
                           onClick={() => {
                             setPatient(item);
@@ -137,7 +139,9 @@ function DoctorSchedule(props) {
                           }}
                         >
                           chưa thanh toán
-                        </button> */}
+                        </button>
+                      )}
+                    </center>
                   </td>
                   <td>
                     <center
@@ -148,7 +152,11 @@ function DoctorSchedule(props) {
                     >
                       <FontAwesomeIcon
                         icon={faPills}
-                        style={{ fontSize: "22px", cursor: "pointer", color: 'var(--primary)' }}
+                        style={{
+                          fontSize: "22px",
+                          cursor: "pointer",
+                          color: "var(--primary)",
+                        }}
                       />
                     </center>
                   </td>
@@ -157,7 +165,10 @@ function DoctorSchedule(props) {
                       className="schedule__calender-icon"
                       onClick={() => handleEditService(item)}
                     >
-                      <FontAwesomeIcon icon={faPenToSquare} style={{color: '#2892ed'}}/>
+                      <FontAwesomeIcon
+                        icon={faPenToSquare}
+                        style={{ color: "#2892ed" }}
+                      />
                     </center>
                   </td>
                 </tr>

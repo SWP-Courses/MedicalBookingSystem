@@ -13,13 +13,12 @@ import Tippy from "@tippyjs/react/headless";
 import "tippy.js/dist/tippy.css";
 import { useNavigate } from "react-router-dom";
 
-import {ReactComponent as BookIcon} from '~/assets/icons/book_service_icon.svg'
+import { ReactComponent as BookIcon } from "~/assets/icons/book_service_icon.svg";
 import "./navbar.scss";
 import Options from "../options/Options";
 import { AuthContext } from "~/context/authContext";
 import API_URL, { API_IMAGE_URL } from "~/api/Router";
 import logo from "~/assets/images/logo.jpg";
-
 
 export default function Navbar() {
   const { currentUser, logout } = useContext(AuthContext);
@@ -80,24 +79,26 @@ export default function Navbar() {
             <div className="navItemContainer">
               {(currentUser?.role === "customer" || !currentUser) && (
                 <>
-                 <BookIcon/>
                   <Link to="/booking" className="navbar-button">
+                    <BookIcon />
                     ĐĂNG KÝ KHÁM
                   </Link>
                 </>
               )}
+
               {currentUser?.role === "doctor" && (
                 <>
-                  <FontAwesomeIcon
-                    icon={faCalendarDays}
-                    style={{ color: "var(--secondary-color)" }}
-                  />
-                  <button 
+                  <Link
+                    to="/doctor"
+                    state={{ redirect: "doctorSchedule" }}
                     className="navbar-button"
-                    onClick={() => navigate('/doctor')}
                   >
+                    <FontAwesomeIcon
+                      icon={faCalendarDays}
+                      style={{ color: "var(--secondary-color)" }}
+                    />
                     LỊCH KHÁM
-                  </button>
+                  </Link>
                 </>
               )}
             </div>
@@ -109,35 +110,36 @@ export default function Navbar() {
                 </Link>
               )}
               {currentUser && (
-                 <>
-                   <div className="user-border">
+                <>
+                  <div className="user-border">
                     <img
                       src={`${API_IMAGE_URL}/${currentUser?.avatar?.filename}`}
-                     alt=""
-                     className="avatar__Container"
-                     />
-                     <span className="user-name">{currentUser.fullname}</span>
-                     <span className="arrow-icon"><FontAwesomeIcon icon={faCaretDown} /></span>
-                   </div>
-                   <div className="drop-down__custome">
-                     <div className="user-profile">
-                       <Link
-                         className="drop-down__item"
-                         to={"/" + currentUser.role}
-                       >
-                         Thông tin cá nhân
-                       </Link>
-                     </div>
-                     <Dropdown.Divider />
-                     <div className="logout">
-                       <span className="drop-down__item" onClick={handleLogout}>
-                         Đăng xuất
-                       </span>
-                     </div>
-                   </div>
-                 </> 
-              )
-              }
+                      alt=""
+                      className="avatar__Container"
+                    />
+                    <span className="user-name">{currentUser.fullname}</span>
+                    <span className="arrow-icon">
+                      <FontAwesomeIcon icon={faCaretDown} />
+                    </span>
+                  </div>
+                  <div className="drop-down__custome">
+                    <div className="user-profile">
+                      <Link
+                        className="drop-down__item"
+                        to={"/" + currentUser.role}
+                      >
+                        Thông tin cá nhân
+                      </Link>
+                    </div>
+                    <Dropdown.Divider />
+                    <div className="logout">
+                      <span className="drop-down__item" onClick={handleLogout}>
+                        Đăng xuất
+                      </span>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </div>

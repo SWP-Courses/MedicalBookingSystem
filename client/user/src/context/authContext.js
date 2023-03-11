@@ -1,6 +1,6 @@
 import { useState, createContext, useEffect, useContext } from "react";
 import axios from "axios";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 import API_URL from "~/api/Router";
@@ -12,7 +12,6 @@ export default function AuthContextProvider({ children }) {
   const [currentUser, setCurrentUser] = useState(
     JSON.parse(localStorage.getItem("user") || null)
   );
-  const location = useLocation();
 
   // Side Effects
 
@@ -45,8 +44,14 @@ export default function AuthContextProvider({ children }) {
       });
       setCurrentUser(res.data);
       // navigate("/");
-      if (["customer", "doctor"].includes(res.data.role))
+      // if (["customer", "doctor"].includes(res.data.role))
+      //   navigate(`/${res.data.role}/profile`);
+      if (res.data.role === 'customer')
         navigate(`/${res.data.role}/profile`);
+        
+      if (res.data.role === 'doctor')
+        navigate(`/${res.data.role}`);
+
       if (["admin", "consultant", "cashier"].includes(res.data.role))
         navigate("/staff");
     } catch (error) {

@@ -83,6 +83,16 @@ export default function Booking() {
         const res = await axios.get(
           `${API_URL}/booking/doctors?date=${booking.date}`
         );
+
+      
+        const chosenDoctor =booking?.doctor?._id && res.data.find(
+          (doctor) => doctor._id === booking?.doctor?._id
+        );
+        if (!chosenDoctor) {
+          setBooking((prev) => ({ ...prev, doctor: {} }));
+          setFreeSlots([]);
+        }
+
         setFreeDoctors(res.data);
       } catch (err) {
         console.log(err);
@@ -90,7 +100,8 @@ export default function Booking() {
     };
     // thêm debounce sau
     booking.date && fetchFreeDoctors();
-  }, [booking.date]);
+  }, [booking.date, booking?.doctor?._id]);
+
   useEffect(() => {
     const fetchFreeSlots = async () => {
       try {
@@ -103,7 +114,7 @@ export default function Booking() {
       }
     };
     // thêm debounce sau
-    booking.doctor && fetchFreeSlots();
+    booking?.doctor?._id && fetchFreeSlots();
   }, [booking.date, booking.doctor]);
 
   const hanleBookService = async () => {
@@ -118,7 +129,7 @@ export default function Booking() {
     // console.log(passData);
     try {
       await axios.post(`${API_URL}/bookedservices`, passData);
-      toast.success("Đặt lịch thành công")
+      toast.success("Đặt lịch thành công");
       navigate("/customer/upcoming-booking");
     } catch (err) {
       console.log(err);
@@ -134,7 +145,11 @@ export default function Booking() {
         <div className="bookingBlock col-12 col-sm-10 col-xxl-8">
           <div className="bookingTitle">
             <h2 className="bookingStep">{part.title}</h2>
-            {!currentUser && <Link to="/login" className="btn btn-primary">Đăng nhập</Link>}
+            {!currentUser && (
+              <Link to="/login" className="btn btn-primary">
+                Đăng nhập
+              </Link>
+            )}
           </div>
           {/* Phần 1: chọn thông tin */}
           {part.number === 1 && (
