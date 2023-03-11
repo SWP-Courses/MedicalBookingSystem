@@ -45,7 +45,8 @@ const Payment = () => {
       const res = await axios.get(`${ROUTER}/api/bookedservices`)
       return res.data.result
     } catch (error) {
-      console.log(error)
+      console.log(error);
+      // toast.warning(error)
     }
   }
 
@@ -199,8 +200,8 @@ const Payment = () => {
         toast.success("Payment Success!", toastOption);
       }
     } catch (error) {
-      console.log(error.message);
-      toast.error("Payment Error!", toastOption);
+      console.log(error.response.data);
+      toast.warning(error.response.data, toastOption);
     }
 
   }
@@ -359,7 +360,7 @@ const Payment = () => {
             <Row style={{marginTop:'30px'}}>
               <Col span={8}></Col>
               <Col span={8} offset={8}>
-                {!stateBookedServicesDetail.isPaid ? <Button type="primary" onClick={handlePayment}>Payment</Button> : <></>}
+                {!stateBookedServicesDetail.isPaid ? <Button type="primary" onClick={handlePayment}>Checkout</Button> : <></>}
               </Col>
             </Row>
 

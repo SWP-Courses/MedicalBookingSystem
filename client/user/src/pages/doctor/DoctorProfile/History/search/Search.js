@@ -8,12 +8,11 @@ import Tippy from "@tippyjs/react/headless";
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { hanlderRequest } from "~/utils";
-
-import { Wrapper as PopperWrapper } from "~/components/popper";
+import  PopperWrapper  from '~/components/popper/Wrapper'
 import AccountItem from "~/components/user/AccountItem/AccountItem";
 import API_URL from "~/api/Router";
 import useDebounce from "~/hooks/useDebounce";
-import "./Search.scss";
+// import "./Search.scss";
 
 function Search(props) {
   const [showResult, setShowResult] = useState(false);

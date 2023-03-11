@@ -11,6 +11,7 @@ const {
   getAllBookedService,
   getBookedServiceById,
   paymentBookedServices,
+  getHistoryByUserId,
 } = require("../controllers/bookedServiceController");
 const bookedServicesRouter = express.Router();
 
@@ -22,6 +23,8 @@ bookedServicesRouter.all((req, res, next) => {
 });
 
 bookedServicesRouter.route("/").post(bookService).get(getAllBookedService);
+
+bookedServicesRouter.route("/history/:userId").get(getHistoryByUserId);
 
 bookedServicesRouter.route("/:id/:serviceId").put(updateAddedService);
 
@@ -41,5 +44,7 @@ bookedServicesRouter
   .put(addExtraService)
   .patch(completeBooked)
   .delete(cancelBookedService);
+
+
 
 module.exports = bookedServicesRouter;

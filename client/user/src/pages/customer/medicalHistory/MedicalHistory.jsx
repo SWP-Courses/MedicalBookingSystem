@@ -59,11 +59,16 @@ function PrescriptionModal({ preId, show, onHide }) {
         <h5>Thuốc: </h5>
         {preInfo?.medicines.map((medicine) => (
           <p>
-          {medicine.quantity} {medicine.medicine_id.type} {medicine.medicine_id.name}{" "}
-             | Liều dùng: {medicine.dose}
+            {medicine.quantity} {medicine.medicine_id.type}{" "}
+            {medicine.medicine_id.name} | Liều dùng: {medicine.dose}
           </p>
         ))}
-        {preInfo?.re_exam_date && <p>Ngày tái khám: {preInfo?.re_exam_date}</p>}
+        {preInfo?.re_exam_date && (
+          <p>
+            Ngày tái khám: { format(new Date(preInfo.re_exam_date),
+            "dd/MM/yyyy")}
+          </p>
+        )}
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={onHide}>Đóng</Button>
@@ -120,7 +125,7 @@ export default function MedicalHistory() {
       },
       {
         name: "Chi phí",
-        selector: (row) => row.total_price+" VND",
+        selector: (row) => row.total_price + " VND",
       },
       {
         name: "Xem đơn thuốc",
