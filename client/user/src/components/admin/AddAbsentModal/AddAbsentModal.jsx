@@ -15,30 +15,6 @@ const AddAbsentModal = ({ isOpen, onClose, onEventAdded, customStyles, doctorLis
 
     const onSubmit = (event) => {
         event.preventDefault();
-        
-        const counts = {};
-
-        for (const event of eventList) {
-            const date = new Date(event.start);
-            const yearMonth = `${date.getFullYear()}-${date.getMonth() + 1}`;
-            if (!counts[yearMonth]) {
-                counts[yearMonth] = {};
-            }
-            if (!counts[yearMonth][event.title]) {
-                counts[yearMonth][event.title] = 0;
-            }
-            counts[yearMonth][event.title]++;
-        }
-
-
-        const year = date.getFullYear();
-        const month = date.getMonth() + 1;
-        const result = year + '-' + month;
-
-        if(counts[result] && counts[result][title] == 3) {
-            setMsgErrorDate(`${title} took 3 days off this month (${month}-${year}) so he/she can't absent any more!`);
-            return;
-        }
 
         if (!title && !date) {
             setMsgErrorSelect('Please choose the doctor want to absent!');
@@ -51,6 +27,30 @@ const AddAbsentModal = ({ isOpen, onClose, onEventAdded, customStyles, doctorLis
             setMsgErrorDate('Please choose the day want to absent!');
             return;
         } else if (error) {
+            return;
+        }
+        
+        const counts = {};
+
+        for (const event of eventList) {
+            const date = new Date(event.start);
+            const yearMonth = `${date?.getFullYear()}-${date?.getMonth() + 1}`;
+            if (!counts[yearMonth]) {
+                counts[yearMonth] = {};
+            }
+            if (!counts[yearMonth][event.title]) {
+                counts[yearMonth][event.title] = 0;
+            }
+            counts[yearMonth][event.title]++;
+        }
+
+
+        const year = date?.getFullYear();
+        const month = date?.getMonth() + 1;
+        const result = year + '-' + month;
+
+        if(counts[result] && counts[result][title] == 3) {
+            setMsgErrorDate(`${title} took 3 days off this month (${month}-${year}) so he/she can't absent any more!`);
             return;
         }
 
