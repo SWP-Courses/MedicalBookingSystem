@@ -91,3 +91,11 @@ input, select {
 	--third-color: #e9f0f6;
 	--white-color: #ffff;
 }
+
+textarea:focus, input:focus{
+    outline: 0;
+}
+
+*:focus {
+    outline: 0;
+}

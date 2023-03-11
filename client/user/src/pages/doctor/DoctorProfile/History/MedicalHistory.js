@@ -1,26 +1,29 @@
-import "./medicalHistory.scss";
-import DataTable from "react-data-table-component";
-import Search from "./search/Search";
 import { useEffect, useState } from "react";
-import { hanlderRequest, formatDate } from "~/utils";
 import axios from "axios";
-import API_URL from "~/api/Router";
 import _ from "lodash";
+
+
+import "./medicalHistory.scss";
+import API_URL from "~/api/Router";
+import Search from "./search/Search";
+import { hanlderRequest} from "~/utils";
+import ModalPrescription from "./ModalPrescription/ModalPrescription";
 
 export default function MedicalHistory(props) {
   const { setUserContent, handleOptionClick, patient } = props;
-  const [userSearched, setUserSearched] = useState({});
-  const [userBooked, setUserBooked] = useState([]);
-  const [listPrescription, setListPrescription] = useState([]);
+  const [userSearched, setUserSearched] = useState([]);
+  const [userBooked, setUserBooked] = useState('');
+  const [listPrescription, setListPrescription] = useState('');
+  const [modalShow, setModalShow] = useState(false);
 
   useEffect(() => {
-    if (!_.isEmpty(userSearched)) {
+    if (Object.keys(userSearched).length) {  // check object is Empty
       getBookedUser();
     }
   }, [userSearched]);
 
   useEffect(() => {
-    if (userBooked.drugbill_id) {
+    if (userBooked?.drugbill_id) {
       getPrescriptions();
     }
   }, [userBooked]);
@@ -30,9 +33,9 @@ export default function MedicalHistory(props) {
       axios.get(API_URL + `/bookedservices/history/${userSearched._id}`)
     );
     if (res?.data) {
-      setUserBooked(res.data);
+      setUserBooked(res.data?.[0]);
     } else {
-      console.log(error.message);
+      console.log(`%c ${error.message}`, "color: red");
     }
   };
 
@@ -48,44 +51,51 @@ export default function MedicalHistory(props) {
   };
 
   console.log(">>> list prescription: ", listPrescription);
+  console.log('>>> userBooked: ', userBooked);
+  console.table(userBooked);
 
   return (
-    <div className="medicalHistory">
-      {/* Search */}
-      <Search setUserSearched={setUserSearched} />
-      <table className="mt-3">
-        <thead>
-          <tr>
-            <th>Tên</th>
-            <th>Ngày Khám</th>
-            <th>Dịch vụ đã khám</th>
-            <th>Thuốc đã kê</th>
-          </tr>
-        </thead>
-        <tbody>
-          {userBooked.map((user) => {
-            return (
-              <tr key={user._id}>
-                <td>{user?.customer[0]?.fullname}</td>
-                <td>{user?.date}</td>
-                <td>
-                  {user?.services?.map((service) => {
-                    return <p>{service.name}</p>;
-                  })}
-                </td>
-                <td>
-                  <button
-                    className="btn btn-success"
-                    onClick={getPrescriptions}
-                  >
+    <>
+      <div className="medicalHistory">
+        {/* Search */}
+        <Search setUserSearched={setUserSearched} />
+        <table className="mt-3">
+          <thead>
+            <tr>
+              <th>Tên</th>
+              <th>Ngày Khám</th>
+              <th>Dịch vụ đã khám</th>
+              <th>Thuốc đã kê</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+              {userBooked && userBooked?.customer[0]?.fullname}
+              </td>
+              <td>{userBooked?.date}</td>
+              <td>
+                {userBooked?.services?.map((service) => {
+                  return <p>{service.name}</p>;
+                })}
+              </td>
+              <td>
+                { 
+                  listPrescription &&
+                  <button className="btn btn-success" onClick={() => setModalShow(true)}>
                     Chi tiết
                   </button>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
+                }
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <ModalPrescription
+        setModalShow={setModalShow}
+        modalShow={modalShow}
+        listPrescription={listPrescription}
+      />
+    </>
   );
 }

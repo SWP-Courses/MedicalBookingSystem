@@ -1,3 +1,5 @@
+import _ from 'lodash'
+
 import { format } from "date-fns";
 
 const shortenText = (text, limit) => {
@@ -59,6 +61,13 @@ const formatDateFns = (dateString) => {
  return  format(new Date(dateString), "dd/MM/yyyy");
 }
 
+const cloneData = (data) => {
+  const clonedData = _.cloneDeep(data);
+  if (clonedData) {
+    return clonedData;
+  }
+};
+
 export {
   shortenText,
   validateEmail,
@@ -67,5 +76,6 @@ export {
   formatDate,
   hanlderRequest,
   formatPrice,
-  formatDateFns
+  formatDateFns,
+  cloneData
 };

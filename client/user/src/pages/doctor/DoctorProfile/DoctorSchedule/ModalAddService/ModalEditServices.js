@@ -5,20 +5,14 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import _ from "lodash";
 import { useRef } from "react";
-import {
-  faCircleMinus,
-  faCirclePlus,
-  faMinus,
-  faTrashCan,
-} from "@fortawesome/free-solid-svg-icons";
+import { faCircleMinus, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { hanlderRequest } from "~/utils";
 import API_URL from "~/api/Router";
 import { v4 as uuidv4 } from "uuid";
 import { memo } from "react";
-import { formatSlot } from "~/utils";
-
+import { formatSlot, cloneData } from "~/utils";
 import "./ModalEditServices.scss";
 
 function ModalEditServices(props) {
@@ -30,15 +24,19 @@ function ModalEditServices(props) {
   const listServiesRef = useRef();
 
   useEffect(() => {
-    const cloneUserBooked = _.cloneDeep(bookedUser);
+    const cloneUserBooked = cloneData(bookedUser);
     if (!_.isEmpty(cloneUserBooked)) {
       setUserServices(cloneUserBooked.services);
     }
   }, [bookedUser]);
 
+  useEffect(() => {
+    fetchAllServices();
+  }, []);
+
   // validate select duplicate service
   const validateDuplicateService = (id) => {
-    const cloneUserServices = _.cloneDeep(userServices);
+    const cloneUserServices = cloneData(userServices);
     for (const service of cloneUserServices) {
       if (service.service_id === id) {
         listServiesRef.current.className = "form-select is-invalid";
@@ -49,15 +47,8 @@ function ModalEditServices(props) {
     }
   };
 
-  const cloneExtraServices = () => {
-    const cloneServices = _.cloneDeep(userServices);
-    if (cloneServices) {
-      return cloneServices;
-    }
-  };
-
   const hanldeOnChangeQuantity = (event, id) => {
-    const cloneUserServices = cloneExtraServices();
+    const cloneUserServices = cloneData(userServices);
     if (!_.isEmpty(cloneUserServices)) {
       const service = cloneUserServices.find((item) => item.service_id === id);
       service.quantity = +event.target.value;
@@ -72,7 +63,7 @@ function ModalEditServices(props) {
   };
 
   const hanldeOnchangeService = (event, id) => {
-    const cloneUserServices = cloneExtraServices();
+    const cloneUserServices = cloneData(userServices);
     // find service only match the unique_id
     const extraService = cloneUserServices.find((item) => {
       return item.unique_id === id;
@@ -82,28 +73,19 @@ function ModalEditServices(props) {
       extraService.service_id = "";
       setUserServices(cloneUserServices);
       return;
-    } 
+    }
     extraService.service_id = event.target.value;
-    console.log('>>> check userServices: ', userServices);
+    console.log(">>> check userServices: ", userServices);
     // select duplicate service
     setUserServices(cloneUserServices);
   };
 
-  // useEffect(() => {
-  //   userServicesRef.current = userServices;
-  // }, [userServices]);
-
-  useEffect(() => {
-    fetchAllServices();
-  }, []);
-
-  // need add extra service
   const fetchAllServices = async () => {
     const [error, res] = await hanlderRequest(axios.get(API_URL + "/services"));
     if (res && res.data) {
       setListServices(res.data);
     } else {
-      console.log(error.message);
+      console.log(`%c ${error.message}`, "color: red");
     }
   };
 
@@ -111,23 +93,23 @@ function ModalEditServices(props) {
     let error, res;
     // update quantity
     for (const service of userServices) {
-      // [error, res] = await hanlderRequest(
-      //   axios.put(
-      //     API_URL + `/bookedservices/${bookedUser._id}/${service.service_id}`,
-      //     { quantity: `${service.quantity}` }
-      //   )
-      // );
+      [error, res] = await hanlderRequest(
+        axios.put(
+          API_URL + `/bookedservices/${bookedUser._id}/${service.service_id}`,
+          { quantity: `${service.quantity}` }
+        )
+      );
     }
 
     // update add extra service
     for (const extraService of userServices) {
       if (extraService.unique_id) {
-        console.log('>> extra service: ', extraService);
+        console.log(">> extra service: ", extraService);
         if (extraService.quantity === "" || extraService.service_id === "") {
           toast.error("chưa điền dịch vụ mới thêm");
-          break;
-        } else {
-          console.log("_> list user services: ", userServices);
+          return;
+        }else {
+          console.log("_> will update user services: ", userServices);
           [error, res] = await hanlderRequest(
             axios.put(API_URL + `/bookedservices/${bookedUser._id}`, {
               service_id: `${extraService.service_id}`,
@@ -138,14 +120,14 @@ function ModalEditServices(props) {
       }
     }
 
-    // if (res && res.data) {
-    //   console.log(res.data);
-    //   toast.success("cập nhật thành công");
-    //   setModalShow(false);
-    //   await fetchSchedule();
-    // } else {
-    //   toast.error(error.message);
-    // }
+    if (res && res.data) {
+      console.log(res.data);
+      toast.success("cập nhật thành công");
+      setModalShow(false);
+      await fetchSchedule();
+    } else {
+      toast.error(error.message);
+    }
   };
 
   const hanldeAddExtraService = () => {
@@ -166,19 +148,27 @@ function ModalEditServices(props) {
     }
   };
 
-  const hanldeCloseModal = () => {
-    
-    setModalShow(false);
-    // setUserServices([])
+  const resetEmptyServices = () => {
+    setTimeout(() => {
+      const removedEmptyValue = userServices.filter(
+        (service) => !service.unique_id
+      );
+      setUserServices(removedEmptyValue);
+    }, 500);
   };
 
-  // console.log("log ser: ", userServices);
+  const hanldeCloseModal = () => {
+    setModalShow(false);
+    resetEmptyServices();
+  };
+
+  // console.log('>> check user service: ', userServices);
   return (
     <Modal
       show={modalShow}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
-      top
+      top="true"
       style={{ width: "500px", margin: "auto" }}
       onHide={hanldeCloseModal}
     >
@@ -240,10 +230,8 @@ function ModalEditServices(props) {
                       listServices.length > 0 &&
                       listServices.map((item, index) => {
                         return (
-                          <React.Fragment  key={index}>
-                            <option
-                              value={item._id}
-                            >{`${item.name}`}</option>
+                          <React.Fragment key={index}>
+                            <option value={item._id}>{`${item.name}`}</option>
                           </React.Fragment>
                         );
                       })}
@@ -266,9 +254,9 @@ function ModalEditServices(props) {
                     onChange={(event) =>
                       hanldeOnChangeQuantity(event, service.service_id)
                     }
-                    // min="1"
+                    min="1"
                     ref={serviceQty}
-                    // max="32"
+                    max="32"
                   />
                   <span className="invalid-feedback mt-2">không hợp lệ</span>
                 </div>

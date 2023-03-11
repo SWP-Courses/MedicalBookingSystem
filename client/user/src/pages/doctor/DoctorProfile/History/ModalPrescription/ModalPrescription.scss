@@ -1,0 +1,26 @@
+.modal-prescription {
+    table {
+        user-select: none;
+        width: 90%;
+    }
+    
+    table td,
+    thead th {
+        padding: 8px;
+        border-top: 1px solid #ebebeb;
+    }
+    
+    table tr:nth-child(even) {
+        background-color: #f9fafc;
+    }
+    
+    table > thead > tr > th{
+        border-top: none;
+        font-weight: 500;
+        color: #828a9b;
+    }
+    
+    table tbody {
+        height: 292px;
+    }
+}

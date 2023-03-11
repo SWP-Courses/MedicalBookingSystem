@@ -13,6 +13,7 @@ import { toast } from "react-toastify";
 export default function BlogsSaved() {
   const [blogsSaved, setBlogSaved] = useState();
   const { currentUser } = useContext(AuthContext);
+
   useEffect(() => {
     if (currentUser) {
       const fetchSavedBlogs = async () => {
@@ -92,7 +93,9 @@ export default function BlogsSaved() {
       },
     ];
   }, [currentUser._id]);
+  
   console.log(blogsSaved);
+
   return (
     <div className="blogsSaved">
       <InputGroup className="mb-3 search-saved-blog w-25">

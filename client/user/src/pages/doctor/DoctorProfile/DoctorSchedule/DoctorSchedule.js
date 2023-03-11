@@ -23,7 +23,6 @@ import { formatSlot } from "~/utils";
 
 function DoctorSchedule(props) {
   const { handleOptionClick, setPatient, setListUsers } = props;
-
   const { currentUser } = useContext(AuthContext);
   const [date, setDate] = useState(() => {
     const newDate = new Date();
@@ -75,7 +74,7 @@ function DoctorSchedule(props) {
       setCurrentSchedule(res.data);
       setIsBooked(false);
     } else {
-      console.log(`${error.message} - ${error.code}`);
+      console.log(`%c ${error.message} - ${error.code}`, "color: red");
       if(error?.response?.data) {
         setIsBooked(true);
         setCurrentSchedule([]);
