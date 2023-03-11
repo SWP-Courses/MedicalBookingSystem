@@ -85,6 +85,8 @@ const AddAbsentModal = ({ isOpen, onClose, onEventAdded, customStyles, doctorLis
             setDate(date)
             oneWeekLater.setDate(oneWeekLater.getDate() + 1);
             setMsgErrorDate(`You can only apply absent from ${oneWeekLater.toLocaleDateString('en-GB')}!`)
+            setError(true)
+            console.log(error)
         }
     }
 
