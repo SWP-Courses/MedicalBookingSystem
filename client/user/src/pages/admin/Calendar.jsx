@@ -62,8 +62,8 @@ function Calendar() {
         try {
             const res = await axios.post(`${ROUTER}/api/absent/create`, dataAfterHandle)
             if (res.status === 200) {
-                window.location.reload();
                 toast.success("Add absent Success!", toastOption);
+                window.location.reload();
             }
         } catch (error) {
             console.log(error.message);
