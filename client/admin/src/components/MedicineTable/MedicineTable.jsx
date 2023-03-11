@@ -44,12 +44,15 @@ function MedicineTable({ medicines, onClickEditMedicine }) {
     const indexOfFirstPost = indexOfLastPost - medicinesPerPage;
     const currentMedicines = medicineList.slice(indexOfFirstPost, indexOfLastPost);
 
+    //filter unique medicine type and dosage form
+    const medicineTypeList = [...(new Set(medicineList.map(obj => obj.type)))]
+    const medicineDosageFormList = [...(new Set(medicineList.map(obj => obj.dosageForm)))]
+
     // Change page
     const paginate = pageNumber => setCurrentPage(pageNumber);
 
     return (
         <>
-            {/* Filter */}
             <div className='w-100 d-flex justify-content-start align-items-center'>
 
                 <input type="text" className="form-control" style={{ width: "25%", height: "37.34px" }} placeholder="Search by name" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"
@@ -59,10 +62,7 @@ function MedicineTable({ medicines, onClickEditMedicine }) {
                     <p className='text-center' style={{ margin: "0px" }}>Dosage Form</p>
                     <select className="form-select filter-select" style={{ marginLeft: "10px" }} aria-label="Default select example" onChange={e => setTmpDosageForm(e.target.value)}>
                         <option defaultValue value="">Tất cả</option>
-                        <option value="Viên nén">Viên nén</option>
-                        <option value="Dung dịch">Dung dịch</option>
-                        <option value="Thuốc bột">Thuốc bột</option>
-                        <option value="Hỗn dịch uống">Hỗn dịch uống</option>
+                        {medicineDosageFormList.map(dosageForm => {return (<option value={dosageForm}>{dosageForm}</option>)})}
                     </select>
                 </div>
 
@@ -70,10 +70,7 @@ function MedicineTable({ medicines, onClickEditMedicine }) {
                     <p className='text-center' style={{ margin: "0px" }}>Type</p>
                     <select className="form-select filter-select" style={{ marginLeft: "10px" }} aria-label="Default select example" onChange={e => setTmpType(e.target.value)}>
                         <option defaultValue value="">Tất cả</option>
-                        <option value="Viên">Viên</option>
-                        <option value="Hộp">Hộp</option>
-                        <option value="Gói">Gói</option>
-                        <option value="Chai">Chai</option>
+                        {medicineTypeList.map(type => {return (<option value={type}>{type}</option>)})}
                     </select>
                 </div>
 

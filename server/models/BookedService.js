@@ -6,7 +6,7 @@ const BookedServiceSchema = new mongoose.Schema(
     user_id: {
       type: Schema.Types.ObjectId,
       required: true,
-      ref:"User"
+      ref: "User",
     },
     doctor_id: {
       type: Schema.Types.ObjectId,
@@ -21,17 +21,18 @@ const BookedServiceSchema = new mongoose.Schema(
           type: Schema.Types.ObjectId,
           required: true,
         },
+        price: Number,
         quantity: Number,
       },
     ],
-    total_price: Number,
-    drugbill_id: Schema.Types.ObjectId,
     isPaid: {
       type: Boolean,
-      required: true,
       default: false,
     },
+    total_price: Number,
+    drugbill_id: Schema.Types.ObjectId,
   },
+
   { versionKey: false }
 );
 

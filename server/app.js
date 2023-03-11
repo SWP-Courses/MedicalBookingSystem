@@ -24,7 +24,7 @@ const blogRouter = require("./routes/blogRouter");
 const categoryRouter = require("./routes/categoryRouter");
 const serviceRouter = require("./routes/serviceRouter");
 const bookingRouter = require("./routes/bookingRouter");
-const bookedServiceRouter = require("./routes/bookedServiceRouter");
+const bookedServicesRouter = require("./routes/bookedServiceRouter");
 const imageRouter = require("./routes/imageRouter");
 const roomRouter = require('./routes/roomRouter');
 const Slot = require("./models/Slot");
@@ -83,7 +83,7 @@ app.use("/api/specialists", specialistRouter);
 app.use("/api/prescriptions", drugBillRouter); //use drugbill model
 app.use("/api/absent", absentRouter);
 app.use("/api/booking", bookingRouter);
-app.use("/api/bookedservices", bookedServiceRouter);
+app.use("/api/bookedservices", bookedServicesRouter);
 
 //  An + Minh
 app.use("/api/medicine", medicineRouter);

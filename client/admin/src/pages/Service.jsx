@@ -142,7 +142,6 @@ const Service = () => {
             <ServiceTable onDeleteBlogById={onDeleteBlogById} services={serviceList} onClickEditService={onClickEditService} />
         }
 
-
       </div>
     </div>
   )

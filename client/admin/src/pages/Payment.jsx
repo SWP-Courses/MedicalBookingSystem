@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react'
-import PaymentTable from '~/components/admin/PaymentTable/PaymentTable';
+import PaymentTable from '../components/PaymentTable/PaymentTable'
 import { useQuery } from '@tanstack/react-query'
-import { useMutationHooks } from '~/hooks/userMutationHook';
+import { useMutationHooks } from '../hooks/userMutationHook'
 import axios from "axios";
-import ROUTER from '~/api/adminRouter';
-import './style/Payment.css'
+import ROUTER from "../api/Router";
+import '../styles/Payment.css'
 import { Input, Form, Col, Row, Space, Button, Typography, Divider } from 'antd'
-import PaymentDetail from '~/components/admin/PaymentDetail/PaymentDetail';
-import Loading from '~/components/admin/UI/Loading';
+import PaymentDetail from '../components/PaymentDetail/PaymentDetail';
+import Loading from '../components/UI/Loading';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import toastOption from '~/config/toast';
+import toastOption from '../config/toast';
 import { toast } from "react-toastify";
 
 const Payment = () => {
@@ -31,13 +31,26 @@ const Payment = () => {
     isPaid: ""
   })
 
-  const { Title } = Typography;
+
+
   const [form] = Form.useForm();
   const mutation = useMutationHooks(
     (data) => {
       const { user_name, doctor_name, date, slot_time, services } = data
     }
   )
+  // const mutationUpdate = useMutationHooks(
+  //   (data) => {
+  //     const { id,
+  //       token,
+  //       ...rests } = data
+  //     const res = ProductService.updateProduct(
+  //       id,
+  //       token,
+  //       { ...rests })
+  //     return res
+  //   },
+  // )
 
   //call api
   const getAllBookedService = async () => {
@@ -111,6 +124,8 @@ const Payment = () => {
     )
   }
 
+  const { Title } = Typography;
+
   const columns = [
     {
       key: "1",
@@ -182,6 +197,13 @@ const Payment = () => {
       total = total + obj.quantity * obj.price;
     })
     return total
+  }
+
+  const handleOnchangeDetails = (e) => {
+    setStateBookedServicesDetail({
+      ...stateBookedServicesDetail,
+      [e.target.name]: e.target.value
+    })
   }
 
   const handlePayment = async () => {
@@ -321,7 +343,7 @@ const Payment = () => {
               </Col>
 
               <Col span={8}>
-                Quantity:
+                Quantity
               </Col>
 
               <Col span={8}>

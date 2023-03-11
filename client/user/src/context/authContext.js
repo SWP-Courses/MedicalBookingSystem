@@ -34,7 +34,6 @@ export default function AuthContextProvider({ children }) {
     };
     !JSON.parse(localStorage.getItem("user")) && fetchLoginSuccess();
   }, [navigate]);
-
   // console.log(currentUser);
   // Functions
   const login = async (inputs) => {

@@ -1,6 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
-const router = express.Router();
+const serviceRouter = express.Router();
 const {
   getService,
   getServiceById,
@@ -9,9 +9,9 @@ const {
   deleteService,
 } = require("../controllers/serviceController");
 
-router.use(bodyParser.json());
+serviceRouter.use(bodyParser.json());
 
-let serviceRouter = router.all((req, res, next) => {
+serviceRouter.all((req, res, next) => {
   res.statusCode = 200;
   res.setHeader("Content-Type", "json/plain");
   next();

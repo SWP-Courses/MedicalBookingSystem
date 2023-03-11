@@ -189,7 +189,7 @@ const login = async (req, res, next) => {
 
     const { password, role_code, ...filteredUser } = user._doc;
     res
-      .cookie("access_token", token, {
+      .cookie("access_token", "sfasdfdf", {
         httpOnly: true,
       })
       .status(200)

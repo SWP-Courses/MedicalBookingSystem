@@ -10,6 +10,7 @@ import Service from "../pages/Service";
 import Medicine from "../pages/Medicine";
 import Calendar from "../pages/Calendar";
 import Chat from "../pages/Chat";
+import Payment from "../pages/Payment";
 
 const AdminRouter = () => {
   return (
@@ -23,6 +24,7 @@ const AdminRouter = () => {
         <Route path="/medicine" element={<Medicine />} />
         <Route path="/calendar" element={<Calendar />} />
         <Route path="/chat" element={<Chat />} />
+        <Route path="/payment" element={<Payment/>} />
       </Routes>
       <ToastContainer />
     </>

@@ -10,12 +10,11 @@ import { AuthContext } from "~/context/authContext";
 const Sidebar = () => {
   const { socket } = useContext(SocketContext);
   const { currentUser, logout } = useContext(AuthContext);
-  // console.log(socket);
   const Notification = useSelector((state) => state.messageNotification);
   const dispath = useDispatch();
   const menuItem = [
     {
-      path: "/staff",
+      path: "/staff/dashboard",
       name: "Dashboard",
       icon: "ri-dashboard-line",
     },
@@ -74,11 +73,10 @@ const Sidebar = () => {
       <div className="sidebar__middle d-flex justify-content-center flex-column">
         {currentUser.role === "consultant" && (
           <NavLink
-            to="/staff/chat"
+            to="/staff"
             key={"chat"}
             className="link"
             exact={true}
-            activeclassname="active"
           >
             <i className={"ri-message-2-line"}></i>
             <div className="link_text">Chat</div>
@@ -87,13 +85,12 @@ const Sidebar = () => {
 
         {currentUser.role === "cashier" && (
           <NavLink
-            to="/staff/payment"
+            to="/staff"
             key="payment"
             className="link"
-            exact={true}
-            activeclassname="active"
-          >
-            <i className={"ri-message-2-line"}></i>
+            exact={true}          
+            >
+            <i className={"ri-bank-card-line"}></i>
             <div className="link_text">Payment</div>
           </NavLink>
         )}
@@ -106,13 +103,9 @@ const Sidebar = () => {
               key={index}
               className="link"
               exact={true}
-              activeclassname="active"
             >
               <i className={item.icon}></i>
               <div className="link_text">{item.name}</div>
-              {Notification && item.name === "Chat" ? (
-                <BsDot className="text-danger ml-auto fs-3" />
-              ) : undefined}
             </NavLink>
           ))}
       </div>

@@ -9,6 +9,10 @@ const DrugBillSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    // room: {
+    //   type: String,
+    //   required: true,
+    // },
     note: {
       type: String,
       required: true,
@@ -25,6 +29,7 @@ const DrugBillSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    versionKey: false
   }
 );
 
