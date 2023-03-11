@@ -8,6 +8,7 @@ import {
   faCheck,
   faPenToSquare,
   faPills,
+  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -32,6 +33,7 @@ function DoctorSchedule(props) {
   const [modalShow, setModalShow] = useState(false);
   const [userService, setUserService] = useState({});
   const [currentschedule, setCurrentSchedule] = useState([]);
+  const [isBooked, setIsBooked] = useState(false);
 
   const handleEditService = (customer) => {
     setModalShow(true);
@@ -71,10 +73,13 @@ function DoctorSchedule(props) {
     console.log(res);
     if (res && res.data) {
       setCurrentSchedule(res.data);
+      setIsBooked(false);
     } else {
-      // console.log(`${error.message} - ${error.code}`);
-
-      setCurrentSchedule([]);
+      console.log(`${error.message} - ${error.code}`);
+      if(error?.response?.data) {
+        setIsBooked(true);
+        setCurrentSchedule([]);
+      }
     }
   };
 
@@ -123,23 +128,19 @@ function DoctorSchedule(props) {
                   <td>
                     <center>
                       {item.isPaid ? (
-                        <button className="btn-paid">
+                        <span className="btn-paid">
                           <FontAwesomeIcon
                             icon={faCheck}
-                            style={{ fontSize: "15px", marginRight: "2px" }}
+                            style={{ fontSize: "18px", marginRight: "2px" }}
                           />
-                          hoàn thành
-                        </button>
+                        </span>
                       ) : (
-                        <button
-                          className="btn-not-paid"
-                          onClick={() => {
-                            setPatient(item);
-                            handleOptionClick("prescription");
-                          }}
-                        >
-                          chưa thanh toán
-                        </button>
+                        <span className="btn-not-paid">
+                          <FontAwesomeIcon
+                            icon={faXmark}
+                            style={{ fontSize: "18px", marginRight: "2px" }}
+                          />
+                        </span>
                       )}
                     </center>
                   </td>
@@ -153,7 +154,7 @@ function DoctorSchedule(props) {
                       <FontAwesomeIcon
                         icon={faPills}
                         style={{
-                          fontSize: "22px",
+                          fontSize: "24px",
                           cursor: "pointer",
                           color: "var(--primary)",
                         }}
@@ -176,11 +177,10 @@ function DoctorSchedule(props) {
             })}
           </tbody>
         </table>
-        {currentschedule && currentschedule.length > 0 ? (
-          ""
-        ) : (
-          <span className="no-date-available">hiện không có lịch</span>
-        )}
+        {
+          isBooked &&
+          <span className="no-date-available">không có lịch</span>
+        }
       </div>
 
       <ModalEditServices

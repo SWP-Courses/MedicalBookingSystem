@@ -2,9 +2,7 @@ import "./Blog.scss";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import DOMPurify from "dompurify";
 import API_URL from "~/api/Router";
-import ReactPaginate from "react-paginate";
 import slider from "~/assets/images/slider.jpg";
 import Pagination from "./Pagination";
 import { hanlderRequest } from "~/utils";
@@ -13,15 +11,8 @@ function Blogs() {
   const listBlogRef = useRef();
   const [blogCategory, setBlogCategory] = useState([]);
   const [blogs, setBlogs] = useState([]);
-  const [blogsFiltered, setBlogsFiltered] = useState([]);
   const [categoryName, setCategoryName] = useState('Tổng Hợp Các Bài Viết');
-
-  console.log('check blog filtered : ', blogsFiltered);
-
   const location = useLocation();
-
-  console.log(blogs);
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -30,7 +21,7 @@ function Blogs() {
   }, []);
 
   const fetchListCategoryBlogs = async () => {
-    const [error, res] = await hanlderRequest(axios.get(API_URL + "/categories"));
+    const [error, res] = await hanlderRequest(axios.get(API_URL + "/category"));
     if (res && res.data && res.data.category && res.data.category.length > 0) {
       setBlogCategory(res.data.category);
     } else {

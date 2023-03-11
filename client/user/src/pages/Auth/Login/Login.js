@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "~/context/authContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
@@ -8,10 +8,11 @@ import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import "animate.css";
 import { validateEmail } from "~/utils";
-import { checkStringContainInPhoneNumber } from "~/utils";
 import "./Login.scss";
-import { faSpinner } from "@fortawesome/free-solid-svg-icons";
+import { faHouse } from "@fortawesome/free-solid-svg-icons";
 import googleIcon from "../../../assets/images/google-icon.png";
+import Tippy from "@tippyjs/react";
+
 
 function Login() {
   const { login } = useContext(AuthContext);
@@ -22,7 +23,6 @@ function Login() {
   const [cookies, setCookie, removeCookie] = useCookies(["error"]);
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [isloading, setIsLoading] = useState(false);
 
   useEffect(() => {
     console.log(cookies?.error);
@@ -82,7 +82,15 @@ function Login() {
               className="login__form-content"
               onSubmit={hanldeValidateLogin}
             >
-              <h2>Đăng Nhập</h2>
+              <header className="Login__header">
+                <h2>Đăng Nhập</h2>
+                <Tippy content="Trang chủ">
+                  {/* <Link to="/"  className="forgot-password my-2 d-block"> */}
+                    <FontAwesomeIcon icon={faHouse} className="Login__home-icon" onClick={() => navigate("/")} />
+                  {/* </Link> */}
+                </Tippy>
+                
+              </header>
               <div className="login_form-group">
                 <input
                   type="email"
@@ -111,11 +119,7 @@ function Login() {
                 <span ref={errorPassword}>{/* error alert */}</span>
               </div>
               <Link to="/forgotPassword" className="forgot-password mb-2 d-block">Quên mật khẩu</Link>
-              <Link to="/"  className="forgot-password my-2 d-block">Trang chủ</Link>
-              <button className="btn-sign-in" disabled={isloading}>
-                {isloading && (
-                  <FontAwesomeIcon icon={faSpinner} className="loader-icon" />
-                )}
+              <button className="btn-sign-in">
                 Đăng Nhập
               </button>
               <div className="separate mt-4 mb-4">

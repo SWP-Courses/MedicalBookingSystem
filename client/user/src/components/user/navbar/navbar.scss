@@ -103,7 +103,7 @@
   
         .navbar-button {
           border: none;
-          padding: 10px 15px;
+          padding: 10px;
           font-size: 14px;
           font-weight: bold;
           cursor: pointer;
@@ -120,7 +120,7 @@
         }
   
         .user-border {
-          border: 1px solid rgb(47, 146, 207);
+          // border: 1px solid rgb(47, 146, 207);
           padding: 0.6px 37px;
           border-radius: 999px; 
           position: relative;
@@ -162,11 +162,10 @@
         }
 
         .drop-down__custome {
-          display: none;
           width: 200px;
           position: absolute;
-          top: 129%;
-          right: 114px;
+          right: -28px;
+          top: -1px;
           z-index: 1;
           border-radius: 8px;
           border: 1.5px solid rgb(47, 146, 207);
@@ -192,22 +191,22 @@
           content: "";
           position: absolute;
           top: -8px;
-          left: 70%;
+          left: 18%;
           transform: translateX(-50%);
         }
 
-        .drop-down__custome::after {
-          content: "";
-          position: absolute;
-          top: -20px;
-          left: 50%;
-          transform: translateX(-50%);
-          padding: 15px 70px;
-          cursor: pointer;
+        .toggle-dropdown {
+          background-color: inherit;
+          border: none;
+          outline: none;
+          
+        }
+        .toggle-dropdown:focus {
+          // none
         }
 
-        .navItemContainer:hover .drop-down__custome {
-          display: block;
+        .btn-primary:focus {
+          box-shadow: inherit;
         }
 
         .arrow-icon {

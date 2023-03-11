@@ -1,0 +1,57 @@
+.wrapper_accountItem {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 10px 0;
+    cursor: pointer;
+
+    .avatar {
+        width: 42px;
+        height: 42px;
+        object-fit: cover;
+        border-radius: 999px;
+        margin-right: 10px;
+        margin-left: 10px;
+    }
+
+    .info {
+        margin-right: 30px;
+    }
+
+    .info__name {
+        font-weight: 400;
+        color: #3a4044;
+    }
+
+    .info__email {
+        margin-bottom: 0;
+        font-size: 15px;
+        opacity: 0.7;
+        margin-top: 3px;
+    }
+    
+    .icon__angle {
+        display: none;
+    }
+
+    &:hover .icon__angle {
+        display: block;
+    }
+
+    &:hover {
+        background-color: #f2faff;
+    }
+}
+
+.wrapper_accountItem:first-child:hover {
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+    
+}
+
+.wrapper_accountItem:last-child:hover {
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+ 

@@ -4,6 +4,8 @@ import {
   faCaretDown,
   faCalendarDays,
   faSearch,
+  faRightToBracket,
+  faBriefcaseMedical,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Link, useLocation } from "react-router-dom";
@@ -22,8 +24,8 @@ import logo from "~/assets/images/logo.jpg";
 
 export default function Navbar() {
   const { currentUser, logout } = useContext(AuthContext);
-
   const [searchResult, setSearchResult] = useState([]);
+  const [showDropdown, setShowDropDown] = useState(false);
 
   const navigate = useNavigate();
 
@@ -105,41 +107,51 @@ export default function Navbar() {
             <div className="devideLine"></div>
             <div className="navItemContainer">
               {!currentUser && (
-                <Link to="/login" className="navbar-button">
-                  ĐĂNG NHẬP
-                </Link>
+                <>
+                  <FontAwesomeIcon icon={faRightToBracket} style={{ fontSize: '18px', color: "var(--secondary-color)" }} />
+                  <Link to="/login" className="navbar-button">
+                    <span>ĐĂNG NHẬP</span>
+                  </Link>
+                </>
               )}
               {currentUser && (
                 <>
-                  <div className="user-border">
-                    <img
-                      src={`${API_IMAGE_URL}/${currentUser?.avatar?.filename}`}
-                      alt=""
-                      className="avatar__Container"
-                    />
-                    <span className="user-name">{currentUser.fullname}</span>
-                    <span className="arrow-icon">
-                      <FontAwesomeIcon icon={faCaretDown} />
-                    </span>
-                  </div>
-                  <div className="drop-down__custome">
-                    <div className="user-profile">
-                      <Link
-                        className="drop-down__item"
-                        to={"/" + currentUser.role}
+                  <Dropdown>
+                    <Dropdown.Toggle className="toggle-dropdown">
+                      <div
+                        className="user-border"
+                        // onClick={() => setShowDropDown(true)}
                       >
-                        Thông tin cá nhân
-                      </Link>
-                    </div>
-                    <Dropdown.Divider />
-                    <div className="logout">
-                      <span className="drop-down__item" onClick={handleLogout}>
-                        Đăng xuất
-                      </span>
-                    </div>
-                  </div>
+                        <img
+                          src={`${API_IMAGE_URL}/${currentUser?.avatar?.filename}`}
+                          alt=""
+                          className="avatar__Container"
+                        />
+                      </div>
+                    </Dropdown.Toggle>
+
+                    <Dropdown.Menu>
+                      <div className="drop-down__custome">
+                        <div className="user-profile">
+                          <Link
+                            className="drop-down__item"
+                            to={"/" + currentUser.role}
+                          >
+                            Thông tin cá nhân
+                          </Link>
+                        </div>
+                        <Dropdown.Divider style={{margin: '0px'}} />
+                        <div className="logout">
+                          <span className="drop-down__item" onClick={handleLogout}>
+                            Đăng xuất
+                          </span>
+                        </div>
+                      </div>
+                    </Dropdown.Menu>
+                  </Dropdown>
                 </>
-              )}
+              )
+              }
             </div>
           </div>
         </div>
