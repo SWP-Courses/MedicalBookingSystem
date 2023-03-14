@@ -9,7 +9,7 @@ import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { hanlderRequest } from "~/utils";
 
-import { Wrapper as PopperWrapper } from "~/components/popper";
+import { Wrapper as PopperWrapper } from "~/components/user/popper/index";
 import AccountItem from "~/components/user/AccountItem/AccountItem";
 import API_URL from "~/api/Router";
 import useDebounce from "~/hooks/useDebounce";

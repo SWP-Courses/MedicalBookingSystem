@@ -27,7 +27,7 @@ function Prescription(props) {
   const [user, setUser] = useState([]);
   const [listUserInDay, setListUserInDay] = useState([]);
 
-  const optionListUsers = listUserInDay.map((user) => {
+  const options = listUserInDay.map((user) => {
     return {
       value: user._id,
       label: user.fullname,
@@ -163,7 +163,6 @@ function Prescription(props) {
     }
   };
 
-  console.log(">> check drug: ", drugs);
   return (
     <div className="wrapper-prescription">
       <div className="user">
@@ -173,7 +172,8 @@ function Prescription(props) {
             className="basic-single"
             classNamePrefix="select"
             name="color"
-            options={optionListUsers}
+            options={options}
+            
           />
         </div>
         <div className="user-detail">
@@ -182,9 +182,6 @@ function Prescription(props) {
             <span>
               {user?.customer?.length > 0 ? user?.customer[0]?.fullname : ""}
             </span>
-            {/* {user.customer.map((item) => {
-              return item.fullname
-            })} */}
           </div>
           <div className="age">
             <span className="title">Tuổi: </span>

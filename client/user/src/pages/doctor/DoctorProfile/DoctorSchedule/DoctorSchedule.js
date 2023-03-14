@@ -1,73 +1,28 @@
-import Calendar from "react-calendar";
-import { useState, useEffect, useContext } from "react";
-import { AuthContext } from "~/context/authContext";
-import axios from "axios";
-import "react-calendar/dist/Calendar.css";
-import "animate.css";
-import {
-  faCheck,
-  faPenToSquare,
-  faPills,
-  faXmark,
-} from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
+import CurrentPatient from "./CurrentPatient/CurrentPatient";
 import "./DoctorSchedule.scss";
-import "react-calendar/dist/Calendar.css";
-import API_URL from "~/api/Router";
-import { formatDate } from "~/utils";
+import TableSchedule from "./TableSchedule/TableSchedule";
 import { hanlderRequest } from "~/utils";
-import ModalEditServices from "./ModalAddService/ModalEditServices";
-import { useNavigate } from "react-router-dom";
-import _ from "lodash";
-import { formatSlot } from "~/utils";
+import API_URL from "~/api/Router";
+import axios from "axios";
+import { useState, useEffect, useContext} from "react";
+import { AuthContext } from "~/context/authContext";
 
-function DoctorSchedule(props) {
-  const { handleOptionClick, setPatient, setListUsers } = props;
-  const { currentUser } = useContext(AuthContext);
-  const [date, setDate] = useState(() => {
-    const newDate = new Date();
-    newDate.setHours(0, 0, 0);
-    return newDate;
-  });
-  const [modalShow, setModalShow] = useState(false);
-  const [userService, setUserService] = useState({});
+function DoctorSchedule() {
+  const [activeSelect, setActiveSelect] = useState("schedule");
   const [currentschedule, setCurrentSchedule] = useState([]);
   const [isBooked, setIsBooked] = useState(false);
-
-  const handleEditService = (customer) => {
-    setModalShow(true);
-    setUserService(customer);
-  };
-
-  useEffect(() => {
-    if (!_.isEmpty(currentschedule)) {
-    }
-
-    setListUsers(() => {
-      let users = [];
-      for (const schedule of currentschedule) {
-        if (schedule.customer) {
-          schedule.customer.map((user) => {
-            users.push({
-              service_id: schedule._id,
-              user_data: user,
-            });
-          });
-        }
-      }
-      return users;
-    });
-  }, [currentschedule]);
+  const { currentUser } = useContext(AuthContext);
+  const [fetchDate, setFetchDate]= useState('');
+  const [user, setUser] = useState({});
 
   useEffect(() => {
     fetchSchedule();
-  }, [date]);
+  }, [fetchDate]);
 
   const fetchSchedule = async () => {
     const [error, res] = await hanlderRequest(
       axios.get(
-        `${API_URL}/bookedservices/doctors/${currentUser._id}?date=${date}`
+        `${API_URL}/bookedservices/doctors/${currentUser._id}?date=${fetchDate}`
       )
     );
     if (res && res.data) {
@@ -75,119 +30,50 @@ function DoctorSchedule(props) {
       setIsBooked(false);
     } else {
       console.log(`%c ${error.message} - ${error.code}`, "color: red");
-      if(error?.response?.data) {
+      if (error?.response?.data) {
         setIsBooked(true);
         setCurrentSchedule([]);
       }
     }
   };
 
-  // console.log("check date value: ", date);
-  // console.log(">>>check current schedule: ", currentschedule);
   return (
-    <div className="schedule ">
-      <div className="schedule__calender">
-        <Calendar
-          value={date}
-          onChange={(value) => setDate(value)}
-          // onMouseOver={handleHoverGetValue}
+    <div className="doctor-schedule">
+      <header className="nav">
+        <button
+          className={
+            activeSelect === "schedule"
+              ? "nav__schedule-btn isActive"
+              : "nav__schedule-btn"
+          }
+          onClick={() => setActiveSelect("schedule")}
+        >
+          Lịch hôm nay
+        </button>
+        <button
+          className={
+            activeSelect === "patient"
+              ? "nav__current-patient isActive"
+              : "nav__current-patient"
+          }
+          onClick={() => setActiveSelect("patient")}
+        >
+          Bệnh nhân đang khám
+        </button>
+      </header>
+      <div className="separate"></div>
+      {activeSelect === "schedule" && (
+        <TableSchedule
+          currentschedule={currentschedule}
+          activeSelect={activeSelect}
+          setActiveSelect={setActiveSelect}
+          isBooked={isBooked}
+          fetchSchedule={fetchSchedule}
+          setFetchDate={setFetchDate}
+          setUser={setUser}
         />
-      </div>
-      <div className="schedule__calender-detail">
-        <span className="mr-4" style={{ color: "#a0a0a0" }}>
-          Ngày{" "}
-        </span>
-        <span style={{ fontWeight: "600" }}>{formatDate(date)}</span>
-        <table className="mt-3">
-          <thead>
-            <tr>
-              <th>Tên</th>
-              <th>Khung Giờ</th>
-              <th>Dịch Vụ</th>
-              <th>
-                <center>Thanh Toán</center>
-              </th>
-              <th>Kê Thuốc</th>
-              <th>Sửa</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentschedule.map((item, index) => {
-              return (
-                <tr key={index}>
-                  <td>{item?.customer[0]?.fullname}</td>
-                  <td>
-                    <center>{formatSlot(item.slot_time)}</center>
-                  </td>
-                  <td>
-                    {item?.services.map((service, index) => {
-                      return <p key={index}>{`${service.name}`}</p>;
-                    })}
-                  </td>
-                  <td>
-                    <center>
-                      {item.isPaid ? (
-                        <span className="btn-paid">
-                          <FontAwesomeIcon
-                            icon={faCheck}
-                            style={{ fontSize: "18px", marginRight: "2px" }}
-                          />
-                        </span>
-                      ) : (
-                        <span className="btn-not-paid">
-                          <FontAwesomeIcon
-                            icon={faXmark}
-                            style={{ fontSize: "18px", marginRight: "2px" }}
-                          />
-                        </span>
-                      )}
-                    </center>
-                  </td>
-                  <td>
-                    <center
-                      onClick={() => {
-                        setPatient(item);
-                        handleOptionClick("prescription");
-                      }}
-                    >
-                      <FontAwesomeIcon
-                        icon={faPills}
-                        style={{
-                          fontSize: "24px",
-                          cursor: "pointer",
-                          color: "var(--primary)",
-                        }}
-                      />
-                    </center>
-                  </td>
-                  <td>
-                    <center
-                      className="schedule__calender-icon"
-                      onClick={() => handleEditService(item)}
-                    >
-                      <FontAwesomeIcon
-                        icon={faPenToSquare}
-                        style={{ color: "#2892ed" }}
-                      />
-                    </center>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-        {
-          isBooked &&
-          <span className="no-date-available">không có lịch</span>
-        }
-      </div>
-
-      <ModalEditServices
-        modalShow={modalShow}
-        setModalShow={setModalShow}
-        bookedUser={userService}
-        fetchSchedule={fetchSchedule}
-      />
+      )}
+      {activeSelect === "patient" && <CurrentPatient user={user}/>}
     </div>
   );
 }
