@@ -105,38 +105,5 @@
             border-radius: 16px;
             color: #d8a16d;
         }
-    }
-
-    .schedule__calender-icon {
-        cursor: pointer;
-        font-size: 20px;
-        color: #2892ed;
-    }
-    .schedule__calender-icon.disabled {
-        color: #918f8f;
-        pointer-events: none;
-        opacity: 0.5;
-    }
-
-    .btn-paid {
-        background: #ecfdf3;
-        color: #037b48;
-    }
-  
-    .btn-not-paid {
-        background: #fbdede;
-        color: #d56566;
-    }
-
-    .btn-not-paid,
-    .btn-paid {
-        height: 27px;
-        line-height: 27px;
-        padding: 0;
-        width: 98px;
-        display: block;
-        border-radius: 16px;
-    }
-
-   
+    }   
 }

@@ -19,8 +19,8 @@ import { formatDate } from "~/utils";
 import _ from "lodash";
 import { formatSlot } from "~/utils";
 
-
 function TableSchedule(props) {
+  
   const {
     handleOptionClick,
     setPatient,
@@ -32,6 +32,7 @@ function TableSchedule(props) {
     setFetchDate,
     setUser,
   } = props;
+
   const [date, setDate] = useState(() => {
     const newDate = new Date();
     newDate.setHours(0, 0, 0);
@@ -44,7 +45,7 @@ function TableSchedule(props) {
   };
 
   const handleNavigateUser = (customer) => {
-      setUser(customer)
+    setUser(customer);
     setActiveSelect("patient");
     // setUserService(customer);
   };
@@ -97,9 +98,6 @@ function TableSchedule(props) {
                 <th>Tên</th>
                 <th>Khung Giờ</th>
                 <th>Dịch Vụ</th>
-                <th>
-                  <center>Thanh Toán</center>
-                </th>
                 <th>Kê Thuốc</th>
                 <th>Khám</th>
               </tr>
@@ -115,27 +113,8 @@ function TableSchedule(props) {
                       </td>
                       <td>
                         {item?.services.map((service, index) => {
-                          return <p key={index}>{`${service.name}`}</p>;
+                          return <p key={service._id}>{`${service.name}`}</p>;
                         })}
-                      </td>
-                      <td>
-                        <center>
-                          {
-                            <span
-                              className={
-                                item.isPaid ? "btn-paid" : "btn-not-paid"
-                              }
-                            >
-                              <FontAwesomeIcon
-                                icon={item.isPaid ? faCheck : faXmark}
-                                style={{
-                                  fontSize: "18px",
-                                  marginRight: "2px",
-                                }}
-                              />
-                            </span>
-                          }
-                        </center>
                       </td>
                       <td>
                         <center
@@ -155,11 +134,11 @@ function TableSchedule(props) {
                         </center>
                       </td>
                       <td>
-                        <center
+                        <span
                           className={
                             item.isPaid
                               ? `schedule__calender-icon disabled`
-                              : `schedule__calender-icon`
+                              : `schedule__calender-icon ml-3`
                           }
                           onClick={
                             item.isPaid
@@ -167,8 +146,8 @@ function TableSchedule(props) {
                               : () => handleNavigateUser(item)
                           }
                         >
-                          <FontAwesomeIcon icon={faArrowRight} />
-                        </center>
+                          <FontAwesomeIcon icon={faArrowRight} style={{color: 'var(--secondary-color)', cursor: 'pointer'}}/>
+                        </span>
                       </td>
                     </tr>
                   </>

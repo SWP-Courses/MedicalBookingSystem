@@ -14,11 +14,6 @@ function ModalPrescription(props) {
         show={modalShow}
         className="modal-prescription"
       >
-        {/* <Modal.Header closeButton>
-            <Modal.Title id="contained-modal-title-vcenter">
-            Modal heading
-            </Modal.Title>
-        </Modal.Header> */}
         <Modal.Body>
           <div className="prescription-info">
             <div className="prescription-info__disease">

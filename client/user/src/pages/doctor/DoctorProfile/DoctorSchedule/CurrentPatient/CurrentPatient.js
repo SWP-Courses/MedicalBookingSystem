@@ -13,9 +13,13 @@ import "./CurrentPatient.scss";
 function CurrentPatient(props) {
   const { user } = props;
   const [modalShow, setModalShow] = useState(false);
-  const [userService, setUserService] = useState({});
+  const [selectedPatient, setSelectedPatient] = useState({});
 
-  console.log('>> user: ', user);
+  const handleEditService = () => {
+    setSelectedPatient(user);
+    setModalShow(true);
+  }
+
   return (
     <div className="patient-detail">
       <table className="mt-3">
@@ -30,31 +34,58 @@ function CurrentPatient(props) {
         </thead>
         <tbody>
           <tr>
-            <td>khoa</td>
+            <td>{user.customer[0]?.fullname}</td>
             <td>
-                {
-                    user.services.map((item, index) => {
-                        return (
-                            <p index={index}>{item.name}</p>
-                        )
-                    })
-                }
+              {user.services.map((item, index) => {
+                return <p index={item._id}>{item.name}</p>;
+              })}
             </td>
-            <td>{user.isPaid}</td>
-            <td>{}</td>
             <td>
-              <center
-              // className={
-              //   item.isPaid
-              //     ? `schedule__calender-icon disabled`
-              //     : `schedule__calender-icon`
-              // }
-              // onClick={
-              //   item.isPaid ? undefined : () => handleEditService(item)
-              // }
+              <span>
+                {
+                  <span className={user.isPaid ? "btn-paid" : "btn-not-paid"}>
+                    <FontAwesomeIcon
+                      icon={user.isPaid ? faCheck : faXmark}
+                      style={{
+                        fontSize: "18px",
+                        marginRight: "2px",
+                      }}
+                    />
+                  </span>
+                }
+              </span>
+            </td>
+            <td>
+              <span
+                className="ml-3"
+                onClick={() => {
+                  // setPatient(item);
+                  // handleOptionClick("prescription");
+                }}
+              >
+                <FontAwesomeIcon
+                  icon={faPills}
+                  style={{
+                    fontSize: "24px",
+                    cursor: "pointer",
+                    color: "var(--primary)",
+                  }}
+                />
+              </span>
+            </td>
+            <td>
+              <span
+              className={
+                user.isPaid
+                  ? `schedule__calender-icon disabled`
+                  : `schedule__calender-icon ml-2`
+              }
+              onClick={
+                user.isPaid ? undefined : handleEditService
+              }
               >
                 <FontAwesomeIcon icon={faPenToSquare} />
-              </center>
+              </span>
             </td>
           </tr>
         </tbody>
@@ -62,7 +93,7 @@ function CurrentPatient(props) {
       <ModalEditServices
         modalShow={modalShow}
         setModalShow={setModalShow}
-        bookedUser={userService}
+        bookedUser={selectedPatient}
       />
     </div>
   );

@@ -185,11 +185,11 @@ function Prescription(props) {
           </div>
           <div className="age">
             <span className="title">Tuổi: </span>
-            <span>21</span>
+            {/* <span>21</span> */}
           </div>
           <div className="gender">
             <span className="title">Giới Tính: </span>
-            <span>Nam</span>
+            {/* <span>Nam</span> */}
           </div>
         </div>
       </div>

@@ -162,7 +162,8 @@ function ModalEditServices(props) {
     resetEmptyServices();
   };
 
-  // console.log('>> check user service: ', userServices);
+  console.log('>> check user service: ', userServices);
+  console.log('>> check props bookedUser: ', bookedUser);
   return (
     <Modal
       show={modalShow}
@@ -208,7 +209,7 @@ function ModalEditServices(props) {
               disabled
             />
           </div>
-          {userServices.map((service, index) => {
+          {userServices?.map((service, index) => {
             return (
               <React.Fragment key={index}>
                 <div className="col-md-6">
@@ -287,7 +288,7 @@ function ModalEditServices(props) {
           cursor: "pointer",
         }}
       >
-        {userServices.length >= 7 ? (
+        {userServices?.length >= 7 ? (
           ""
         ) : (
           <span className="add-extra-icon" onClick={hanldeAddExtraService}>
