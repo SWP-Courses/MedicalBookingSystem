@@ -3,12 +3,12 @@ import homePageImage from "../../assets/images/loginPage.jpg";
 
 export default function Home() {
   return (
-    <div className="homeWrapper container-lg">
-      <div className="slider row">
+    <div className="homeWrapper container-xxl">
+      <div className="slider row mt-4">
         <img src={homePageImage} alt="logo home page" />
       </div>
       <div className="introduction row">
-        <div className="introLeft col-sm-7">
+        <div className="introLeft col-12">
           <h1>Nha khoa Sun Smile</h1>
           <p>
             Lorem ipsum, dolor sit amet consectetur adipisicing elit. Sequi
@@ -17,7 +17,7 @@ export default function Home() {
             reprehenderit dolorum tempore similique sed.
           </p>
         </div>
-        <div className="introRight col-sm-5">
+        <div className="introRight col-12">
           <h1>Dịch vụ</h1>
           <ul className="specialistList">
             <li className="specialistItem">Khám bệnh</li>
@@ -26,6 +26,7 @@ export default function Home() {
           </ul>
         </div>
       </div>
+      
     </div>
   );
 }

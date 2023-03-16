@@ -5,11 +5,6 @@ import "react-calendar/dist/Calendar.css";
 import "animate.css";
 import {
   faArrowRight,
-  faCheck,
-  faPenToSquare,
-  faPills,
-  faTicket,
-  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -22,10 +17,7 @@ import { formatSlot } from "~/utils";
 function TableSchedule(props) {
   
   const {
-    handleOptionClick,
-    setPatient,
     setListUsers,
-    activeSelect,
     setActiveSelect,
     currentschedule,
     isBooked,
@@ -51,20 +43,20 @@ function TableSchedule(props) {
   };
 
   useEffect(() => {
-    // setListUsers(() => {
-    //   let users = [];
-    //   for (const schedule of currentschedule) {
-    //     if (schedule.customer) {
-    //       schedule.customer.map((user) => {
-    //         users.push({
-    //           service_id: schedule._id,
-    //           user_data: user,
-    //         });
-    //       });
-    //     }
-    //   }
-    //   return users;
-    // });
+    setListUsers(() => {
+      let users = [];
+      for (const schedule of currentschedule) {
+        if (schedule.customer) {
+          schedule.customer.map((user) => {
+            users.push({
+              service_id: schedule._id,
+              user_data: user,
+            });
+          });
+        }
+      }
+      return users;
+    });
   }, [currentschedule]);
 
   return (
@@ -98,7 +90,6 @@ function TableSchedule(props) {
                 <th>Tên</th>
                 <th>Khung Giờ</th>
                 <th>Dịch Vụ</th>
-                <th>Kê Thuốc</th>
                 <th>Khám</th>
               </tr>
             </thead>
@@ -115,23 +106,6 @@ function TableSchedule(props) {
                         {item?.services.map((service, index) => {
                           return <p key={service._id}>{`${service.name}`}</p>;
                         })}
-                      </td>
-                      <td>
-                        <center
-                          onClick={() => {
-                            setPatient(item);
-                            handleOptionClick("prescription");
-                          }}
-                        >
-                          <FontAwesomeIcon
-                            icon={faPills}
-                            style={{
-                              fontSize: "24px",
-                              cursor: "pointer",
-                              color: "var(--primary)",
-                            }}
-                          />
-                        </center>
                       </td>
                       <td>
                         <span
@@ -155,7 +129,7 @@ function TableSchedule(props) {
               })}
             </tbody>
           </table>
-          {isBooked && <span className="no-date-available">không có lịch</span>}
+          {isBooked && <span className="no-date-available rounded-pill">không có lịch</span>}
         </div>
       </div>
     </div>

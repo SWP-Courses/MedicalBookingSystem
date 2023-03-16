@@ -1,13 +1,13 @@
 .doctor-schedule {
-    height: 50px;
+    height: 60px;
     border-top-right-radius: 8px;
     border-top-left-radius: 8px;
 
     .separate {
         width: 95%;
         height: 1px;
-        background: var(--secondary-color);
-        margin: 0 auto;
+        background: #c5c5c5;    
+        margin: 20px auto;
     }
 }
 
@@ -22,7 +22,6 @@
     .nav__current-patient,
     .nav__schedule-btn {
         padding: 10px 17px;
-        border-radius: 999px;
         font-weight: 500;
         color: #828a9b;
     }

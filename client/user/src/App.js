@@ -18,13 +18,11 @@ import { Provider } from "react-redux";
 import Layout from "./components/admin/Layout/Layout";
 import "remixicon/fonts/remixicon.css";
 import { applyMiddleware, createStore } from "redux";
-import reducers from './store/index'
+import reducers from "./store/index";
 import thunk from "redux-thunk";
 
 // const root = ReactDOM.createRoot(document.getElementById("root"));
 const store = createStore(reducers, applyMiddleware(thunk));
-
-
 
 function App() {
   return (
@@ -36,9 +34,9 @@ function App() {
               <UserRouter />
 
               {/* admin */}
-                <Provider store={store}>
-                  <Layout />
-                </Provider>
+              <Provider store={store}>
+                <Layout />
+              </Provider>
               <ToastContainer
                 position="top-right"
                 autoClose={5000}
@@ -56,6 +54,7 @@ function App() {
           </AuthContextProvider>
         </StoreContextProvider>
       </BrowserRouter>
+      
     </CookiesProvider>
   );
 }

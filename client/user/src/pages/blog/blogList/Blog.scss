@@ -13,19 +13,10 @@
                 object-fit: cover;
             }
         }
-        
-        .blog-body {
-            display: flex;
-            // border: 1px solid red;
-            
-        }
 
         .major-list {
-            width: 30%;
-            // border: 1px solid green;
             .list {
                 margin-top: 20px;
-                width: 294px;
                 padding: 13px;
                 border: 0.5px solid #EEEEEE;
                 border-radius: 8px;
@@ -53,7 +44,7 @@
                         &:hover {
                             right: -10px;
                             transition: right linear .1s;
-                            color: #b98d55;
+                            color: var(--primary-color);
                         }
                     }
 
@@ -69,8 +60,6 @@
         }
 
         .blog-list {
-            flex: 1;
-            // border: 1px solid green;
             margin-top: 20px;
     
             .blog-item {

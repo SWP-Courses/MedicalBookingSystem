@@ -71,7 +71,7 @@ function Search(props) {
         interactive
         placement="bottom-start"
       >
-        <div className="search">
+        <div className="search rounded-pill">
           <input
             type="text"
             placeholder="Tìm bệnh nhân"

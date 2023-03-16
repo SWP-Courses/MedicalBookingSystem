@@ -9,13 +9,10 @@
         }
 
         .blog-content {
-            display: flex;
-            gap: 40px;
             margin-top: 30px;
 
             .blog-wrapper {
                 position: relative;
-                width: 70%;
 
                 >.saveBlog {
                     position: absolute;
@@ -30,54 +27,31 @@
                     cursor: pointer;
                 }
 
-                .blog-detail-image {
-                    width: 508px;
-                    height: 340px;
-                    object-fit: cover;
-                    margin: 20px auto;
-                    display: block;
-                }
-
                 .blog-title {
                     font-family: Helvetica, Arial, san-serif;
                     font-weight: 700;
                     font-size: 32px;
                     width: 80%;
-
-                   
                 }
             }
 
             .sub-infor {
-                flex: 1;
 
                 .doctor-info {
-                    box-shadow: 0 6px 16px 0 rgb(0 0 0 / 8%);
                     border: 1px solid #ddd;
                     border-radius: 12px;
-                    min-height: 219px;
-
 
                     .date-section {
                         display: flex;
                         align-items: center;
                         justify-content: center;
-                        
-                        .date,
-                        .post-date {
-                            padding: 20px 0px 20px 20px;
-                            display: block;
-                            font-size: 21px;
-                        }
                     }
                     
                     >.author {
-                        padding: 20px 15px 20px 20px;
                         display: flex;
                         flex-direction: column;
                         align-items: center;
                         .title {
-                            padding: 10px 0;
                             color: #2b7caf;
                             font-weight: 500;
                             font-size: 20px;
@@ -129,10 +103,6 @@
                 
                 .more-blogs {
                     margin-top: 10px;
-
-                    .single-blog-title {
-                        margin: 20px 0;
-                    }
                 }
 
                 .sub-blog {

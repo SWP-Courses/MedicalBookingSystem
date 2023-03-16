@@ -36,7 +36,7 @@ export default function DoctorLayout() {
   };
 
   return (
-    <div className="doctor">
+    <div className="container-fluid doctor bg-light">
       <div className="doctorSidebar">
         <div className="userInfo">
           <img
@@ -45,7 +45,7 @@ export default function DoctorLayout() {
           />
           <span className="doctorName">{currentUser?.fullname}</span>
         </div>
-        <div className="profileActions shadow-lg bg-body-tertiary rounded">
+        <div className="profileActions shadow">
           <h4
             className={userContent === "info" ? "action active" : "action"}
             onClick={() => {
@@ -84,7 +84,7 @@ export default function DoctorLayout() {
           </h4>
         </div>
       </div>
-      <div className="doctorContent shadow-lg bg-body-tertiary rounded">
+      <div className="doctorContent shadow">
         {userContent === "info" && (
           <UserInfo hanldeUploadImage={hanldeUploadImage} image={image} />
         )}

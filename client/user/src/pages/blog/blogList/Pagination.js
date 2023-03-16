@@ -74,7 +74,7 @@ function Pagination(props) {
                     // blog.content
                   }
                 </p>
-                <div className="blog-item__desc">
+                <div className="blog-item__desc d-sm-none d-md-block">
                   <span>Tác giả</span> <strong style={{marginLeft: '5px'}}>{blog?.author}</strong>
                   <span className="separate-line"></span>
                   <span>{blog?.createdAt}</span>

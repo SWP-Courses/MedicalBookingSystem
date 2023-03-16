@@ -2,48 +2,42 @@ import {
   faCheck,
   faPenToSquare,
   faPills,
-  faTicket,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 import ModalEditServices from "../ModalAddService/ModalEditServices";
 import "./CurrentPatient.scss";
+import EditServices from "../ModalAddService/EditServices";
+import { formatSlot } from "~/utils";
 
 function CurrentPatient(props) {
-  const { user } = props;
+  const { user, setPatient, handleOptionClick, fetchSchedule } = props;
   const [modalShow, setModalShow] = useState(false);
-  const [selectedPatient, setSelectedPatient] = useState({});
 
   const handleEditService = () => {
-    setSelectedPatient(user);
+    // setSelectedPatient(user);
     setModalShow(true);
-  }
-
+  };
+  console.log(">> user", user);
   return (
     <div className="patient-detail">
-      <table className="mt-3">
-        <thead>
-          <tr>
-            <th>Tên</th>
-            <th>Dịch vụ</th>
-            <th>Thanh Toán</th>
-            <th>Kê thuốc</th>
-            <th>Sửa</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>{user.customer[0]?.fullname}</td>
-            <td>
-              {user.services.map((item, index) => {
-                return <p index={item._id}>{item.name}</p>;
-              })}
-            </td>
-            <td>
-              <span>
+      <div className="patient-info">
+        {Object.keys(user).length ? (
+          <>
+            <div className="patient-info__profile">
+              <div className="patient-info__profile-name">
+                <span>Tên</span>
+                <p>{user?.customer[0]?.fullname}</p>
+              </div>
+              <div className="patient-info__profile-time">
+                <span>Giờ Khám</span>
+                <p>{formatSlot(user.slot_time)}</p>
+              </div>
+              <div className="patient-info__profile-payment">
+                <span>Thanh toán</span>
                 {
-                  <span className={user.isPaid ? "btn-paid" : "btn-not-paid"}>
+                  <p className={user.isPaid ? "btn-paid" : "btn-not-paid"}>
                     <FontAwesomeIcon
                       icon={user.isPaid ? faCheck : faXmark}
                       style={{
@@ -51,50 +45,21 @@ function CurrentPatient(props) {
                         marginRight: "2px",
                       }}
                     />
-                  </span>
+                  </p>
                 }
-              </span>
-            </td>
-            <td>
-              <span
-                className="ml-3"
-                onClick={() => {
-                  // setPatient(item);
-                  // handleOptionClick("prescription");
-                }}
-              >
-                <FontAwesomeIcon
-                  icon={faPills}
-                  style={{
-                    fontSize: "24px",
-                    cursor: "pointer",
-                    color: "var(--primary)",
-                  }}
-                />
-              </span>
-            </td>
-            <td>
-              <span
-              className={
-                user.isPaid
-                  ? `schedule__calender-icon disabled`
-                  : `schedule__calender-icon ml-2`
-              }
-              onClick={
-                user.isPaid ? undefined : handleEditService
-              }
-              >
-                <FontAwesomeIcon icon={faPenToSquare} />
-              </span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <ModalEditServices
-        modalShow={modalShow}
-        setModalShow={setModalShow}
-        bookedUser={selectedPatient}
-      />
+              </div>
+            </div>
+            <div className="devideLine"></div>
+          </>
+        ) : (
+          <span className="no-date-available rounded-pill">
+            vui lòng chọn bệnh nhân khám
+          </span>
+        )}
+        <div className="patient-info__services">
+          <EditServices bookedUser={user} fetchSchedule={fetchSchedule} />
+        </div>
+      </div>
     </div>
   );
 }

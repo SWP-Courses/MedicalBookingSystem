@@ -49,14 +49,14 @@ function Blogs() {
 
   return (
     <div className="Blog-wrapper">
-      <div className="blog-content">
+      <div className="container blog-content">
         <div className="slider">
           <img src={slider} alt="slider" className="slider-body" />
         </div>
-        <div className="blog-body">
-          <div className="major-list">
+        <div className="row blog-body">
+          <div className="major-list col-lg-3 col-xl-3">
             <ul className="list">
-              <li className="item">
+              <li className="item"> 
                 <h5>Nội Dung</h5>
                 <div className="line"></div>
               </li>
@@ -74,7 +74,7 @@ function Blogs() {
               })}
             </ul>
           </div>
-          <div className="blog-list">
+          <div className="blog-list col-lg-9 col-xl-9">
             <h1 className="type">{categoryName}</h1>
             <hr />
             <Pagination data={blogs} />

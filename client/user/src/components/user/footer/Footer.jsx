@@ -6,7 +6,7 @@ export default function Footer() {
   return (
     <div className="footer">
       <div className="emailNews">
-        <div className="emailWrapper">
+        <div className="emailWrapper mx-sm-3">
           <h2>Đăng kí nhận thông tin</h2>
           <div className="emailInput">
             <label htmlFor="emailRegister">

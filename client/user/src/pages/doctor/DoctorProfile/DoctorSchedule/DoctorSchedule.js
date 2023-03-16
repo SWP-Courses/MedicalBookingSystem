@@ -4,15 +4,16 @@ import TableSchedule from "./TableSchedule/TableSchedule";
 import { hanlderRequest } from "~/utils";
 import API_URL from "~/api/Router";
 import axios from "axios";
-import { useState, useEffect, useContext} from "react";
+import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "~/context/authContext";
 
-function DoctorSchedule() {
+function DoctorSchedule(props) {
+  const { handleOptionClick, setPatient, setListUsers } = props;
   const [activeSelect, setActiveSelect] = useState("schedule");
   const [currentschedule, setCurrentSchedule] = useState([]);
   const [isBooked, setIsBooked] = useState(false);
   const { currentUser } = useContext(AuthContext);
-  const [fetchDate, setFetchDate]= useState('');
+  const [fetchDate, setFetchDate] = useState("");
   const [user, setUser] = useState({});
 
   useEffect(() => {
@@ -43,8 +44,8 @@ function DoctorSchedule() {
         <button
           className={
             activeSelect === "schedule"
-              ? "nav__schedule-btn isActive"
-              : "nav__schedule-btn"
+              ? "nav__schedule-btn rounded-pill isActive"
+              : "nav__schedule-btn rounded-pill"
           }
           onClick={() => setActiveSelect("schedule")}
         >
@@ -53,8 +54,8 @@ function DoctorSchedule() {
         <button
           className={
             activeSelect === "patient"
-              ? "nav__current-patient isActive"
-              : "nav__current-patient"
+              ? "nav__current-patient rounded-pill isActive"
+              : "nav__current-patient rounded-pill"
           }
           onClick={() => setActiveSelect("patient")}
         >
@@ -68,12 +69,19 @@ function DoctorSchedule() {
           activeSelect={activeSelect}
           setActiveSelect={setActiveSelect}
           isBooked={isBooked}
-          fetchSchedule={fetchSchedule}
           setFetchDate={setFetchDate}
           setUser={setUser}
+          setListUsers={setListUsers}
         />
       )}
-      {activeSelect === "patient" && <CurrentPatient user={user}/>}
+      {activeSelect === "patient" && (
+        <CurrentPatient
+          user={user}
+          handleOptionClick={handleOptionClick}
+          setPatient={setPatient}
+          fetchSchedule={fetchSchedule}
+        />
+      )}
     </div>
   );
 }

@@ -61,4 +61,61 @@
         opacity: 0.5;
     }
 
+    .no-date-available {
+        position: absolute;
+        display: block;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #fdebdd;
+        padding: 8px 13px;
+        color: #d8a16d;
+    }
+}
+
+.patient-info {
+    display: flex;
+    width: 90%;
+    margin: 10px auto;  
+    
+
+    .patient-info__profile {
+        flex: 1;
+        width: 800px;
+    }
+
+    .patient-info__services {
+        margin-top: 10px;
+        height: 350px;
+        overflow: hidden auto;
+    }
+
+    .devideLine {
+        width: 1px;
+        height: 347px;
+        background: #dbd6d6;
+        margin: 24px 30px;
+    }
+
+    .patient-info__profile-time,
+    .patient-info__profile-payment,
+    .patient-info__profile-name {
+        height: 40px;
+        display: flex;
+        border-bottom: 1px solid #c5c5c5;
+        line-height: 40px;
+        align-items: center;
+
+        >p {
+            margin-bottom: 0;
+        }
+
+        >span {
+            font-weight: 600;
+            color: #828a9b;
+            width: 175px;
+        }
+    }
+
+
 }
