@@ -12,19 +12,21 @@ import StoreContextProvider from "./context/storeContext";
 import Chat from "./pages/Chat/Chat";
 import { CookiesProvider } from "react-cookie";
 
+// admin side
 import { SocketProvider } from "./context/SocketProvider";
 import AdminRouter from "./routes/AdminRouter";
 import { Provider } from "react-redux";
 import Layout from "./components/admin/Layout/Layout";
 import "remixicon/fonts/remixicon.css";
 import { applyMiddleware, createStore } from "redux";
-import reducers from './store/index'
+import reducers from "./store/index";
 import thunk from "redux-thunk";
+import "remixicon/fonts/remixicon.css";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+const queryClient = new QueryClient();
 
 // const root = ReactDOM.createRoot(document.getElementById("root"));
 const store = createStore(reducers, applyMiddleware(thunk));
-
-
 
 function App() {
   return (
@@ -36,9 +38,11 @@ function App() {
               <UserRouter />
 
               {/* admin */}
-              <Provider store={store}>
-                <Layout />
-              </Provider>
+              <QueryClientProvider client={queryClient}>
+                <Provider store={store}>
+                  <Layout />
+                </Provider>
+              </QueryClientProvider>
               <ToastContainer
                 position="top-right"
                 autoClose={5000}

@@ -1,7 +1,28 @@
+
+
 .medicalHistory {
-    padding: 30px 50px;
-    >.title {
-        font-size: 30px;
-        margin-bottom: 20px;
+    position: relative;
+  
+    .search-saved-blog {
+      position: absolute;
+      right: 20px;
+      top: 20px;
+      z-index: 100;
     }
-}
+  
+    .blog-save-banner {
+      padding: 5px;
+      cursor: pointer;
+      > img {
+        object-fit: cover;
+        width: 80px;
+        height: 80px;
+      }
+    }
+  
+    .rdt_TableCell {
+      > div {
+          white-space: normal !important;
+      }
+    }
+  }

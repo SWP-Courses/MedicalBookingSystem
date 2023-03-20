@@ -9,17 +9,24 @@ import UserInfo from "~/components/user/userInfo/UserInfo";
 import { API_IMAGE_URL } from "~/api/Router";
 import Prescription from "./Prescription/Prescription";
 
-export default function Doctor() {
-  const [userContent, setUserContent] = useState("info");
+const routers = [
+  { path: "/doctor/profile", title: "Thông tin cá nhân" },
+  { path: "/doctor/patient-booking", title: "Xem lịch khám" },
+  { path: "/doctor/presciption", title: "Kê đơn thuốc" },
+  { path: "/doctor/patient-history", title: "Lịch sử khám của bệnh nhân" },
+];
 
+export default function DoctorLayout() {
   const { currentUser } = useContext(AuthContext);
-
+  const [userContent, setUserContent] = useState("info");
   const [image, setImage] = useState(currentUser?.avatar);
+  const [patient, setPatient] = useState([]);
+  const [listUsers, setListUsers] = useState([]);
 
   const hanldeUploadImage = (e) => {
-    if(e && e.target.files && e.target.files[0]) {
+    if (e && e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
-      file.avatar = URL.createObjectURL(file); 
+      file.avatar = URL.createObjectURL(file);
       setImage(file);
     }
   };
@@ -32,7 +39,10 @@ export default function Doctor() {
     <div className="doctor">
       <div className="doctorSidebar">
         <div className="userInfo">
-          <img src={`${API_IMAGE_URL}/${currentUser?.avatar?.filename}`} alt="avartar" />
+          <img
+            src={`${API_IMAGE_URL}/${currentUser?.avatar?.filename}`}
+            alt="avartar"
+          />
           <span className="doctorName">{currentUser?.fullname}</span>
         </div>
         <div className="profileActions">
@@ -60,7 +70,7 @@ export default function Doctor() {
               handleOptionClick("prescription");
             }}
           >
-            Kê Đơn Thuốc  
+            Kê Đơn Thuốc
           </h4>
           <h4
             className={
@@ -75,9 +85,17 @@ export default function Doctor() {
         </div>
       </div>
       <div className="doctorContent">
-        {userContent === "info" && <UserInfo hanldeUploadImage={hanldeUploadImage} image={image}/>}
-        {userContent === "prescription" && <Prescription />}
-        {userContent === "doctorSchedule" && <DoctorSchedule />}
+        {userContent === "info" && (
+          <UserInfo hanldeUploadImage={hanldeUploadImage} image={image} />
+        )}
+        {userContent === "prescription" && <Prescription patient={patient} listUsers={listUsers} currentUser={currentUser}/>}
+        {userContent === "doctorSchedule" && (
+          <DoctorSchedule
+            handleOptionClick={handleOptionClick}
+            setPatient={setPatient}
+            setListUsers={setListUsers}
+          />
+        )}
         {userContent === "medicalHistory" && (
           <MedicalHistory
             userContent={userContent}

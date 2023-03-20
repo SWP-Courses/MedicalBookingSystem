@@ -1,6 +1,6 @@
 .wrapper-prescription {
     padding: 20px 20px 30px;
-    min-height: 140px;
+    min-height: 160px;
 
     .user {
         display: flex;
@@ -24,18 +24,6 @@
                     font-weight: 500;
                     font-size: 18px;
                 }
-
-            }
-
-            >.name {
-            }
-
-            >.age {
-                
-            }
-
-            >.gender {
-                
             }
         }
     }
@@ -86,7 +74,11 @@
                     }
         
                     .delete-btn {
-                        color: #ff3d00;
+                        color: #ff3d00; 
+                    }
+
+                    .note-icon {
+                        font-size: 20px
                     }
                 }
             }
@@ -132,7 +124,7 @@
 
             .recall-date {
                 >span {
-                    font-weight: 500;
+                    font-weight: 400;
                     display: inline-block;
                     margin: 27px 25px;
                 }

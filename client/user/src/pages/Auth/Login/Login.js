@@ -96,7 +96,6 @@ function Login() {
                   ref={inputRef}
                 />
                 <span ref={errorAlert}>{/* error alert */}</span>
-                <span ref={errorAlert}>{/* error alert */}</span>
               </div>
               <div className="login__form-group">
                 <input

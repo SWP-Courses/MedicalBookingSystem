@@ -56,7 +56,7 @@ export default function BookingConfirm({ booking }) {
       <div className="infoItem">
         <span className="bookingKey">Địa điểm</span>
         <span className="bookingValue">
-          Phòng khám răng Miss White Hồ Chí Minh
+          Nha khoa Sun Smile Hồ Chí Minh
         </span>
       </div>
     </div>
