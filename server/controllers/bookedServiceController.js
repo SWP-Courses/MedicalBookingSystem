@@ -389,15 +389,19 @@ const getBookedServiceById = asyncHandler(async (req, res, next) => {
 //@route PATCH /api/bookedservices/payment/:id
 //@access public
 const paymentBookedServices = asyncHandler(async (req, res, next) => {
-  const paidBservice = await BookedService.findOne({
-    _id: mongoose.Types.ObjectId(req.params.id),
-    date: {
-      $gte: startOfDay(new Date()),
-      $lte: endOfDay(new Date()),
-    },
-  });
+  const {payCode} = req.body;
 
-  if(!paidBservice) return res.status(405).send("Không được thanh toán cho lịch khác hôm nay!")
+  // const paidBservice = await BookedService.findOne({
+  //   _id: mongoose.Types.ObjectId(req.params.id),
+  //   date: {
+  //     $gte: startOfDay(new Date()),
+  //     $lte: endOfDay(new Date()),
+  //   },
+  // });
+
+  // if(!paidBservice) return res.status(405).send("Không được thanh toán cho lịch khác hôm nay!")
+console.log(payCode);
+  if(payCode !== req.params.id) return res.status(400).send("Mã code thanh toán không hợp lệ!")
 
   const total_price = req.body.total_price;
   const isPaid = req.body.isPaid;

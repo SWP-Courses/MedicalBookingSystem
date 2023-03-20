@@ -1,0 +1,131 @@
+.bookingContent {
+  padding: 14px 20px;
+  .hospitalPart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    flex: 1;
+    .dropdownContain {
+      width: 100%;
+      .dropdownText {
+        width: 100%;
+        background-color: var(--white-color);
+        color: #333;
+        border: 1px solid lightgray;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        > .text {
+          display: flex;
+          gap: 5px;
+          align-items: center;
+        }
+      }
+
+      .dropdownOptions {
+        width: 100%;
+
+        .doctor-option-item {
+          padding: 5px 0px;
+          // display: flex;
+          // justify-content: center;
+          // align-items: center;
+
+          .doctor-option-avatar {
+            max-width: 40px;
+            max-height: 40px;
+            border-radius: 100%;
+            margin: 0 auto;
+            display: block;
+            border: 1px solid rgb(201, 185, 95);
+          }
+        }
+      }
+    }
+
+    > .title {
+      font-weight: 500;
+      font-size: 18px;
+    }
+
+    > .time {
+      display: flex;
+      flex-direction: column;
+
+      .groupTime {
+        margin-top: 10px;
+        // display: flex;
+        // flex-wrap: wrap;
+        // gap: 14px;
+        // justify-content: center;
+        // padding:10px;
+        > .timeItem {
+          // height: 40px;
+          margin-bottom: 10px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          .time-text-item {
+            padding: 5px 15px;
+            width: 90%;
+            border-radius: 5px;
+            background-color: lightgrey;
+            border: 2px solid transparent;
+            cursor: pointer;
+            text-align: center;
+            
+            &.active {
+              border: 2px solid #e5a724;
+              background-color: rgb(242, 242, 242);
+              background-image: none;
+              color: #e5a724 !important;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .userFillPart {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    > h2 {
+      font-size: 20px;
+    }
+
+    .infoKey {
+      padding: 15px;
+      border: 1px solid lightgray;
+      border-radius: 5px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .infoValue {
+    }
+  }
+}
+
+@media screen and (min-width: 993px) {
+  .dropdownContain {
+    width: 60% !important;
+  }
+}
+
+@media screen and (min-width: 992px) {
+  .bookingContent {
+    padding: 14px 100px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .bookingContent {
+    padding: 14px 30px;
+  }
+}

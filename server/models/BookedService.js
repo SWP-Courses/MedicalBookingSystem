@@ -31,9 +31,11 @@ const BookedServiceSchema = new mongoose.Schema(
     },
     total_price: Number,
     drugbill_id: Schema.Types.ObjectId,
+    // payCode: { type: Number, unique: true }
   },
 
   { versionKey: false }
 );
+
 
 module.exports = mongoose.model("BookedService", BookedServiceSchema);

@@ -1,0 +1,57 @@
+.bookingPage {
+  .bookingBanner {
+    height: 300px;
+    background-image: url("../../assets/images/booking_banner.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    align-items: center;
+    > h1 {
+      font-size: 26px;
+      font-weight: bold;
+      transform: translateX(50%);
+      //   margin: auto;
+    }
+  }
+
+  .bookingBlock {
+    // width: 800px;
+    height: max-content;
+    background-color: var(--white-color);
+    border-radius: 10px;
+    margin: 0px auto;
+    margin-top: -100px;
+    border: 1px solid lightgray;
+    // left:0;
+    // right: 0;
+
+    .bookingTitle {
+      padding: 14px 32px;
+      border-bottom: 1px solid lightgray;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .bookingStep {
+      font-size: 16px;
+    }
+
+    .bookingDirection {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      padding: 12px 0px;
+      border-top: 1px solid lightgray;
+      > button {
+        padding: 10px 50px;
+        border: none;
+        outline: none;
+        border-radius: 5px;
+        font-weight: bold;
+        color: var(--white-color);
+        background-color: #337ab7;
+      }
+    }
+  }
+}
