@@ -101,7 +101,7 @@ const getHistoryByUserId = asyncHandler(async (req, res, next) => {
         as: "customer",
       },
     },
-  ]).project({ user_id: 0, doctor_id: 0, date: 0 });
+  ]).project({ user_id: 0, doctor_id: 0});
   // console.log(orders);
   const bookedServicesFull = await Promise.all(
     orders.map(async (order) => {
