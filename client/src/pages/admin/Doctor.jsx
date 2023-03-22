@@ -25,7 +25,6 @@ const Doctor = () => {
   const profile = useRef();
   const roomId = useRef();
 
-
   const getAllDoctor = async () => {
     try {
       const result = await axios.get(`${ROUTER}/api/users/doctors`);
@@ -79,6 +78,7 @@ const Doctor = () => {
     formData.current.append('email', email.current.value);
     formData.current.append('password', "123456");
     formData.current.append('room_id', roomId.current.value);
+    formData.current.append('address', address.current.value);
 
     try {
       const result = doctorDetail ? await axios.put(`${ROUTER}/api/users/${doctorDetail._id}`, formData.current) : await axios.post(`${ROUTER}/api/auth/register`, formData.current);

@@ -121,7 +121,7 @@ const register = async (req, res, next) => {
         role_code: req.body.role_code,
         avatar: avatar,
       };
-      
+
       // If create a doctor account
       // Send role_code="R2"
       if (req.body.role_code === "R2")
@@ -132,15 +132,16 @@ const register = async (req, res, next) => {
           // room: req.body.room,
           room_id: req.body.room_id,
           profile: req.body.profile,
+          address: req.body.address
         };
 
       const newUser = new UserModel(
         !req.body.email
           ? document
           : {
-              ...document,
-              email: req.body.email,
-            }
+            ...document,
+            email: req.body.email,
+          }
       );
 
       let user = await newUser.save();
@@ -168,7 +169,7 @@ const login = async (req, res, next) => {
   try {
 
     // degree, profile, spe_id của doctor chỉ được admin thay đổi
-    const user = await UserModel.findOne({email: req.body.email});
+    const user = await UserModel.findOne({ email: req.body.email });
 
     if (!user) return res.status(404).send("Tài khoản không tồn tại!");
 

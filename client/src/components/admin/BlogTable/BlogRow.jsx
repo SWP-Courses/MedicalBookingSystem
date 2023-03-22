@@ -38,8 +38,8 @@ function BlogRow({ onClickEditBlog, stt, blog, onDeleteBlogById }) {
                 <td className='text-center'> {dayjs(blog.createdAt).format('MMM DD, YYYY')} </td>
                 <td className='text-center blog-action'><HiOutlineDotsHorizontal className='fs-4' /></td>
                 <div className='popup-action'>
-                    <button onClick={() => setDeletePopup(true)} className='btn bg-light text-danger text-center w-100'>Delete</button>
-                    <button className='btn bg-light w-100' onClick={() => onClickEditBlog(blog._id)}>Edit</button>
+                    <button onClick={() => setDeletePopup(true)} className='px-3 py-2 bg-light text-danger text-center w-100'>Delete</button>
+                    <button className='px-3 py-2 bg-light w-100' onClick={() => onClickEditBlog(blog._id)}>Edit</button>
                 </div>
             </tr>
             {deletePopup ? <CofirmDeletePopup onConfilmDelete={onConfilmDelete} onCancelDelete={onCancelDelete} /> : undefined}

@@ -4,7 +4,7 @@ import { HiOutlineDotsHorizontal } from 'react-icons/hi'
 import { toast } from 'react-toastify';
 import ROUTER from '~/api/adminRouter';
 import toastOption from '~/config/toast';
-import CofirmDeletePopup from '../BlogTable/CofirmDeletePopup';
+import CofirmDeletePopup from './CofirmDeletePopup';
 
 function DoctorRow({ onDeleteBlogById, doctor, stt, onClickEditDoctor }) {
     const [deletePopup, setDeletePopup] = useState(false);
@@ -36,8 +36,8 @@ function DoctorRow({ onDeleteBlogById, doctor, stt, onClickEditDoctor }) {
                 <td className='text-center'> {doctor.email} </td>
                 <td className='text-center blog-action'><HiOutlineDotsHorizontal className='fs-4' /></td>
                 <div className='popup-action'>
-                    <button onClick={() => setDeletePopup(true)} className='btn bg-light text-danger text-center w-100'>Delete</button>
-                    <button className='btn bg-light w-100' onClick={() => onClickEditDoctor(doctor._id)}>Detail</button>
+                    <button onClick={() => setDeletePopup(true)} className='px-3 py-2 bg-light text-danger text-center w-100'>Delete</button>
+                    <button className='px-3 py-2 bg-light w-100' onClick={() => onClickEditDoctor(doctor._id)}>Detail</button>
                 </div>
             </tr>
             {deletePopup ? <CofirmDeletePopup onConfilmDelete={onConfilmDelete} onCancelDelete={onCancelDelete} /> : undefined}
