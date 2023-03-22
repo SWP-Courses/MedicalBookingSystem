@@ -10,7 +10,6 @@ const Layout = () => {
     <>
       {["admin", "consultant", "cashier"].includes(currentUser?.role) && (
         <div className="d-flex layout">
-
           <>
             <Sidebar />
             <div className="main">
