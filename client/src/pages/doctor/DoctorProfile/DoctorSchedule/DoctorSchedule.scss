@@ -1,0 +1,36 @@
+.doctor-schedule {
+    height: 60px;
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+    margin-top: 58px;
+
+    .separate {
+        width: 95%;
+        height: 1px;
+        background: #c5c5c5;    
+        margin: 15px auto;
+    }
+}
+
+.nav {
+    margin-left: 33px;
+    padding-top: 10px;
+    position: absolute;
+
+
+    .nav__current-patient,
+    .nav__schedule-btn {
+        padding: 10px 17px;
+        font-weight: 500;
+        color: #828a9b;
+    }
+
+    .isActive {
+        background-color: var(--secondary-color);
+        color: #fff;
+    }
+
+    .nav__current-patient {
+        margin-left: 9px;
+    }
+}

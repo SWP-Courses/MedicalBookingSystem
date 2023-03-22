@@ -1,0 +1,67 @@
+
+    .delete-btn,
+    .add-btn {
+        cursor: pointer;
+        font-size: 26px;
+    }
+
+    .add-btn {
+        color: var(--secondary-color);
+    }
+
+    .delete-btn {
+        color: #ff3d00;
+        
+    }
+
+    .plus-service {
+        position: relative;
+
+        .note-icon {
+            position: absolute;
+            top: 54%;
+            cursor: pointer;
+            color: #ff3d00;
+            border-radius: 50%;
+        }
+
+        .add-extra-icon {
+            position: absolute;
+            top: 54%;
+            color: var(--secondary-color);
+            cursor: pointer;
+            display: block;
+            // margin-left: 30px;
+        }
+    }
+
+    .cancle-btn {
+        background-color: #f6f6f6;
+        border: none;
+        color: #141414;
+        padding: 12px 30px;
+        border-radius: 8px;
+    }
+
+    .cancle-btn:hover {
+        background-color: #e1e1e1;
+    }
+
+
+    .btn:not(:disabled):not(.disabled) {
+        cursor: pointer;
+        padding: 6px 10px;
+        border-radius: 8px;
+    }
+
+    .faCirclePlus-icon {
+        padding: 10px 0;
+        color: var(--secondary-color);
+        cursor: pointer;
+        margin-left: 35%;
+        width: fit-content;
+    }
+
+    .addition-services {
+        
+    }
