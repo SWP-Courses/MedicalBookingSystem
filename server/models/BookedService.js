@@ -13,7 +13,7 @@ const BookedServiceSchema = new mongoose.Schema(
       type: Schema.Types.ObjectId,
       required: true,
     },
-    payCode: { type: Number, unique: true },
+    billNumber: { type: Number, unique: true },
     date: Date,
     slot_time: Number,
     // room: String,
@@ -40,7 +40,7 @@ const BookedServiceSchema = new mongoose.Schema(
 );
 
 BookedServiceSchema.plugin(AutoIncrement(mongoose), {
-  inc_field: "payCode",
+  inc_field: "billNumber",
   start_seq: 1,
 });
 
