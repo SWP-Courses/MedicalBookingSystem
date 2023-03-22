@@ -33,14 +33,15 @@ export default function AuthContextProvider({ children }) {
           withCredentials: true,
         });
         // console.log(res.data);
-        if (!beforeLogin) {
-          navigate(beforeLogin);
-          setRoutingHistory((prev) => {
-            const { beforeLogin, ...newHistory } = prev;
-            return newHistory;
-          });
-          return;
-        }
+        // if (beforeLogin) {
+        //   navigate(beforeLogin);
+        //   setRoutingHistory((prev) => {
+        //     const { beforeLogin, ...newHistory } = prev;
+        //     return newHistory;
+        //   });
+        //   return;
+        // }
+        console.log(res.data);
         navigate("/customer/profile");
         setCurrentUser(res.data);
       } catch (err) {

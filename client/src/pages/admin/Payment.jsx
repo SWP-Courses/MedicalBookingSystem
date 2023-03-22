@@ -31,7 +31,7 @@ const Payment = () => {
   const [rowSelected, setRowSelected] = useState("");
   const [isOpenDrawer, setIsOpenDrawer] = useState(false);
 
-  const [payCode, setPayCode] = useState("");
+  const [payCode, setPayCode] = useState();
 
   const [stateBookedServicesDetail, setStateBookedServicesDetail] = useState({
     id: "",
@@ -432,7 +432,7 @@ const Payment = () => {
               <Col span={12}>
                 <BsForm.Label htmlFor="payCode">* Mã số thanh toán</BsForm.Label>
                 <BsForm.Control
-                  type="text"
+                  type="number"
                   id="payCode"
                   value={payCode}
                   onChange={e => setPayCode(e.target.value)}

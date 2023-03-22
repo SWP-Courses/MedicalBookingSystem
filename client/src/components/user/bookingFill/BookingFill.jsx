@@ -43,6 +43,7 @@ export default function BookingFill({
           <Calendar
             onChange={(item) => setBooking((prev) => ({ ...prev, date: item }))}
             value={booking.date}
+            className="calendar-booking"
             tileDisabled={({ date }) => {
               let newDate = new Date();
               // enable today
@@ -117,23 +118,27 @@ export default function BookingFill({
           </Dropdown.Menu>
         </Dropdown>
         <div className="time">
-          <span>Giờ khám</span>
+          <span className="text-center">Giờ khám</span>
           <div className="groupTime row">
-            {freeSlots?.map((slot) => (
-              <div
-                key={slot._id}
-                className={`timeItem col-4 col-lg-3 `}
-                onClick={() => handleTimeClick(slot.time)}
-              >
-                <span
-                  className={`time-text-item ${
-                    booking?.slot === slot?.time && "active"
-                  }`}
+            {freeSlots?.length ? (
+              freeSlots?.map((slot) => (
+                <div
+                  key={slot._id}
+                  className={`timeItem col-4 col-lg-3 `}
+                  onClick={() => handleTimeClick(slot.time)}
                 >
-                  {formatSlot(slot.time)}
-                </span>
-              </div>
-            ))}
+                  <span
+                    className={`time-text-item ${
+                      booking?.slot === slot?.time && "active"
+                    }`}
+                  >
+                    {formatSlot(slot.time)}
+                  </span>
+                </div>
+              ))
+            ) : (
+              <span className="text-info">Hiện tại không còn slot khám</span>
+            )}
           </div>
         </div>
       </div>

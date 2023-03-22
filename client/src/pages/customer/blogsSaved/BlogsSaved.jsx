@@ -73,6 +73,7 @@ export default function BlogsSaved() {
         name: "Ngày đăng",
         selector: (row) => row.createdAt,
         sortable: true,
+      
       },
       {
         name: "Tác giả",
@@ -82,7 +83,7 @@ export default function BlogsSaved() {
         name: "Thao tác",
         selector: (row) => (
           <Button
-            variant="warning"
+            variant="outline-danger"
             size="sm"
             className="btn-block mt-auto"
             onClick={() => handleUnSaveBlogClick(row._id)}
@@ -127,8 +128,6 @@ export default function BlogsSaved() {
           }
           return false;
         })}
-        defaultSortAsc="false"
-        defaultSortFieldId="date"
         pagination
       />
       {/* <Container className="mt-3">

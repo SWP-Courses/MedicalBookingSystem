@@ -9,13 +9,26 @@ export default function Home() {
       </div>
       <div className="introduction row">
         <div className="introLeft col-sm-7">
-          <h1>Nha khoa Sun Smile</h1>
+          <h3>Nha khoa Sun Smile</h3>
           <p>
-          Phòng khám Sun Smile là một cơ sở y tế chuyên khoa nha khoa, cung cấp các dịch vụ chăm sóc răng miệng chất lượng cao với đội ngũ bác sĩ giàu kinh nghiệm và trang thiết bị hiện đại. Phòng khám Sun Smile cam kết mang lại cho bệnh nhân sự thoải mái và an tâm trong quá trình điều trị và đảm bảo sự hài lòng của khách hàng.
+            Phòng khám Sun Smile là một trong những cơ sở y tế chuyên khoa nha
+            khoa hàng đầu hiện nay, với mục tiêu đem đến cho khách hàng những
+            dịch vụ chăm sóc răng miệng chất lượng cao nhất. Với đội ngũ bác sĩ
+            giàu kinh nghiệm, được đào tạo chuyên sâu trong lĩnh vực nha khoa,
+            cùng với trang thiết bị hiện đại và tiên tiến, phòng khám Sun Smile
+            đã và đang luôn nỗ lực để cung cấp những phương pháp điều trị hiệu
+            quả nhất cho bệnh nhân. <br /><br /> Với phương châm "khách hàng là trên hết",
+            Sun Smile cam kết mang lại cho bệnh nhân sự thoải mái và an tâm
+            trong quá trình điều trị. Đội ngũ nhân viên của Sun Smile luôn nhiệt
+            tình và chu đáo, sẵn sàng lắng nghe và tư vấn cho bệnh nhân mọi khi
+            cần thiết. <br /><br /> Với sự chuyên nghiệp và tận tâm của đội ngũ y bác sĩ và
+            nhân viên, Phòng khám Sun Smile đảm bảo sự hài lòng của khách hàng.
+            Bên cạnh đó, Sun Smile cũng luôn nỗ lực cải tiến và nâng cao chất
+            lượng dịch vụ để đáp ứng mọi nhu cầu và yêu cầu của khách hàng.
           </p>
         </div>
         <div className="introRight col-sm-5">
-          <h1>Dịch vụ</h1>
+          <h4>Dịch vụ</h4>
           <ul className="specialistList">
             <li className="specialistItem">Trồng răng</li>
             <li className="specialistItem">Trám răng</li>

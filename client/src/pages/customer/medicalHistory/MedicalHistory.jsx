@@ -12,21 +12,6 @@ import { toast } from "react-toastify";
 import { formatSlot } from "~/utils";
 import { format } from "date-fns";
 
-// blogsSaved?.filter((item) => {
-//   if (filterText === "") {
-//     return true;
-//   } else if (
-//     item.title
-//       .toLowerCase()
-//       .normalize("NFD")
-//       .replace(/[\u0300-\u036f]/g, "")
-//       .includes(filterText.toLowerCase())
-//   ) {
-//     return true;
-//   }
-//   return false;
-// })
-
 function PrescriptionModal({ preId, show, onHide }) {
   const [preInfo, setPreInfo] = useState();
 
@@ -57,16 +42,21 @@ function PrescriptionModal({ preId, show, onHide }) {
         <p>Bệnh: {preInfo?.disease}</p>
         <p>Lưu ý: {preInfo?.note}</p>
         <h5>Thuốc: </h5>
-        {preInfo?.medicines.map((medicine) => (
-          <p>
-            {medicine.quantity} {medicine.medicine_id.type}{" "}
-            {medicine.medicine_id.name} | Liều dùng: {medicine.dose}
-          </p>
-        ))}
+        <ul className="prescription-drugs-list">
+          {preInfo?.medicines.map((medicine) => (
+            <li>
+              <p>
+                <strong>{medicine.medicine_id.name}:</strong>
+                {` ${medicine.quantity} ${medicine.medicine_id.type}`}
+              </p>
+              <p> Liều dùng: {medicine.dose}</p>
+            </li>
+          ))}
+        </ul>
         {preInfo?.re_exam_date && (
           <p>
-            Ngày tái khám: { format(new Date(preInfo.re_exam_date),
-            "dd/MM/yyyy")}
+            Ngày tái khám:{" "}
+            {format(new Date(preInfo.re_exam_date), "dd/MM/yyyy")}
           </p>
         )}
       </Modal.Body>
@@ -118,6 +108,7 @@ export default function MedicalHistory() {
       {
         name: "Thời gian",
         selector: (row) => formatSlot(row.slot_time),
+        sortable:true
       },
       {
         name: "Bác sĩ",
@@ -173,8 +164,8 @@ export default function MedicalHistory() {
         columns={columns}
         data={history}
         pagination
-        defaultSortAsc="false"
-        defaultSortFieldId="date"
+        // defaultSortAsc="false"
+        // defaultSortFieldId="date"
       />
       <PrescriptionModal
         preId={preShowId}

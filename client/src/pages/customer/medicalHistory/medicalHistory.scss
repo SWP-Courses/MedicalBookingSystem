@@ -1,28 +1,42 @@
-
-
 .medicalHistory {
-    position: relative;
-  
-    .search-saved-blog {
-      position: absolute;
-      right: 20px;
-      top: 20px;
-      z-index: 100;
+  position: relative;
+
+  .search-saved-blog {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    z-index: 100;
+  }
+
+  .blog-save-banner {
+    padding: 5px;
+    cursor: pointer;
+    > img {
+      object-fit: cover;
+      width: 80px;
+      height: 80px;
     }
-  
-    .blog-save-banner {
-      padding: 5px;
-      cursor: pointer;
-      > img {
-        object-fit: cover;
-        width: 80px;
-        height: 80px;
-      }
+  }
+
+  .rdt_TableCell {
+    > div {
+      white-space: normal !important;
     }
-  
-    .rdt_TableCell {
-      > div {
-          white-space: normal !important;
+  }
+}
+
+.prescription-drugs-list {
+  list-style-type: circle;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  li {
+    p:first-child {
+      margin-bottom: 10px;
+      > strong {
+        margin-right: 10px;
       }
     }
   }
+}

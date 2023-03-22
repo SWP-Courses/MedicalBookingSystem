@@ -85,7 +85,7 @@ export default function AppointmentSchedule() {
   return (
     <div className="appointmentSchedule">
       <h1 className="title">Lịch sử khám bệnh</h1>
-      <Table striped hover responsive>
+      <Table hover responsive>
         <thead>
           <tr>
             <th>#</th>
@@ -136,7 +136,7 @@ export default function AppointmentSchedule() {
                         <Popover.Header as="h3">
                           Mã số thanh toán
                         </Popover.Header>
-                        <Popover.Body>{bservice._id}</Popover.Body>
+                        <Popover.Body className="fs-5 fw-bold">{bservice?.payCode}</Popover.Body>
                       </Popover>
                     }
                   >

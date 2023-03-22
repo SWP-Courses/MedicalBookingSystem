@@ -110,6 +110,11 @@ const getHistoryByUserId = asyncHandler(async (req, res, next) => {
         as: "doctor",
       },
     },
+    {
+      $sort: {
+        date: -1,
+      },
+    },
   ]).project({ user_id: 0, doctor_id: 0 });
   // console.log(orders);
   const bookedServicesFull = await Promise.all(
@@ -389,36 +394,46 @@ const getBookedServiceById = asyncHandler(async (req, res, next) => {
 //@route PATCH /api/bookedservices/payment/:id
 //@access public
 const paymentBookedServices = asyncHandler(async (req, res, next) => {
-  const {payCode} = req.body;
+  try {
+    const { payCode } = req.body;
 
-  // const paidBservice = await BookedService.findOne({
-  //   _id: mongoose.Types.ObjectId(req.params.id),
-  //   date: {
-  //     $gte: startOfDay(new Date()),
-  //     $lte: endOfDay(new Date()),
-  //   },
-  // });
+    const paidBservice = await BookedService.findOne({
+      _id: mongoose.Types.ObjectId(req.params.id),
+      date: {
+        $gte: startOfDay(new Date()),
+        $lte: endOfDay(new Date()),
+      },
+    });
+    if (!paidBservice)
+      return res
+        .status(405)
+        .send("Không được thanh toán cho lịch khác hôm nay!");
 
-  // if(!paidBservice) return res.status(405).send("Không được thanh toán cho lịch khác hôm nay!")
-console.log(payCode);
-  if(payCode !== req.params.id) return res.status(400).send("Mã code thanh toán không hợp lệ!")
+    if (new Date().getHours() < paidBservice.slot_time)
+      return res.status(405).send("Không được thanh toán cho slot chưa khám!");
 
-  const total_price = req.body.total_price;
-  const isPaid = req.body.isPaid;
-  // console.log(req.body)
+    if (payCode != paidBservice.payCode)
+      return res.status(400).send("Mã thanh toán không hợp lệ!");
 
-  const completeBooked = await BookedService.findByIdAndUpdate(
-    req.params.id,
-    {
-      total_price,
-      isPaid,
-    },
-    { new: true }
-  );
+    const total_price = req.body.total_price;
+    const isPaid = req.body.isPaid;
+    // console.log(req.body)
 
-  // const completeBooked = await booked.save();
+    const completeBooked = await BookedService.findByIdAndUpdate(
+      req.params.id,
+      {
+        total_price,
+        isPaid,
+      },
+      { new: true }
+    );
 
-  res.status(200).json(completeBooked);
+    // const completeBooked = await booked.save();
+
+    res.status(200).json(completeBooked);
+  } catch (error) {
+    console.log(error);
+  }
 });
 
 module.exports = {

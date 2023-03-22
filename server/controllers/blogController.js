@@ -35,13 +35,12 @@ const createBlog = asyncHandler(async (req, res, next) => {
       throw new Error("All field not be empty!");
     }
 
-
     const blogs = await Blog.create({
       title,
       content,
       category_id,
       author,
-      description
+      description,
     });
 
     res.status(200).json({ blogs });
@@ -64,13 +63,17 @@ const updateBlog = asyncHandler(async (req, res, next) => {
   }
 
   const { author, title, content, category_id, description } = req.body;
-  const blogs = await Blog.findByIdAndUpdate(blogId, {
-    author,
-    title,
-    content,
-    category_id,
-    description
-  }, { new: true });
+  const blogs = await Blog.findByIdAndUpdate(
+    blogId,
+    {
+      author,
+      title,
+      content,
+      category_id,
+      description,
+    },
+    { new: true }
+  );
 
   res.status(200).json({ blogs });
 });
@@ -89,7 +92,7 @@ const deleteBlog = asyncHandler(async (req, res, next) => {
   res.status(200).json({ deleteBlog });
 });
 
-/* ----- Khoa ADD ------ */ 
+/* ----- Khoa ADD ------ */
 /* User save or unsave a blog */
 //@desc Save a blog
 //@route POST /api/blogs/save/:blogId/:userId
@@ -132,7 +135,6 @@ const getAllSavedBlogs = asyncHandler(async (req, res, next) => {
         foreignField: "_id",
         as: "blog",
       },
-      
     },
     {
       $lookup: {
@@ -141,7 +143,12 @@ const getAllSavedBlogs = asyncHandler(async (req, res, next) => {
         foreignField: "_id",
         as: "category",
       },
-    }
+    },
+    {
+      $sort: {
+        createdAt: -1,
+      },
+    },
   ]);
   // const user = result[0];
   res.status(200).json(result);
