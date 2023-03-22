@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Route, Routes, BrowserRouter, Link } from "react-router-dom";
+import { Route, Routes,Link } from "react-router-dom";
 import Layout from "~/components/user/layout/Layout";
 import ForgotPassword from "~/pages/Auth/ForgotPassword/ForgotPassword";
 import Login from "~/pages/Auth/Login/Login";
@@ -11,7 +11,7 @@ import DoctorDetail from "~/pages/doctor/doctorDetail/DoctorDetail";
 import DoctorList from "~/pages/doctor/doctorList/DoctorList";
 import Home from "~/pages/home/Home";
 import Specialist from "~/pages/specialist/Specialist";
-import AuthContextProvider, { AuthContext } from "../context/authContext";
+import { AuthContext } from "../context/authContext";
 import "react-toastify/dist/ReactToastify.css";
 import CustomerLayout from "~/pages/customer/CustomerLayout";
 import UserInfo from "~/components/user/userInfo/UserInfo";
@@ -19,7 +19,6 @@ import AppointmentSchedule from "~/pages/customer/appointmentSchedule/Appointmen
 import MedicalHistory from "~/pages/customer/medicalHistory/MedicalHistory";
 import BlogsSaved from "~/pages/customer/blogsSaved/BlogsSaved";
 import Introduction from "~/pages/introduction/Introduction";
-import Chat from "~/pages/Chat/Chat";
 import DoctorLayout from "~/pages/doctor/DoctorProfile/DoctorLayout";
 
 export default function UserRouter() {
@@ -27,7 +26,7 @@ export default function UserRouter() {
   return (
     <>
       <Routes>
-        {/* layout navbar - content - footer khi guest, customer, doctor */}
+        {/* layout navbar - outlet - footer khi guest, customer, doctor */}
         {(!currentUser || ["doctor", "customer"].includes(currentUser?.role)) && (
           <>
             <Route element={<Layout />}>

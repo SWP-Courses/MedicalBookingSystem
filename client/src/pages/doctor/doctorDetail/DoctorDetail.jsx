@@ -2,19 +2,14 @@ import { useEffect, useState } from "react";
 import "./doctorDetail.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faBriefcase,
-  faGraduationCap,
-  faHospitalSymbol,
   faInfoCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import API_URL, { API_IMAGE_URL } from "~/api/Router";
 import background from "~/assets/images/doctor_background.jpg";
-import { shortenText } from "~/utils";
 
 export default function DoctorDetail() {
-  const [moreOpen, setMoreOpen] = useState(false);
   const { id: doctorId } = useParams();
   const [doctor, setDoctor] = useState();
 
@@ -42,7 +37,7 @@ export default function DoctorDetail() {
               <h1>{doctor?.fullname}</h1>
             </div>
             <div className="col-lg-7 col-sm-7 col-12">
-              <div className="profileItem">
+              <div className="profileItem ">
                 <div className="header">
                   <FontAwesomeIcon icon={faInfoCircle} />
                   <span>Giới thiệu</span>

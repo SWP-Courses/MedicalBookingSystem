@@ -1,48 +1,57 @@
 .doctorItem {
-    display: flex;
-    justify-content: space-between;
-    gap: 20px;
-    padding: 20px;
-    border: 1px solid transparent;
-    border-bottom: 1px solid rgb(214, 213, 213);
-    transition: all 0.25s;
-    max-height: 200px;
-    
-    &:hover {
-        border-radius: 10px;
-        border: 1px solid rgb(214, 213, 213);
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px;
+  transition: all 0.25s;
+  max-height: 200px;
+  box-shadow: 0 2.5rem 2rem -2rem hsl(200 50% 20% / 40%);
+  background: hsl(0 0% 100%);
+  padding: 3ch;
+  border-radius: 2ch;
+  border: 1px solid hsl(0 0% 83%);
+
+  &:hover {
+    border-radius: 10px;
+  }
+
+  > .doctorImg {
+    flex: 1;
+    > img {
+      border-radius: 10px;
+      height: 100%;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      box-shadow: rgba(50, 50, 105, 0.15) 0px 2px 5px 0px, rgba(0, 0, 0, 0.05) 0px 1px 1px 0px;
+    }
+  }
+
+  > .doctorTitle {
+    flex: 3;
+
+    > .doctorName {
+      display: inline-block;
+      text-decoration: none;
+      font-weight: 400;
+      font-size: 20px;
+      margin-bottom: 14px;
     }
 
-    >.doctorImg {
-        flex: 1;
-        >img {
-            // width: 100%;
-            height: 100%;
-            aspect-ratio: 3/4;
-            object-fit: cover;
-        }
+    > .titleItem {
+      display: flex;
+      align-items: center;
     }
+  }
 
-    >.doctorTitle {
-        flex: 3;
-
-        >.doctorName {
-            display: inline-block;
-            text-decoration: none;
-            font-weight: 400;
-            font-size: 20px;
-            margin-bottom: 14px;
-        }
-        
-        >.titleItem {
-                display: flex;
-                align-items: center;
-        }
-    }
-
-    >.doctorShortIntro {
-        flex: 1.5;
-        text-align: justify;
-        font-size: 14px;
-    }
+  .doctorShortIntro {
+    flex: 1.5;
+    text-align: justify;
+    line-height: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* number of lines to show */
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+  }
 }

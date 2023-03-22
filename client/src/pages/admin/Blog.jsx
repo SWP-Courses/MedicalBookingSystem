@@ -46,7 +46,7 @@ const Blog = () => {
 
   const getAllCategory = async () => {
     try {
-      const result = await axios.get(`${ROUTER}/api/categories`);
+      const result = await axios.get(`${ROUTER}/api/category`);
       if (result.status === 200) {
         setCategoryList(result.data.category);
       }
@@ -64,7 +64,7 @@ const Blog = () => {
 
   useEffect(() => {
     getAllBlog();
-    // getAllCategory();
+    getAllCategory();
   }, [])
 
   const updateList = (newItem, currentList) => {

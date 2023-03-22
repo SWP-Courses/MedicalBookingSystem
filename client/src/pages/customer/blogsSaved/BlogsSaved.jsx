@@ -1,14 +1,6 @@
 import axios from "axios";
 import { useContext, useEffect, useMemo, useState } from "react";
-import {
-  Button,
-  Card,
-  Col,
-  Container,
-  Form,
-  InputGroup,
-  Row,
-} from "react-bootstrap";
+import { Button, Form, InputGroup } from "react-bootstrap";
 import DataTable, { filter } from "react-data-table-component";
 import { Link } from "react-router-dom";
 import API_URL from "~/api/Router";
@@ -49,7 +41,7 @@ export default function BlogsSaved() {
         await axios.delete(
           `${API_URL}/blogs/unsave/${blogId}/${currentUser._id}`
         );
-        toast.success("Đã ")
+        toast.success("Đã bỏ lưu bài viết");
         setBlogSaved((prev) => prev.filter((blog) => blog._id !== blogId));
       } catch (err) {
         console.log(err);
@@ -63,7 +55,8 @@ export default function BlogsSaved() {
           const imgString = row.content.match(/<img([\w\W]+?)>/g);
           if (imgString) {
             return (
-              <div
+              <Link
+                to={`/blogs/${row._id}`}
                 className="blog-save-banner"
                 dangerouslySetInnerHTML={{ __html: imgString[0] }}
               />
@@ -76,9 +69,11 @@ export default function BlogsSaved() {
         selector: (row) => row.title,
       },
       {
+        id:'date',
         name: "Ngày đăng",
         selector: (row) => row.createdAt,
         sortable: true,
+      
       },
       {
         name: "Tác giả",
@@ -88,12 +83,12 @@ export default function BlogsSaved() {
         name: "Thao tác",
         selector: (row) => (
           <Button
-            variant="warning"
+            variant="outline-danger"
             size="sm"
             className="btn-block mt-auto"
             onClick={() => handleUnSaveBlogClick(row._id)}
           >
-            Bỏ lưu
+            &#x274c;
           </Button>
         ),
       },
@@ -123,7 +118,11 @@ export default function BlogsSaved() {
           if (filterText === "") {
             return true;
           } else if (
-            item.title.toLowerCase().includes(filterText.toLowerCase())
+            item.title
+              .toLowerCase()
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+              .includes(filterText.toLowerCase())
           ) {
             return true;
           }

@@ -5,9 +5,9 @@ import "./footer.scss";
 export default function Footer() {
   return (
     <div className="footer">
-      <div className="emailNews">
-        <div className="emailWrapper mx-sm-3">
-          <h2>Đăng kí nhận thông tin</h2>
+      {/* <div className="emailNews">
+        <div className="emailWrapper">
+          <h2></h2>
           <div className="emailInput">
             <label htmlFor="emailRegister">
               <FontAwesomeIcon icon={faEnvelope} className="inputIcon" />
@@ -16,8 +16,8 @@ export default function Footer() {
             <button>ĐĂNG KÝ</button>
           </div>
         </div>
-      </div>
-      <div className="devideLine"></div>
+      </div> */}
+      {/* <div className="devideLine d-none d-sm-block"></div> */}
       <div className="infoTitle">
         <div className="colItem">
           <h1>VỀ CHÚNG TÔI</h1>
@@ -32,11 +32,11 @@ export default function Footer() {
         <div className="colItem">
           <h1>DỊCH VỤ</h1>
           <ul>
-            <li>Khám bệnh</li>
-            <li>Siêu âm</li>
-            <li>Chụp X quang</li>
-            <li>Tái khám</li>
-            <li>Nội soi</li>
+            <li>Trám răng</li>
+            <li>Trồng răng</li>
+            <li>Nhổ răng</li>
+            <li>Niềng răng</li>
+            <li>Cạo vôi răng</li>
           </ul>
         </div>
       </div>

@@ -58,6 +58,7 @@ const updateUser = async (req, res, next) => {
       avatar: avatar,
       room_id: req.body?.room_id,
       degree: req.body?.degree,
+      profile: req.body?.profile,
     };
     const updatedUser = await UserModel.findByIdAndUpdate(
       req.params.id,
@@ -85,10 +86,7 @@ const getDoctorById = async (req, res, next) => {
       "_id fullname degree profile avatar"
     );
     if (!doctor) return res.status(404).send("Doctor not found!");
-    const specialist = await SpecialistModel.findById(
-      doctor._doc.specialist_id
-    );
-    res.status(200).json({ ...doctor._doc, specialist: specialist.title });
+    res.status(200).json(doctor);
   } catch (err) {
     res.status(500).json(err);
   }

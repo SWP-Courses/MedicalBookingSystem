@@ -1,5 +1,13 @@
 import { useCallback, useContext, useEffect, useState } from "react";
-import { Button, Modal, Tab, Table, Tabs } from "react-bootstrap";
+import {
+  Button,
+  Modal,
+  OverlayTrigger,
+  Popover,
+  Tab,
+  Table,
+  Tabs,
+} from "react-bootstrap";
 import "./appointmentSchedule.scss";
 import { customerAppointmentSchedule as cusApmSchedule } from "../../../fakeData";
 import { AuthContext } from "~/context/authContext";
@@ -7,6 +15,8 @@ import axios from "axios";
 import API_URL from "~/api/Router";
 import { addDays, format, parseISO } from "date-fns";
 import { formatSlot } from "~/utils";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCalendarXmark, faSearch } from "@fortawesome/free-solid-svg-icons";
 
 function MyVerticallyCenteredModal(props) {
   const { handleCancel, bservice, show, onHide } = props;
@@ -75,7 +85,7 @@ export default function AppointmentSchedule() {
   return (
     <div className="appointmentSchedule">
       <h1 className="title">Lịch sử khám bệnh</h1>
-      <Table striped hover responsive>
+      <Table hover responsive>
         <thead>
           <tr>
             <th>#</th>
@@ -84,6 +94,7 @@ export default function AppointmentSchedule() {
             <th>Dịch vụ</th>
             <th>Bác sĩ</th>
             <th className="text-center font-weight-bold">Huỷ lịch</th>
+            <th className="text-center font-weight-bold">Mã số</th>
           </tr>
         </thead>
         <tbody>
@@ -100,19 +111,44 @@ export default function AppointmentSchedule() {
                 <td className="align-middle">{bservice?.services[0].name}</td>
                 <td className="align-middle">{bservice?.doctor[0].fullname}</td>
                 <td className="text-center">
-                  <Button
-                    size="md"
-                    variant="danger"
+                  <FontAwesomeIcon
+                    icon={faCalendarXmark}
+                    style={{
+                      fontSize: "22px",
+                      cursor: "pointer",
+                      color: "#e04e4e",
+                    }}
                     onClick={() => setModalShow(true)}
-                  >
-                    Huỷ
-                  </Button>
+                  />
                   <MyVerticallyCenteredModal
                     show={modalShow}
                     onHide={() => setModalShow(false)}
                     bservice={bservice}
                     handleCancel={handleCancelBookedService}
                   />
+                </td>
+                <td className="text-center">
+                  <OverlayTrigger
+                    trigger="click"
+                    placement="bottom"
+                    overlay={
+                      <Popover id={`popover-positioned-bottom}`}>
+                        <Popover.Header as="h3">
+                          Mã số thanh toán
+                        </Popover.Header>
+                        <Popover.Body className="fs-5 fw-bold">{bservice?.payCode}</Popover.Body>
+                      </Popover>
+                    }
+                  >
+                    <FontAwesomeIcon
+                      icon={faSearch}
+                      style={{
+                        fontSize: "20px",
+                        cursor: "pointer",
+                        color: "#1092F3",
+                      }}
+                    />
+                  </OverlayTrigger>
                 </td>
               </tr>
             );

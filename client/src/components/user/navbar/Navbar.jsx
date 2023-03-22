@@ -16,7 +16,7 @@ import Tippy from "@tippyjs/react/headless";
 import "tippy.js/dist/tippy.css";
 import { useNavigate } from "react-router-dom";
 
-import { ReactComponent as BookIcon } from '~/assets/icons/book_service_icon.svg'
+import { ReactComponent as BookIcon } from "~/assets/icons/book_service_icon.svg";
 import "./navbar.scss";
 import Options from "../options/Options";
 import { AuthContext } from "~/context/authContext";
@@ -26,6 +26,7 @@ import { fontSize } from "@mui/system";
 
 
 export default function Navbar() {
+  const {pathname} = useLocation();
   const { currentUser, logout } = useContext(AuthContext);
   const [searchResult, setSearchResult] = useState([]);
   const [showDropdown, setShowDropDown] = useState(false);
@@ -82,25 +83,29 @@ export default function Navbar() {
             <div className="navItemContainer d-none d-md-block d-lg-block">
               {(currentUser?.role === "customer" || !currentUser) && (
                 <>
-                  <FontAwesomeIcon icon={faBriefcaseMedical} style={{ color: "var(--secondary-color)" }} />
                   <Link to="/booking" className="navbar-button">
+                    <FontAwesomeIcon
+                      icon={faBriefcaseMedical}
+                      style={{ color: "var(--secondary-color)" }}
+                    />
                     ĐĂNG KÝ KHÁM
                   </Link>
                 </>
               )}
+
               {currentUser?.role === "doctor" && (
                 <>
-                  <FontAwesomeIcon
-                    icon={faCalendarDays}
-                    style={{ color: "var(--secondary-color)" }}
-                  />
-
-                  <button
+                  <Link
+                    to="/doctor"
+                    state={{ redirect: "doctorSchedule" }}
                     className="navbar-button"
-                    onClick={() => navigate('/doctor')}
                   >
+                    <FontAwesomeIcon
+                      icon={faCalendarDays}
+                      style={{ color: "var(--secondary-color)" }}
+                    />
                     LỊCH KHÁM
-                  </button>
+                  </Link>
                 </>
               )}
             </div>
@@ -108,8 +113,14 @@ export default function Navbar() {
             <div className="navItemContainer d-none d-md-block">
               {!currentUser && (
                 <>
-                  <FontAwesomeIcon icon={faRightToBracket} style={{ fontSize: '18px', color: "var(--secondary-color)" }} />
-                  <Link to="/login" className="navbar-button">
+                  <FontAwesomeIcon
+                    icon={faRightToBracket}
+                    style={{
+                      fontSize: "18px",
+                      color: "var(--secondary-color)",
+                    }}
+                  />
+                  <Link to="/login" state={{guest: pathname}} className="navbar-button">
                     <span>ĐĂNG NHẬP</span>
                   </Link>
                 </>
@@ -122,11 +133,19 @@ export default function Navbar() {
                         className="user-border pr-md-2"
                       // onClick={() => setShowDropDown(true)}
                       >
-                        <img
-                          src={`${API_IMAGE_URL}/${currentUser?.avatar?.filename}`}
-                          alt=""
-                          className="avatar__Container"
-                        />
+                        {currentUser?.avatar?.bucketName ? (
+                          <img
+                            src={`${API_IMAGE_URL}/${currentUser?.avatar?.filename}`}
+                            alt=""
+                            className="avatar__Container"
+                          />
+                        ) : (
+                          <img
+                            src={currentUser?.avatar?.filename}
+                            alt=""
+                            className="avatar__Container"
+                          />
+                        )}
                       </div>
                     </Dropdown.Toggle>
 
@@ -135,14 +154,19 @@ export default function Navbar() {
                         <div className="user-profile">
                           <Link
                             className="drop-down__item"
-                            to={"/" + currentUser.role}
+                            to={`/${currentUser.role}${
+                              currentUser.role == "customer" ? "/profile" : ""
+                            }`}
                           >
                             Thông tin cá nhân
                           </Link>
                         </div>
                         <Dropdown.Divider style={{ margin: '0px' }} />
                         <div className="logout">
-                          <span className="drop-down__item" onClick={handleLogout}>
+                          <span
+                            className="drop-down__item"
+                            onClick={handleLogout}
+                          >
                             Đăng xuất
                           </span>
                         </div>
@@ -150,8 +174,7 @@ export default function Navbar() {
                     </Dropdown.Menu>
                   </Dropdown>
                 </>
-              )
-              }
+              )}
             </div>
           </div>
           <div className="col-3 col-md-3 d-lg-none text-md-center" data-bs-toggle="offcanvas"  aria-controls="offcanvasExample">

@@ -1,5 +1,6 @@
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import Breadcrumb from "react-bootstrap/Breadcrumb";
+import { v4 as uuidv4 } from "uuid";
 
 import "./BlogDetail.scss";
 import { AuthContext } from "~/context/authContext";
@@ -63,7 +64,7 @@ function BlogDetail() {
 
   // Khoa
   useEffect(() => {
-    // nếu có đăng nhập thì check blog đang xem có đã được lưu chưa
+    // nếu có đăng nhập thì check blog này đang xem có đã được lưu chưa
     if (currentUser) {
       const fetchSavedBlogs = async () => {
         try {
@@ -195,7 +196,7 @@ function BlogDetail() {
                 <h4 className="single-blog-title text-muted py-2">Có thể bạn quan tâm</h4>
                 {sameContent.map((item) => {
                   return (
-                    <div className="sub-blog">
+                    <div className="sub-blog" key={uuidv4()}>
                       <Link to={`/blogs/${blog._id}`}>
                         <img className="blog-sub-image " src={item.image} />
                       </Link>

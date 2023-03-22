@@ -110,7 +110,6 @@
 
     > .accountAvatar {
       flex: 1;
-      border-left: 1px solid #ebebeb;
 
       > div img {
         width: 200px;
@@ -152,9 +151,18 @@
     color: #fff;
 
     &:hover {
-      background-color: var(--secondary-color) ;
+      background-color: var(--secondary-color);
       transition: right linear 0.4s;
       opacity: 1;
+    }
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .accountAvatar {
+    .avata > img {
+      width: 150px !important;
+      height: 150px !important;
     }
   }
 }

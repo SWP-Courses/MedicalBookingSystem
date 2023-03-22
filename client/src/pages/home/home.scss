@@ -6,6 +6,7 @@
 
 .slider {
     width: 100%;
+    margin-bottom: 50px;
 
     >img {
         width: 100%;
@@ -16,30 +17,39 @@
 
 .introduction {
     display: flex;
-    gap: 20px;
+    gap: 50px;
     padding: 20px;
 
     .introLeft {
         flex: 3;
         border: 1px solid rgb(197, 197, 231);
         border-radius: 5px;
-        padding: 10px;
+        padding: 10px 20px;
 
-        >h1 {
+        >h3 {
             font-size: 26px;
             font-weight: bold;
+            color: #1196F5;
+        }
+
+        >p {
+            font-size: 18px;
+            line-height: 20px;
+            text-align: justify;
         }
     }
 
     .introRight {
         flex: 2;
-        background-color: rgb(232, 229, 229);
+        background-color: rgb(241, 241, 241);
         padding: 20px;
+        text-align: center;
 
-        >h1 {
-            font-size: 18px;
+        >h4 {
+            font-size: 24px;
             font-weight: 500;
             margin-bottom: 20px;
+            color: #1196F5;
         }
 
         .specialistList {
@@ -51,10 +61,13 @@
 
             .specialistItem {
                 padding: 10px 0px;
-                width: 100%;
-                background-color: #0C8CE9;
+                width: 200px;
+                border-radius: 5px;
+                border: 1px solid #cde7fa;
+                background-color: #fff;
                 text-align: center;
-                cursor: pointer;
+                margin: 0 auto;
+                user-select: none;
             }
         }
     }

@@ -13,7 +13,7 @@ import { Wrapper as PopperWrapper } from "~/components/user/popper/index";
 import AccountItem from "~/components/user/AccountItem/AccountItem";
 import API_URL from "~/api/Router";
 import useDebounce from "~/hooks/useDebounce";
-import "./Search.scss";
+// import "./Search.scss";
 
 function Search(props) {
   const [showResult, setShowResult] = useState(false);

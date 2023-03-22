@@ -89,7 +89,7 @@ export default function UserInfo(props) {
     <div className="userInfoContainer">
       <h1 className="title">Thông tin cá nhân</h1>
       <hr />
-      <div className="userInfo">
+      <div className="userInfo d-flex flex-column flex-lg-row">
         <form className="infoList" onSubmit={handleUpdateClick}>
           <input
             required
@@ -171,7 +171,7 @@ export default function UserInfo(props) {
             Cập Nhật
           </button>
         </form>
-        <div className="accountAvatar">
+        <div className="accountAvatar ">
           <div className="avata">
             {!currentUser?.avatar?.bucketName ? (
               <img

@@ -120,9 +120,8 @@ const register = async (req, res, next) => {
         phone: req.body.phone,
         role_code: req.body.role_code,
         avatar: avatar,
-        room_id: req.body.room_id,
       };
-
+      
       // If create a doctor account
       // Send role_code="R2"
       if (req.body.role_code === "R2")
@@ -130,7 +129,8 @@ const register = async (req, res, next) => {
           role_code: "R2",
           ...document,
           degree: req.body.degree,
-          room: req.body.room,
+          // room: req.body.room,
+          room_id: req.body.room_id,
           profile: req.body.profile,
         };
 
@@ -189,7 +189,7 @@ const login = async (req, res, next) => {
 
     const { password, role_code, ...filteredUser } = user._doc;
     res
-      .cookie("access_token", token, {
+      .cookie("access_token", "sfasdfdf", {
         httpOnly: true,
       })
       .status(200)

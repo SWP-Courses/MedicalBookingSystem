@@ -1,11 +1,18 @@
 .bookingContent {
-  padding: 14px 100px;
-
+  padding: 14px 20px;
   .hospitalPart {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 20px;
     flex: 1;
+
+    .calendar-booking{
+      border: 2px solid #70a3d6;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
     .dropdownContain {
       width: 100%;
       .dropdownText {
@@ -26,6 +33,22 @@
 
       .dropdownOptions {
         width: 100%;
+
+        .doctor-option-item {
+          padding: 5px 0px;
+          // display: flex;
+          // justify-content: center;
+          // align-items: center;
+
+          .doctor-option-avatar {
+            max-width: 40px;
+            max-height: 40px;
+            border-radius: 100%;
+            margin: 0 auto;
+            display: block;
+            border: 1px solid rgb(201, 185, 95);
+          }
+        }
       }
     }
 
@@ -39,20 +62,35 @@
       flex-direction: column;
 
       .groupTime {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 14px;
+        margin-top: 10px;
+        // display: flex;
+        // flex-wrap: wrap;
+        // gap: 14px;
+        // justify-content: center;
+        // padding:10px;
         > .timeItem {
-          padding: 5px 15px;
-          background-color: rgb(243, 243, 243);
-          border-radius: 5px;
-          border: 2px solid transparent;
-          cursor: pointer;
+          // height: 40px;
+          margin-bottom: 10px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
 
-          &.active {
-            border: 2px solid #e5a724;
-            background-color: var(--white-color);
-            color: #e5a724;
+          .time-text-item {
+            padding: 5px 15px;
+            width: 90%;
+            border-radius: 5px;
+            background-color: lightgrey;
+            border: 2px solid transparent;
+            cursor: pointer;
+            text-align: center;
+            transition: all .2s linear;
+            
+            &.active {
+              border: 2px solid #e5a724;
+              background-color: rgb(242, 242, 242);
+              background-image: none;
+              color: #e5a724 !important;
+            }
           }
         }
       }
@@ -82,8 +120,20 @@
   }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (min-width: 993px) {
+  .dropdownContain {
+    width: 60% !important;
+  }
+}
+
+@media screen and (min-width: 992px) {
   .bookingContent {
-    padding: 14px 50px;
+    padding: 14px 100px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .bookingContent {
+    padding: 14px 30px;
   }
 }

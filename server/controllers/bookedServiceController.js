@@ -28,7 +28,7 @@ const mergeService = async (bookedService) => {
 //@access private
 const getBookedByDoctor = asyncHandler(async (req, res, next) => {
   const viewDate = req.query.date;
-  console.log(viewDate);
+  // console.log(viewDate);
   try {
     const orders = await BookedService.aggregate([
       {
@@ -54,7 +54,7 @@ const getBookedByDoctor = asyncHandler(async (req, res, next) => {
         },
       },
     ]).project({ user_id: 0, doctor_id: 0, date: 0 });
-    console.log(orders);
+    // console.log(orders);
     if (!orders.length) return res.status(404).json("Không có lịch đặt");
 
     const bookedServicesFull = await Promise.all(
@@ -101,15 +101,29 @@ const getHistoryByUserId = asyncHandler(async (req, res, next) => {
         as: "customer",
       },
     },
-  ]).project({ user_id: 0, doctor_id: 0});
+    {
+      $lookup: {
+        from: "users",
+        localField: "doctor_id",
+        foreignField: "_id",
+        pipeline: [{ $project: { _id: 1, fullname: 1 } }],
+        as: "doctor",
+      },
+    },
+    {
+      $sort: {
+        date: -1,
+      },
+    },
+  ]).project({ user_id: 0, doctor_id: 0 });
   // console.log(orders);
   const bookedServicesFull = await Promise.all(
     orders.map(async (order) => {
       const servicesFull = await mergeService(order);
-      console.log({
-        ...order,
-        services: servicesFull,
-      });
+      // console.log({
+      //   ...order,
+      //   services: servicesFull,
+      // });
       return {
         ...order,
         services: servicesFull,
@@ -130,6 +144,7 @@ const getIncomingBookedByUser = asyncHandler(async (req, res, next) => {
               $gte: startOfDay(new Date()),
             },
           },
+          { isPaid: false },
         ],
       },
     },
@@ -242,7 +257,8 @@ const bookService = asyncHandler(async (req, res, next) => {
 const addExtraService = asyncHandler(async (req, res, next) => {
   const { service_id, quantity } = req.body;
 
-  if(!service_id || !quantity) return res.status(400).json("Thêm phải có dịch vụ và số lượng!");
+  if (!service_id || !quantity)
+    return res.status(400).json("Thêm phải có dịch vụ và số lượng!");
 
   const bookedService = await BookedService.findByIdAndUpdate(
     req.params.id,
@@ -274,7 +290,7 @@ const updateAddedService = asyncHandler(async (req, res, next) => {
     { _id: req.params.id, "services.service_id": req.params.serviceId },
     { $set: { "services.$.quantity": req.body.quantity } }
   );
-  
+
   res.status(200).json(result);
 });
 
@@ -298,6 +314,128 @@ const cancelBookedService = asyncHandler(async (req, res, next) => {
   res.status(200).json(result);
 });
 
+// An
+//@desc Get all bookedservice
+//@route GET /api/bookedservices
+//@access public
+const getAllBookedService = asyncHandler(async (req, res, next) => {
+  const bookedService = await BookedService.find();
+
+  const result = await Promise.all(
+    bookedService.map(async (obj) => {
+      const user = await User.findById(obj.user_id);
+      const doctor = await User.findById(obj.doctor_id);
+
+      const user_name = user ? user.fullname : "";
+      const doctor_name = doctor ? doctor.fullname : "";
+
+      return {
+        _id: obj._id,
+        user_name,
+        doctor_name,
+        date: obj.date,
+        slot_time: obj.slot_time,
+        services: obj.services,
+        isPaid: obj.isPaid,
+        total_price: obj.total_price,
+      };
+    })
+  );
+
+  res.status(200).json({
+    result,
+  });
+});
+
+//@desc Get Service Bill by id
+//@route PUT /api/bookedservices/:id
+//@access public
+const getBookedServiceById = asyncHandler(async (req, res, next) => {
+  const bookedService = await BookedService.findById(req.params.id);
+  if (!bookedService) {
+    res.status(404);
+    throw new Error("bookedService Not Found!");
+  }
+
+  const user = await User.findById(bookedService.user_id);
+  const doctor = await User.findById(bookedService.doctor_id);
+
+  const servicesList = await Promise.all(
+    bookedService.services.map(async (obj) => {
+      const service = await Service.findById(obj.service_id);
+
+      const service_name = service ? service.name : "";
+      const price = service ? service.price : 1;
+
+      return {
+        _id: obj._id,
+        service_name,
+        price,
+        quantity: obj.quantity,
+      };
+    })
+  );
+
+  const result = {
+    _id: bookedService._id,
+    user_name: user.fullname,
+    doctor_name: doctor.fullname,
+    date: bookedService.date,
+    slot_time: bookedService.slot_time,
+    services: servicesList,
+    total_price: bookedService.total_price,
+    isPaid: bookedService.isPaid,
+  };
+
+  res.status(200).json({ result });
+});
+
+//@desc Update Service Bill by id
+//@route PATCH /api/bookedservices/payment/:id
+//@access public
+const paymentBookedServices = asyncHandler(async (req, res, next) => {
+  try {
+    const { payCode } = req.body;
+
+    const paidBservice = await BookedService.findOne({
+      _id: mongoose.Types.ObjectId(req.params.id),
+      date: {
+        $gte: startOfDay(new Date()),
+        $lte: endOfDay(new Date()),
+      },
+    });
+    if (!paidBservice)
+      return res
+        .status(405)
+        .send("Không được thanh toán cho lịch khác hôm nay!");
+
+    if (new Date().getHours() < paidBservice.slot_time)
+      return res.status(405).send("Không được thanh toán cho slot chưa khám!");
+
+    if (payCode != paidBservice.payCode)
+      return res.status(400).send("Mã thanh toán không hợp lệ!");
+
+    const total_price = req.body.total_price;
+    const isPaid = req.body.isPaid;
+    // console.log(req.body)
+
+    const completeBooked = await BookedService.findByIdAndUpdate(
+      req.params.id,
+      {
+        total_price,
+        isPaid,
+      },
+      { new: true }
+    );
+
+    // const completeBooked = await booked.save();
+
+    res.status(200).json(completeBooked);
+  } catch (error) {
+    console.log(error);
+  }
+});
+
 module.exports = {
   bookService,
   addExtraService,
@@ -307,4 +445,7 @@ module.exports = {
   completeBooked,
   cancelBookedService,
   getHistoryByUserId,
+  getAllBookedService,
+  getBookedServiceById,
+  paymentBookedServices,
 };

@@ -18,9 +18,9 @@ export default function CustomerLayout() {
   const { currentUser } = useContext(AuthContext);
 
   return (
-    <div className="customer">
+    <div className="customer container">
       <div className="userSidebar">
-        <div className="userInfo">
+        <div className="userInfo d-none d-lg-block">
           {currentUser?.avatar?.bucketName ? (
             <img
               src={`${API_IMAGE_URL}/${currentUser?.avatar?.filename}`}

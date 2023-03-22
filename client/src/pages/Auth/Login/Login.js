@@ -1,5 +1,5 @@
 import { useContext, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "~/context/authContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
@@ -16,7 +16,7 @@ import Tippy from "@tippyjs/react";
 
 function Login() {
   const { login } = useContext(AuthContext);
-  const navigate = useNavigate();
+  const {state} = useLocation();
   const errorAlert = useRef();
   const errorPassword = useRef();
   const inputRef = useRef();
@@ -25,7 +25,7 @@ function Login() {
   const [email, setEmail] = useState("");
 
   useEffect(() => {
-    console.log(cookies?.error);
+    // console.log(cookies?.error);
     cookies?.error && toast.error(cookies?.error);
     removeCookie("error");
   }, [cookies?.error, removeCookie]);
@@ -85,9 +85,9 @@ function Login() {
               <header className="Login__header">
                 <h2>Đăng Nhập</h2>
                 <Tippy content="Trang chủ">
-                  {/* <Link to="/"  className="forgot-password my-2 d-block"> */}
-                    <FontAwesomeIcon icon={faHouse} className="Login__home-icon" onClick={() => navigate("/")} />
-                  {/* </Link> */}
+                  <Link to={state?.guest || "/"} >
+                    <FontAwesomeIcon icon={faHouse} className="Login__home-icon"/>
+                  </Link>
                 </Tippy>
                 
               </header>

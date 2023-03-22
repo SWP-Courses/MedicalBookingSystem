@@ -1,8 +1,7 @@
 import axios from "axios";
 import { format } from "date-fns";
 import { useContext, useEffect, useState } from "react";
-import { Button, Modal } from "react-bootstrap";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import API_URL from "~/api/Router";
 import BookingConfirm from "~/components/user/bookingConfirm/BookingConfirm";
 import BookingFill from "~/components/user/bookingFill/BookingFill";
@@ -15,6 +14,7 @@ export default function Booking() {
     number: 1,
     title: "THÔNG TIN KHÁM BỆNH",
   });
+  const {pathname} = useLocation();
   const { currentUser, login } = useContext(AuthContext);
   const [booking, setBooking] = useState({ date: new Date() });
   const [payModal, setPayModal] = useState(false);
@@ -83,6 +83,16 @@ export default function Booking() {
         const res = await axios.get(
           `${API_URL}/booking/doctors?date=${booking.date}`
         );
+
+      
+        const chosenDoctor =booking?.doctor?._id && res.data.find(
+          (doctor) => doctor._id === booking?.doctor?._id
+        );
+        if (!chosenDoctor) {
+          setBooking((prev) => ({ ...prev, doctor: {} }));
+          setFreeSlots([]);
+        }
+
         setFreeDoctors(res.data);
       } catch (err) {
         console.log(err);
@@ -90,7 +100,8 @@ export default function Booking() {
     };
     // thêm debounce sau
     booking.date && fetchFreeDoctors();
-  }, [booking.date]);
+  }, [booking.date, booking?.doctor?._id]);
+
   useEffect(() => {
     const fetchFreeSlots = async () => {
       try {
@@ -103,7 +114,7 @@ export default function Booking() {
       }
     };
     // thêm debounce sau
-    booking.doctor && fetchFreeSlots();
+    booking?.doctor?._id && fetchFreeSlots();
   }, [booking.date, booking.doctor]);
 
   const hanleBookService = async () => {
@@ -118,7 +129,8 @@ export default function Booking() {
     // console.log(passData);
     try {
       await axios.post(`${API_URL}/bookedservices`, passData);
-      navigate(0);
+      toast.success("Đặt lịch thành công");
+      navigate("/customer/upcoming-booking");
     } catch (err) {
       console.log(err);
     }
@@ -130,11 +142,16 @@ export default function Booking() {
         <h1 className="title">Đăng ký khám</h1>
       </div>
       <div className="container">
-        <div className="bookingBlock col-12 col-sm-10 col-xxl-8">
+        <div className="bookingBlock col-12 col-sm-8 col-xxl-7">
           <div className="bookingTitle">
             <h2 className="bookingStep">{part.title}</h2>
-            {!currentUser && <Link to="/login" className="btn btn-primary">Đăng nhập</Link>}
+            {!currentUser && (
+              <Link to="/login" state={{guest: pathname}} className="btn btn-primary">
+                Đăng nhập
+              </Link>
+            )}
           </div>
+          {/* Phần 1: chọn thông tin */}
           {part.number === 1 && (
             <BookingFill
               booking={booking}
@@ -144,6 +161,8 @@ export default function Booking() {
               freeSlots={freeSlots}
             />
           )}
+
+          {/* Phần 2: Xác nhận thông tin */}
           {part.number === 2 && <BookingConfirm booking={booking} />}
           <div className="bookingDirection">
             {part.number === 1 && (
@@ -158,21 +177,6 @@ export default function Booking() {
           </div>
         </div>
       </div>
-
-      <Modal show={payModal} onHide={() => setPayModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Thanh toán</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Tổng tiền: 312</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setPayModal(false)}>
-            Đóng
-          </Button>
-          <Button variant="primary" onClick={() => setPayModal(false)}>
-            Thanh toán
-          </Button>
-        </Modal.Footer>
-      </Modal>
     </div>
   );
 }

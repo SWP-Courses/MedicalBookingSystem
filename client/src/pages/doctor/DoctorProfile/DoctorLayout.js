@@ -1,5 +1,5 @@
 import "./Doctor.scss";
-import { useState } from "react";
+import {  useState } from "react";
 import MedicalHistory from "./History/MedicalHistory";
 import DoctorSchedule from "./DoctorSchedule/DoctorSchedule";
 
@@ -8,6 +8,7 @@ import { AuthContext } from "~/context/authContext";
 import UserInfo from "~/components/user/userInfo/UserInfo";
 import { API_IMAGE_URL } from "~/api/Router";
 import Prescription from "./Prescription/Prescription";
+import { useLocation } from "react-router-dom";
 
 const routers = [
   { path: "/doctor/profile", title: "Thông tin cá nhân" },
@@ -18,10 +19,14 @@ const routers = [
 
 export default function DoctorLayout() {
   const { currentUser } = useContext(AuthContext);
-  const [userContent, setUserContent] = useState("info");
+  const {
+    state
+  } = useLocation();
+  const [userContent, setUserContent] = useState(state?.redirect  || "info");
   const [image, setImage] = useState(currentUser?.avatar);
   const [patient, setPatient] = useState([]);
   const [listUsers, setListUsers] = useState([]);
+  
 
   const hanldeUploadImage = (e) => {
     if (e && e.target.files && e.target.files[0]) {
@@ -88,7 +93,13 @@ export default function DoctorLayout() {
         {userContent === "info" && (
           <UserInfo hanldeUploadImage={hanldeUploadImage} image={image} />
         )}
-        {userContent === "prescription" && <Prescription patient={patient} listUsers={listUsers} currentUser={currentUser}/>}
+        {userContent === "prescription" && (
+          <Prescription
+            patient={patient}
+            listUsers={listUsers}
+            currentUser={currentUser}
+          />
+        )}
         {userContent === "doctorSchedule" && (
           <DoctorSchedule
             handleOptionClick={handleOptionClick}

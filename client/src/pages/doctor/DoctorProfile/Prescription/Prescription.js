@@ -151,7 +151,7 @@ function Prescription(props) {
       bookedserviceid: user._id,
     };
     const [error, res] = await hanlderRequest(
-      axios.post(API_URL + `/drugbill/${currentUser._id}/${user._id}`, {
+      axios.post(API_URL + `/prescriptions/${currentUser._id}/${user._id}`, {
         ...prescription,
       })
     );

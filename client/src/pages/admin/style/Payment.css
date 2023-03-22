@@ -1,0 +1,66 @@
+.edit-button {
+  cursor: pointer;
+  font-size: 20px;
+}
+
+.edit-button i {
+  color: orange;
+}
+
+.anticon {
+  vertical-align: 0.1em;
+}
+
+.ri-close-circle-fill {
+  color: red;
+}
+
+.ri-checkbox-circle-fill {
+  color: green;
+}
+
+.ant-table-thead > tr > th {
+  background-color: #fff !important;
+}
+
+.input-date-payment {
+  display: flex;
+  height: 31.8px;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #d0d0d0;
+  width: 100px;
+  border-radius: 4px;
+  background-color: #fff;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.react-datepicker__input-container {
+  width: 0%;
+}
+
+.input-date-payment label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0;
+  cursor: pointer;
+}
+
+.ant-divider {
+    border: 1px solid gray;
+}
+
+.total-price {
+    font-weight: bold;
+    padding-left: 0px;
+    padding-right: 0px;
+    font-size: 20px;
+}
+
+.btn-payment {
+    font-size: 20px;
+    height: 50px;
+    position: absolute;
+    right: 50px;
+}

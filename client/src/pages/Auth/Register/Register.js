@@ -7,7 +7,6 @@ import axios from "axios";
 import API_URL from "~/api/Router";
 import { checkStringContainInPhoneNumber, validateUsername } from "~/utils";
 import { validateEmail } from "~/utils";
-import logo from "~/assets/images/logo.jpg";
 
 function Register() {
   const [registerInfo, setRegisterInfo] = useState({
