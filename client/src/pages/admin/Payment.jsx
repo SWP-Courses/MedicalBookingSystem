@@ -21,7 +21,6 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import toastOption from "~/config/toast";
 import { toast } from "react-toastify";
-import { ClassNames } from "@emotion/react";
 import { Form as BsForm } from "react-bootstrap";
 
 const Payment = () => {
@@ -31,7 +30,6 @@ const Payment = () => {
   const [rowSelected, setRowSelected] = useState("");
   const [isOpenDrawer, setIsOpenDrawer] = useState(false);
 
-  const [payCode, setPayCode] = useState();
 
   const [stateBookedServicesDetail, setStateBookedServicesDetail] = useState({
     id: "",
@@ -96,7 +94,6 @@ const Payment = () => {
     }
   }, [rowSelected]);
 
-  // const { data: dataUpdated, isLoading: isLoadingUpdated, isSuccess: isSuccessUpdated, isError: isErrorUpdated } = mutationUpdate
   const { data, isLoading, isSuccess, isError } = mutation;
   const queryProduct = useQuery({
     queryKey: ["bookedServices"],
@@ -132,7 +129,8 @@ const Payment = () => {
         } else {
           return 0;
         }
-      });
+      })
+      ?.reverse();
 
   const renderAction = () => {
     return (
@@ -143,6 +141,11 @@ const Payment = () => {
   };
 
   const columns = [
+    {
+      key: "2",
+      title: "Bill Number",
+      dataIndex: "billNumber"
+    },
     {
       key: "1",
       title: "Patient",
@@ -155,9 +158,12 @@ const Payment = () => {
     },
     {
       key: "4",
-      title: "Slot",
+      title: "Time",
       dataIndex: "slot_time",
       align: "center",
+      render : (slot_time) => {
+        return (<p>{slot_time}:00</p>)
+      },
       sorter: (a, b) => b.slot_time - a.slot_time,
       sortOrder: sortedInfo.columnKey === "slot_time" && sortedInfo.order,
     },
@@ -226,13 +232,7 @@ const Payment = () => {
     const data = {
       total_price: calculatorTotalPrice(),
       isPaid: true,
-      payCode
     };
-
-    if(!payCode) {
-      toast.info("Vui lòng điền mã thanh toán", toastOption);
-      return;
-    }
 
     try {
       const res = await axios.patch(
@@ -430,26 +430,19 @@ const Payment = () => {
               <Divider></Divider>
 
               <Col span={12}>
-                <BsForm.Label htmlFor="payCode">* Mã số thanh toán</BsForm.Label>
-                <BsForm.Control
-                  type="number"
-                  id="payCode"
-                  value={payCode}
-                  onChange={e => setPayCode(e.target.value)}
-                />
               </Col>
 
               <Col span={6} offset={2} className="total-price">
                 Total price:{" "}
                 {stateBookedServicesDetail.total_price
                   ? stateBookedServicesDetail.total_price.toLocaleString(
-                      "vi-VN",
-                      { style: "currency", currency: "VND" }
-                    )
+                    "vi-VN",
+                    { style: "currency", currency: "VND" }
+                  )
                   : calculatorTotalPrice().toLocaleString("vi-VN", {
-                      style: "currency",
-                      currency: "VND",
-                    })}
+                    style: "currency",
+                    currency: "VND",
+                  })}
               </Col>
             </Row>
 

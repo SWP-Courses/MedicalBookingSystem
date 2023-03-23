@@ -87,8 +87,6 @@ const Medicine = () => {
 
   }
 
-
-
   return (
     <div className='bg-light container w-100 h-100 d-flex flex-column gap-3'>
       <div className='row'>

@@ -9,6 +9,7 @@ import "./blogsSaved.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
+import { format } from "date-fns";
 
 export default function BlogsSaved() {
   const [blogsSaved, setBlogSaved] = useState();
@@ -71,7 +72,7 @@ export default function BlogsSaved() {
       {
         id:'date',
         name: "Ngày đăng",
-        selector: (row) => row.createdAt,
+        selector: (row) => format(new Date(row.created_at), "dd/MM/yyyy"),
         sortable: true,
       
       },
