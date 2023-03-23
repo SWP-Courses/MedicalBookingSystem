@@ -30,7 +30,6 @@ const Payment = () => {
   const [rowSelected, setRowSelected] = useState("");
   const [isOpenDrawer, setIsOpenDrawer] = useState(false);
 
-  const [payCode, setPayCode] = useState();
 
   const [stateBookedServicesDetail, setStateBookedServicesDetail] = useState({
     id: "",
@@ -233,13 +232,7 @@ const Payment = () => {
     const data = {
       total_price: calculatorTotalPrice(),
       isPaid: true,
-      payCode
     };
-
-    if (!payCode) {
-      toast.info("Vui lòng điền mã thanh toán", toastOption);
-      return;
-    }
 
     try {
       const res = await axios.patch(

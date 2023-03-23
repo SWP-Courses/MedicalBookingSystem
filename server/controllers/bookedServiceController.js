@@ -395,7 +395,6 @@ const getBookedServiceById = asyncHandler(async (req, res, next) => {
 //@access public
 const paymentBookedServices = asyncHandler(async (req, res, next) => {
   try {
-    const { payCode } = req.body;
 
     const paidBservice = await BookedService.findOne({
       _id: mongoose.Types.ObjectId(req.params.id),
@@ -404,6 +403,7 @@ const paymentBookedServices = asyncHandler(async (req, res, next) => {
         $lte: endOfDay(new Date()),
       },
     });
+    
     if (!paidBservice)
       return res
         .status(405)
