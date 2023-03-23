@@ -183,7 +183,7 @@ function BlogDetail() {
                 />
                 <span className="doctor-name">{blog.author}</span>
               </div>
-              <div className="date-section py-3">
+              <div className="date-section">
                 <FontAwesomeIcon
                   icon={faCalendarCheck}
                   style={{ color: "var(--secondary-color)" }}

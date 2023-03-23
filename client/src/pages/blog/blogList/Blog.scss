@@ -65,7 +65,7 @@
             .blog-item {
 
                 img {
-                    min-width: 260px;
+                    width: 270px;
                     height: 173px;
                     object-fit: cover;
                     cursor: pointer;
@@ -109,14 +109,14 @@
                         align-items: center;
                         position: absolute;
                         bottom: 0;
-                        padding-bottom: 20px;
+                        padding-bottom: 5px;
                     }
 
                     .separate-line {
-                        width: 2px;
+                        width: 1px;
                         height: 16px;
-                        background: #494949;
-                        margin: 0px 13px;
+                        background: #b5b5b5;
+                        margin: -3px 13px;
                         display: inline-block;
                     }
                 }

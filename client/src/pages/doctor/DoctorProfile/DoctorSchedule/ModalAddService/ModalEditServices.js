@@ -280,12 +280,12 @@ function ModalEditServices(props) {
       </Modal.Body>
     
       <Modal.Footer>
-        <button className="cancle-btn" onClick={hanldeCloseModal}>
+        {/* <button className="cancle-btn" onClick={hanldeCloseModal}>
           Hủy
         </button>
         <Button onClick={() => handleUpdateServices(bookedUser)}>
           Cập Nhật
-        </Button>
+        </Button> */}
       </Modal.Footer>
     </Modal>
   );

@@ -54,7 +54,6 @@
           box-shadow: 0 6px 16px 0 rgb(0 0 0 / 8%);
           border: 1px solid #ddd;
           border-radius: 12px;
-          min-height: 219px;
 
           .date-section {
             display: flex;
@@ -70,7 +69,6 @@
           }
 
           > .author {
-            padding: 20px 15px 20px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;

@@ -84,6 +84,17 @@ function DoctorSchedule(props) {
           />
         )}
       </div>
+      {/* <div className="">
+        <button className="cancle-btn" onClick={hanldeCloseModal}>
+          Hủy
+        </button>
+        <Button
+          className="ml-3"
+          onClick={() => handleUpdateServices(bookedUser)}
+        >
+          Cập Nhật
+        </Button>
+      </div> */}
     </>
   );
 }

@@ -9,6 +9,7 @@ import { useState } from "react";
 import "./CurrentPatient.scss";
 import EditServices from "../ModalAddService/EditServices";
 import { formatSlot } from "~/utils";
+import Button from "react-bootstrap/Button";
 
 function CurrentPatient(props) {
   const { user, setPatient, handleOptionClick, fetchSchedule } = props;
@@ -47,6 +48,12 @@ function CurrentPatient(props) {
                   </p>
                 }
               </div>
+              <Button
+                className="mt-3"
+                onClick={() => {}}
+              >
+                Kê đơn
+              </Button>
             </div>
             <div className="devideLine"></div>
           </>
@@ -56,7 +63,11 @@ function CurrentPatient(props) {
           </span>
         )}
         <div className="patient-info__services">
-          <EditServices bookedUser={user} fetchSchedule={fetchSchedule} />
+          <EditServices
+            handleOptionClick={handleOptionClick}
+            bookedUser={user}
+            fetchSchedule={fetchSchedule}
+          />
         </div>
       </div>
     </div>
