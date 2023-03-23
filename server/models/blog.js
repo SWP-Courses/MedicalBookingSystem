@@ -12,10 +12,6 @@ const blogSchema = new mongoose.Schema({
     maxLength: 255,
     required: [true, "Please add the title"],
   },
-  createdAt: {
-    type: String,
-    // required: [true, "Please add the created at"],
-  },
   content: {
     type: String,
     required: [true, "Please add the content"],

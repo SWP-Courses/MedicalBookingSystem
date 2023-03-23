@@ -430,13 +430,6 @@ const Payment = () => {
               <Divider></Divider>
 
               <Col span={12}>
-                <BsForm.Label htmlFor="payCode">* Mã số thanh toán</BsForm.Label>
-                <BsForm.Control
-                  type="number"
-                  id="payCode"
-                  value={payCode}
-                  onChange={e => setPayCode(e.target.value)}
-                />
               </Col>
 
               <Col span={6} offset={2} className="total-price">

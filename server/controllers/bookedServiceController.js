@@ -183,7 +183,7 @@ const bookService = asyncHandler(async (req, res, next) => {
     if (!patient) return res.status(404).json("Người dùng không tồn tại");
 
     const doctor = await User.findById(doctor_id);
-    if (!doctor) return res.status(404).json("Bác sĩ không tồn tạii45f");
+    if (!doctor) return res.status(404).json("Bác sĩ không tồn tại");
 
     // check đủ fields
     if (!user_id || !doctor_id || !date || !slot_time || !service_id) {
@@ -412,18 +412,15 @@ const paymentBookedServices = asyncHandler(async (req, res, next) => {
     if (new Date().getHours() < paidBservice.slot_time)
       return res.status(405).send("Không được thanh toán cho slot chưa khám!");
 
-    if (payCode != paidBservice.payCode)
-      return res.status(400).send("Mã thanh toán không hợp lệ!");
-
     const total_price = req.body.total_price;
-    const isPaid = req.body.isPaid;
+    // const isPaid = req.body.isPaid;
     // console.log(req.body)
 
     const completeBooked = await BookedService.findByIdAndUpdate(
       req.params.id,
       {
         total_price,
-        isPaid,
+        isPaid:true,
       },
       { new: true }
     );
