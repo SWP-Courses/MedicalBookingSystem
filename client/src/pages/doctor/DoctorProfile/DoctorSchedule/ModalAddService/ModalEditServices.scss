@@ -1,5 +1,4 @@
-
-    .delete-btn,
+.delete-btn,
     .add-btn {
         cursor: pointer;
         font-size: 26px;
@@ -21,7 +20,7 @@
             position: absolute;
             top: 54%;
             cursor: pointer;
-            color: #ff3d00;
+            color: #e75051;
             border-radius: 50%;
         }
 
@@ -35,23 +34,12 @@
         }
     }
 
-    .cancle-btn {
-        background-color: #f6f6f6;
-        border: none;
-        color: #141414;
-        padding: 12px 30px;
-        border-radius: 8px;
-    }
-
-    .cancle-btn:hover {
-        background-color: #e1e1e1;
-    }
-
-
     .btn:not(:disabled):not(.disabled) {
         cursor: pointer;
         padding: 6px 10px;
         border-radius: 8px;
+        background: #337ab7;
+        border: none;
     }
 
     .faCirclePlus-icon {
@@ -62,6 +50,26 @@
         width: fit-content;
     }
 
-    .addition-services {
-        
+    .form-label {
+        color: #828a9b;
+        font-weight: 500;
+    }
+
+    .footerSchedule {
+        position: absolute;
+        right: 0;
+        margin-right: 5%;
+        top: 86%;
+    
+        .cancle-btn {
+            background-color: #f6f6f6;
+            border: none;
+            color: #141414;
+            padding: 12px 30px;
+            border-radius: 8px;
+        }
+    
+        .cancle-btn:hover {
+            background-color: #e1e1e1;
+        }
     }

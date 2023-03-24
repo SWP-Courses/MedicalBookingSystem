@@ -8,7 +8,7 @@ const DoctorContext = createContext(null);
 
 function DoctorProvider({ children }) {
   const [currentschedule, setCurrentSchedule] = useState([]);
-  const [isBooked, setIsBooked] = useState(false);
+  // const [isBooked, setIsBooked] = useState(false);
   const { currentUser } = useContext(AuthContext);
   const [user, setUser] = useState({});
   const [date, setDate] = useState(() => {
@@ -18,7 +18,6 @@ function DoctorProvider({ children }) {
   });
 
   useEffect(() => {
-    console.log(">> check date: ", date);
     fetchSchedule();
   }, [date]);
 
@@ -30,11 +29,11 @@ function DoctorProvider({ children }) {
     );
     if (res && res.data) {
       setCurrentSchedule(res.data);
-      setIsBooked(false);
+      // setIsBooked(false);
     } else {
       console.log(`%c ${error.message} - ${error.code}`, "color: red");
       if (error?.response?.data) {
-        setIsBooked(true);
+        // setIsBooked(true);
         setCurrentSchedule([]);
       }
     }

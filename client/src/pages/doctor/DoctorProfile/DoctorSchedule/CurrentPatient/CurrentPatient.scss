@@ -78,23 +78,31 @@
     width: 90%;
     margin: 0px auto;  
     
-
     .patient-info__profile {
         flex: 1;    
+        position: relative;
+
+        .patient-info_detail {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+        }
     }
 
     .patient-info__services {
         margin-top: 10px;
         height: 350px;
         overflow: hidden auto;
-        flex: 2
+        flex: 2;
+        position: relative;
     }
 
     .devideLine {
         width: 1px;
-        height: 347px;
+        height: 269px;
         background: #dbd6d6;
-        margin: 24px 30px;
+        margin: 63px 30px;
     }
 
     .patient-info__profile-time,
@@ -117,5 +125,7 @@
         }
     }
 
-
+    .patient-info__profile-payment {
+        border-bottom: none
+    }
 }

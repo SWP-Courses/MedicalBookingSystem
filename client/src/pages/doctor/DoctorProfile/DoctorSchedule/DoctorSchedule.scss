@@ -3,11 +3,12 @@
     border-top-right-radius: 8px;
     border-top-left-radius: 8px;
     margin-top: 58px;
+    position: relative;
 
     .separate {
         width: 95%;
         height: 1px;
-        background: #c5c5c5;    
+        background: #d5d5d5;    
         margin: 15px auto;
     }
 }
@@ -34,3 +35,4 @@
         margin-left: 9px;
     }
 }
+

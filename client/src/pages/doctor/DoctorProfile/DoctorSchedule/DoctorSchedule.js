@@ -1,11 +1,11 @@
 import CurrentPatient from "./CurrentPatient/CurrentPatient";
 import "./DoctorSchedule.scss";
 import TableSchedule from "./TableSchedule/TableSchedule";
-
 import { useState } from "react";
 
-function DoctorSchedule() {
+function DoctorSchedule(props) {
   const [activeSelect, setActiveSelect] = useState("schedule");
+  const { handleOptionClick } = props;
 
   return (
     <>
@@ -32,36 +32,22 @@ function DoctorSchedule() {
         </button>
       </header>
       <div className="doctor-schedule">
-        <div className="separate"></div>
+        {/* <div className="separate"></div> */}
         {activeSelect === "schedule" && (
           <TableSchedule
-            // currentschedule={currentschedule}
-            // activeSelect={activeSelect}
             setActiveSelect={setActiveSelect}
             // isBooked={isBooked}
-            // setUser={setUser} 
             // setListUsers={setListUsers}
           />
         )}
         {activeSelect === "patient" && (
           <CurrentPatient
-            // handleOptionClick={handleOptionClick}
             // setPatient={setPatient}
             // fetchSchedule={fetchSchedule}
+            handleOptionClick={handleOptionClick}
           />
         )}
       </div>
-      {/* <div className="">
-        <button className="cancle-btn" onClick={hanldeCloseModal}>
-          Hủy
-        </button>
-        <Button
-          className="ml-3"
-          onClick={() => handleUpdateServices(bookedUser)}
-        >
-          Cập Nhật
-        </Button>
-      </div> */}
     </>
   );
 }

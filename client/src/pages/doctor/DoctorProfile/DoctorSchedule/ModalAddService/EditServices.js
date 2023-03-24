@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import _ from "lodash";
-import { useRef } from "react";
+import { useRef, useContext } from "react";
 import { faCircleMinus, faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Button from "react-bootstrap/Button";
@@ -10,12 +10,14 @@ import Button from "react-bootstrap/Button";
 import { hanlderRequest } from "~/utils";
 import API_URL from "~/api/Router";
 import { v4 as uuidv4 } from "uuid";
-import { memo } from "react";
 import "./ModalEditServices.scss";
 import { cloneData } from "~/utils";
+import { DoctorContext } from "~/context/DoctorContext";
+
 
 function EditServices(props) {
-  const { bookedUser, fetchSchedule, handleOptionClick } = props;
+  // const { fetchSchedule } = props;
+  const context = useContext(DoctorContext);
   const [listServices, setListServices] = useState([]);
   const [userServices, setUserServices] = useState([]);
   const userServicesRef = useRef();
@@ -23,11 +25,11 @@ function EditServices(props) {
   const listServiesRef = useRef();
 
   useEffect(() => {
-    const cloneUserBooked = cloneData(bookedUser);
+    const cloneUserBooked = cloneData(context.user);
     if (!_.isEmpty(cloneUserBooked)) {
       setUserServices(cloneUserBooked.services);
     }
-  }, [bookedUser]);
+  }, [context.user]);
 
   useEffect(() => {
     fetchAllServices();
@@ -121,8 +123,8 @@ function EditServices(props) {
 
     if (res && res.data) {
       toast.success("cập nhật thành công");
-      resetEmptyServices();
-      await fetchSchedule();
+      resetAdditionServices();
+      // await fetchSchedule();
     } else {
       toast.error(error.message);
     }
@@ -146,21 +148,19 @@ function EditServices(props) {
     }
   };
 
-  const resetEmptyServices = () => {
+  const resetAdditionServices = () => {
     const removedEmptyValue = userServices.filter(
       (service) => !service.unique_id
     );
     setUserServices(removedEmptyValue);
   };
 
-  console.log(">>> check service: ", userServices);
-  return (
-    <>
-      <div className="row">
+  return (  
+      <>
         {userServices?.map((service, index) => {
           return (
-            <div className="addition-services" key={index}>
-              <div className="col-md-6">
+            <div className="row addition-services py-1" key={index}>
+              <div className="col-md-4">
                 <label htmlFor="inputCity" className="form-label">
                   {`Dịch Vụ - ${index + 1}`}
                 </label>
@@ -209,7 +209,7 @@ function EditServices(props) {
                 />
                 <span className="invalid-feedback mt-2">không hợp lệ</span>
               </div>
-              <div className="col-md-3 plus-service">
+              <div className="col-md-1 plus-service">
                 {service.unique_id && (
                   <span
                     className="note-icon"
@@ -217,7 +217,7 @@ function EditServices(props) {
                   >
                     <FontAwesomeIcon
                       icon={faCircleMinus}
-                      style={{ fontSize: "24px" }}
+                      style={{ fontSize: "22px" }}
                     />
                   </span>
                 )}
@@ -225,14 +225,27 @@ function EditServices(props) {
             </div>
           );
         })}
+        <div className="footerSchedule">
+          <button className="cancle-btn"
+            onClick={() => resetAdditionServices()}
+          >
+            Hủy
+          </button>
+          <Button
+            className="ml-3"
+            onClick={() => handleUpdateServices(context.user)}
+          >
+            Cập Nhật
+          </Button>
+        </div>
 
-        {Object.keys(bookedUser).length > 0 ? (
-          <span style={{}} className="faCirclePlus-icon">
+        {Object.keys(context.user).length > 0 ? (
+          <span style={{}} className="row faCirclePlus-icon">
             {userServices?.length >= 7 ? (
               ""
             ) : (
               <span
-                className="row add-extra-icon"
+                className="add-extra-icon"
                 onClick={hanldeAddExtraService}
               >
                 <FontAwesomeIcon
@@ -245,9 +258,7 @@ function EditServices(props) {
         ) : (
           ""
         )}
-      </div>
-      
-    </>
+      </>
   );
 }
 

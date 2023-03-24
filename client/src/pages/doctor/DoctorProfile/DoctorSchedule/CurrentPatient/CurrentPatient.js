@@ -14,49 +14,43 @@ import { DoctorContext } from "~/context/DoctorContext";
 
 function CurrentPatient(props) {
   const context = useContext(DoctorContext);
-  const {setPatient, handleOptionClick, fetchSchedule } = props;
+  const { setPatient, handleOptionClick, fetchSchedule } = props;
   const [modalShow, setModalShow] = useState(false);
   const [user, setUser] = useState(context.user);
 
-  const handleEditService = () => {
-    // setSelectedPatient(user);
-    setModalShow(true);
-  };
-  
   return (
     <div className="patient-detail">
       <div className="patient-info">
-        {Object.keys(user).length ? (
+        {Object.keys(user).length > 0 ? (
           <>
             <div className="patient-info__profile">
-              <div className="patient-info__profile-name">
-                <span>Tên</span>
-                <p>{user?.customer[0]?.fullname}</p>
+              <div className="patient-info_detail">
+                <div className="patient-info__profile-name">
+                  <span>Tên</span>
+                  <p>{user?.customer[0]?.fullname}</p>
+                </div>
+                <div className="patient-info__profile-time">
+                  <span>Giờ Khám</span>
+                  <p>{formatSlot(user.slot_time)}</p>
+                </div>
+                <div className="patient-info__profile-payment">
+                  <span>Thanh toán</span>
+                  {
+                    <p className={user.isPaid ? "btn-paid" : "btn-not-paid"}>
+                      <FontAwesomeIcon
+                        icon={user.isPaid ? faCheck : faXmark}
+                        style={{
+                          fontSize: "18px",
+                          marginRight: "2px",
+                        }}
+                      />
+                    </p>
+                  }
+                </div>
+                <Button className="mt-5 d-block mx-auto prescribing" onClick={() => handleOptionClick('prescription')}>
+                  Kê đơn
+                </Button>
               </div>
-              <div className="patient-info__profile-time">
-                <span>Giờ Khám</span>
-                <p>{formatSlot(user.slot_time)}</p>
-              </div>
-              <div className="patient-info__profile-payment">
-                <span>Thanh toán</span>
-                {
-                  <p className={user.isPaid ? "btn-paid" : "btn-not-paid"}>
-                    <FontAwesomeIcon
-                      icon={user.isPaid ? faCheck : faXmark}
-                      style={{
-                        fontSize: "18px",
-                        marginRight: "2px",
-                      }}
-                    />
-                  </p>
-                }
-              </div>
-              <Button
-                className="mt-3"
-                onClick={() => {}}
-              >
-                Kê đơn
-              </Button>
             </div>
             <div className="devideLine"></div>
           </>
@@ -66,11 +60,7 @@ function CurrentPatient(props) {
           </span>
         )}
         <div className="patient-info__services">
-          <EditServices
-            handleOptionClick={handleOptionClick}
-            bookedUser={user}
-            fetchSchedule={fetchSchedule}
-          />
+          <EditServices bookedUser={user} fetchSchedule={fetchSchedule} />
         </div>
       </div>
     </div>
