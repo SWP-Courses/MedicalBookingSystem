@@ -153,10 +153,6 @@ function EditServices(props) {
     setUserServices(removedEmptyValue);
   };
 
-  const hanldeCloseModal = () => {
-    resetEmptyServices();
-  };
-
   console.log(">>> check service: ", userServices);
   return (
     <>

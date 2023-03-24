@@ -5,21 +5,24 @@ import {
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import "./CurrentPatient.scss";
 import EditServices from "../ModalAddService/EditServices";
 import { formatSlot } from "~/utils";
 import Button from "react-bootstrap/Button";
+import { DoctorContext } from "~/context/DoctorContext";
 
 function CurrentPatient(props) {
-  const { user, setPatient, handleOptionClick, fetchSchedule } = props;
+  const context = useContext(DoctorContext);
+  const {setPatient, handleOptionClick, fetchSchedule } = props;
   const [modalShow, setModalShow] = useState(false);
+  const [user, setUser] = useState(context.user);
 
   const handleEditService = () => {
     // setSelectedPatient(user);
     setModalShow(true);
   };
-  console.log(">> user", user);
+  
   return (
     <div className="patient-detail">
       <div className="patient-info">

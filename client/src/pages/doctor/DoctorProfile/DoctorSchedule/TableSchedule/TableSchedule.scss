@@ -12,6 +12,7 @@
     .schedule__calender {
         // flex: 1;
         position: relative;
+        margin-left: 38px;
 
         .schedule__date-detail {
             text-align: center;
@@ -71,7 +72,7 @@
 
         table {
             user-select: none;
-            width: 96%;
+            width: 90%;
         }
 
         table td,
