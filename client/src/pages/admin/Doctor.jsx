@@ -85,7 +85,7 @@ const Doctor = () => {
       if (result.status === 200) {
         const newDoctor = result.data;
         setDoctorList(list => updateList(newDoctor, list));
-        toast.success("Susscess!", toastOption);
+        toast.success("Success!", toastOption);
       }
 
       // Reset input

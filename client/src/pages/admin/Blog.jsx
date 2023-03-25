@@ -86,13 +86,15 @@ const Blog = () => {
       description: description
     }
 
+    if (!newTitle || !catagoryId || !newValue || !author || !description) return toast.error("Create error!", toastOption);
+
     try {
       const result = BlogDetail ? await axios.put(`${ROUTER}/api/blogs/${BlogDetail._id}`, data) : await axios.post(`${ROUTER}/api/blogs`, data);
       console.log(result);
       if (result.status === 200) {
         const newBlog = result.data.blogs;
         setBlogList(list => updateList(newBlog, list));
-        toast.success("Susscess!", toastOption);
+        toast.success("Success!", toastOption);
 
         if (BlogDetail) return;
 

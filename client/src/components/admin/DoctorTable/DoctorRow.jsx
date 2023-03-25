@@ -14,7 +14,7 @@ function DoctorRow({ onDeleteBlogById, doctor, stt, onClickEditDoctor }) {
         try {
             const result = await axios.delete(`${ROUTER}/api/users/doctors/${doctor._id}`);
             if (result.status === 200) {
-                toast.success("Susscess!", toastOption);
+                toast.success("Success!", toastOption);
                 onDeleteBlogById(doctor._id);
             }
         } catch (error) {

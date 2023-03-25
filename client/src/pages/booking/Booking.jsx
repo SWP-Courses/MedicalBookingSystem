@@ -14,7 +14,7 @@ export default function Booking() {
     number: 1,
     title: "THÔNG TIN KHÁM BỆNH",
   });
-  const {pathname} = useLocation();
+  const { pathname } = useLocation();
   const { currentUser, login } = useContext(AuthContext);
   const [booking, setBooking] = useState({ date: new Date() });
   const [payModal, setPayModal] = useState(false);
@@ -84,8 +84,8 @@ export default function Booking() {
           `${API_URL}/booking/doctors?date=${booking.date}`
         );
 
-      
-        const chosenDoctor =booking?.doctor?._id && res.data.find(
+
+        const chosenDoctor = booking?.doctor?._id && res.data.find(
           (doctor) => doctor._id === booking?.doctor?._id
         );
         if (!chosenDoctor) {
@@ -146,7 +146,7 @@ export default function Booking() {
           <div className="bookingTitle">
             <h2 className="bookingStep">{part.title}</h2>
             {!currentUser && (
-              <Link to="/login" state={{guest: pathname}} className="btn btn-primary">
+              <Link to="/login" state={{ guest: pathname }} className="btn btn-primary">
                 Đăng nhập
               </Link>
             )}

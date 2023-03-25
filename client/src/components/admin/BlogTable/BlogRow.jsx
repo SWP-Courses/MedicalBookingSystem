@@ -16,7 +16,7 @@ function BlogRow({ onClickEditBlog, stt, blog, onDeleteBlogById }) {
         try {
             const result = await axios.delete(`${ROUTER}/api/blogs/${blog._id}`);
             if (result.status === 200) {
-                toast.success("Susscess!", toastOption);
+                toast.success("Success!", toastOption);
                 onDeleteBlogById(blog._id);
             }
         } catch (error) {
