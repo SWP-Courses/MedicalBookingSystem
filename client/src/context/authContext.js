@@ -2,7 +2,7 @@ import { useState, createContext, useEffect, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-
+import jwt_code from "jwt-decode";
 import API_URL from "~/api/Router";
 import { StoreContext } from "./storeContext";
 
@@ -18,7 +18,47 @@ export default function AuthContextProvider({ children }) {
     JSON.parse(localStorage.getItem("user") || null)
   );
 
-  console.log(beforeLogin);
+  // Axios interceptor
+  const axiosJWT = axios.create({
+    headers: {
+      authorization: `Bearer ${currentUser?.access_token}`,
+    },
+  });
+  axiosJWT.interceptors.request.use(
+    async (config) => {
+      console.log("danh chan");
+      let currentDate = new Date();
+      // console.log(user);
+      const decodedToken = jwt_code(currentUser.access_token);
+      if (decodedToken.exp * 1000 < currentDate.getTime()) {
+        // lấy access_token và refresh_token
+        console.log("lấy refresh");
+        const data = await handleRefresh();
+        // console.log(data);
+        config.headers["authorization"] = "Bearer " + data.access_token;
+      }
+      // console.log("return config");
+      return config;
+    },
+    (error) => Promise.reject(error)
+  );
+
+  const handleRefresh = async () => {
+    try {
+      const res = await axios.post(API_URL + "/auth/refresh", {
+        refresh_token: currentUser.refresh_token,
+      });
+      setCurrentUser({
+        ...currentUser,
+        access_token: res.data.access_token,
+      });
+      return res.data;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  // console.log(beforeLogin);
 
   // Side Effects
 
@@ -88,7 +128,11 @@ export default function AuthContextProvider({ children }) {
 
   const logout = async () => {
     try {
-      await axios.get(API_URL + "/auth/logout", { withCredentials: true });
+      await axios.post(
+        API_URL + "/auth/logout",
+        { refresh_token: currentUser.refresh_token },
+        { withCredentials: true }
+      );
       setCurrentUser(null);
       // if (
       //   location.pathname.contains("doctor") ||
@@ -120,7 +164,9 @@ export default function AuthContextProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ currentUser, login, logout, update }}>
+    <AuthContext.Provider
+      value={{ currentUser, login, logout, update, axiosJWT }}
+    >
       {children}
     </AuthContext.Provider>
   );

@@ -153,7 +153,20 @@ const getIncomingBookedByUser = asyncHandler(async (req, res, next) => {
         from: "users",
         localField: "doctor_id",
         foreignField: "_id",
-        pipeline: [{ $project: { _id: 1, fullname: 1 } }],
+        pipeline: [
+          { $project: { _id: 1, fullname: 1, room_id: 1 } },
+
+          {
+            $lookup: {
+              from: "rooms",
+              localField: "room_id",
+              foreignField: "_id",
+              as: "room",
+            },
+          },
+          { $unwind: "$room" },
+          { $project: { _id: 1, fullname: 1, "room.room": 1 } },
+        ],
         as: "doctor",
       },
     },
@@ -395,7 +408,6 @@ const getBookedServiceById = asyncHandler(async (req, res, next) => {
 //@access public
 const paymentBookedServices = asyncHandler(async (req, res, next) => {
   try {
-
     const paidBservice = await BookedService.findOne({
       _id: mongoose.Types.ObjectId(req.params.id),
       date: {
@@ -403,7 +415,7 @@ const paymentBookedServices = asyncHandler(async (req, res, next) => {
         $lte: endOfDay(new Date()),
       },
     });
-    
+
     if (!paidBservice)
       return res
         .status(405)
@@ -420,7 +432,7 @@ const paymentBookedServices = asyncHandler(async (req, res, next) => {
       req.params.id,
       {
         total_price,
-        isPaid:true,
+        isPaid: true,
       },
       { new: true }
     );

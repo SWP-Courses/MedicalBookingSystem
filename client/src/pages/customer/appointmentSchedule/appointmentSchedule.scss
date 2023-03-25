@@ -1,9 +1,10 @@
 .appointmentSchedule {
-    padding: 20px;
+    padding: 30px;
 
     >.title {
-        font-size: 1.5rem;
+        font-size: 1.2rem;
         border-bottom: 1px solid lightgray;
+        padding:5px;
     }
 
     .orderSchedule {
@@ -27,3 +28,54 @@
         }
     }
 }
+
+.modal-content {
+    max-width: 80vw;
+    margin: 0 auto;
+}
+
+.incoming-schedule-mobile {
+    >.incoming-schedule-mobile-item {
+        background-image: linear-gradient(to right, #2c78c0, #6fb9ff);
+        color: #e4e4e4;
+        border-radius: 5px;
+        position: relative;
+
+        h5.mobile-incoming-title{
+            font-size: 12px;
+            border-bottom: 1px solid rgb(239, 251, 255);
+            height: 40px;
+            display: flex;
+            align-items: center;
+        }
+
+        p {
+            font-size: 12px;
+            margin-bottom: 8px;
+            line-height: 16px;
+        }
+
+        .cancel-booking-btn {
+            position: absolute;
+            top:2px;
+            right: 2px;
+            padding: 5px 0px;
+            max-width: 40px;
+            display: inline-block;
+            color: red;
+            font-size: 18px;
+            background-color: #fff;
+            border-bottom-left-radius: 5px;
+        }
+    }
+}
+
+@media screen and (min-width: 568px) {
+    .appointmentSchedule {
+        padding: 20px;
+
+        >.title {
+            font-size: 1.5rem;
+        }
+    }
+  }

@@ -144,9 +144,71 @@ export default function Introduction() {
       <h4 id="tram-rang" className="sub-header item">
         Trám răng
       </h4>
+      <p className="item para">
+        Trám răng hay hàn răng là một kỹ thuật nha khoa sử dụng vật liệu nhân
+        tạo để bổ sung vào phần mô răng bị thiếu. Phương pháp này có thể mang
+        lại hiệu quả cả về tính thẩm mỹ lẫn cải thiện chức năng nhai. <br />
+        Ngoài trám răng do bị sâu răng là nguyên nhân phổ biến thì bạn có thể
+        phải nhờ đến sự can thiệp của nha sĩ khi có lỗ hổng xuất hiện trên răng.
+        Phương pháp này thường được áp dụng cho các trường hợp sau:
+      </p>
+      <ul className="list">
+        <li className="list-item item">
+          <strong>Trám răng bị sâu</strong>: Sâu răng là tình trạng xuất hiện
+          các lỗ hổng ở răng. Nguyên nhân là do hoạt động của vi khuẩn tích tụ
+          khi bạn ăn những thực phẩm có đường và không chăm sóc răng đúng cách.
+          Nếu không được điều trị, lỗ hổng do sâu răng gây ra sẽ lớn dần, dẫn
+          đến đau răng nghiêm trọng, nhiễm trùng và mất răng.
+        </li>
+        <img
+          className="visual item"
+          src="https://th.bing.com/th/id/OIP.JGSMrZl6D-_WHLdczGQTwwHaD4?w=343&h=180&c=7&r=0&o=5&dpr=1.3&pid=1.7"
+          alt=""
+        />
+        <li className="list-item item">
+          <strong>Răng bị mẻ</strong>: Răng có thể bị nứt, mẻ khi bạn cắn phải
+          thức ăn hay vật dụng gì quá mạnh hoặc có tác động cơ học mạnh làm ảnh
+          hưởng đến cấu trúc răng. Nếu vết nứt được phát hiện sớm, nha sĩ sẽ
+          thực hiện kỹ thuật trám tương tự như khi răng bạn bị sâu. Trước hết,
+          bạn sẽ được vệ sinh răng để loại bỏ vi khuẩn, sau đó trám vật liệu vào
+          chỗ răng bị mẻ.
+        </li>
+        <img
+          className="visual item"
+          src="https://th.bing.com/th/id/OIP.x-41oQA-NYCcxajXpZrjHAHaFB?pid=ImgDet&rs=1"
+          alt=""
+        />
+        <li className="list-item item">
+          <strong>Răng thưa</strong>: Nếu răng bạn bị thưa, đặc biệt là răng cửa
+          thưa gây ảnh hưởng đến thẩm mỹ thì bạn có thể nhờ đến phương pháp trám
+          răng thẩm mỹ để tạo hình cho răng. Tuy nhiên, phương pháp này thường
+          chỉ nên áp dụng nếu khoảng hở nhỏ dưới 2mm. Trường hợp khoảng hở lớn
+          hơn, răng cửa sẽ trông khá to và mất cân đối sau khi trám nên nha sĩ
+          có thể khuyên bạn chuyển sang các kỹ thuật khác như bọc răng sứ hoặc
+          niềng răng.
+        </li>
+        <img
+          className="visual item"
+          src="https://cdn.hellobacsi.com/wp-content/uploads/2019/03/tram-rang-cua-thua-e1551410522165.jpg"
+          alt=""
+        />
+      </ul>
       <h4 id="nho-rang" className="sub-header item">
         Nhổ răng
       </h4>
+      <li className="list-item item">
+        Nhổ răng hàm là một ca tiểu phẫu giúp loại bỏ hoàn toàn chiếc răng đang
+        có vấn đề ra khỏi hàm. Đó là những chiếc răng bị hư hỏng nặng, viêm
+        răng, viêm tủy, hoại tử làm chảy máu, ảnh hưởng tới chức năng ăn nhai,
+        sức khỏe răng miệng. Nhổ răng giúp ngăn chặn nguy cơ nhiễm trùng và ảnh
+        hưởng tới các bộ phận khác trên cơ thể.
+      </li>
+      <li className="list-item item">
+        Lý do cần nhổ răng khôn là bởi răng khôn thường mọc ở các vị trí không
+        thuận lợi, hoặc khi xương hàm đã hết chỗ mà răng khôn lại nằm quá sâu
+        trong hàm. Việc này sẽ khiến khó vệ sinh, tạo môi trường thuận lợi cho
+        vi khuẩn phát triển, sinh sôi và tăng nguy cơ viêm nướu, sâu răng.
+      </li>
     </div>
   );
 }

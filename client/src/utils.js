@@ -68,6 +68,12 @@ const cloneData = (data) => {
   }
 };
 
+const newDateWithoutTime = () => {
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  return today.toISOString();
+}
+
 export {
   shortenText,
   validateEmail,
@@ -77,5 +83,6 @@ export {
   hanlderRequest,
   formatPrice,
   formatDateFns,
-  cloneData
+  cloneData,
+  newDateWithoutTime
 };

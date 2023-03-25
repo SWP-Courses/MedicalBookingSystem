@@ -7,6 +7,7 @@ var {
   sendMail,
   verifyResetCode,
   updateNewPassword,
+  handleRefreshToken,
 } = require("../controllers/authController");
 const updateImage = require("../config/multerConfig");
 const passport = require("passport")
@@ -21,9 +22,10 @@ router.post("/send-reset-code", sendMail );
 router.post('/verify-code', verifyResetCode)
 router.post('/reset-password', updateNewPassword)
 
+router.post("/refresh", handleRefreshToken);
 router.post("/register", updateImage.single("avatar"), register);
 router.post("/login", login);
-router.get("/logout", logout);
+router.post("/logout", logout);
 
 router.get("/login/success", loginSuccess);
 router.get("/login/failed", loginFailed);

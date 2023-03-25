@@ -5,6 +5,7 @@ import { useLocation, useNavigate, Link } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import "./Pagination.scss";
 import parse from "html-react-parser";
+import { format } from "date-fns";
 
 function Pagination(props) {
   const { data } = props;
@@ -75,9 +76,12 @@ function Pagination(props) {
                   }
                 </p>
                 <div className="blog-item__desc">
-                  <span>Tác giả</span> <strong style={{marginLeft: '5px'}}>{blog?.author}</strong>
+                  <span>Tác giả</span>{" "}
+                  <strong style={{ marginLeft: "5px" }}>{blog?.author}</strong>
                   <span className="separate-line"></span>
-                  <span>{blog?.createdAt}</span>
+                  <span>
+                    {format(new Date(blog?.created_at), "dd/MM/yyyy")}
+                  </span>
                 </div>
               </div>
             </div>
