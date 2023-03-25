@@ -96,7 +96,8 @@ const PaymentTable = (props) => {
   // )
 
 
-  const { data = [], isLoading = false, columns = [], onChange = {}} = props
+  const { data = [], isLoading = false, columns = [], onChange = {}, rowClassName = {}} = props
+  console.log('rowClassName', rowClassName)
   return (
 
     <Loading isLoading={isLoading}>
@@ -116,6 +117,7 @@ const PaymentTable = (props) => {
         onChange={onChange}
         {...props}
         bordered
+        rowClassName={rowClassName}
       />
     </Loading>
 

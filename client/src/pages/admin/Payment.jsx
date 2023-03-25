@@ -21,7 +21,6 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import toastOption from "~/config/toast";
 import { toast } from "react-toastify";
-import { Form as BsForm } from "react-bootstrap";
 
 const Payment = () => {
   const [searchText, setSearchText] = useState("");
@@ -119,19 +118,17 @@ const Payment = () => {
         };
       })
       ?.sort((a, b) => {
-        if (a.date < b.date) {
+        const timeNow = new Date();
+        const hourNow = (timeNow.getHours());
+        if (a.slot_time === hourNow && b.slot_time !== hourNow) {
           return -1;
-        } else if (a.date > b.date) {
+        } else if (a.slot_time !== hourNow && b.slot_time === hourNow) {
           return 1;
-        } else if (a.slot_time < b.slot_time) {
-          return -1;
-        } else if (a.slot_time > b.slot_time) {
-          return 1;
-        } else {
-          return 0;
         }
-      })
-      ?.reverse();
+        return a.slot_time - b.slot_time;
+      });
+
+  console.log(dataTable)
 
   const renderAction = () => {
     return (
@@ -162,7 +159,7 @@ const Payment = () => {
       title: "Time",
       dataIndex: "slot_time",
       align: "center",
-      render : (slot_time) => {
+      render: (slot_time) => {
         return (<p>{slot_time}:00</p>)
       },
       sorter: (a, b) => b.slot_time - a.slot_time,
@@ -229,17 +226,12 @@ const Payment = () => {
     return total;
   };
 
-  const handlePayment = async () => {
+  const handlePayment = async (time) => {
+    console.log('time', time)
     const data = {
       total_price: calculatorTotalPrice(),
       isPaid: true,
-      payCode
     };
-
-    if (!payCode) {
-      toast.info("Vui lòng điền mã thanh toán", toastOption);
-      return;
-    }
 
     try {
       const res = await axios.patch(
@@ -263,10 +255,23 @@ const Payment = () => {
     let day = date.getDate();
     let month = date.getMonth() + 1;
     let year = date.getFullYear();
-    let formattedDate = `${day}/${month}/${year}`;
+    const formattedDate = `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year.toString()}`;
 
     return formattedDate;
   };
+
+  const setColorRow = (record, index) => {
+    console.log('record', record.slot_time)
+    const timeNow = new Date();
+    const hourNow = (timeNow.getHours());
+    console.log('hourNOw', hourNow)
+    if(record.slot_time == hourNow) {
+      console.log('ok')
+      return 'change-color-row ';
+    }else {
+      return '';
+    }
+  }
 
   return (
     <div className="bg-light container w-100 h-100 d-flex flex-column gap-3">
@@ -332,13 +337,15 @@ const Payment = () => {
                 },
               };
             }}
+            rowClassName={setColorRow}
+            
           />
         </div>
         <PaymentDetail
           title="Service bill"
           isOpen={isOpenDrawer}
           onClose={() => setIsOpenDrawer(false)}
-          width="70%"
+          width="50%"
         >
           <Loading isLoading={isLoading}>
             <Row gutter={16}>
@@ -378,14 +385,14 @@ const Payment = () => {
                     margin: 0,
                   }}
                 >
-                  Slot: {stateBookedServicesDetail.slot_time}
+                  Time: {stateBookedServicesDetail.slot_time}:00
                 </Typography.Title>
               </Col>
             </Row>
             <Divider></Divider>
 
             <Row gutter={16}>
-              <Col span={24}>
+              {/* <Col span={24}>
                 <Title level={3}>Services: </Title>
               </Col>
 
@@ -399,9 +406,56 @@ const Payment = () => {
 
               <Col span={8} style={{ fontWeight: "bold" }}>
                 Price:
-              </Col>
+              </Col> */}
 
-              {stateBookedServicesDetail.services?.length &&
+              <table className="table table-bordered table-detail">
+                <thead>
+                  <tr>
+                    <th scope="col">Name Services</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Price</th>
+                  </tr>
+                </thead>
+                <tbody className="table-group-divider">
+                  {stateBookedServicesDetail.services?.length &&
+                    stateBookedServicesDetail.services?.map((obj) => (
+                      <tr>
+                        <td
+                        >
+                          {obj.service_name}
+                        </td>
+
+                        <td
+                        >
+                          {obj.quantity} cái
+                        </td>
+
+                        <td
+                        >
+                          {obj.price.toLocaleString("vi-VN", {
+                            style: "currency",
+                            currency: "VND",
+                          })}
+                        </td>
+                      </tr>
+                    ))}
+
+                  <tr className="total-price">
+                    <td colspan="2">Total price:</td>
+                    <td>{stateBookedServicesDetail.total_price
+                      ? stateBookedServicesDetail.total_price.toLocaleString(
+                        "vi-VN",
+                        { style: "currency", currency: "VND" }
+                      )
+                      : calculatorTotalPrice().toLocaleString("vi-VN", {
+                        style: "currency",
+                        currency: "VND",
+                      })}</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              {/* {stateBookedServicesDetail.services?.length &&
                 stateBookedServicesDetail.services?.map((obj) => (
                   <>
                     <Col
@@ -432,18 +486,12 @@ const Payment = () => {
                       })}
                     </Col>
                   </>
-                ))}
+                ))} */}
 
-              <Divider></Divider>
+              {/* <Divider></Divider> */}
 
-              <Col span={12}>
-                <BsForm.Label htmlFor="payCode">* Mã số thanh toán</BsForm.Label>
-                <BsForm.Control
-                  type="number"
-                  id="payCode"
-                  value={payCode}
-                  onChange={e => setPayCode(e.target.value)}
-                />
+              {/* <Col span={12}>
+
               </Col>
 
               <Col span={6} offset={2} className="total-price">
@@ -457,7 +505,7 @@ const Payment = () => {
                     style: "currency",
                     currency: "VND",
                   })}
-              </Col>
+              </Col> */}
             </Row>
 
             <Row style={{ marginTop: "30px", position: "relative" }}>
@@ -467,7 +515,7 @@ const Payment = () => {
                   <Button
                     className="btn-payment"
                     type="primary"
-                    onClick={handlePayment}
+                    onClick={() => handlePayment(stateBookedServicesDetail.slot_time)}
                   >
                     Check out
                   </Button>

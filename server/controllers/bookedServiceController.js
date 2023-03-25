@@ -338,6 +338,7 @@ const getAllBookedService = asyncHandler(async (req, res, next) => {
         services: obj.services,
         isPaid: obj.isPaid,
         total_price: obj.total_price,
+        billNumber: obj.billNumber
       };
     })
   );
@@ -412,8 +413,8 @@ const paymentBookedServices = asyncHandler(async (req, res, next) => {
     if (new Date().getHours() < paidBservice.slot_time)
       return res.status(405).send("Không được thanh toán cho slot chưa khám!");
 
-    if (payCode != paidBservice.payCode)
-      return res.status(400).send("Mã thanh toán không hợp lệ!");
+    // if (payCode != paidBservice.payCode)
+    //   return res.status(400).send("Mã thanh toán không hợp lệ!");
 
     const total_price = req.body.total_price;
     const isPaid = req.body.isPaid;
