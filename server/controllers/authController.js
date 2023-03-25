@@ -139,15 +139,16 @@ const register = async (req, res, next) => {
           // room: req.body.room,
           room_id: req.body.room_id,
           profile: req.body.profile,
+          address: req.body.address
         };
 
       const newUser = new UserModel(
         !req.body.email
           ? document
           : {
-              ...document,
-              email: req.body.email,
-            }
+            ...document,
+            email: req.body.email,
+          }
       );
 
       let user = await newUser.save();

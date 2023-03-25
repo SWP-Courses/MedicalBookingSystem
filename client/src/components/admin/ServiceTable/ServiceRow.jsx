@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import ROUTER from '~/api/adminRouter';
 import toastOption from '~/config/toast';
 import useFormatMoney from '~/hooks/useFormatMoney';
-import CofirmDeletePopup from '../BlogTable/CofirmDeletePopup';
+import CofirmDeletePopup from './CofirmDeletePopup';
 
 function ServiceRow({ onDeleteBlogById, service, stt, onClickEditService }) {
     const [deletePopup, setDeletePopup] = useState(false);
@@ -16,7 +16,7 @@ function ServiceRow({ onDeleteBlogById, service, stt, onClickEditService }) {
         try {
             const result = await axios.delete(`${ROUTER}/api/services/${service._id}`);
             if (result.status === 200) {
-                toast.success("Susscess!", toastOption);
+                toast.success("Success!", toastOption);
                 onDeleteBlogById(service._id);
             }
         } catch (error) {
@@ -37,9 +37,9 @@ function ServiceRow({ onDeleteBlogById, service, stt, onClickEditService }) {
                 <td className='mw-50 overflow-hidden'> {service.name} </td>
                 <td className='text-center'> {formatMoney(service.price)} </td>
                 <td className='text-end blog-action'><HiOutlineDotsHorizontal className='fs-4' /></td>
-                <div className='popup-action'>
-                    <button onClick={() => setDeletePopup(true)} className='btn bg-light text-danger text-center w-100'>Delete</button>
-                    <button className='btn bg-light w-100' onClick={() => onClickEditService(service._id)}>Detail</button>
+                <div className='popup-action' style={{ right: 0 }}>
+                    <button onClick={() => setDeletePopup(true)} className=' px-3 py-2 bg-light text-danger text-center w-100'>Delete</button>
+                    <button className=' bg-light px-3 py-2 w-100' onClick={() => onClickEditService(service._id)}>Detail</button>
                 </div>
             </tr>
             {deletePopup ? <CofirmDeletePopup onConfilmDelete={onConfilmDelete} onCancelDelete={onCancelDelete} /> : undefined}

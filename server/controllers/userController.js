@@ -13,12 +13,12 @@ const getUsersCuredone = async (req, res, next) => {
 
     const users = await UserModel.find({
       fullname: { $regex: wordContain, $options: "i" },
-      status: true, 
+      status: true,
       role_code: "R3"
-    }, {_id: 1, fullname: 1, email: 1}).populate("_id", "user_id");
+    }, { _id: 1, fullname: 1, email: 1 }).populate("_id", "user_id");
 
     // const filterUsers = users.filter(user => {
-      
+
     // });
 
     if (!users.length)
@@ -114,7 +114,7 @@ const getDoctors = async (req, res, next) => {
 const deleteDoctorAccount = async (req, res, next) => {
   try {
     const doctorId = req.params.id;
-    const deleteDoctor = await UserModel.findOneAndUpdate({ _id: doctorId }, { status: false });
+    const deleteDoctor = await UserModel.findOneAndUpdate({ _id: doctorId }, { status: false, room_id: null });
     if (!deleteDoctor) {
       res.status(404);
     }

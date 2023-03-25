@@ -5,7 +5,7 @@
     padding: 0 !important;
     position: absolute;
     border: 1px solid;
-    border-radius: 2px;
+    /* border-radius: 2px; */
     text-align: center;
     z-index: 1;
     display: none;
