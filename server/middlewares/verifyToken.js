@@ -12,7 +12,7 @@ const verifyToken = (req, res, next) => {
   // console.log(req.cookies);
   // const token = req.cookies.access_token;
   const authHeader = req.headers.authorization;
-
+console.log("verify token");
   if (!authHeader) {
     // return next(createError(401, "You are not authenticated!"));
     return res.status(401).send("Bạn không được xác thực!");
@@ -66,11 +66,13 @@ const verifyCustomer = (req, res, next) => {
 };
 
 const verifyAdmin = (req, res, next) => {
+// console.log(req.user.role);
   verifyToken(req, res, next, () => {
     if (req.user.role === "admin") {
       console.log("admin verify");
       next();
     } else {
+      console.log('<error></error>');
       if (err) return res.status(403).send("Bạn không được phân quyền!");
     }
   });

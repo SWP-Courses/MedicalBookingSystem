@@ -20,9 +20,7 @@ export default function AuthContextProvider({ children }) {
 
   // Axios interceptor
   const axiosJWT = axios.create({
-    headers: {
-      authorization: `Bearer ${currentUser?.access_token}`,
-    },
+    
   });
   axiosJWT.interceptors.request.use(
     async (config) => {
@@ -30,6 +28,9 @@ export default function AuthContextProvider({ children }) {
       let currentDate = new Date();
       // console.log(user);
       const decodedToken = jwt_code(currentUser.access_token);
+
+      config.headers["authorization"] = "Bearer " + currentUser.access_token;
+      console.log({refresh: decodedToken.exp * 1000, now:currentDate.getTime()});
       if (decodedToken.exp * 1000 < currentDate.getTime()) {
         // lấy access_token và refresh_token
         console.log("lấy refresh");

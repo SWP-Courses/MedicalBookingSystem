@@ -114,6 +114,7 @@ const getDoctors = async (req, res, next) => {
 const deleteDoctorAccount = async (req, res, next) => {
   try {
     const doctorId = req.params.id;
+    console.log(req.params.id);
     const deleteDoctor = await UserModel.findOneAndUpdate({ _id: doctorId }, { status: false, room_id: null });
     if (!deleteDoctor) {
       res.status(404);

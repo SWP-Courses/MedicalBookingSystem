@@ -61,6 +61,7 @@
     > .time {
       display: flex;
       flex-direction: column;
+      min-width: 50%;
 
       .groupTime {
         margin-top: 10px;

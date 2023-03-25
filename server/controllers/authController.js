@@ -176,9 +176,9 @@ const handleRefreshToken = (req, res) => {
 
   // console.log(refreshToken);
   console.log(refreshTokens);
-  if (!refreshTokens.includes(refreshToken)) {
-    return res.status(403).json("Refresh token is not valid!");
-  }
+  // if (!refreshTokens.includes(refreshToken)) {
+  //   return res.status(403).json("Refresh token is not valid!");
+  // }
 
   jwt.verify(refreshToken, process.env.JWT_REFRESH_KEY, (error, user) => {
     error && console.log(error);
@@ -228,7 +228,7 @@ const login = async (req, res, next) => {
       role: userInfo.role,
     });
 
-    assignNewRefreshTokens([...refreshTokens, refresh_token])
+    // assignNewRefreshTokens([...refreshTokens, refresh_token])
     // refreshTokens.push(refresh_token);
     // console.log(refreshTokens);
     res.status(200).json({ ...userInfo, access_token, refresh_token });
@@ -253,10 +253,10 @@ const logout = (req, res) => {
   res.clearCookie("session");
   res.clearCookie("session.sig");
   const refreshToken = req.body.refresh_token;
-  const newArray = refreshTokens.filter(
-    (tokenItem) => tokenItem !== refreshToken
-  );
-  assignNewRefreshTokens(newArray);
+  // const newArray = refreshTokens.filter(
+  //   (tokenItem) => tokenItem !== refreshToken
+  // );
+  // assignNewRefreshTokens(newArray);
   console.log("logout");
   res.status(200).json("logged out");
   // res

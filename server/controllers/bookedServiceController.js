@@ -6,6 +6,7 @@ const { startOfDay, endOfDay } = require("date-fns");
 const Absent = require("../models/Absent");
 const Slot = require("../models/Slot");
 const User = require("../models/User");
+const service = require("../models/service");
 
 const mergeService = async (bookedService) => {
   return await Promise.all(
@@ -246,8 +247,22 @@ const bookService = asyncHandler(async (req, res, next) => {
       doctor_id: doctor_id,
       slot_time: slot_time,
     });
+
     if (existBservice)
       return res.status(409).json("This slot is already booked");
+
+    // nếu 1 user đã đặt slot đó trong ngày thì không cho book slot đó với doctor khác
+    const existSlotInDayOfUser = await BookedService.findOne({
+      date: {
+        $gte: startOfDay(new Date(date)),
+        $lte: endOfDay(new Date(date)),
+      },
+      user_id: user_id,
+      slot_time: slot_time,
+    });
+
+    if (existSlotInDayOfUser)
+      return res.status(409).json("You booked this slot today");
 
     const bService = new BookedService({
       user_id,
@@ -307,6 +322,26 @@ const updateAddedService = asyncHandler(async (req, res, next) => {
   res.status(200).json(result);
 });
 
+const replaceServicesListInBooked = asyncHandler(async (req, res, next) => {
+  const { newServiceList } = req.body;
+  try {
+    const mapNewServiceList = newServiceList.map(service => {
+    return {quantity: service.quantity, service_id: mongoose.Types.ObjectId(service.service_id)}
+    })
+
+    const result = await BookedService.findOneAndUpdate(
+      {_id: req.params.id}, // the ID of the document to update
+      { $set: { services: mapNewServiceList } }, // the update object
+      { new: true }, // options object to return the updated document
+    );
+
+    res.status(200).json(result);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json(error);
+  }
+});
+
 const completeBooked = asyncHandler(async (req, res, next) => {
   const booked = await BookedService.findById(req.params.id);
 
@@ -351,7 +386,7 @@ const getAllBookedService = asyncHandler(async (req, res, next) => {
         services: obj.services,
         isPaid: obj.isPaid,
         total_price: obj.total_price,
-        billNumber: obj.billNumber
+        billNumber: obj.billNumber,
       };
     })
   );
@@ -461,4 +496,5 @@ module.exports = {
   getAllBookedService,
   getBookedServiceById,
   paymentBookedServices,
+  replaceServicesListInBooked
 };

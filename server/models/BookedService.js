@@ -23,7 +23,7 @@ const BookedServiceSchema = new mongoose.Schema(
           type: Schema.Types.ObjectId,
           required: true,
         },
-        price: Number,
+        // price: Number,
         quantity: Number,
       },
     ],
