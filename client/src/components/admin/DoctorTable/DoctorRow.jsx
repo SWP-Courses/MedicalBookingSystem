@@ -16,9 +16,9 @@ function DoctorRow({ onDeleteBlogById, doctor, stt, onClickEditDoctor }) {
     try {
       const result = await axiosJWT.delete(
         `${ROUTER}/api/users/doctors/${doctor._id}`,
-        {
-          headers: { authorization: "Bearer " + currentUser.access_token },
-        }
+        // {
+        //   headers: { authorization: "Bearer " + currentUser.access_token },
+        // }
       );
       if (result.status === 200) {
         toast.success("Susscess!", toastOption);

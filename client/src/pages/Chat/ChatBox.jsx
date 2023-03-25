@@ -57,7 +57,7 @@ function ChatBox({ messageList, setMessageList }) {
             <div className='message-container'>
                 {
                     (messageList) &&
-                    messageList.map(message => <Message key={uuidv4()} create_at={message.create_at} msg={message.message} sender={message.recipient_id} />)
+                    messageList.map(message => <Message key={uuidv4()} create_at={message.created_at} msg={message.message} sender={message.recipient_id} />)
                 }
                 {
                     // <div className="mt-3 d-flex flex-column">
