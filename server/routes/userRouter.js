@@ -27,6 +27,6 @@ router.get("/doctors", getDoctors);
 // UPDATE user by id
 router.put("/:id", updateImage.single("avatar"), updateUser);
 
-router.delete("/doctors/:id", verifyToken, verifyAdmin, deleteDoctorAccount);
+router.delete("/doctors/:id", verifyAdmin, deleteDoctorAccount);
 
 module.exports = router;

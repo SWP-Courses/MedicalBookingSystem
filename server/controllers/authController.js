@@ -228,8 +228,9 @@ const login = async (req, res, next) => {
       role: userInfo.role,
     });
 
-    refreshTokens.push(refresh_token);
-    console.log(refreshTokens);
+    assignNewRefreshTokens([...refreshTokens, refresh_token])
+    // refreshTokens.push(refresh_token);
+    // console.log(refreshTokens);
     res.status(200).json({ ...userInfo, access_token, refresh_token });
   } catch (err) {
     console.log(err);

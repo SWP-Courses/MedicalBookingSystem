@@ -68,6 +68,7 @@ const verifyCustomer = (req, res, next) => {
 const verifyAdmin = (req, res, next) => {
   verifyToken(req, res, next, () => {
     if (req.user.role === "admin") {
+      console.log("admin verify");
       next();
     } else {
       if (err) return res.status(403).send("Bạn không được phân quyền!");
