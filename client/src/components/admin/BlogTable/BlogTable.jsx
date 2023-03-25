@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { BsPlus } from 'react-icons/bs';
-import BlogRow from './BlogRow';
+import React, { useEffect, useState } from "react";
+import { BsPlus } from "react-icons/bs";
+import BlogRow from "./BlogRow";
 import "./blogtable.css";
 // import { faker } from '@faker-js/faker';
 
@@ -37,59 +37,99 @@ import "./blogtable.css";
 // ]
 
 function BlogTable({ onClickEditBlog, blogs, onDeleteBlogById }) {
-    const [blogList, setBlogList] = useState();
-    const [search, setSearch] = useState("")
+  const [blogList, setBlogList] = useState();
+  const [search, setSearch] = useState("");
 
-    useEffect(() => {
-        if (!blogs) return;
-        setBlogList(blogs);
-    }, [blogs])
+  useEffect(() => {
+    if (!blogs) return;
+    setBlogList(blogs);
+  }, [blogs]);
 
-    useEffect(() => {
-        if (search.length > 3) return
-        setBlogList(blogs)
-    }, [search])
+  useEffect(() => {
+    if (search.length > 3) return;
+    setBlogList(blogs);
+  }, [search]);
 
-    const onSearch = () => {
-        if (search.length > 3) {
-            setBlogList(blog => blog.filter(blg => blg.title.toLowerCase().includes(search.toLowerCase())))
-        }
+  const onSearch = () => {
+    if (search.length > 3) {
+      setBlogList((blogs) =>
+        blogs?.filter((item) => {
+          if (
+            item.title
+              .toLowerCase()
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+              .includes(search.toLowerCase())
+          ) {
+            return true;
+          }
+          return false;
+        })
+      );
+    //   setBlogList((blog) =>
+    //     blog.filter((blg) =>
+    //       blg.title.toLowerCase().includes(search.toLowerCase())
+    //     )
+    //   );
     }
+  };
 
-    if (!blogList) return (
-        <p>Loading...</p>
-    )
+  if (!blogList) return <p>Loading...</p>;
 
-    return (
-        <>
-            {/* Filter */}
-            <div className='w-100 d-flex justify-content-center'>
-                <div className='d-flex gap-3 w-100 justify-content-center'>
-                    <input onChange={e => setSearch(e.target.value)} type="text" className="form-control" style={{ width: '50%' }} placeholder="Search by title" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
-                    <button onClick={onSearch} className="btn btn-primary px-5" type="submit"> Search </button>
-                </div>
-            </div>
+  return (
+    <>
+      {/* Filter */}
+      <div className="w-100 d-flex justify-content-center">
+        <div className="d-flex gap-3 w-100 justify-content-center">
+          <input
+            onChange={(e) => setSearch(e.target.value)}
+            type="text"
+            className="form-control"
+            style={{ width: "50%" }}
+            placeholder="Search by title"
+            aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-default"
+          />
+          <button
+            onClick={onSearch}
+            className="btn btn-primary px-5"
+            type="submit"
+          >
+            {" "}
+            Search{" "}
+          </button>
+        </div>
+      </div>
 
-            <div className='mt-1 p-3'>
-                <table className="table mt-3">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Title</th>
-                            <th className='text-center' scope="col">Date</th>
-                            <th className='text-center' scope="col">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            blogList.map((blog, index) => <BlogRow onDeleteBlogById={onDeleteBlogById} key={blog.id} blog={blog} onClickEditBlog={onClickEditBlog} stt={index + 1} />)
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </>
-
-    )
+      <div className="mt-1 p-3">
+        <table className="table mt-3">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Title</th>
+              <th className="text-center" scope="col">
+                Date
+              </th>
+              <th className="text-center" scope="col">
+                Action
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {blogList.map((blog, index) => (
+              <BlogRow
+                onDeleteBlogById={onDeleteBlogById}
+                key={blog.id}
+                blog={blog}
+                onClickEditBlog={onClickEditBlog}
+                stt={index + 1}
+              />
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </>
+  );
 }
 
-export default BlogTable
+export default BlogTable;

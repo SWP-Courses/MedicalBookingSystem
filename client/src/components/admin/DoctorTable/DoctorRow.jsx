@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import ROUTER from "~/api/adminRouter";
 import toastOption from "~/config/toast";
 import { AuthContext } from "~/context/authContext";
-import CofirmDeletePopup from "../BlogTable/CofirmDeletePopup";
+import CofirmDeletePopup from "./CofirmDeletePopup";
 
 function DoctorRow({ onDeleteBlogById, doctor, stt, onClickEditDoctor }) {
   const [deletePopup, setDeletePopup] = useState(false);
