@@ -1,118 +1,38 @@
-.schedule {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 50px;  
-    width: 100%;
-    flex-grow: 1;
+.doctor-schedule {
+    height: 60px;
+    border-top-right-radius: 8px;
+    border-top-left-radius: 8px;
+    margin-top: 58px;
+    position: relative;
 
-    .schedule__calender {
-        flex: 1;
-
-        .react-calendar {
-            box-shadow: 0px -1px 14px 3px rgb(161 180 197 / 59%);
-            border-radius: 8px;
-            border: none;
-            padding: 5px;
-            margin: auto auto;
-        }
-
-        .react-calendar__tile--active {
-            background: var(--secondary-color);
-            border-radius: 50%;
-            height: 50px;
-        }
-
-        .react-calendar__tile--now {
-            border-radius: 50%;
-        }
-
-        .react-calendar button:enabled:hover {
-            cursor: pointer;
-            border-radius: 50%; 
-        }
-
-        .react-calendar__month-view__days__day--weekend {
-            height: 50px;
-        }
-
-        .react-calendar__month-view__weekdays__weekday {
-            color: var(--primary-color);
-        }
-
-        abbr[title] {
-            text-decoration: none;
-        }
-    }
-
-    .schedule__calender-detail {
-        flex: 2;
-        // width: 100%;
-        position: relative;
-
-        table {
-            user-select: none;
-            width: 90%;
-        }
-
-        table td,
-        thead th {
-            padding: 8px;
-            border-top: 1px solid #ebebeb;
-        }
-
-        table tr:nth-child(even) {
-            background-color: #f9fafc;
-        }
-
-        table > thead > tr > th{
-            border-top: none;
-            font-weight: 500;
-            color: #828a9b;
-        }
-
-        table tbody {
-            height: 292px;
-        }
-
-        .no-date-available {
-            position: absolute;
-            display: block;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: #fdebdd;
-            padding: 8px 13px;
-            border-radius: 16px;
-            color: #d8a16d;
-        }
-    }
-
-    .schedule__calender-icon {
-        cursor: pointer;
-        font-size: 20px;
-    }
-
-    .btn-paid {
-        background: #ecfdf3;
-        color: #037b48;
-    }
-  
-    .btn-not-paid {
-        background: #fbdede;
-        color: #d56566;
-    }
-
-    .btn-not-paid,
-    .btn-paid {
-        height: 27px;
-        line-height: 27px;
-        padding: 0;
-        width: 98px;
-        display: block;
-        border-radius: 16px;
+    .separate {
+        width: 95%;
+        height: 1px;
+        background: #d5d5d5;    
+        margin: 15px auto;
     }
 }
+
+.nav {
+    margin-left: 33px;
+    padding-top: 10px;
+    position: absolute;
+
+
+    .nav__current-patient,
+    .nav__schedule-btn {
+        padding: 10px 17px;
+        font-weight: 500;
+        color: #828a9b;
+    }
+
+    .isActive {
+        background-color: var(--secondary-color);
+        color: #fff;
+    }
+
+    .nav__current-patient {
+        margin-left: 9px;
+    }
+}
+

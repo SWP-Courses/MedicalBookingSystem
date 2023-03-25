@@ -61,6 +61,7 @@ function App() {
           </AuthContextProvider>
         </StoreContextProvider>
       </BrowserRouter>
+      
     </CookiesProvider>
   );
 }

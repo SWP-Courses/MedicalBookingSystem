@@ -5,7 +5,7 @@
     align-items: center;
     margin-bottom: 5rem;
     font-size: 1.2rem;
-    gap: 5px;
+    gap: 25px;
 }
 
 .pagination .page-num {
@@ -22,7 +22,7 @@
 }
   
 .pagination .active {
-    background-color: var(--secondary-color);
+    background-color: var(--secondary-color)!important;
     color: #fff;
 }
   
@@ -39,4 +39,10 @@
 .disable {
     opacity: 0.3;
     pointer-events: none;
+}
+
+.next,
+.previous {
+    font-size: 30px;
+    color: var(--secondary-color)
 }

@@ -31,25 +31,27 @@ export default function Options() {
   
   return (
     <div className="topbarOptions">
-      <div className="optionItem-wrapper container-xl">
-        <div className="optionItem col-sm-2.5">
-          <Link to="/intro">Giới thiệu</Link>
-        </div>
-        <div className="optionItem col-sm-2.5">
-          <Link to="/doctors">Danh sách bác sĩ</Link>
-        </div>
-        <div className="optionItem col-sm-2.5">
-          <Link to="/blogs">
-            <span>Bài viết - Tin Tức</span>
-          </Link>
-        </div>
-        <div className="optionItem">
-          <span>
-            <FontAwesomeIcon className="social-icon" icon={faFacebookF} />
-          </span>
-          <span>
-            <FontAwesomeIcon className="social-icon youtube" icon={faYoutube} />
-          </span>
+      <div className="optionItem-wrapper container d-none d-sm-none d-md-none d-lg-block">
+        <div className="row justify-content-center text-center" style={{gap: '30px'}}>
+          <div className="col-lg-2   optionItem">
+            <Link to="/intro">Giới thiệu</Link>
+          </div>
+          <div className="col-lg-2 optionItem">
+            <Link to="/doctors">Danh sách bác sĩ</Link>
+          </div>
+          <div className="col-lg-2 optionItem">
+            <Link to="/blogs">
+              <span>Bài viết - Tin Tức</span>
+            </Link>
+          </div>
+          <div className="col-lg-2 optionItem">
+            <span>
+              <FontAwesomeIcon className="social-icon" icon={faFacebookF} />
+            </span>
+            <span>
+              <FontAwesomeIcon className="social-icon youtube" icon={faYoutube} />
+            </span>
+          </div>
         </div>
       </div>
     </div>

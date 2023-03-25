@@ -1,14 +1,15 @@
 import "./Doctor.scss";
-import {  useState } from "react";
+import {  useState, useContext } from "react";
+import { useLocation } from "react-router-dom";
 import MedicalHistory from "./History/MedicalHistory";
 import DoctorSchedule from "./DoctorSchedule/DoctorSchedule";
 
-import { useContext } from "react";
 import { AuthContext } from "~/context/authContext";
+import { DoctorContext } from "~/context/DoctorContext";
 import UserInfo from "~/components/user/userInfo/UserInfo";
 import { API_IMAGE_URL } from "~/api/Router";
 import Prescription from "./Prescription/Prescription";
-import { useLocation } from "react-router-dom";
+import { DoctorProvider } from "~/context/DoctorContext";
 
 const routers = [
   { path: "/doctor/profile", title: "Thông tin cá nhân" },
@@ -27,7 +28,6 @@ export default function DoctorLayout() {
   const [patient, setPatient] = useState([]);
   const [listUsers, setListUsers] = useState([]);
   
-
   const hanldeUploadImage = (e) => {
     if (e && e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
@@ -41,7 +41,8 @@ export default function DoctorLayout() {
   };
 
   return (
-    <div className="doctor">
+    <DoctorProvider>
+    <div className="container-fluid doctor bg-light">
       <div className="doctorSidebar">
         <div className="userInfo">
           <img
@@ -50,7 +51,7 @@ export default function DoctorLayout() {
           />
           <span className="doctorName">{currentUser?.fullname}</span>
         </div>
-        <div className="profileActions shadow-lg bg-body-tertiary rounded">
+        <div className="profileActions shadow">
           <h4
             className={userContent === "info" ? "action active" : "action"}
             onClick={() => {
@@ -89,14 +90,14 @@ export default function DoctorLayout() {
           </h4>
         </div>
       </div>
-      <div className="doctorContent shadow-lg bg-body-tertiary rounded">
+      <div className="doctorContent shadow">
         {userContent === "info" && (
           <UserInfo hanldeUploadImage={hanldeUploadImage} image={image} />
         )}
         {userContent === "prescription" && (
           <Prescription
             patient={patient}
-            listUsers={listUsers}
+            // listUsers={listUsers}
             currentUser={currentUser}
           />
         )}
@@ -104,7 +105,7 @@ export default function DoctorLayout() {
           <DoctorSchedule
             handleOptionClick={handleOptionClick}
             setPatient={setPatient}
-            setListUsers={setListUsers}
+            // setListUsers={setListUsers}
           />
         )}
         {userContent === "medicalHistory" && (
@@ -115,5 +116,7 @@ export default function DoctorLayout() {
         )}
       </div>
     </div>
+
+    </DoctorProvider>
   );
 }

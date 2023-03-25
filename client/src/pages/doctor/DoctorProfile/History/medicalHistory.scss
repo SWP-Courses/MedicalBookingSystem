@@ -1,39 +1,32 @@
 .medicalHistory {
-    padding: 20px 35px;
+  padding: 20px 35px;
 
-    >.title {
+  > .title {
+    font-size: 30px;
+    margin-bottom: 20px;
+  }
 
-        font-size: 30px;
-        margin-bottom: 20px;
-    }
-   
-    .ml-3 {
-        margin-left: 20px;
-    }
+  .ml-3 {
+    margin-left: 20px;
+  }
 
-    table {
-        user-select: none;
-        width: 90%;
-    }
+  table {
+    user-select: none;
+    width: 95%;
+    border: none!important;
+  }
 
-    table td,
-    thead th {
-        padding: 8px;
-        border-top: 1px solid #ebebeb;
-    }
+  table td,
+  thead th {
+    padding: 8px;
+  }
 
-    table tr:nth-child(even) {
-        background-color: #f9fafc;
-    }
+  table tr:nth-child(even) {
+    background-color: #f9fafc;
+  }
 
-    table > thead > tr > th{
-        border-top: none;
-        font-weight: 500;
-        color: #828a9b;
-    }
-
-    table tbody {
-        height: 292px;
-    }
+  table > thead > tr > th {
+    font-weight: 500;
+    color: #828a9b;
+  }
 }
-

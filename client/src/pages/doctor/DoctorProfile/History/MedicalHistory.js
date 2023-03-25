@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import _ from "lodash";
 
-
-import "./medicalHistory.scss";
+import "./medicalhistory.scss";
 import API_URL from "~/api/Router";
 import Search from "./search/Search";
 import { hanlderRequest} from "~/utils";
@@ -50,14 +48,9 @@ export default function MedicalHistory(props) {
     }
   };
 
-  console.log(">>> list prescription: ", listPrescription);
-  console.log('>>> userBooked: ', userBooked);
-  console.table(userBooked);
-
   return (
     <>
       <div className="medicalHistory">
-        {/* Search */}
         <Search setUserSearched={setUserSearched} />
         <table className="mt-3">
           <thead>

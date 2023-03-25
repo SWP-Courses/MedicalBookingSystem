@@ -10,7 +10,11 @@ import API_URL from "~/api/Router";
 import { StoreContext } from "~/context/storeContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBookmark } from "@fortawesome/free-regular-svg-icons";
-import { faBookmark as solid } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBookmark as solid,
+  faCalendarCheck,
+  faUserNurse,
+} from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 
@@ -110,7 +114,7 @@ function BlogDetail() {
 
   return (
     <div className="blog-detail-wrapper">
-      <div className="blog-detail-body">
+      <div className="container blog-detail-body">
         <div className="bread-crumb">
           <Breadcrumb>
             <Breadcrumb.Item href="#">
@@ -119,19 +123,21 @@ function BlogDetail() {
             <Breadcrumb.Item href="#">
               <Link to="/blogs">Blogs</Link>
             </Breadcrumb.Item>
-            <Breadcrumb.Item active>
-              <Link to="#">Blog Detail</Link>
+            <Breadcrumb.Item>
+              <Link to="#" style={{ color: "var(--secondary-color)" }}>
+                Blog Detail
+              </Link>
             </Breadcrumb.Item>
           </Breadcrumb>
         </div>
-        <div className="blog-content">
-          <div className="blog-wrapper">
+        <div className="row blog-content">
+          <div className="blog-wrapper  col-12 col-xl-9">
             {currentUser?.role !== "doctor" &&
               (!isSaved ? (
                 <OverlayTrigger
                   delay={{ hide: 450, show: 300 }}
                   overlay={(props) => <Tooltip {...props}>Lưu</Tooltip>}
-                  placement="bottom"
+                  placement="left"
                 >
                   <FontAwesomeIcon
                     icon={faBookmark}
@@ -167,35 +173,39 @@ function BlogDetail() {
               </div>
             </div>
           </div>
-          <div className="sub-infor">
-            <div className="doctor-info">
-              <div className="date-section">
-                <span className="post-date">Ngày đăng:</span>
-                <span className="date">{blog.createdAt}</span>
-              </div>
+          <div className="sub-infor col-5 col-sm-12 col-xl-3">
+            <div className="doctor-info shadow">
               <div className="author">
-                <span className="title">Thuộc Chủ Đề</span>
-              </div>
-              <div className="author">
-                <span className="title">Tác Giả</span>
+                <FontAwesomeIcon
+                  className="py-2"
+                  icon={faUserNurse}
+                  style={{ color: "var(--secondary-color)", fontSize: "30px" }}
+                />
                 <span className="doctor-name">{blog.author}</span>
+              </div>
+              <div className="date-section">
+                <FontAwesomeIcon
+                  icon={faCalendarCheck}
+                  style={{ color: "var(--secondary-color)" }}
+                />
+                <span className="date ml-3">{blog.createdAt}</span>
               </div>
             </div>
             <div className="more-blogs">
               <div className="single-blog">
-                <h4 className="single-blog-title">Có thể bạn quan tâm</h4>
+                <h4 className="single-blog-title text-muted py-2">Có thể bạn quan tâm</h4>
                 {sameContent.map((item) => {
                   return (
                     <div className="sub-blog" key={uuidv4()}>
                       <Link to={`/blogs/${blog._id}`}>
-                        <img className="blog-sub-image" src={item.image} />
+                        <img className="blog-sub-image " src={item.image} />
                       </Link>
                       <div className="blog-sub-title ">
                         <Link
                           to={`/blogs/${blog._id}`}
                           className="blog-sub-title-link line-clamp line-4"
                         >
-                          {item.subTitle}
+                          {item.description}
                         </Link>
                       </div>
                     </div>
