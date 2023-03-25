@@ -22,10 +22,7 @@ function EditServices() {
   const listServiesRef = useRef();
 
   useEffect(() => {
-    const cloneUserBooked = cloneData(context.user);
-    if (!_.isEmpty(cloneUserBooked)) {
-      setUserServices(cloneUserBooked.services);
-    }
+    setUserServices(context.user.services);
   }, [context.user]);
 
   useEffect(() => {
@@ -49,32 +46,46 @@ function EditServices() {
     const cloneUserServices = cloneData(userServices);
     if (!_.isEmpty(cloneUserServices)) {
       const service = cloneUserServices.find((item) => item.service_id === id);
-      service.quantity = +event.target.value;
-      // if (service.quantity < 0 || service.quantity > 32) {
-      //   serviceQty.current.className = "form-control is-invalid";
+      // if (+event.target.value <= 1) {
+      //   toast.error("min is 1");
       //   return;
-      // }else {
-      //   serviceQty.current.className = "form-control";
       // }
+      if (service.quantity < 0 || service.quantity > 32) {
+        serviceQty.current.className = "form-control is-invalid";
+        return;
+      }else {
+        serviceQty.current.className = "form-control";
+      }
+      service.quantity = +event.target.value;
     }
     setUserServices(cloneUserServices);
   };
 
-  const hanldeOnchangeService = (event, id) => {
+  const hanldeOnchangeService = (event, uuid, service_id) => {
     const cloneUserServices = cloneData(userServices);
-    // find service only match the unique_id
-    const extraService = cloneUserServices.find((item) => {
-      return item.unique_id === id;
-    });
-    // if (extraService === cloneUserServices[0]) return;
-    if (validateDuplicateService(event.target.value)) {
-      extraService.service_id = "";
-      setUserServices(cloneUserServices);
-      return;
+
+    // onchange on booked service
+    if (service_id) {
+      const bookedServices = cloneUserServices.find((item) => {
+        return item.service_id === service_id;
+      });
+      console.log(">> find service: ", bookedServices);
+      bookedServices.service_id = event.target.value;
     }
-    extraService.service_id = event.target.value;
-    console.log(">>> check userServices: ", userServices);
-    // select duplicate service
+
+    // onchange on addition services
+    if (uuid) {
+      const extraService = cloneUserServices.find((item) => {
+        return item.unique_id === uuid;
+      });
+      if (validateDuplicateService(event.target.value)) {
+        extraService.service_id = "";
+        setUserServices(cloneUserServices);
+        return;
+      }
+      extraService.service_id = event.target.value;
+    }
+
     setUserServices(cloneUserServices);
   };
 
@@ -101,7 +112,7 @@ function EditServices() {
 
     // update add extra service
     for (const extraService of userServices) {
-      if (extraService.unique_id) {
+      if (extraService) {
         console.log(">> extra service: ", extraService);
         if (extraService.quantity === "" || extraService.service_id === "") {
           toast.error("chưa điền dịch vụ mới thêm");
@@ -152,7 +163,7 @@ function EditServices() {
     setUserServices(removedEmptyValue);
   };
 
-  console.log('>>> log user Update: ', userServices);
+  console.log(">>> log edit service: ", userServices);
   return (
     <>
       {userServices?.map((service, index) => {
@@ -167,7 +178,11 @@ function EditServices() {
                 className="form-select"
                 value={service.service_id}
                 onChange={(event) =>
-                  hanldeOnchangeService(event, service.unique_id)
+                  hanldeOnchangeService(
+                    event,
+                    service.unique_id,
+                    service.service_id
+                  )
                 }
                 name="select-service"
                 ref={listServiesRef}
@@ -223,7 +238,7 @@ function EditServices() {
           </div>
         );
       })}
-      {Object.keys(context.user).length > 0 && userServices.length > 0 &&  (
+      {Object.keys(context.user).length > 0 && userServices.length > 0 && (
         <div className="footerSchedule">
           <button
             className="cancle-btn"

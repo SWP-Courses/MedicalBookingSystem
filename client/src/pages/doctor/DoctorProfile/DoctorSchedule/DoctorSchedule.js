@@ -32,7 +32,6 @@ function DoctorSchedule(props) {
         </button>
       </header>
       <div className="doctor-schedule">
-        {/* <div className="separate"></div> */}
         {activeSelect === "schedule" && (
           <TableSchedule
             setActiveSelect={setActiveSelect}

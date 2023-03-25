@@ -18,7 +18,7 @@ export default function AuthContextProvider({ children }) {
     JSON.parse(localStorage.getItem("user") || null)
   );
 
-  console.log(beforeLogin);
+  // console.log(beforeLogin);
 
   // Side Effects
 
