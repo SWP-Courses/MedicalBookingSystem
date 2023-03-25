@@ -8,7 +8,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import "./TableSchedule.scss";
 import "react-calendar/dist/Calendar.css";
-import { formatDate } from "~/utils";
 import _ from "lodash";
 import { formatSlot } from "~/utils";
 import { DoctorContext } from "~/context/DoctorContext";

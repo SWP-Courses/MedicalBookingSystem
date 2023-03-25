@@ -16,9 +16,9 @@ function AccountItem({data, getUser}) {
             <span className='info__name'>{data.fullname}</span>
             <p className='info__email'>{data.email}</p>
         </div>    
-        <div className="icon">
+        {/* <div className="icon">
             <FontAwesomeIcon icon={faAngleRight} style={{color: '#177dda'}} className="icon__angle"/>
-        </div>
+        </div> */}
     </div>
   )
 }

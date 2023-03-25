@@ -4,18 +4,20 @@ import axios from "axios";
 import "./medicalhistory.scss";
 import API_URL from "~/api/Router";
 import Search from "./search/Search";
-import { hanlderRequest} from "~/utils";
+import { hanlderRequest } from "~/utils";
 import ModalPrescription from "./ModalPrescription/ModalPrescription";
+import { formatDateFns } from "~/utils";
+import { formatSlot } from "~/utils";
 
 export default function MedicalHistory(props) {
-  const { setUserContent, handleOptionClick, patient } = props;
   const [userSearched, setUserSearched] = useState([]);
-  const [userBooked, setUserBooked] = useState('');
-  const [listPrescription, setListPrescription] = useState('');
+  const [userBooked, setUserBooked] = useState("");
+  const [listPrescription, setListPrescription] = useState("");
   const [modalShow, setModalShow] = useState(false);
 
   useEffect(() => {
-    if (Object.keys(userSearched).length) {  // check object is Empty
+    if (Object.keys(userSearched).length) {
+      // check object is Empty
       getBookedUser();
     }
   }, [userSearched]);
@@ -31,15 +33,15 @@ export default function MedicalHistory(props) {
       axios.get(API_URL + `/bookedservices/history/${userSearched._id}`)
     );
     if (res?.data) {
-      setUserBooked(res.data?.[0]);
+      setUserBooked(res.data);
     } else {
       console.log(`%c ${error.message}`, "color: red");
     }
   };
 
-  const getPrescriptions = async () => {
+  const getPrescriptions = async (id) => {
     const [error, res] = await hanlderRequest(
-      axios.get(API_URL + `/prescriptions/${userBooked.drugbill_id}`)
+      axios.get(API_URL + `/prescriptions/${id}`)
     );
     if (res?.data) {
       setListPrescription(res.data);
@@ -48,6 +50,14 @@ export default function MedicalHistory(props) {
     }
   };
 
+  const hanldeShowPrescription = (id) => {
+    if(id) {
+      setModalShow(true)
+      getPrescriptions(id)
+    }
+  }
+
+  console.log(">> userSearched: ", userBooked);
   return (
     <>
       <div className="medicalHistory">
@@ -57,30 +67,38 @@ export default function MedicalHistory(props) {
             <tr>
               <th>Tên</th>
               <th>Ngày Khám</th>
+              <th>Khung giờ</th>
               <th>Dịch vụ đã khám</th>
               <th>Thuốc đã kê</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>
-              {userBooked && userBooked?.customer[0]?.fullname}
-              </td>
-              <td>{userBooked?.date}</td>
-              <td>
-                {userBooked?.services?.map((service) => {
-                  return <p>{service.name}</p>;
-                })}
-              </td>
-              <td>
-                { 
-                  listPrescription &&
-                  <button className="btn btn-success" onClick={() => setModalShow(true)}>
-                    Chi tiết
-                  </button>
-                }
-              </td>
-            </tr>
+          <tbody> 
+            {userBooked &&
+              userBooked.length > 0 &&
+              userBooked.map((item) => {
+                return (
+                  <tr>
+                    <td>{item && item?.customer[0]?.fullname}</td>
+                    <td>{formatDateFns(item?.date)}</td>
+                    <td>{formatSlot(item?.slot_time)}</td>
+                    <td>
+                      {item?.services?.map((service) => {
+                        return <p>{service.name}</p>;
+                      })}
+                    </td>
+                    <td>
+                      {item.drugbill_id && (
+                        <button
+                          className="btn btn-success"
+                          onClick={() => hanldeShowPrescription(item.drugbill_id)}
+                        >
+                          Chi tiết
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                );
+              })}
           </tbody>
         </table>
       </div>
