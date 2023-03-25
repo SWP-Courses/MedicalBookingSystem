@@ -26,13 +26,14 @@ const serviceRouter = require("./routes/serviceRouter");
 const bookingRouter = require("./routes/bookingRouter");
 const bookedServicesRouter = require("./routes/bookedServiceRouter");
 const imageRouter = require("./routes/imageRouter");
-const roomRouter = require('./routes/roomRouter');
+const roomRouter = require("./routes/roomRouter");
 const Slot = require("./models/Slot");
-const absentRouter = require('./routes/absentRouter')
+const absentRouter = require("./routes/absentRouter");
 
 const socket = require("socket.io");
-const chatRouter = require('./routes/chatRouter');
+const chatRouter = require("./routes/chatRouter");
 const dashBoardRouter = require("./routes/dashboardRouter");
+
 
 var app = express();
 
@@ -47,7 +48,6 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
-
 
 app.use(logger("dev"));
 app.use(
@@ -74,6 +74,8 @@ app.use(express.static(path.join(__dirname, "public")));
 // connect to database
 connectToDb();
 
+// console.log(refreshTokens);
+
 /* baseURL */
 //  Khoa
 app.use("/api/", indexRouter);
@@ -90,11 +92,10 @@ app.use("/api/medicine", medicineRouter);
 app.use("/api/blogs", blogRouter);
 app.use("/api/category", categoryRouter);
 app.use("/api/services", serviceRouter);
-app.use('/image', imageRouter);
-app.use('/api/room', roomRouter);
-app.use('/api/message', chatRouter);
-app.use('/api/dashboard', dashBoardRouter);
-
+app.use("/image", imageRouter);
+app.use("/api/room", roomRouter);
+app.use("/api/message", chatRouter);
+app.use("/api/dashboard", dashBoardRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, err, next) {
@@ -118,7 +119,7 @@ const io = require("socket.io")(httpServer, {
   cors: {
     origin: ["http://localhost:3000", "http://localhost:3001"],
     Credential: true,
-  }
+  },
 });
 
 httpServer.listen(8080);
@@ -131,14 +132,13 @@ io.on("connection", (socket) => {
   const newConnectUserId = socket.handshake.query.userId;
   onlineUser.set(newConnectUserId, socket.id);
 
-  socket.on("send_message", messageInfo => {
+  socket.on("send_message", (messageInfo) => {
     console.log(messageInfo);
     const recipientSocketId = onlineUser.get(messageInfo.recipient_id);
     if (recipientSocketId) {
       io.to(recipientSocketId).emit("message_recieve", messageInfo);
     }
-  })
-
+  });
 });
 
 module.exports = app;

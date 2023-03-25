@@ -40,6 +40,8 @@ function Chat() {
             socket.on("message_recieve", newMessage => {
                 setMessageList(message => [...message, newMessage]);
                 setNotification(true);
+                console.log(newMessage)
+
             });
         }
     }, [socket])

@@ -6,6 +6,7 @@ const { startOfDay, endOfDay } = require("date-fns");
 const Absent = require("../models/Absent");
 const Slot = require("../models/Slot");
 const User = require("../models/User");
+const service = require("../models/service");
 
 const mergeService = async (bookedService) => {
   return await Promise.all(
@@ -153,7 +154,20 @@ const getIncomingBookedByUser = asyncHandler(async (req, res, next) => {
         from: "users",
         localField: "doctor_id",
         foreignField: "_id",
-        pipeline: [{ $project: { _id: 1, fullname: 1 } }],
+        pipeline: [
+          { $project: { _id: 1, fullname: 1, room_id: 1 } },
+
+          {
+            $lookup: {
+              from: "rooms",
+              localField: "room_id",
+              foreignField: "_id",
+              as: "room",
+            },
+          },
+          { $unwind: "$room" },
+          { $project: { _id: 1, fullname: 1, "room.room": 1 } },
+        ],
         as: "doctor",
       },
     },
@@ -183,7 +197,7 @@ const bookService = asyncHandler(async (req, res, next) => {
     if (!patient) return res.status(404).json("Người dùng không tồn tại");
 
     const doctor = await User.findById(doctor_id);
-    if (!doctor) return res.status(404).json("Bác sĩ không tồn tạii45f");
+    if (!doctor) return res.status(404).json("Bác sĩ không tồn tại");
 
     // check đủ fields
     if (!user_id || !doctor_id || !date || !slot_time || !service_id) {
@@ -233,8 +247,22 @@ const bookService = asyncHandler(async (req, res, next) => {
       doctor_id: doctor_id,
       slot_time: slot_time,
     });
+
     if (existBservice)
       return res.status(409).json("This slot is already booked");
+
+    // nếu 1 user đã đặt slot đó trong ngày thì không cho book slot đó với doctor khác
+    const existSlotInDayOfUser = await BookedService.findOne({
+      date: {
+        $gte: startOfDay(new Date(date)),
+        $lte: endOfDay(new Date(date)),
+      },
+      user_id: user_id,
+      slot_time: slot_time,
+    });
+
+    if (existSlotInDayOfUser)
+      return res.status(409).json("You booked this slot today");
 
     const bService = new BookedService({
       user_id,
@@ -294,6 +322,26 @@ const updateAddedService = asyncHandler(async (req, res, next) => {
   res.status(200).json(result);
 });
 
+const replaceServicesListInBooked = asyncHandler(async (req, res, next) => {
+  const { newServiceList } = req.body;
+  try {
+    const mapNewServiceList = newServiceList.map(service => {
+    return {quantity: service.quantity, service_id: mongoose.Types.ObjectId(service.service_id)}
+    })
+
+    const result = await BookedService.findOneAndUpdate(
+      {_id: req.params.id}, // the ID of the document to update
+      { $set: { services: mapNewServiceList } }, // the update object
+      { new: true }, // options object to return the updated document
+    );
+
+    res.status(200).json(result);
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).json(error);
+  }
+});
+
 const completeBooked = asyncHandler(async (req, res, next) => {
   const booked = await BookedService.findById(req.params.id);
 
@@ -338,6 +386,7 @@ const getAllBookedService = asyncHandler(async (req, res, next) => {
         services: obj.services,
         isPaid: obj.isPaid,
         total_price: obj.total_price,
+        billNumber: obj.billNumber,
       };
     })
   );
@@ -395,8 +444,6 @@ const getBookedServiceById = asyncHandler(async (req, res, next) => {
 //@access public
 const paymentBookedServices = asyncHandler(async (req, res, next) => {
   try {
-    const { payCode } = req.body;
-
     const paidBservice = await BookedService.findOne({
       _id: mongoose.Types.ObjectId(req.params.id),
       date: {
@@ -404,6 +451,7 @@ const paymentBookedServices = asyncHandler(async (req, res, next) => {
         $lte: endOfDay(new Date()),
       },
     });
+
     if (!paidBservice)
       return res
         .status(405)
@@ -412,18 +460,18 @@ const paymentBookedServices = asyncHandler(async (req, res, next) => {
     if (new Date().getHours() < paidBservice.slot_time)
       return res.status(405).send("Không được thanh toán cho slot chưa khám!");
 
-    if (payCode != paidBservice.payCode)
-      return res.status(400).send("Mã thanh toán không hợp lệ!");
+    // if (payCode != paidBservice.payCode)
+    //   return res.status(400).send("Mã thanh toán không hợp lệ!");
 
     const total_price = req.body.total_price;
-    const isPaid = req.body.isPaid;
+    // const isPaid = req.body.isPaid;
     // console.log(req.body)
 
     const completeBooked = await BookedService.findByIdAndUpdate(
       req.params.id,
       {
         total_price,
-        isPaid,
+        isPaid: true,
       },
       { new: true }
     );
@@ -448,4 +496,5 @@ module.exports = {
   getAllBookedService,
   getBookedServiceById,
   paymentBookedServices,
+  replaceServicesListInBooked
 };

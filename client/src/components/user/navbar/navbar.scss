@@ -160,9 +160,11 @@
         }
 
         .drop-down__item {
-          text-align: center;
-          display: block;
-          /* padding: 12px; */
+          display: flex;
+          justify-content: center;
+          align-items: center;  
+          padding: 0px 12px;
+          height: 50px;
           font-size: 18px;
           cursor: pointer;
           height: 50px;

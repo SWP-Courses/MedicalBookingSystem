@@ -108,7 +108,8 @@ export default function MedicalHistory() {
       {
         name: "Thời gian",
         selector: (row) => formatSlot(row.slot_time),
-        sortable:true
+        sortable: true,
+        responsive: "stacked",
       },
       {
         name: "Bác sĩ",
@@ -117,6 +118,7 @@ export default function MedicalHistory() {
       {
         name: "Chi phí",
         selector: (row) => row.total_price + " VND",
+        responsive: "stacked",
       },
       {
         name: "Xem đơn thuốc",
@@ -152,7 +154,7 @@ export default function MedicalHistory() {
           <FontAwesomeIcon icon={faSearch} />
         </InputGroup.Text>
         <Form.Control
-          placeholder="Tiêu đề"
+          placeholder="Tên bác sĩ"
           aria-label="Username"
           aria-describedby="basic-addon1"
           value={filterText}
@@ -162,8 +164,25 @@ export default function MedicalHistory() {
       <DataTable
         title="Lịch sử khám"
         columns={columns}
-        data={history}
+        data={history?.filter((item) => {
+          if (filterText === "") {
+            return true;
+          } else if (
+            item.doctor[0].fullname
+              .toLowerCase()
+              .normalize("NFD")
+              .replace(/[\u0300-\u036f]/g, "")
+              .includes(filterText.toLowerCase())
+          ) {
+            return true;
+          }
+          return false;
+        })}
         pagination
+        responsive={true} // Enable responsive layout
+        responsiveSm={true} // Enable responsive layout for small screens
+        responsiveMd={true} // Enable responsive layout for medium screens
+        responsiveLg={true} // Enable responsive layout for large screens
         // defaultSortAsc="false"
         // defaultSortFieldId="date"
       />

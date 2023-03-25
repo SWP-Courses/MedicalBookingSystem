@@ -5,6 +5,7 @@ import { useLocation, useNavigate, Link } from "react-router-dom";
 import ReactPaginate from "react-paginate";
 import "./Pagination.scss"; 
 import parse from "html-react-parser";
+import { format } from "date-fns";
 
 function Pagination(props) {
   const { data } = props;

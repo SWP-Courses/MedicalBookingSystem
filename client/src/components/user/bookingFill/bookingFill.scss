@@ -6,6 +6,7 @@
     align-items: center;
     gap: 20px;
     flex: 1;
+    text-align: center;
 
     .calendar-booking{
       border: 2px solid #70a3d6;
@@ -60,6 +61,7 @@
     > .time {
       display: flex;
       flex-direction: column;
+      min-width: 50%;
 
       .groupTime {
         margin-top: 10px;
@@ -78,6 +80,7 @@
           .time-text-item {
             padding: 5px 15px;
             width: 90%;
+            min-width: 80px;
             border-radius: 5px;
             background-color: lightgrey;
             border: 2px solid transparent;

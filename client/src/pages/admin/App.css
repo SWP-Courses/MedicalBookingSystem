@@ -28,6 +28,23 @@
   color: #61dafb;
 }
 
+.message {
+  display: flex;
+  flex-direction: column;
+  padding: 5px 10px !important;
+  justify-content: space-between;
+}
+
+.message p {
+  margin: 0 !important;
+  font-size: 12px
+}
+
+.message h6 {
+  margin: 0 !important;
+  font-size: 18px
+}
+
 .message-client {
   max-width: 50%;
   width: fit-content;

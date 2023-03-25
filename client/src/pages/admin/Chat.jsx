@@ -46,7 +46,8 @@ const Chat = () => {
     const data = {
       message: message.current.value,
       sender_id: "admin",
-      recipient_id: conversationID
+      recipient_id: conversationID,
+      create_at: new Date()
     }
     setMessageList(message => [...message, data]);
     message.current.value = "";
@@ -100,6 +101,7 @@ const Chat = () => {
       socket.on("message_recieve", newMessage => {
         addNewMessageUserId(newMessage.sender_id);
         setNewMessage(newMessage);
+        console.log(newMessage)
       });
     }
   }, [socket]);

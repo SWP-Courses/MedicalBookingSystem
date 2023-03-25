@@ -1,6 +1,12 @@
 import axios from "axios";
 import { useContext, useEffect, useMemo, useState } from "react";
-import { Button, Form, InputGroup } from "react-bootstrap";
+import {
+  Button,
+  Form,
+  InputGroup,
+  OverlayTrigger,
+  Tooltip,
+} from "react-bootstrap";
 import DataTable, { filter } from "react-data-table-component";
 import { Link } from "react-router-dom";
 import API_URL from "~/api/Router";
@@ -9,6 +15,7 @@ import "./blogsSaved.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
+import { format } from "date-fns";
 
 export default function BlogsSaved() {
   const [blogsSaved, setBlogSaved] = useState();
@@ -69,11 +76,10 @@ export default function BlogsSaved() {
         selector: (row) => row.title,
       },
       {
-        id:'date',
+        id: "date",
         name: "Ngày đăng",
-        selector: (row) => row.createdAt,
+        selector: (row) => format(new Date(row.created_at), "dd/MM/yyyy"),
         sortable: true,
-      
       },
       {
         name: "Tác giả",
@@ -82,19 +88,25 @@ export default function BlogsSaved() {
       {
         name: "Thao tác",
         selector: (row) => (
-          <Button
-            variant="outline-danger"
-            size="sm"
-            className="btn-block mt-auto"
-            onClick={() => handleUnSaveBlogClick(row._id)}
+          <OverlayTrigger
+            placement="right"
+            delay={{ show: 250, hide: 300 }}
+            overlay={<Tooltip id="button-tooltip">Bỏ lưu</Tooltip>}
           >
-            &#x274c;
-          </Button>
+            <Button
+              variant="outline-danger"
+              size="sm"
+              className="btn-block mt-auto"
+              onClick={() => handleUnSaveBlogClick(row._id)}
+            >
+              &#x274c;
+            </Button>
+          </OverlayTrigger>
         ),
       },
     ];
   }, [currentUser._id]);
-  
+
   console.log(blogsSaved);
 
   return (

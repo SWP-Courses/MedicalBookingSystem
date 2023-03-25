@@ -104,7 +104,7 @@ const Service = () => {
       if (result.status === 200) {
         const newService = result.data.services;
         setServiceList(list => updateList(newService, list));
-        toast.success("Susscess!", toastOption);
+        toast.success("Success!", toastOption);
       }
 
       // Reset input

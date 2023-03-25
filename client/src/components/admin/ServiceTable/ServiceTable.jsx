@@ -1,73 +1,100 @@
-import React, { useEffect, useState } from 'react'
-import ServiceRow from './ServiceRow'
+import React, { useEffect, useState } from "react";
+import ServiceRow from "./ServiceRow";
 
 function ServiceTable({ services, onClickEditService, onDeleteBlogById }) {
-    const [serviceList, setServiceList] = useState(services);
+  const [serviceList, setServiceList] = useState(services);
+  const [search, setSearch] = useState("");
 
-    // console.log(services);
+  // console.log(services);
 
-    useEffect(() => {
-        if (!services) return;
-        setServiceList(services);
-    }, [services])
+  useEffect(() => {
+    if (!services) return;
+    setServiceList(services);
+  }, [services]);
 
-    if (!serviceList) return (
-        <p>Loading...</p>
-    )
+  useEffect(() => {
+    if (search.length > 3) return;
+    setServiceList(services);
+  }, [search]);
 
-    return (
-        <>
-            {/* Filter */}
-            <div className='w-100 d-flex justify-content-between'>
-                <select className="form-select filter-select" style={{ width: "13%" }} aria-label="Default select example">
-                    <option defaultValue value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                </select>
+  const onSearch = () => {
+    setServiceList((services) =>
+      services?.filter((item) => {
+        if (
+          item.name
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .includes(search.toLowerCase())
+        ) {
+          return true;
+        }
+        return false;
+      })
+    );
+    // if (search.length > 3) {
+    //     setServiceList(service => service.filter(ser => ser.name.toLowerCase().includes(search.toLowerCase())))
+    // }
+  };
 
-                <select className="form-select filter-select" style={{ width: "13%" }} aria-label="Default select example">
-                    <option defaultValue value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                </select>
+  if (!serviceList) return <p>Loading...</p>;
 
-                <select className="form-select filter-select" style={{ width: "13%" }} aria-label="Default select example">
-                    <option defaultValue value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                </select>
+  return (
+    <>
+      {/* Filter */}
+      <div className="w-100 d-flex justify-content-center">
+        <div className="d-flex gap-3 w-100 justify-content-center">
+          <input
+            onChange={(e) => setSearch(e.target.value)}
+            type="text"
+            className="form-control"
+            style={{ width: "50%" }}
+            placeholder="Search by title"
+            aria-label="Sizing example input"
+            aria-describedby="inputGroup-sizing-default"
+          />
+          <button
+            onClick={onSearch}
+            className="btn btn-primary px-5"
+            type="submit"
+          >
+            {" "}
+            Search{" "}
+          </button>
+        </div>
+      </div>
 
-                <select className="form-select filter-select" style={{ width: "13%" }} aria-label="Default select example">
-                    <option defaultValue value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                </select>
-
-                <input type="text" className="form-control" style={{ width: "30%" }} placeholder="Search by title" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
-                <button className="btn btn-primary" type="submit" style={{ width: "10%" }}> Apply </button>
-            </div>
-
-            <div className='mt-1 p-3'>
-                <table className="table border mt-3">
-                    <thead>
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Name</th>
-                            <th className='text-center' scope="col">Price</th>
-                            <th className='text-end' scope="col">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            serviceList ?
-                                serviceList.map((service, index) => <ServiceRow onDeleteBlogById={onDeleteBlogById} onClickEditService={onClickEditService} key={service.id} service={service} stt={index + 1} />)
-                                : undefined
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </>
-    )
+      <div className="mt-1 p-3">
+        <table className="table mt-3">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Name</th>
+              <th className="text-center" scope="col">
+                Price
+              </th>
+              <th className="text-end" scope="col">
+                Action
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {serviceList
+              ? serviceList.map((service, index) => (
+                  <ServiceRow
+                    onDeleteBlogById={onDeleteBlogById}
+                    onClickEditService={onClickEditService}
+                    key={service.id}
+                    service={service}
+                    stt={index + 1}
+                  />
+                ))
+              : undefined}
+          </tbody>
+        </table>
+      </div>
+    </>
+  );
 }
 
-export default ServiceTable
+export default ServiceTable;

@@ -12,6 +12,7 @@ const {
   getBookedServiceById,
   paymentBookedServices,
   getHistoryByUserId,
+  replaceServicesListInBooked,
 } = require("../controllers/bookedServiceController");
 const bookedServicesRouter = express.Router();
 
@@ -41,7 +42,7 @@ bookedServicesRouter.route("/payment/:id").patch(paymentBookedServices);
 bookedServicesRouter
   .route("/:id")
   .get(getBookedServiceById)
-  .put(addExtraService)
+  .put(replaceServicesListInBooked)
   .patch(completeBooked)
   .delete(cancelBookedService);
 

@@ -1,9 +1,12 @@
 import React from 'react'
+import dayjs from 'dayjs';
+import "./style.css";
 
-function Message({ msg, sender }) {
+function Message({ msg, sender, create_at }) {
     return (
-        <div className={sender !== 'admin' ? 'message-client' : 'message-admin'}>
-            {msg}
+        <div className={sender !== 'admin' ? 'message-client message' : 'message-admin message'}>
+            <h6>{msg}</h6>
+            <p>{dayjs(create_at).format('HH:mm DD/MM/YYYY ')}</p>
         </div>
     )
 }

@@ -1,5 +1,6 @@
 import { faEnvelope, faMailForward } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Link } from "react-router-dom";
 import "./footer.scss";
 
 export default function Footer() {
@@ -18,15 +19,20 @@ export default function Footer() {
         </div>
       </div> */}
       {/* <div className="devideLine d-none d-sm-block"></div> */}
+
+      <div className="footerContact">
+        <h1>THÔNG TIN LIÊN HỆ</h1>
+        <p>Hotline: 0912836129</p>
+        <p>Email: nhakhoasunsmile@gmail.com</p>
+        <p>Địa điểm: Thành phố Thủ Đức, Thành phố Hồ Chí Minh, Việt Nam</p>
+      </div>
       <div className="infoTitle">
         <div className="colItem">
           <h1>VỀ CHÚNG TÔI</h1>
           <ul>
-            <li>Danh sách bác sĩ</li>
-            <li>Bài viết</li>
-            <li>Giới thiệu</li>
-            <li>...</li>
-            <li>...</li>
+            <Link to="/doctors">Đội ngũ bác sĩ</Link>
+            <Link to="/blogs">Bài viết</Link>
+            <Link to="/intro">Giới thiệu</Link>
           </ul>
         </div>
         <div className="colItem">

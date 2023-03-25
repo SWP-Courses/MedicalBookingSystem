@@ -84,7 +84,7 @@ function DoughnutChart() {
                         dataService.map(service =>
                             <tr>
                                 <th>{service.name}</th>
-                                <th>{service.quantity * 100 / total}%</th>
+                                <th>{ (service.quantity * 100 / total).toFixed(2)}%</th>
                             </tr>
                         )
                     }
