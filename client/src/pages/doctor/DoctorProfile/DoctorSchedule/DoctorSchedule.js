@@ -43,7 +43,6 @@ function DoctorSchedule(props) {
         {activeSelect === "patient" && (
           <CurrentPatient
             // setPatient={setPatient}
-            // fetchSchedule={fetchSchedule}
             handleOptionClick={handleOptionClick}
           />
         )}

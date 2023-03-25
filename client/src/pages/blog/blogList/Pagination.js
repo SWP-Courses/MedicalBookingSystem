@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import DOMPurify from "dompurify";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import ReactPaginate from "react-paginate";
-import "./Pagination.scss";
+import "./Pagination.scss"; 
 import parse from "html-react-parser";
 
 function Pagination(props) {
@@ -48,8 +48,6 @@ function Pagination(props) {
       <div className="images">
         {currentItems.map((blog, index) => {
           const imgString = blog.content.match(/<img([\w\W]+?)>/g);
-          const content = blog.content.replace(/<img[^>]*>/g, "");
-
           return (
             <div key={index} className="blog-item">
               <Link to={`/blogs/${blog._id}`}>
@@ -75,9 +73,9 @@ function Pagination(props) {
                   }
                 </p>
                 <div className="blog-item__desc d-sm-none d-md-block">
-                  <span>Tác giả</span> <strong style={{marginLeft: '5px'}}>{blog?.author}</strong>
+                  <span>Tác giả</span> <strong style={{marginLeft: '5px', opacity: 0.7}}>{blog?.author}</strong>
                   <span className="separate-line"></span>
-                  <span>{blog?.createdAt}</span>
+                  <span>{new Date(blog?.created_at.split('T')[0]).toLocaleString()}</span>
                 </div>
               </div>
             </div>

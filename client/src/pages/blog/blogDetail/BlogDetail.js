@@ -17,6 +17,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { toast } from "react-toastify";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
+import parse from "html-react-parser";
 
 function BlogDetail() {
   const { setRoutingHistory } = useContext(StoreContext);
@@ -112,6 +113,7 @@ function BlogDetail() {
     }
   };
 
+  console.log('>> check same content: ', sameContent);
   return (
     <div className="blog-detail-wrapper">
       <div className="container blog-detail-body">
@@ -188,17 +190,18 @@ function BlogDetail() {
                   icon={faCalendarCheck}
                   style={{ color: "var(--secondary-color)" }}
                 />
-                <span className="date ml-3">{blog.createdAt}</span>
+                <span className="date ml-3">{new Date(blog.created_at).toLocaleString()}</span>
               </div>
             </div>
             <div className="more-blogs">
               <div className="single-blog">
                 <h4 className="single-blog-title text-muted py-2">Có thể bạn quan tâm</h4>
-                {sameContent.map((item) => {
+                {sameContent.length > 0 && sameContent.map((item) => {
+                  const imgString = item.content.match(/<img([\w\W]+?)>/g);
                   return (
                     <div className="sub-blog" key={uuidv4()}>
                       <Link to={`/blogs/${blog._id}`}>
-                        <img className="blog-sub-image " src={item.image} />
+                        {imgString ? parse(imgString[0]) : undefined}
                       </Link>
                       <div className="blog-sub-title ">
                         <Link

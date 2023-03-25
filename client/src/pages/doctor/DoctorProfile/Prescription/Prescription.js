@@ -13,7 +13,7 @@ import { toast } from "react-toastify";
 import { DoctorContext } from "~/context/DoctorContext";
 
 function Prescription(props) {
-  const { patient, listUsers, currentUser } = props;
+  const { currentUser } = props;
   const context = useContext(DoctorContext);
   const [drugsOption, setDrugsOption] = useState([]);
   const [desease, setDesease] = useState("");
@@ -57,15 +57,6 @@ function Prescription(props) {
       console.log(error);
     }
   }, []);
-
-  useEffect(() => {
-    if (!_.isEmpty(patient)) {
-      // setUser(() => {
-      //   return patient[0];
-      // })
-      setUser(patient);
-    }
-  }, [patient]);
 
   useEffect(() => {
     if (context.currentschedule.length > 0) {
@@ -165,10 +156,7 @@ function Prescription(props) {
     }
   };
 
-  const hanldeGetOptions = (item) => {
-    console.log(item);
-  }
-
+  console.log('>> check user: ', user);
   return (
     <div className="wrapper-prescription">
       <div className="user">
@@ -179,7 +167,7 @@ function Prescription(props) {
             classNamePrefix="select"
             name="color"
             options={options}
-            onClick={() => hanldeGetOptions(options)}
+            onChange={setUser}
           />
         </div>
         <div className="user-detail">
@@ -187,6 +175,7 @@ function Prescription(props) {
             <span className="title">Bệnh Nhân: </span>
             <span>
               {user?.customer?.length > 0 ? user?.customer[0]?.fullname : ""}
+              {}
             </span>
           </div>
           <div className="age">

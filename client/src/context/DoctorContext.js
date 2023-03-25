@@ -44,7 +44,8 @@ function DoctorProvider({ children }) {
     date,
     currentschedule,
     setDate,
-    setUser
+    setUser,
+    fetchSchedule
   };
 
   return <DoctorContext.Provider value={value}>{children}</DoctorContext.Provider>;

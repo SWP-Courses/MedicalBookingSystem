@@ -11,7 +11,7 @@ function Blogs() {
   const [blogCategory, setBlogCategory] = useState([]);
   const [blogs, setBlogs] = useState([]);
   const [categoryName, setCategoryName] = useState('Tổng Hợp Các Bài Viết');
-
+ 
   useEffect(() => {
     fetchListCategoryBlogs();
     fetchBlogs();
@@ -48,6 +48,7 @@ function Blogs() {
     setBlogs(listBlogRef.current);
   }
 
+  console.log('>> blog list: ', blogs);
   return (
     <div className="Blog-wrapper">
       <div className="container blog-content">

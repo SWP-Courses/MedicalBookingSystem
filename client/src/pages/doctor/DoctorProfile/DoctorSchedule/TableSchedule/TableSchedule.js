@@ -67,18 +67,17 @@ function TableSchedule(props) {
           <table className="mt-3">
             <thead>
               <tr>
-                <th>Tên</th>
-                <th>Khung Giờ</th>
-                <th>Dịch Vụ</th>
-                <th>Khám</th>
+                <th>Bệnh nhân</th>
+                <th className="text-center">Khung giờ</th>
+                <th>Dịch vụ</th>
+                <th className="text-center">Khám</th>
               </tr>
             </thead>
-              {context.currentschedule &&
-                context.currentschedule.length > 0 &&
+            <tbody>
+              {context.currentschedule && context.currentschedule.length > 0 ? (
                 context.currentschedule.map((item, index) => {
                   return (
                     <React.Fragment key={item._id}>
-                      <tbody>
                       <tr key={`unique-id-${index}`}>
                         <td>{item?.customer[0]?.fullname}</td>
                         <td>
@@ -94,7 +93,7 @@ function TableSchedule(props) {
                             className={
                               item.isPaid
                                 ? `schedule__calender-icon disabled`
-                                : `schedule__calender-icon ml-3`
+                                : `schedule__calender-icon ml-3 text-center`
                             }
                             onClick={
                               item.isPaid
@@ -112,16 +111,18 @@ function TableSchedule(props) {
                           </span>
                         </td>
                       </tr>
-                      </tbody>
                     </React.Fragment>
                   );
-                })}
+                })
+              ) : (
+                <>
+                  <span className="no-date-available rounded-pill">
+                    không có lịch
+                  </span>
+                </>
+              )}
+            </tbody>
           </table>
-          {isBooked && (
-            <span className="no-date-available rounded-pill">
-              không có lịch
-            </span>
-          )}
         </div>
       </div>
     </div>

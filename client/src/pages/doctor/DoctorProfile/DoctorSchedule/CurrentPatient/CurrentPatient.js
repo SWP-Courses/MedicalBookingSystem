@@ -59,8 +59,8 @@ function CurrentPatient(props) {
             vui lòng chọn bệnh nhân khám
           </span>
         )}
-        <div className="patient-info__services">
-          <EditServices bookedUser={user} fetchSchedule={fetchSchedule} />
+        <div className="patient-info__services pl-1">
+          <EditServices/>
         </div>
       </div>
     </div>

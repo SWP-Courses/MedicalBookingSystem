@@ -50,6 +50,12 @@
       .sub-infor {
         flex: 1;
 
+        img {
+          width: 123px;
+          height: 80px;
+          border-radius: 8px;
+        }
+
         .doctor-info {
           box-shadow: 0 6px 16px 0 rgb(0 0 0 / 8%);
           border: 1px solid #ddd;
@@ -62,9 +68,9 @@
 
             .date,
             .post-date {
-              padding: 20px 0px 20px 20px;
+              padding: 12px 0px 12px 0px;
               display: block;
-              font-size: 21px;
+              font-size: 18px;
             }
           }
 
