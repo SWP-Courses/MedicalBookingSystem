@@ -301,14 +301,6 @@ function Prescription(props) {
               value={note}
               onChange={(e) => setNote(e.target.value)}
             />
-            <div className="recall-date">
-              <span>Hẹn Ngày Tái Khám</span>
-              <input
-                type="date"
-                value={reExamDate}
-                onChange={(e) => setReExamDate(e.target.value)}
-              />
-            </div>
           </div>
         </div>
       </div>

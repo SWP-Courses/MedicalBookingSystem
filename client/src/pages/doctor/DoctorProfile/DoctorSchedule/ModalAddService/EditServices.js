@@ -160,7 +160,7 @@ function EditServices(props) {
         {userServices?.map((service, index) => {
           return (
             <div className="row addition-services py-1" key={index}>
-              <div className="col-md-4">
+              <div className="col-md-7">
                 <label htmlFor="inputCity" className="form-label">
                   {`Dịch Vụ - ${index + 1}`}
                 </label>
@@ -191,7 +191,7 @@ function EditServices(props) {
               </div>
               <div className="col-md-3">
                 <label htmlFor="inputQnt" className="form-label testcss">
-                  sửa số lượng
+                  Số lượng
                 </label>
                 <input
                   type="number"
