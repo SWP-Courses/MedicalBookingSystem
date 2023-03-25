@@ -104,8 +104,6 @@ export default function DoctorLayout() {
         {userContent === "doctorSchedule" && (
           <DoctorSchedule
             handleOptionClick={handleOptionClick}
-            setPatient={setPatient}
-            // setListUsers={setListUsers}
           />
         )}
         {userContent === "medicalHistory" && (

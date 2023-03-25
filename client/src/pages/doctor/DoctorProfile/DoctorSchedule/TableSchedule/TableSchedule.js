@@ -15,7 +15,7 @@ import { DoctorContext } from "~/context/DoctorContext";
 
 function TableSchedule(props) {
   const context = useContext(DoctorContext);
-  const { setListUsers, setActiveSelect, isBooked } = props;
+  const { setActiveSelect } = props;
 
   const [date, setDate] = useState(() => {
     const newDate = new Date();
@@ -31,25 +31,7 @@ function TableSchedule(props) {
   const handleNavigateUser = (patient) => {
     context.setUser(patient);
     setActiveSelect("patient");
-    // setUserService(customer);
   };
-
-  useEffect(() => {
-    // setListUsers(() => {
-    //   let users = [];
-    //   for (const schedule of context.currentschedule) {
-    //     if (schedule.customer) {
-    //       schedule.customer.map((user) => {
-    //         users.push({
-    //           service_id: schedule._id,
-    //           user_data: user,
-    //         });
-    //       });
-    //     }
-    //   }
-    //   return users;
-    // });
-  }, [context.currentschedule]);
 
   return (
     <div className="schedule ">
@@ -64,7 +46,7 @@ function TableSchedule(props) {
       </div>
       <div className="schedule__table">
         <div className="schedule__calender-detail">
-          <table className="mt-3">
+          <table className="">
             <thead>
               <tr>
                 <th>Bệnh nhân</th>
@@ -77,49 +59,48 @@ function TableSchedule(props) {
               {context.currentschedule && context.currentschedule.length > 0 ? (
                 context.currentschedule.map((item, index) => {
                   return (
-                    <React.Fragment key={item._id}>
-                      <tr key={`unique-id-${index}`}>
-                        <td>{item?.customer[0]?.fullname}</td>
-                        <td>
-                          <center>{formatSlot(item.slot_time)}</center>
-                        </td>
-                        <td>
-                          {item?.services.map((service, index) => {
-                            return <p key={service._id}>{`${service.name}`}</p>;
-                          })}
-                        </td>
-                        <td>
-                          <span
-                            className={
-                              item.isPaid
-                                ? `schedule__calender-icon disabled`
-                                : `schedule__calender-icon ml-3 text-center`
-                            }
-                            onClick={
-                              item.isPaid
-                                ? undefined
-                                : () => handleNavigateUser(item)
-                            }
-                          >
-                            <FontAwesomeIcon
-                              icon={faArrowRight}
-                              style={{
-                                color: "var(--secondary-color)",
-                                cursor: "pointer",
-                              }}
-                            />
-                          </span>
-                        </td>
-                      </tr>
-                    </React.Fragment>
+                    <tr
+                      key={index}
+                      style={item.isPaid ? { background: "#ebebeb" } : {}}
+                    >
+                      <td>{item?.customer[0]?.fullname}</td>
+                      <td>
+                        <center>{formatSlot(item.slot_time)}</center>
+                      </td>
+                      <td>
+                        {item?.services.map((service, index) => {
+                          return <p key={index}>{`${service.name}`}</p>;
+                        })}
+                      </td>
+                      <td>
+                        <FontAwesomeIcon
+                          icon={faArrowRight}
+                          style={
+                            item.isPaid
+                              ? {
+                                  color: "#e5e5e5",
+                                }
+                              : {
+                                  color: "var(--secondary-color)",
+                                  cursor: "pointer",
+                                  marginLeft: "30px",
+                                  fontSize: "20px",
+                                }
+                          }
+                          onClick={
+                            item.isPaid
+                              ? undefined
+                              : () => handleNavigateUser(item)
+                          }
+                        />
+                      </td>
+                    </tr>
                   );
                 })
               ) : (
-                <>
-                  <span className="no-date-available rounded-pill">
-                    không có lịch
-                  </span>
-                </>
+                <tr className="no-date-available rounded-pill">
+                  <td style={{ border: "none" }}>không có lịch</td>
+                </tr>
               )}
             </tbody>
           </table>

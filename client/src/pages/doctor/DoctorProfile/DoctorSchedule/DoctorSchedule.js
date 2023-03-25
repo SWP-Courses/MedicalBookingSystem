@@ -35,13 +35,10 @@ function DoctorSchedule(props) {
         {activeSelect === "schedule" && (
           <TableSchedule
             setActiveSelect={setActiveSelect}
-            // isBooked={isBooked}
-            // setListUsers={setListUsers}
           />
         )}
         {activeSelect === "patient" && (
           <CurrentPatient
-            // setPatient={setPatient}
             handleOptionClick={handleOptionClick}
           />
         )}

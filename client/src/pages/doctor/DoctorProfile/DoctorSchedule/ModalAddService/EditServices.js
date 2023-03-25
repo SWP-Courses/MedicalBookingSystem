@@ -19,7 +19,6 @@ function EditServices() {
   const [listServices, setListServices] = useState([]);
   const [userServices, setUserServices] = useState([]);
   const serviceQty = useRef();
-  const listServiesRef = useRef();
 
   useEffect(() => {
     setUserServices(context.user.services);
@@ -31,46 +30,46 @@ function EditServices() {
 
   // validate select duplicate service
   const validateDuplicateService = (id) => {
-    const cloneUserServices = cloneData(userServices);
-    for (const service of cloneUserServices) {
+    let isduplicated = false;
+    for (const service of userServices) {
       if (service.service_id === id) {
-        listServiesRef.current.className = "form-select is-invalid";
-        return true;
-      } else {
-        listServiesRef.current.className = "form-select";
+        toast.error("dịch vụ này đã được chọn", {
+          position: "top-center",
+          autoClose: 1500,
+        });
+        isduplicated = true;
+        break;
       }
     }
+    return isduplicated;
   };
 
-  const hanldeOnChangeQuantity = (event, id) => {
+  const hanldeOnChangeQuantity = (quantity, id) => {
     const cloneUserServices = cloneData(userServices);
-    if (!_.isEmpty(cloneUserServices)) {
-      const service = cloneUserServices.find((item) => item.service_id === id);
-      // if (+event.target.value <= 1) {
-      //   toast.error("min is 1");
-      //   return;
-      // }
-      if (service.quantity < 0 || service.quantity > 32) {
-        serviceQty.current.className = "form-control is-invalid";
-        return;
-      }else {
-        serviceQty.current.className = "form-control";
-      }
-      service.quantity = +event.target.value;
+    const service = cloneUserServices.find((item) => item.service_id === id);
+    service.quantity = quantity;
+    if (quantity < 1 || quantity > 32) {
+      if(!(quantity === "")) {
+        toast.error("số lượng phải >= 1 hoặc <= 32", {
+          position: "top-center",
+          autoClose: 1500
+        });
+      } 
     }
-    setUserServices(cloneUserServices);
+    setUserServices(cloneUserServices); 
   };
 
   const hanldeOnchangeService = (event, uuid, service_id) => {
     const cloneUserServices = cloneData(userServices);
-
+    const isduplicated = validateDuplicateService(event.target.value);
     // onchange on booked service
     if (service_id) {
       const bookedServices = cloneUserServices.find((item) => {
         return item.service_id === service_id;
       });
-      console.log(">> find service: ", bookedServices);
-      bookedServices.service_id = event.target.value;
+      if (!isduplicated) {
+        bookedServices.service_id = event.target.value;
+      }
     }
 
     // onchange on addition services
@@ -78,7 +77,7 @@ function EditServices() {
       const extraService = cloneUserServices.find((item) => {
         return item.unique_id === uuid;
       });
-      if (validateDuplicateService(event.target.value)) {
+      if (isduplicated) {
         extraService.service_id = "";
         setUserServices(cloneUserServices);
         return;
@@ -98,43 +97,36 @@ function EditServices() {
     }
   };
 
-  const handleUpdateServices = async (bookedUser) => {
-    let error, res;
-    // update quantity
-    for (const service of userServices) {
-      [error, res] = await hanlderRequest(
-        axios.put(
-          API_URL + `/bookedservices/${bookedUser._id}/${service.service_id}`,
-          { quantity: `${service.quantity}` }
-        )
-      );
-    }
+  const handleUpdateServices = async () => {
+    const propsToDelete = ["unique_id", "name", "price"];
+    const newServiceList = userServices.map((service) => {
+      propsToDelete.forEach((item) => {
+        delete service[item];
+      });
+      return service;
+    });
 
-    // update add extra service
-    for (const extraService of userServices) {
-      if (extraService) {
-        console.log(">> extra service: ", extraService);
-        if (extraService.quantity === "" || extraService.service_id === "") {
-          toast.error("chưa điền dịch vụ mới thêm");
-          return;
-        } else {
-          [error, res] = await hanlderRequest(
-            axios.put(API_URL + `/bookedservices/${bookedUser._id}`, {
-              service_id: `${extraService.service_id}`,
-              quantity: `${extraService.quantity}`,
-            })
-          );
-        }
-      }
-    }
+    const [error, res] = await hanlderRequest(
+      axios.put(API_URL + `/bookedservices/${context.user._id}`, {
+        newServiceList,
+      })
+    );
 
-    if (res && res.data) {
-      toast.success("cập nhật thành công");
-      // resetAdditionServices();
+    if (res) {
+      toast.success("cập nhật thành công", {
+        icon: "✅",
+        autoClose: 1000,
+        position: "top-center",
+      });
       await context.fetchSchedule();
-      // context.setUser(context.user);
+      context.setUser(context.user);
     } else {
-      toast.error(error.message);
+      console.log(`%c ${error}`, "color: red");
+      toast.error("chưa điền đủ thông tin", {
+        icon: "❌",
+        autoClose: 1000,
+        position: "top-center",
+      });
     }
   };
 
@@ -147,10 +139,20 @@ function EditServices() {
     setUserServices([...userServices, newEmptyServices]);
   };
 
-  const handleDeleteExtraService = (id) => {
-    const newUserServices = userServices.filter(
-      (item) => item.unique_id !== id
-    );
+  const handleDeleteExtraService = (service_id, unique_id) => {
+    let newUserServices;
+    if (unique_id) {
+      newUserServices = userServices.filter(
+        (item) => item.unique_id !== unique_id
+      );
+    }
+
+    if (service_id) {
+      newUserServices = userServices.filter(
+        (item) => item.service_id !== service_id
+      );
+    }
+
     if (newUserServices) {
       setUserServices(newUserServices);
     }
@@ -163,7 +165,7 @@ function EditServices() {
     setUserServices(removedEmptyValue);
   };
 
-  console.log(">>> log edit service: ", userServices);
+  console.log(">> check userServices: ", userServices);
   return (
     <>
       {userServices?.map((service, index) => {
@@ -185,7 +187,6 @@ function EditServices() {
                   )
                 }
                 name="select-service"
-                ref={listServiesRef}
               >
                 <option>--- Thêm dịch vụ ---</option>
                 {listServices &&
@@ -198,9 +199,6 @@ function EditServices() {
                     );
                   })}
               </select>
-              <span className="invalid-feedback mt-2">
-                dịch vụ này đã được chọn
-              </span>
             </div>
             <div className="col-md-3">
               <label htmlFor="inputQnt" className="form-label testcss">
@@ -214,7 +212,7 @@ function EditServices() {
                 placeholder="1-32"
                 name="quantity"
                 onChange={(event) =>
-                  hanldeOnChangeQuantity(event, service.service_id)
+                  hanldeOnChangeQuantity(event.target.value, service.service_id)
                 }
                 min="1"
                 ref={serviceQty}
@@ -223,37 +221,37 @@ function EditServices() {
               <span className="invalid-feedback mt-2">không hợp lệ</span>
             </div>
             <div className="col-md-1 plus-service">
-              {service.unique_id && (
+              {
                 <span
                   className="note-icon"
-                  onClick={() => handleDeleteExtraService(service.unique_id)}
+                  onClick={() =>
+                    handleDeleteExtraService(
+                      service.service_id,
+                      service.unique_id
+                    )
+                  }
                 >
                   <FontAwesomeIcon
                     icon={faCircleMinus}
                     style={{ fontSize: "22px" }}
                   />
                 </span>
-              )}
+              }
             </div>
           </div>
         );
       })}
-      {Object.keys(context.user).length > 0 && userServices.length > 0 && (
-        <div className="footerSchedule">
-          <button
-            className="cancle-btn"
-            onClick={() => resetAdditionServices()}
-          >
-            Hủy
-          </button>
-          <Button
-            className="ml-3"
-            onClick={() => handleUpdateServices(context.user)}
-          >
-            Cập Nhật
-          </Button>
-        </div>
-      )}
+      <div className="footerSchedule">
+        <button className="cancle-btn" onClick={() => resetAdditionServices()}>
+          Hủy
+        </button>
+        <Button
+          className="ml-3"
+          onClick={() => handleUpdateServices(context.user)}
+        >
+          Cập Nhật
+        </Button>
+      </div>
 
       {Object.keys(context.user).length > 0 ? (
         <span style={{}} className="row faCirclePlus-icon">

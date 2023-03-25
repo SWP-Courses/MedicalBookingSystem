@@ -14,7 +14,7 @@ function DoctorProvider({ children }) {
   const [date, setDate] = useState(() => {
     const newDate = new Date();
     newDate.setHours(0, 0, 0);
-    return newDate;
+    return newDate; 
   });
 
   useEffect(() => {
@@ -29,7 +29,7 @@ function DoctorProvider({ children }) {
     );
     if (res && res.data) {
       setCurrentSchedule(res.data);
-      // setIsBooked(false);
+      // setIsBooked(false); 
     } else {
       console.log(`%c ${error.message} - ${error.code}`, "color: red");
       if (error?.response?.data) {

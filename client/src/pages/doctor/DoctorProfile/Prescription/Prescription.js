@@ -156,7 +156,6 @@ function Prescription(props) {
     }
   };
 
-  console.log('>> check user: ', user);
   return (
     <div className="wrapper-prescription">
       <div className="user">
