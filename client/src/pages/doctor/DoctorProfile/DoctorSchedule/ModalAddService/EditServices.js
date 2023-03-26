@@ -49,14 +49,14 @@ function EditServices() {
     const service = cloneUserServices.find((item) => item.service_id === id);
     service.quantity = quantity;
     if (quantity < 1 || quantity > 32) {
-      if(!(quantity === "")) {
+      if (!(quantity === "")) {
         toast.error("số lượng phải >= 1 hoặc <= 32", {
           position: "top-center",
-          autoClose: 1500
+          autoClose: 1500,
         });
-      } 
+      }
     }
-    setUserServices(cloneUserServices); 
+    setUserServices(cloneUserServices);
   };
 
   const hanldeOnchangeService = (event, uuid, service_id) => {
@@ -119,7 +119,7 @@ function EditServices() {
         position: "top-center",
       });
       await context.fetchSchedule();
-      context.setUser(context.user);
+      // context.setUser(context.user);
     } else {
       console.log(`%c ${error}`, "color: red");
       toast.error("chưa điền đủ thông tin", {
@@ -165,7 +165,9 @@ function EditServices() {
     setUserServices(removedEmptyValue);
   };
 
-  console.log(">> check userServices: ", userServices);
+  console.log('>> context user in Editservice: ', context.user.services);
+  console.log('>> context user in userServices: ', userServices);
+  console.log('>> context user in listServices: ', listServices);
   return (
     <>
       {userServices?.map((service, index) => {
@@ -241,17 +243,22 @@ function EditServices() {
           </div>
         );
       })}
-      <div className="footerSchedule">
-        <button className="cancle-btn" onClick={() => resetAdditionServices()}>
-          Hủy
-        </button>
-        <Button
-          className="ml-3"
-          onClick={() => handleUpdateServices(context.user)}
-        >
-          Cập Nhật
-        </Button>
-      </div>
+      {Object.keys(context.user).length > 0 && (
+        <div className="footerSchedule">
+          <button
+            className="cancle-btn"
+            onClick={() => resetAdditionServices()}
+          >
+            Hủy
+          </button>
+          <Button
+            className="ml-3"
+            onClick={() => handleUpdateServices(context.user)}
+          >
+            Cập Nhật
+          </Button>
+        </div>
+      )}
 
       {Object.keys(context.user).length > 0 ? (
         <span style={{}} className="row faCirclePlus-icon">

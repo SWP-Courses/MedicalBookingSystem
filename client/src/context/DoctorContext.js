@@ -39,13 +39,28 @@ function DoctorProvider({ children }) {
     }
   };
 
+  const fetchBookedSchedule = async (id) => {
+    const [error, res] = await hanlderRequest(
+      axios.get(
+        `${API_URL}/bookedservices/${id}`
+      )
+    );
+    if (res) {
+      setUser(res.data.result);
+      return res.data.result;
+    } else {
+      console.log(`%c ${error.message} - ${error.code}`, "color: red");
+    }
+  };
+
   const value = {
     user,
     date,
     currentschedule,
     setDate,
     setUser,
-    fetchSchedule
+    fetchSchedule,
+    fetchBookedSchedule
   };
 
   return <DoctorContext.Provider value={value}>{children}</DoctorContext.Provider>;

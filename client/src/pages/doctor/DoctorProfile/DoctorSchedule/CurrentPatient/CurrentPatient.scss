@@ -123,10 +123,20 @@
             font-weight: 600;
             color: #828a9b;
             width: 100px;
+            margin-right: 60px;
         }
     }
 
     .patient-info__profile-payment {
         border-bottom: none
+    }
+
+    .faArrowsRotate {
+        font-size: 25px;
+        color: var(--secondary-color);
+        position: absolute;
+        right: 10px;
+        top: 119px;
+        cursor: pointer;
     }
 }

@@ -418,6 +418,7 @@ const getBookedServiceById = asyncHandler(async (req, res, next) => {
 
       return {
         _id: obj._id,
+        service_id: obj.service_id,
         service_name,
         price,
         quantity: obj.quantity,
@@ -457,8 +458,8 @@ const paymentBookedServices = asyncHandler(async (req, res, next) => {
         .status(405)
         .send("Không được thanh toán cho lịch khác hôm nay!");
 
-    if (new Date().getHours() < paidBservice.slot_time)
-      return res.status(405).send("Không được thanh toán cho slot chưa khám!");
+    // if (new Date().getHours() < paidBservice.slot_time)
+    //   return res.status(405).send("Không được thanh toán cho slot chưa khám!");
 
     // if (payCode != paidBservice.payCode)
     //   return res.status(400).send("Mã thanh toán không hợp lệ!");
