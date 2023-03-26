@@ -16,7 +16,8 @@ function ChatBox({ messageList, setMessageList }) {
     const [fullName, setFullName] = useState();
     const [boxChat, setBoxChat] = useState(true);
 
-    const sendMessage = async () => {
+    const sendMessage = async (e) => {
+        e.preventDefault();
         try {
             const data = {
                 message: message.current.value,
@@ -50,11 +51,15 @@ function ChatBox({ messageList, setMessageList }) {
         }
     }, [currentUser])
 
+    const messageContainerRef = useRef(null);
 
+    useEffect(() => {
+        messageContainerRef.current.scrollTop = messageContainerRef.current.scrollHeight;
+    }, [messageList]);
 
     return (
         <div className="chat-box">
-            <div className='message-container'>
+            <div className='message-container' ref={messageContainerRef}>
                 {
                     (messageList) &&
                     messageList.map(message => <Message key={uuidv4()} create_at={message.create_at} msg={message.message} sender={message.recipient_id} />)
@@ -85,16 +90,16 @@ function ChatBox({ messageList, setMessageList }) {
                     </div>
                 }
             </div>
-            <div className='d-flex p-2 position-absolute w-100  bottom-0'>
+            <form className='d-flex p-2 position-absolute w-100  bottom-0'>
                 {currentUser &&
                     <>
                         <input ref={message} type="text" className="form-control" placeholder="message" />
-                        <button className='btn' onClick={() => sendMessage()}>
+                        <button className='btn' onClick={(e) => sendMessage(e)}>
                             <AiOutlineSend />
                         </button>
                     </>
                 }
-            </div>
+            </form>
         </div>
     )
 }

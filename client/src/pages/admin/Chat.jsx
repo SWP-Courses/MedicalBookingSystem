@@ -42,7 +42,8 @@ const Chat = () => {
     }
   }
 
-  const sendMessage = async () => {
+  const sendMessage = async (e) => {
+    e.preventDefault();
     const data = {
       message: message.current.value,
       sender_id: "admin",
@@ -154,12 +155,12 @@ const Chat = () => {
           conversationID ?
             <>
               <ChatBoxMessage messageList={messageList} />
-              <div className='d-flex p-2 w-100 bottom-0 bg-light h-8'>
+              <form className='d-flex p-2 w-100 bottom-0 bg-light h-8'>
                 <input type="text" ref={message} className="form-control" placeholder="message" />
-                <button className='btn' onClick={() => sendMessage()}>
+                <button className='btn' onClick={(e) => sendMessage(e)}>
                   <AiOutlineSend />
                 </button>
-              </div>
+              </form>
             </>
             :
             <div className="w-100 h-100 justify-content-center align-items-center d-flex">
