@@ -80,7 +80,7 @@ const AddAbsentModal = ({ isOpen, onClose, onEventAdded, customStyles, doctorLis
 
         const dateNow = new Date();
         const oneWeekLater = new Date(dateNow);
-        oneWeekLater.setDate(oneWeekLater.getDate() + 6);
+        oneWeekLater.setDate(oneWeekLater.getDate() + 7);
         if(date.getTime() < oneWeekLater.getTime()) {
             setDate(date)
             oneWeekLater.setDate(oneWeekLater.getDate() + 1);

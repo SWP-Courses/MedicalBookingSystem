@@ -47,7 +47,7 @@ const Medicine = () => {
 
   const updateList = (newItem, currentList) => {
     const list = [...currentList];
-    console.log(list);
+    console.log(newItem._id);
     const isExist = list.find(item => item._id === newItem._id);
     if (!isExist) return [...list, newItem];
     const indexOfItem = list.findIndex(item => item._id === newItem._id);

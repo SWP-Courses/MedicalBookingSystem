@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-import "./medicalhistory.scss";
+import "./medicalHistory.scss";
 import API_URL from "~/api/Router";
 import Search from "./search/Search";
 import { hanlderRequest } from "~/utils";
