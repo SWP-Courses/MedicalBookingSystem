@@ -218,10 +218,10 @@ const bookService = asyncHandler(async (req, res, next) => {
     // Ngày sắp tới thì slot phải nằm trong những slot được đặt ra
     const fullSlots = await Slot.find();
     if (fullSlots.length) {
-      const isinSlots = fullSlots.some(
+      const isInSlots = fullSlots.some(
         (slot) => slot.time === parseInt(slot_time)
       );
-      if (!isinSlots)
+      if (!isInSlots)
         return res
           .status(404)
           .json("Slot này ko nằm trong những slot được book.");
@@ -262,7 +262,7 @@ const bookService = asyncHandler(async (req, res, next) => {
     });
 
     if (existSlotInDayOfUser)
-      return res.status(409).json("You booked this slot today");
+      return res.status(409).json("You already booked this slot with another doctor today");
 
     const bService = new BookedService({
       user_id,

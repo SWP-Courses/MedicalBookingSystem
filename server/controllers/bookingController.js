@@ -70,7 +70,7 @@ const getFreeSlots = asyncHandler(async (req, res, next) => {
     console.log(afterFilterTodaySlots);
     return res.status(200).json(afterFilterTodaySlots);
   } else {
-    // có người book rồi thì lọc lại 
+    // có người book rồi thì lọc lại
     const leftSlots = afterFilterTodaySlots.filter((fslot) => {
       let keep = true;
       bookedSlots?.forEach((bslot) => {

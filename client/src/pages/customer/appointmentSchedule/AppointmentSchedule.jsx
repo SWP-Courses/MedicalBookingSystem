@@ -83,11 +83,11 @@ export default function AppointmentSchedule() {
             <tr>
               <th>Mã số</th>
               <th>Ngày khám</th>
-              <th>Phòng</th>
-              <th>Giờ khám</th>
+              <th className="text-center">Phòng</th>
+              <th className="text-center">Giờ khám</th>
               <th>Bác sĩ</th>
               <th>Dịch vụ</th>
-              <th>Huỷ lịch</th>
+              <th className="text-center">Huỷ lịch</th>
             </tr>
           </thead>
           <tbody>

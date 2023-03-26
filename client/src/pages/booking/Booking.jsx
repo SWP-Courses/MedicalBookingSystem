@@ -20,7 +20,7 @@ export default function Booking() {
   const [booking, setBooking] = useState({
     date: new Date(),
   });
-  console.log(booking);
+  // console.log(booking);
   const [payModal, setPayModal] = useState(false);
   const [services, setServices] = useState();
   const [freeDoctors, setFreeDoctors] = useState();
@@ -151,6 +151,7 @@ export default function Booking() {
       navigate("/customer/upcoming-booking");
     } catch (err) {
       console.log(err);
+      toast.error(err.response.data)
     }
   };
 
