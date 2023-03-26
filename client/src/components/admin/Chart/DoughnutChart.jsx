@@ -5,6 +5,7 @@ import "./doughnutchart.css";
 import { FcCalendar, FcCancel, FcCheckmark } from "react-icons/fc"
 import axios from 'axios';
 import ROUTER from '~/api/adminRouter';
+import { Colors } from 'chart.js';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 function DoughnutChart() {
@@ -12,6 +13,8 @@ function DoughnutChart() {
     const [quantity, setQuantity] = useState([]);
     const [dataService, setDataService] = useState([]);
     const [total, setTotal] = useState(0);
+
+    const labelColor = ["#7AA874", "#F7DB6A", "#EBB02D", "#D864A9", "#245953", "#19A7CE", "#F6F1F1", "#635985", "#ABC270"]
 
     const getData = async () => {
         try {
@@ -46,7 +49,7 @@ function DoughnutChart() {
             {
                 label: ' Book quantity',
                 data: quantity,
-                backgroundColor: "#5fb2ff",
+                backgroundColor: labelColor,
                 // borderColor: [
                 //     '#5fb2ff',
                 //     'rgb(255, 99, 132)',
@@ -77,14 +80,20 @@ function DoughnutChart() {
             <div className='custom-legend d-flex flex-column py-3' style={{ paddingLeft: "20px" }}>
                 <table>
                     <tr>
+                        <th>Color</th>
                         <th>Service</th>
                         <th>Percent</th>
                     </tr>
                     {
-                        dataService.map(service =>
+                        dataService.map((service, index) =>
                             <tr>
-                                <th>{service.name}</th>
-                                <th>{ (service.quantity * 100 / total).toFixed(2)}%</th>
+                                <th style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                                    <div style={{ backgroundColor: labelColor[index], height: "30px", width: "30px" }}>
+
+                                    </div>
+                                </th>
+                                <th style={{ verticalAlign: "middle", }}>{service.name}</th>
+                                <th>{Number.parseFloat((service.quantity * 100 / total).toFixed(2)).toFixed(2)}%</th>
                             </tr>
                         )
                     }

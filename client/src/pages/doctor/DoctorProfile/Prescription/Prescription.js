@@ -2,7 +2,11 @@ import { useEffect, useState, useContext } from "react";
 import "./Prescription.scss";
 import Select, { colourOptions } from "react-select";
 import Form from "react-bootstrap/Form";
-import { faCirclePlus, faMinusCircle, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCirclePlus,
+  faMinusCircle,
+  faTrashCan,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { v4 as uuidv4 } from "uuid";
 import _ from "lodash";
@@ -11,6 +15,32 @@ import API_URL from "~/api/Router";
 import { hanlderRequest } from "~/utils";
 import { toast } from "react-toastify";
 import { DoctorContext } from "~/context/DoctorContext";
+import { Font, PDFDownloadLink } from "@react-pdf/renderer";
+
+import { Document, Page, Text } from "@react-pdf/renderer";
+// Font.register({
+//   family: "Open Sans",
+//   src: "https://fonts.gstatic.com/s/opensans/v22/mem5YaGs126MiZpBA-UN_r8OUuhpOqc.woff2",
+// });
+function MyDocument({ data }) {
+  const { drugs, username, desease, note } = data;
+  console.log(data);
+  return (
+    <Document>
+      <Page>
+        <Text>Tên: {username}</Text>
+        <Text>Benh: {desease}</Text>
+        <Text >Chú ý: {note}</Text>
+        {drugs?.map((drug) => (
+          <Text >
+            {drug.medicine_id.name} - {drug.quantity} {drug.medicine_id.type} -{" "}
+            {drug.dose}
+          </Text>
+        ))}
+      </Page>
+    </Document>
+  );
+}
 
 function Prescription(props) {
   const { currentUser } = props;
@@ -24,10 +54,12 @@ function Prescription(props) {
       medicine_id: "",
       quantity: "",
       dose: "",
+      type: "",
     },
   ]);
   const [user, setUser] = useState(context.user);
   const [listUserInDay, setListUserInDay] = useState([]);
+  const [isSubmit, setIsSubmit] = useState(false);
 
   const options = listUserInDay.map((user) => {
     return {
@@ -42,6 +74,7 @@ function Prescription(props) {
         medicine_id: "",
         quantity: "",
         dose: "",
+        type: "",
       },
     ]);
     setNote("");
@@ -66,10 +99,12 @@ function Prescription(props) {
 
   const fetchAllMedicine = async () => {
     let res = await axios.get(`${API_URL}/medicine`);
+    console.log(res);
     if (res && res.data && res.data.medicines) {
       const listMedicine = res?.data?.medicines?.map((medicine) => {
+        // console.log(medicine);
         return {
-          value: medicine._id,
+          value: { id: medicine._id, type: medicine.type, name: medicine.name },
           label: medicine.name,
         };
       });
@@ -94,7 +129,7 @@ function Prescription(props) {
     switch (type) {
       case "drug":
         if (newDrug && !hanledCheckDuplicatedDrugs(valueSelected)) {
-          newDrug.medicine_id = valueSelected.value;    // valueSelected.value --> id of drug
+          newDrug.medicine_id = valueSelected.value; // valueSelected.value --> id of drug
         }
         setDrugs(cloneDrugs);
         break;
@@ -121,6 +156,7 @@ function Prescription(props) {
       medicine_id: "",
       quantity: "",
       dose: "",
+      type: "",
     };
     setDrugs([...drugs, newEmptyDrug]);
   };
@@ -136,8 +172,10 @@ function Prescription(props) {
   };
 
   const handleSubmitPrescription = async () => {
+    console.log(drugs);
+    const formatDrugs = drugs.map(item => ({...item, medicine_id: item.medicine_id.id}))
     const prescription = {
-      bill_medicines: drugs,
+      bill_medicines: formatDrugs,
       note: note,
       disease: desease,
       re_exam_date: reExamDate,
@@ -150,7 +188,7 @@ function Prescription(props) {
     );
     if (res && res.status === 200) {
       toast.success("Tạo đơn thuốc thành công");
-      reset();
+      // reset();
     } else {
       console.log(error.message);
     }
@@ -162,9 +200,7 @@ function Prescription(props) {
         <div className="user-detail">
           <div className="name">
             <span className="title">Bệnh Nhân: </span>
-            <span>
-              {user?.user_name}
-            </span>
+            <span>{user?.user_name}</span>
           </div>
         </div>
       </div>
@@ -226,7 +262,10 @@ function Prescription(props) {
                         className="note-icon"
                         onClick={() => handleDeleteDrug(drug.id)}
                       >
-                        <FontAwesomeIcon icon={faMinusCircle} style={{fontSize: '20px'}}/>
+                        <FontAwesomeIcon
+                          icon={faMinusCircle}
+                          style={{ fontSize: "20px" }}
+                        />
                       </span>
                     )}
                   </div>
@@ -277,10 +316,33 @@ function Prescription(props) {
       <footer className="">
         <button
           className="mt-3 btn-prescription"
-          onClick={() => handleSubmitPrescription()}
+          onClick={() => {
+            setIsSubmit(true);
+            handleSubmitPrescription();
+          }}
         >
           Tạo Đơn Thuốc
         </button>
+        {/* <button onClick={() => console.log(drugs)}>check drugs</button> */}
+        {isSubmit && (
+          <PDFDownloadLink
+            document={
+              <MyDocument
+                data={{
+                  drugs: drugs,
+                  username: user?.user_name,
+                  desease: desease,
+                  note: note,
+                }}
+              />
+            }
+            fileName="prescription.pdf"
+          >
+            {({ blob, url, loading, error }) =>
+              loading ? "Đang tải đơn thuốc ..." : <p style={{marginTop:"10px", textDecoration:"underline"}}>In đơn thuốc</p>
+            }
+          </PDFDownloadLink>
+        )}
       </footer>
     </div>
   );

@@ -48,7 +48,7 @@ function TableSchedule(props) {
           <table className="">
             <thead>
               <tr>
-                <th>STT</th>
+                <th>Mã số</th>
                 <th>Bệnh nhân</th>
                 <th className="text-center">Khung giờ</th>
                 <th>Dịch vụ</th>
