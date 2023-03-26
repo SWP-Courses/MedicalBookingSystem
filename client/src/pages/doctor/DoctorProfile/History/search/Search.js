@@ -71,11 +71,11 @@ function Search(props) {
         interactive
         placement="bottom-start"
       >
-        <div className="search rounded-pill ml-5">
+        <div className="search rounded-pill ml-4">
           <input
             type="text"
             placeholder="Tìm bệnh nhân"
-            style={{ lineHeight: "30px" }}
+            style={{ lineHeight: "30px", width: '79%' }}
             value={searchValue}
             onChange={(e) => {
               setSearchValue(e.target.value);

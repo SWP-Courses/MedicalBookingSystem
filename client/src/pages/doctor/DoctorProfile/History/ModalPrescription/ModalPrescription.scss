@@ -6,7 +6,7 @@
     
     table td,
     thead th {
-        padding: 8px;
+        padding: 10px;
         border-top: 1px solid #ebebeb;
     }
     
@@ -15,12 +15,7 @@
     }
     
     table > thead > tr > th{
-        border-top: none;
         font-weight: 500;
         color: #828a9b;
-    }
-    
-    table tbody {
-        height: 292px;
     }
 }

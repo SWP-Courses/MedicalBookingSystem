@@ -18,11 +18,11 @@ function ModalPrescription(props) {
           <div className="prescription-info">
             <div className="prescription-info__disease">
               <h5>Bệnh</h5>
-              <textarea className="shadow bg-body-tertiary rounded p-1"  value={listPrescription?.disease} />
+              <textarea className="border bg-body-tertiary rounded p-2"  value={listPrescription?.disease} onChange={() => {}}/>
             </div>
             <div className="prescription-info__note mt-3">
               <h5>Lưu ý</h5>
-              <textarea className="shadow bg-body-tertiary rounded rounded p-1" value={listPrescription?.note} />
+              <textarea className="border bg-body-tertiary rounded rounded p-2" value={listPrescription?.note} onChange={() => {}}/>
             </div>
           </div>
           <center>
