@@ -31,6 +31,10 @@ function CurrentPatient(props) {
           <>
             <div className="patient-info__profile">
               <div className="patient-info_detail">
+              <div className="patient-info__profile-name">
+                  <span>Số thứ tự</span>
+                  <p>{user?.billNumber}</p>
+                </div>
                 <div className="patient-info__profile-name">
                   <span>Tên</span>
                   <p>{user?.user_name}</p>

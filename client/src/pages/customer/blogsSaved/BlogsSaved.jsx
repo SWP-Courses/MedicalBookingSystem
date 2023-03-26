@@ -94,7 +94,7 @@ export default function BlogsSaved() {
             overlay={<Tooltip id="button-tooltip">Bỏ lưu</Tooltip>}
           >
             <Button
-              variant="outline-danger"
+              variant="danger"
               size="sm"
               className="btn-block mt-auto"
               onClick={() => handleUnSaveBlogClick(row._id)}

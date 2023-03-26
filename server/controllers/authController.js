@@ -21,8 +21,7 @@ const sendMail = async (req, res, next) => {
       email: req.body.email,
       password: { $exists: true },
     });
-    if (!user) return res.status(404).json("Tài khoản không tồn tại.");
-
+    if (!user) return res.status(404).json("Tài khoản đăng nhập không tồn tại.");
     // check email address is valid ?
     let code = (Math.random() + 1).toString(36).substring(6);
 
@@ -201,7 +200,7 @@ const handleRefreshToken = (req, res) => {
 // POST /api/auth/login
 // LOGIN
 const login = async (req, res, next) => {
-  console.log("login");
+  // console.log("login");
   try {
     // degree, profile, spe_id của doctor chỉ được admin thay đổi
     const user = await UserModel.findOne({ email: req.body.email });
@@ -216,6 +215,7 @@ const login = async (req, res, next) => {
     if (!isPasswordCorrect) return res.status(401).send("Sai mật khẩu!");
     const userRole = await RoleModel.findOne({ role_code: user.role_code });
     // console.log(userRole);
+
     const { password, role_code, ...filteredUser } = user._doc;
     const userInfo = { ...filteredUser, role: userRole.title };
 
@@ -273,7 +273,9 @@ const loginSuccess = (req, res) => {
   if (req.user) {
     res.header("Access-Control-Allow-Origin", "http://localhost:3000");
     res.header("Access-Control-Allow-Credentials", true);
-    res.status(200).json(req.user._doc || req.user);
+    const userGG = req.user._doc || req.user;
+
+    res.status(200).json({...userGG, isFromThird: true});
   } else {
     res.status(404).json({});
   }

@@ -48,6 +48,7 @@ function TableSchedule(props) {
           <table className="">
             <thead>
               <tr>
+                <th>STT</th>
                 <th>Bệnh nhân</th>
                 <th className="text-center">Khung giờ</th>
                 <th>Dịch vụ</th>
@@ -62,6 +63,7 @@ function TableSchedule(props) {
                       key={index}
                       style={item.isPaid ? { background: "#ebebeb" } : {}}
                     >
+                    <td>{item?.billNumber}</td>
                       <td>{item?.customer[0]?.fullname}</td>
                       <td>
                         <center>{formatSlot(item.slot_time)}</center>

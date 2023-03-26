@@ -261,8 +261,16 @@ const bookService = asyncHandler(async (req, res, next) => {
       slot_time: slot_time,
     });
 
+    const dateObj = new Date(date);
+    dateObj.setHours(7, 0, 0, 0); // Set hours, minutes, seconds, and milliseconds to zero
+    const formattedBookDate = dateObj.toISOString().slice(0, 10);
+    const newformat = new Date(formattedBookDate).toLocaleDateString('en-GB')
     if (existSlotInDayOfUser)
-      return res.status(409).json("You already booked this slot with another doctor today");
+      return res
+        .status(409)
+        .json(
+          `Bạn đã đặt slot ${slot_time} với một bác sĩ khác vào ngày ${newformat}`
+        );
 
     const bService = new BookedService({
       user_id,
@@ -325,14 +333,17 @@ const updateAddedService = asyncHandler(async (req, res, next) => {
 const replaceServicesListInBooked = asyncHandler(async (req, res, next) => {
   const { newServiceList } = req.body;
   try {
-    const mapNewServiceList = newServiceList.map(service => {
-    return {quantity: service.quantity, service_id: mongoose.Types.ObjectId(service.service_id)}
-    })
+    const mapNewServiceList = newServiceList.map((service) => {
+      return {
+        quantity: service.quantity,
+        service_id: mongoose.Types.ObjectId(service.service_id),
+      };
+    });
 
     const result = await BookedService.findOneAndUpdate(
-      {_id: req.params.id}, // the ID of the document to update
+      { _id: req.params.id }, // the ID of the document to update
       { $set: { services: mapNewServiceList } }, // the update object
-      { new: true }, // options object to return the updated document
+      { new: true } // options object to return the updated document
     );
 
     res.status(200).json(result);
@@ -428,6 +439,7 @@ const getBookedServiceById = asyncHandler(async (req, res, next) => {
 
   const result = {
     _id: bookedService._id,
+    billNumber: bookedService.billNumber,
     user_name: user.fullname,
     doctor_name: doctor.fullname,
     date: bookedService.date,
@@ -458,8 +470,8 @@ const paymentBookedServices = asyncHandler(async (req, res, next) => {
         .status(405)
         .send("Không được thanh toán cho lịch khác hôm nay!");
 
-    // if (new Date().getHours() < paidBservice.slot_time)
-    //   return res.status(405).send("Không được thanh toán cho slot chưa khám!");
+    if (new Date().getHours() < paidBservice.slot_time)
+      return res.status(405).send("Không được thanh toán cho slot chưa khám!");
 
     // if (payCode != paidBservice.payCode)
     //   return res.status(400).send("Mã thanh toán không hợp lệ!");
@@ -497,5 +509,5 @@ module.exports = {
   getAllBookedService,
   getBookedServiceById,
   paymentBookedServices,
-  replaceServicesListInBooked
+  replaceServicesListInBooked,
 };

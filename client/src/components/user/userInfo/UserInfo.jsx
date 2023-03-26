@@ -103,6 +103,7 @@ export default function UserInfo(props) {
             type="email"
             name="email"
             placeholder="Email"
+            disabled={currentUser.isFromThird}
             value={userInfo?.email}
             onChange={handleTextInputChange}
           />
