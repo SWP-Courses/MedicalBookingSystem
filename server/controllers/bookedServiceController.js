@@ -418,6 +418,7 @@ const getBookedServiceById = asyncHandler(async (req, res, next) => {
 
       return {
         _id: obj._id,
+        service_id: obj.service_id,
         service_name,
         price,
         quantity: obj.quantity,

@@ -159,31 +159,12 @@ function Prescription(props) {
   return (
     <div className="wrapper-prescription">
       <div className="user">
-        <div className="user-list">
-          <Select
-            placeholder={<div>Bệnh nhân trong ngày</div>}
-            className="basic-single"
-            classNamePrefix="select"
-            name="color"
-            options={options}
-            onChange={setUser}
-          />
-        </div>
         <div className="user-detail">
           <div className="name">
             <span className="title">Bệnh Nhân: </span>
             <span>
-              {user?.customer?.length > 0 ? user?.customer[0]?.fullname : ""}
-              {}
+              {user?.user_name}
             </span>
-          </div>
-          <div className="age">
-            <span className="title">Tuổi: </span>
-            {/* <span>21</span> */}
-          </div>
-          <div className="gender">
-            <span className="title">Giới Tính: </span>
-            {/* <span>Nam</span> */}
           </div>
         </div>
       </div>

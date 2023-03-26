@@ -38,6 +38,7 @@ export default function DoctorLayout() {
 
   const handleOptionClick = (option) => {
     setUserContent(option);
+    
   };
 
   return (

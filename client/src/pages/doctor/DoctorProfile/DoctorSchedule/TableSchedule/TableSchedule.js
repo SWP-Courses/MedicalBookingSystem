@@ -27,8 +27,8 @@ function TableSchedule(props) {
     return date < currentDate && date.getDate() !== currentDate.getDate();
   };
 
-  const handleNavigateUser = (patient) => {
-    context.setUser(patient);
+  const handleNavigateUser = async (patient) => {
+    await  context.fetchBookedSchedule(patient._id)
     setActiveSelect("patient");
   };
 

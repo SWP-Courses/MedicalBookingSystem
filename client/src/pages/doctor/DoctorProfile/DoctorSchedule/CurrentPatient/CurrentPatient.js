@@ -1,4 +1,5 @@
 import {
+  faArrowsRotate,
   faCheck,
   faPenToSquare,
   faPills,
@@ -14,10 +15,15 @@ import { DoctorContext } from "~/context/DoctorContext";
 
 function CurrentPatient(props) {
   const context = useContext(DoctorContext);
-  const { setPatient, handleOptionClick, fetchSchedule } = props;
-  const [modalShow, setModalShow] = useState(false);
+  const { handleOptionClick } = props;
   const [user, setUser] = useState(context.user);
 
+  const hanldeRefresh = async (id) => {
+      const res = await context.fetchBookedSchedule(id)
+      setUser(res)
+  }
+
+  console.log({user});
   return (
     <div className="patient-detail">
       <div className="patient-info">
@@ -27,7 +33,7 @@ function CurrentPatient(props) {
               <div className="patient-info_detail">
                 <div className="patient-info__profile-name">
                   <span>Tên</span>
-                  <p>{user?.customer[0]?.fullname}</p>
+                  <p>{user?.user_name}</p>
                 </div>
                 <div className="patient-info__profile-time">
                   <span>Giờ Khám</span>
@@ -50,6 +56,7 @@ function CurrentPatient(props) {
                 <Button className="mt-5 d-block mx-auto prescribing" onClick={() => handleOptionClick('prescription')}>
                   Kê đơn
                 </Button>
+                <FontAwesomeIcon icon={faArrowsRotate} className="faArrowsRotate" onClick={() => hanldeRefresh(user._id)}/>
               </div>
             </div>
             <div className="devideLine"></div>

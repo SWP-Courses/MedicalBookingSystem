@@ -71,7 +71,7 @@ export default function MedicalHistory(props) {
               <th>Dịch vụ đã khám</th>
               <th>Thuốc đã kê</th>
             </tr>
-          </thead>
+          </thead> 
           <tbody> 
             {userBooked &&
               userBooked.length > 0 &&
