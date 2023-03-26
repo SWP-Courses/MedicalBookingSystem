@@ -8,8 +8,8 @@ const AddAbsentModal = ({ isOpen, onClose, onEventAdded, customStyles, doctorLis
 
     const [title, setTitle] = useState();
     const [date, setDate] = useState('');
-    const [msgErrorSelect, setMsgErrorSelect] = useState('');
-    const [msgErrorDate, setMsgErrorDate] = useState('');
+    const [msgErrorSelect, setMsgErrorSelect] = useState(false);
+    const [msgErrorDate, setMsgErrorDate] = useState(false);
     const [error, setError] = useState(false);
 
 
@@ -49,8 +49,8 @@ const AddAbsentModal = ({ isOpen, onClose, onEventAdded, customStyles, doctorLis
         const month = date?.getMonth() + 1;
         const result = year + '-' + month;
 
-        if(counts[result] && counts[result][title] == 3) {
-            setMsgErrorDate(`${title} took 3 days off this month (${month}-${year}) so he/she can't absent any more!`);
+        if(counts[result] && counts[result][title] === 4) {
+            setMsgErrorDate(`${title} took 4 days off this month (${month}-${year}) so he/she can't absent any more!`);
             return;
         }
 
@@ -64,15 +64,15 @@ const AddAbsentModal = ({ isOpen, onClose, onEventAdded, customStyles, doctorLis
 
     const handleDateChange = (date) => {
         date.setHours(0, 0, 0, 0);
-        if (eventList.find(event => {
+        if (eventList.filter(event => {
             const dateConvert = new Date(event.start);
             dateConvert.setHours(0, 0, 0, 0);
             return date.getTime() === dateConvert.getTime();
-        })) {
+        }).length > (Math.ceil(doctorList?.length * 0.2))) {
             setError(true)
             setDate(date)
-            setMsgErrorDate(`${date.toLocaleDateString('en-GB')} already has doctor that is absent, please choose another date!`)
-        } else {
+            setMsgErrorDate(`${date.toLocaleDateString('en-GB')} already has maximum doctor that is absent, please choose another date!`)
+        } else {    
             setError(false)
             setMsgErrorDate('')
             setDate(date)
@@ -86,7 +86,6 @@ const AddAbsentModal = ({ isOpen, onClose, onEventAdded, customStyles, doctorLis
             oneWeekLater.setDate(oneWeekLater.getDate() + 1);
             setMsgErrorDate(`You can only apply absent from ${oneWeekLater.toLocaleDateString('en-GB')}!`)
             setError(true)
-            console.log(error)
         }
     }
 
@@ -95,11 +94,6 @@ const AddAbsentModal = ({ isOpen, onClose, onEventAdded, customStyles, doctorLis
         setMsgErrorSelect('')
         setTitle(event.target.value);
         setError(true)
-    }
-
-    const validateByYear = (eventList) => {
-
-
     }
 
     return (
@@ -136,6 +130,7 @@ const AddAbsentModal = ({ isOpen, onClose, onEventAdded, customStyles, doctorLis
                             dateFormat="dd/MM/yyyy"
                             onChange={handleDateChange}
                             selected={date}
+                            minDate={new Date()}
                         />
                     </div>
 

@@ -44,13 +44,31 @@
       padding: 12px 0px;
       border-top: 1px solid lightgray;
       > button {
-        padding: 10px 50px;
+        padding: 10px 20px;
         border: none;
         outline: none;
         border-radius: 5px;
         font-weight: bold;
         color: var(--white-color);
-        background-color: #337ab7;
+        background-color: #4785bb;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 568px) {
+  .bookingPage {
+    .bookingBanner {
+      .bookingDirection {
+        > button {
+          padding: 10px 50px;
+          border: none;
+          outline: none;
+          border-radius: 5px;
+          font-weight: bold;
+          color: var(--white-color);
+          background-color: #337ab7;
+        }
       }
     }
   }

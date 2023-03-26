@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import "./Prescription.scss";
 import Select, { colourOptions } from "react-select";
 import Form from "react-bootstrap/Form";
@@ -10,9 +10,11 @@ import axios from "axios";
 import API_URL from "~/api/Router";
 import { hanlderRequest } from "~/utils";
 import { toast } from "react-toastify";
+import { DoctorContext } from "~/context/DoctorContext";
 
 function Prescription(props) {
   const { patient, listUsers, currentUser } = props;
+  const context = useContext(DoctorContext);
   const [drugsOption, setDrugsOption] = useState([]);
   const [desease, setDesease] = useState("");
   const [note, setNote] = useState("");
@@ -24,13 +26,13 @@ function Prescription(props) {
       dose: "",
     },
   ]);
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState(context.user);
   const [listUserInDay, setListUserInDay] = useState([]);
 
-  const optionListUsers = listUserInDay.map((user) => {
+  const options = listUserInDay.map((user) => {
     return {
-      value: user._id,
-      label: user.fullname,
+      value: user?.customer[0]._id,
+      label: user?.customer[0].fullname,
     };
   });
 
@@ -66,10 +68,10 @@ function Prescription(props) {
   }, [patient]);
 
   useEffect(() => {
-    if (!_.isEmpty(listUsers)) {
-      setListUserInDay(listUsers);
+    if (context.currentschedule.length > 0) {
+      setListUserInDay(context.currentschedule);
     }
-  }, [listUsers]);
+  }, [context.currentschedule]);
 
   const fetchAllMedicine = async () => {
     let res = await axios.get(`${API_URL}/medicine`);
@@ -163,17 +165,21 @@ function Prescription(props) {
     }
   };
 
-  console.log(">> check drug: ", drugs);
+  const hanldeGetOptions = (item) => {
+    console.log(item);
+  }
+
   return (
     <div className="wrapper-prescription">
       <div className="user">
         <div className="user-list">
           <Select
-            placeholder={<div>Tìm Bệnh Nhân</div>}
+            placeholder={<div>Bệnh nhân trong ngày</div>}
             className="basic-single"
             classNamePrefix="select"
             name="color"
-            options={optionListUsers}
+            options={options}
+            onClick={() => hanldeGetOptions(options)}
           />
         </div>
         <div className="user-detail">
@@ -182,17 +188,14 @@ function Prescription(props) {
             <span>
               {user?.customer?.length > 0 ? user?.customer[0]?.fullname : ""}
             </span>
-            {/* {user.customer.map((item) => {
-              return item.fullname
-            })} */}
           </div>
           <div className="age">
             <span className="title">Tuổi: </span>
-            <span>21</span>
+            {/* <span>21</span> */}
           </div>
           <div className="gender">
             <span className="title">Giới Tính: </span>
-            <span>Nam</span>
+            {/* <span>Nam</span> */}
           </div>
         </div>
       </div>
@@ -298,14 +301,6 @@ function Prescription(props) {
               value={note}
               onChange={(e) => setNote(e.target.value)}
             />
-            <div className="recall-date">
-              <span>Hẹn Ngày Tái Khám</span>
-              <input
-                type="date"
-                value={reExamDate}
-                onChange={(e) => setReExamDate(e.target.value)}
-              />
-            </div>
           </div>
         </div>
       </div>

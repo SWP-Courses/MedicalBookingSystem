@@ -6,7 +6,7 @@ function Message({ msg, sender, create_at }) {
     return (
         <div className={sender !== 'admin' ? 'message-client message' : 'message-admin message'}>
             <h6>{msg}</h6>
-            <p>{dayjs(create_at).format('DD/MM/YYYY')}</p>
+            <p>{dayjs(create_at).format('HH:mm DD/MM/YYYY ')}</p>
         </div>
     )
 }

@@ -121,7 +121,6 @@ function ModalEditServices(props) {
     }
 
     if (res && res.data) {
-      console.log(res.data);
       toast.success("cập nhật thành công");
       setModalShow(false);
       await fetchSchedule();
@@ -162,10 +161,9 @@ function ModalEditServices(props) {
     resetEmptyServices();
   };
 
-  // console.log('>> check user service: ', userServices);
   return (
     <Modal
-      show={modalShow}
+      show={false}
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       top="true"
@@ -208,7 +206,7 @@ function ModalEditServices(props) {
               disabled
             />
           </div>
-          {userServices.map((service, index) => {
+          {userServices?.map((service, index) => {
             return (
               <React.Fragment key={index}>
                 <div className="col-md-6">
@@ -280,28 +278,14 @@ function ModalEditServices(props) {
           })}
         </form>
       </Modal.Body>
-      <center
-        style={{
-          padding: "10px 0",
-          color: "var(--secondary-color)",
-          cursor: "pointer",
-        }}
-      >
-        {userServices.length >= 7 ? (
-          ""
-        ) : (
-          <span className="add-extra-icon" onClick={hanldeAddExtraService}>
-            <FontAwesomeIcon icon={faCirclePlus} style={{ fontSize: "24px" }} />
-          </span>
-        )}
-      </center>
+    
       <Modal.Footer>
-        <button className="cancle-btn" onClick={hanldeCloseModal}>
+        {/* <button className="cancle-btn" onClick={hanldeCloseModal}>
           Hủy
         </button>
         <Button onClick={() => handleUpdateServices(bookedUser)}>
           Cập Nhật
-        </Button>
+        </Button> */}
       </Modal.Footer>
     </Modal>
   );

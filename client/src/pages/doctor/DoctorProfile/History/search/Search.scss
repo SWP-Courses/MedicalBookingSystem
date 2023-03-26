@@ -3,29 +3,24 @@
     gap: 50px;
     justify-content: flex-start;
     width: fit-content;
-
     >h1 {
         font-size: 30px;
         font-weight: 500;
         margin-bottom: 30px;
     }
-
     .search {
         height: 42px;
         border: 1px solid var(--secondary-color);
         padding: 5px 18px;
-        border-radius: 999px;
         position: relative;
     }
 
     input:not(:placeholder-shown) ~ .fa-magnifying-glass {
         opacity: 1;
     }
-
     .search, .box {
         width: 300px;
     }
-
     .currentSchedule {
         border: 1px solid #ccc;
         height: 45px;
@@ -34,7 +29,6 @@
         padding: 10px 20px;
         border-radius: 4px;
     }
-
     .circle-xmark {
         position: absolute;
         top: 50%;
@@ -42,11 +36,9 @@
         opacity: 0.7;
         cursor: pointer;
     }
-
     .fa-spinner-third {
         animation: spinner 1s linear infinite;
     }
-
     @keyframes spinner {
         from {
             transform: rotate(0);
@@ -55,7 +47,6 @@
             transform: rotate(360deg);
         }
     }
-
     .fa-magnifying-glass {
         position: absolute;
         top: 0;
@@ -66,7 +57,6 @@
         cursor: pointer;
         opacity: 0.6;
     }
-
     .separate-line {
         position: absolute;
         width: 1px;

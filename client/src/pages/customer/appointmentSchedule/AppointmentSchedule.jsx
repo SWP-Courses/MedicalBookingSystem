@@ -1,22 +1,13 @@
 import { useCallback, useContext, useEffect, useState } from "react";
-import {
-  Button,
-  Modal,
-  OverlayTrigger,
-  Popover,
-  Tab,
-  Table,
-  Tabs,
-} from "react-bootstrap";
+import { Button, Modal, OverlayTrigger, Table, Tooltip } from "react-bootstrap";
 import "./appointmentSchedule.scss";
-import { customerAppointmentSchedule as cusApmSchedule } from "../../../fakeData";
 import { AuthContext } from "~/context/authContext";
 import axios from "axios";
 import API_URL from "~/api/Router";
 import { addDays, format, parseISO } from "date-fns";
 import { formatSlot } from "~/utils";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCalendarXmark, faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faCalendarXmark } from "@fortawesome/free-solid-svg-icons";
 
 function MyVerticallyCenteredModal(props) {
   const { handleCancel, bservice, show, onHide } = props;
@@ -27,6 +18,7 @@ function MyVerticallyCenteredModal(props) {
       size="lg"
       aria-labelledby="contained-modal-title-vcenter"
       centered
+      className="cancel-modal"
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-vcenter">
@@ -84,77 +76,86 @@ export default function AppointmentSchedule() {
 
   return (
     <div className="appointmentSchedule">
-      <h1 className="title">Lịch sử khám bệnh</h1>
-      <Table hover responsive>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Ngày khám</th>
-            <th>Giờ khám</th>
-            <th>Dịch vụ</th>
-            <th>Bác sĩ</th>
-            <th className="text-center font-weight-bold">Huỷ lịch</th>
-            <th className="text-center font-weight-bold">Mã số</th>
-          </tr>
-        </thead>
-        <tbody>
-          {upBookedServices?.map((bservice, index) => {
-            return (
-              <tr key={bservice._id}>
-                <td className="align-middle">{index + 1}</td>
-                <td className="align-middle">
-                  {format(new Date(bservice?.date), "dd/MM/yyyy")}
-                </td>
-                <td className="align-middle">
-                  {formatSlot(bservice.slot_time)}
-                </td>
-                <td className="align-middle">{bservice?.services[0].name}</td>
-                <td className="align-middle">{bservice?.doctor[0].fullname}</td>
-                <td className="text-center">
-                  <FontAwesomeIcon
-                    icon={faCalendarXmark}
-                    style={{
-                      fontSize: "22px",
-                      cursor: "pointer",
-                      color: "#e04e4e",
-                    }}
-                    onClick={() => setModalShow(true)}
-                  />
-                  <MyVerticallyCenteredModal
-                    show={modalShow}
-                    onHide={() => setModalShow(false)}
-                    bservice={bservice}
-                    handleCancel={handleCancelBookedService}
-                  />
-                </td>
-                <td className="text-center">
-                  <OverlayTrigger
-                    trigger="click"
-                    placement="bottom"
-                    overlay={
-                      <Popover id={`popover-positioned-bottom}`}>
-                        <Popover.Header as="h3">
-                          Mã số thanh toán
-                        </Popover.Header>
-                        <Popover.Body className="fs-5 fw-bold">{bservice?.payCode}</Popover.Body>
-                      </Popover>
-                    }
-                  >
+      <h1 className="title">Lịch khám đã đặt</h1>
+      <div className="d-none d-sm-block ">
+        <Table hover responsive>
+          <thead>
+            <tr>
+              <th>Mã số</th>
+              <th>Ngày khám</th>
+              <th>Phòng</th>
+              <th>Giờ khám</th>
+              <th>Bác sĩ</th>
+              <th>Dịch vụ</th>
+              <th>Huỷ lịch</th>
+            </tr>
+          </thead>
+          <tbody>
+            {upBookedServices?.map((bservice, index) => {
+              return (
+                <tr key={bservice._id}>
+                  <td className="align-middle">{bservice.billNumber}</td>
+                  <td className="align-middle">
+                    {format(new Date(bservice?.date), "dd/MM/yyyy")}
+                  </td>
+                  <td className="text-center align-middle">
+                    {bservice?.doctor[0]?.room.room}
+                  </td>
+                  <td className="align-middle text-center">
+                    {formatSlot(bservice.slot_time)}
+                  </td>
+                  <td className="align-middle">
+                    {bservice?.doctor[0].fullname}
+                  </td>
+                  <td className="align-middle">{bservice?.services[0].name}</td>
+                  <td className="text-center">
                     <FontAwesomeIcon
-                      icon={faSearch}
+                      icon={faCalendarXmark}
                       style={{
-                        fontSize: "20px",
+                        fontSize: "22px",
                         cursor: "pointer",
-                        color: "#1092F3",
+                        color: "#e04e4e",
                       }}
+                      onClick={() => setModalShow(true)}
                     />
-                  </OverlayTrigger>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </Table>
+                    <MyVerticallyCenteredModal
+                      show={modalShow}
+                      onHide={() => setModalShow(false)}
+                      bservice={bservice}
+                      handleCancel={handleCancelBookedService}
+                    />
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </Table>
+      </div>
+
+      <div className="incoming-schedule-mobile d-sm-none d-block">
+        {upBookedServices?.map((bservice, index) => (
+          <div className="incoming-schedule-mobile-item row">
+            <div className="col-5">
+              <h5 className="mobile-incoming-title">
+                Thời gian và <br /> địa điểm
+              </h5>
+              <p>
+                Thời gian: <br /> {formatSlot(bservice.slot_time)},{" "}
+                {format(new Date(bservice?.date), "dd/MM/yyyy")}
+              </p>
+              <p>Phòng: {bservice?.doctor[0]?.room.room}</p>
+            </div>
+            <div className="col-7">
+              <h5 className="mobile-incoming-title">Chi tiết dịch vụ</h5>
+              <p>Bác sĩ: {bservice?.doctor[0].fullname}</p>
+              <p>
+                Dịch vụ: <br /> {bservice?.services[0].name}
+              </p>
+            </div>
+            <button className="col-2 cancel-booking-btn">&times;</button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

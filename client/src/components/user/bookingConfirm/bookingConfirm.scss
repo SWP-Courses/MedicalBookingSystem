@@ -1,27 +1,47 @@
 .bookingConfirm {
+  padding: 14px 16px;
+
+  > .infoTitle {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--secondary-color);
+    margin-top: 15px;
+    letter-spacing: 1px;
+  }
+
+  > .infoItem {
+    display: flex;
+    margin-bottom: 10px;
+    font-size: 16px;
+
+    > .bookingKey {
+      flex: 2;
+      font-weight: 500;
+    }
+
+    > .bookingValue {
+      flex: 3;
+    }
+  }
+}
+
+@media screen and (min-width: 568px) {
+  .bookingConfirm {
     padding: 14px 32px;
-    
 
-    >.infoTitle {
-        font-size: 18px;
-        font-weight: bold;
-        color: var(--secondary-color);
-        margin-top: 15px;
-        letter-spacing: 2px;
+    > .infoItem {
+      display: flex;
+      margin-bottom: 10px;
+      font-size: 16px;
+
+      > .bookingKey {
+        flex: 1.5;
+        font-weight: 500;
+      }
+
+      > .bookingValue {
+        flex: 3;
+      }
     }
-
-    >.infoItem {
-        display: flex;
-        margin-bottom: 10px;
-        font-size: 16px;
-
-        >.bookingKey {
-            flex: 1;
-            font-weight: 500;
-        }
-
-        >.bookingValue {
-            flex: 3;
-        }
-    }
+  }
 }

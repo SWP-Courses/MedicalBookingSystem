@@ -105,6 +105,7 @@ const Doctor = () => {
     formData.current.delete('avatar');
     formData.current.delete('degree');
     formData.current.delete('password');
+    formData.current.delete('address');
     formData.current.delete('email');
   }
 

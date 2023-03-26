@@ -93,7 +93,7 @@ function DoughnutChart() {
                                     </div>
                                 </th>
                                 <th style={{ verticalAlign: "middle", }}>{service.name}</th>
-                                <th>{Number.parseFloat(service.quantity * 100 / total).toFixed(2)}%</th>
+                                <th>{Number.parseFloat((service.quantity * 100 / total).toFixed(2)).toFixed(2)}%</th>
                             </tr>
                         )
                     }

@@ -8,6 +8,7 @@ import BookingFill from "~/components/user/bookingFill/BookingFill";
 import { AuthContext } from "~/context/authContext";
 import "./booking.scss";
 import { toast } from "react-toastify";
+import { newDateWithoutTime } from "~/utils";
 
 export default function Booking() {
   const [part, setPart] = useState({
@@ -16,11 +17,15 @@ export default function Booking() {
   });
   const { pathname } = useLocation();
   const { currentUser, login } = useContext(AuthContext);
-  const [booking, setBooking] = useState({ date: new Date() });
+  const [booking, setBooking] = useState({
+    date: new Date(),
+  });
+  console.log(booking);
   const [payModal, setPayModal] = useState(false);
   const [services, setServices] = useState();
   const [freeDoctors, setFreeDoctors] = useState();
   const [freeSlots, setFreeSlots] = useState();
+  const [slotNoti, setSlotNoti] = useState("");
   const navigate = useNavigate();
   // const [bookedService, setBookedService] = useState();
 
@@ -84,10 +89,9 @@ export default function Booking() {
           `${API_URL}/booking/doctors?date=${booking.date}`
         );
 
-
-        const chosenDoctor = booking?.doctor?._id && res.data.find(
-          (doctor) => doctor._id === booking?.doctor?._id
-        );
+        const chosenDoctor =
+          booking?.doctor?._id &&
+          res.data.find((doctor) => doctor._id === booking?.doctor?._id);
         if (!chosenDoctor) {
           setBooking((prev) => ({ ...prev, doctor: {} }));
           setFreeSlots([]);
@@ -103,6 +107,20 @@ export default function Booking() {
   }, [booking.date, booking?.doctor?._id]);
 
   useEffect(() => {
+    const today = new Date();
+    const dateObj = new Date(booking.date);
+    dateObj.setHours(7, 0, 0, 0); // Set hours, minutes, seconds, and milliseconds to zero
+    const viewDate = dateObj.toISOString().slice(0, 10);
+    if (
+      new Date(viewDate).getDate() === today.getDate() &&
+      today.getHours() >= 17
+    ) {
+      setSlotNoti("Đã quá thời gian đặt lịch cho hôm nay");
+      return;
+    }
+
+    setSlotNoti("");
+
     const fetchFreeSlots = async () => {
       try {
         const res = await axios.get(
@@ -146,7 +164,11 @@ export default function Booking() {
           <div className="bookingTitle">
             <h2 className="bookingStep">{part.title}</h2>
             {!currentUser && (
-              <Link to="/login" state={{ guest: pathname }} className="btn btn-primary">
+              <Link
+                to="/login"
+                state={{ guest: pathname }}
+                className="btn btn-primary"
+              >
                 Đăng nhập
               </Link>
             )}
@@ -159,6 +181,7 @@ export default function Booking() {
               services={services}
               freeDoctors={freeDoctors}
               freeSlots={freeSlots}
+              slotNoti={slotNoti}
             />
           )}
 

@@ -5,6 +5,13 @@ var RoleModel = require("../models/Role.js");
 var SpecialistModel = require("../models/Specialist");
 const { deleteImageById } = require("./imageController.js");
 var nodemailer = require("nodemailer");
+require("dotenv").config();
+const {
+  generateAccessToken,
+  generateRefreshToken,
+  assignNewRefreshTokens,
+  refreshTokens,
+} = require("../middlewares/verifyToken.js");
 
 const CLIENT_URL = "http://localhost:3000";
 
@@ -108,7 +115,7 @@ const register = async (req, res, next) => {
     } else {
       // Hash the password and create a user
       const salt = bcrypt.genSaltSync(10);
-      console.log("resgiter");
+      console.log("register");
       const hash = bcrypt.hashSync(req.body.password, salt);
 
       // default: role_code = "R3"
@@ -162,12 +169,40 @@ const register = async (req, res, next) => {
   }
 };
 
-// POST /api/login
+// POST /api/auth/refresh
+const handleRefreshToken = (req, res) => {
+  const refreshToken = req.body.refresh_token;
+  if (!refreshToken) return res.status(401).json("You are not authenticated!");
+
+  // console.log(refreshToken);
+  console.log(refreshTokens);
+  // if (!refreshTokens.includes(refreshToken)) {
+  //   return res.status(403).json("Refresh token is not valid!");
+  // }
+
+  jwt.verify(refreshToken, process.env.JWT_REFRESH_KEY, (error, user) => {
+    error && console.log(error);
+
+    // refreshTokens = refreshTokens.filter(
+    //   (tokenItem) => tokenItem !== refreshToken
+    // );
+    const newAccessToken = generateAccessToken(user);
+
+    // const newRefreshToken = generateRefreshToken(user);
+    // refreshTokens.push(newRefreshToken);
+    // console.log(refreshTokens);
+
+    res.status(200).json({
+      access_token: newAccessToken,
+    });
+  });
+};
+
+// POST /api/auth/login
 // LOGIN
 const login = async (req, res, next) => {
   console.log("login");
   try {
-
     // degree, profile, spe_id của doctor chỉ được admin thay đổi
     const user = await UserModel.findOne({ email: req.body.email });
 
@@ -181,21 +216,24 @@ const login = async (req, res, next) => {
     if (!isPasswordCorrect) return res.status(401).send("Sai mật khẩu!");
     const userRole = await RoleModel.findOne({ role_code: user.role_code });
     // console.log(userRole);
-
-    const token = jwt.sign(
-      { id: user._id, isAdmin: user.role === "admin" ? true : false },
-      process.env.JWT
-    );
-    // console.log(token);
-
     const { password, role_code, ...filteredUser } = user._doc;
-    res
-      .cookie("access_token", "sfasdfdf", {
-        httpOnly: true,
-      })
-      .status(200)
-      .json({ ...filteredUser, role: userRole.title });
+    const userInfo = { ...filteredUser, role: userRole.title };
+
+    const access_token = generateAccessToken({
+      id: userInfo._id,
+      role: userInfo.role,
+    });
+    const refresh_token = generateRefreshToken({
+      id: userInfo._id,
+      role: userInfo.role,
+    });
+
+    // assignNewRefreshTokens([...refreshTokens, refresh_token])
+    // refreshTokens.push(refresh_token);
+    // console.log(refreshTokens);
+    res.status(200).json({ ...userInfo, access_token, refresh_token });
   } catch (err) {
+    console.log(err);
     res.status(500).json(err);
   }
 };
@@ -203,7 +241,7 @@ const login = async (req, res, next) => {
 // POST /api/logout
 // LOGOUT
 const logout = (req, res) => {
-  console.log("logout controller", req.user);
+  // console.log("logout controller", req.user);
   // req.cookie.destroy()
   // req.logout();
   // res.redirect(CLIENT_URL)
@@ -214,8 +252,12 @@ const logout = (req, res) => {
   req.session = null;
   res.clearCookie("session");
   res.clearCookie("session.sig");
-  // console.log("asdasd");
-  // res.redirect(CLIENT_URL);
+  const refreshToken = req.body.refresh_token;
+  // const newArray = refreshTokens.filter(
+  //   (tokenItem) => tokenItem !== refreshToken
+  // );
+  // assignNewRefreshTokens(newArray);
+  console.log("logout");
   res.status(200).json("logged out");
   // res
   //   // .clearCookie("access_token", {
@@ -253,4 +295,5 @@ module.exports = {
   sendMail,
   verifyResetCode,
   updateNewPassword,
+  handleRefreshToken,
 };

@@ -1,5 +1,4 @@
 import "./Blog.scss";
-import { useLocation, useNavigate, Link } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import API_URL from "~/api/Router";
@@ -12,8 +11,6 @@ function Blogs() {
   const [blogCategory, setBlogCategory] = useState([]);
   const [blogs, setBlogs] = useState([]);
   const [categoryName, setCategoryName] = useState('Tổng Hợp Các Bài Viết');
-  const location = useLocation();
-  const navigate = useNavigate();
 
   useEffect(() => {
     fetchListCategoryBlogs();
@@ -47,16 +44,20 @@ function Blogs() {
     setCategoryName(category.name);
   };
 
+  const hanldeGetAllBlogs = () => {
+    setBlogs(listBlogRef.current);
+  }
+
   return (
     <div className="Blog-wrapper">
-      <div className="blog-content">
+      <div className="container blog-content">
         <div className="slider">
           <img src={slider} alt="slider" className="slider-body" />
         </div>
-        <div className="blog-body">
-          <div className="major-list">
+        <div className="row blog-body">
+          <div className="major-list col-lg-3 col-xl-3">
             <ul className="list">
-              <li className="item">
+              <li className="item"> 
                 <h5>Nội Dung</h5>
                 <div className="line"></div>
               </li>
@@ -72,16 +73,19 @@ function Blogs() {
                   </li>
                 );
               })}
+              <li 
+                className="item"
+                onClick={() => hanldeGetAllBlogs()}
+              > 
+                <span>Tất cả</span>
+              </li>
             </ul>
           </div>
-          <div className="blog-list">
+          <div className="blog-list col-lg-9 col-xl-9">
             <h1 className="type">{categoryName}</h1>
             <hr />
             <Pagination data={blogs} />
           </div>
-        </div>
-        <div className="paginate">
-          <span></span>
         </div>
       </div>
     </div>

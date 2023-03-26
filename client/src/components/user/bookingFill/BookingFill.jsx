@@ -15,6 +15,7 @@ export default function BookingFill({
   services,
   freeDoctors,
   freeSlots,
+  slotNoti
 }) {
   const { currentUser } = useContext(AuthContext);
   const [step, setStep] = useState(1);
@@ -38,7 +39,7 @@ export default function BookingFill({
         <span className="title">Thời gian khám</span>
         <div className="date">
           <span className="d-block mb-2 fs-5">
-            Ngày khám: {format(booking.date, "dd/MM/yyyy")}
+            - {format(booking.date, "dd/MM/yyyy")} -
           </span>
           <Calendar
             onChange={(item) => setBooking((prev) => ({ ...prev, date: item }))}
@@ -120,7 +121,7 @@ export default function BookingFill({
         <div className="time">
           <span className="text-center">Giờ khám</span>
           <div className="groupTime row">
-            {freeSlots?.length ? (
+            {!slotNoti ? (
               freeSlots?.map((slot) => (
                 <div
                   key={slot._id}
@@ -137,7 +138,7 @@ export default function BookingFill({
                 </div>
               ))
             ) : (
-              <span className="text-info">Hiện tại không còn slot khám</span>
+              <span className="text-info">{slotNoti}</span>
             )}
           </div>
         </div>

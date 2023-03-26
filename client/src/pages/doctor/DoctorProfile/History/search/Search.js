@@ -8,11 +8,12 @@ import Tippy from "@tippyjs/react/headless";
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { hanlderRequest } from "~/utils";
-import  PopperWrapper  from '~/components/popper/Wrapper'
+
+import { Wrapper as PopperWrapper } from "~/components/user/popper/index";
 import AccountItem from "~/components/user/AccountItem/AccountItem";
 import API_URL from "~/api/Router";
 import useDebounce from "~/hooks/useDebounce";
-// import "./Search.scss";
+import "./Search.scss";
 
 function Search(props) {
   const [showResult, setShowResult] = useState(false);
@@ -70,7 +71,7 @@ function Search(props) {
         interactive
         placement="bottom-start"
       >
-        <div className="search">
+        <div className="search rounded-pill ml-5">
           <input
             type="text"
             placeholder="Tìm bệnh nhân"

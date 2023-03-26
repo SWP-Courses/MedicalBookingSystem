@@ -11,14 +11,17 @@ const BookedService = require("../models/BookedService");
 //@access private
 const getFreeDoctors = asyncHandler(async (req, res, next) => {
   const viewDate = req.query.date;
-  // console.log(viewDate);
+  console.log(viewDate);
   const absents = await Absent.find({
     date: {
       $gte: startOfDay(new Date(viewDate)),
       $lte: endOfDay(new Date(viewDate)),
     },
   });
-  const doctors = await User.find({ role_code: "R2", status: true }, "_id fullname avatar");
+  const doctors = await User.find(
+    { role_code: "R2", status: true },
+    "_id fullname avatar"
+  );
   // console.log(doctors);
   const freeDoctors = doctors.filter((doctor) => {
     let keep = true;
@@ -36,8 +39,11 @@ const getFreeDoctors = asyncHandler(async (req, res, next) => {
 //@route GET /api/blog/:id
 //@access private
 const getFreeSlots = asyncHandler(async (req, res, next) => {
-  const viewDate = req.query.date;
-  const fullSlotss = await Slot.find();
+  // Remove time of view date
+  const dateObj = new Date(req.query.date);
+  const viewDate = dateObj.toISOString().slice(0, 10);
+
+  const fullSlots = await Slot.find();
   const bookedSlots = await BookedService.find({
     doctor_id: req.params.doctorId,
     date: {
@@ -47,22 +53,25 @@ const getFreeSlots = asyncHandler(async (req, res, next) => {
   }).select("slot_time");
 
   const today = new Date();
-  const fullSlots =
+  // console.log({ today: today.getDate(), view: new Date(viewDate).getDate() });
+  const afterFilterTodaySlots =
     today.getDate() === new Date(viewDate).getDate()
-      ? fullSlotss?.filter((fslot) => {
+      ? fullSlots?.filter((fslot) => {
           let keep = true;
           if (today.getHours() >= fslot.time) {
             keep = false;
           }
           return keep;
         })
-      : fullSlotss;
+      : fullSlots;
 
+  // nếu chưa có ai book thì chỉ lọc qua cùng ngày (nếu có)
   if (bookedSlots.length === 0) {
-    // console.log(fullSlots);
-    return res.status(200).json(fullSlots);
+    console.log(afterFilterTodaySlots);
+    return res.status(200).json(afterFilterTodaySlots);
   } else {
-    const leftSlots = fullSlots.filter((fslot) => {
+    // có người book rồi thì lọc lại 
+    const leftSlots = afterFilterTodaySlots.filter((fslot) => {
       let keep = true;
       bookedSlots?.forEach((bslot) => {
         if (bslot.slot_time == fslot.time) {
