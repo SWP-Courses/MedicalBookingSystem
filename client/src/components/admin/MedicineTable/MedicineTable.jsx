@@ -59,10 +59,14 @@ function MedicineTable({ medicines, onClickEditMedicine }) {
                     <p className='text-center' style={{ margin: "0px" }}>Dosage Form</p>
                     <select className="form-select filter-select" style={{ marginLeft: "10px" }} aria-label="Default select example" onChange={e => setTmpDosageForm(e.target.value)}>
                         <option defaultValue value="">Tất cả</option>
-                        <option value="Viên nén">Viên nén</option>
-                        <option value="Dung dịch">Dung dịch</option>
-                        <option value="Thuốc bột">Thuốc bột</option>
+                        <option value="Viên nén bao">Viên nén bao</option>
+                        <option value="Viên nén bao phim">Viên nén bao phim</option>
+                        <option value="Thuốc bột pha hỗn dịch uống">Thuốc bột pha hỗn dịch uống</option>
                         <option value="Hỗn dịch uống">Hỗn dịch uống</option>
+                        <option value="Viên nén giải phóng kéo dài">Viên nén giải phóng kéo dài</option>
+                        <option value="Viên nén phân tán">Viên nén phân tán</option>
+                        <option value="Dung dịch truyền tĩnh mạch">Dung dịch truyền tĩnh mạch</option>
+                        <option value="Hộp">Hộp</option>
                     </select>
                 </div>
 
@@ -106,10 +110,10 @@ function MedicineTable({ medicines, onClickEditMedicine }) {
 
                         {
                             medicineList
-                                ? medicineList.filter(medicine => medicine.name.toLowerCase().includes(tmpName)
-                                    && medicine.type.includes(tmpType)
-                                    && medicine.dosageForm.includes(tmpDosageForm)
-                                    && handleFilterPrice(medicine.price, tmpPrice))
+                                ? medicineList.filter(medicine => medicine?.name.toLowerCase().includes(tmpName)
+                                    && medicine?.type.includes(tmpType)
+                                    && medicine?.dosageForm.includes(tmpDosageForm)
+                                    && handleFilterPrice(medicine?.price, tmpPrice))
                                     .map((medicine, index) => <MedicineRow onDeleteMedicineById={onDeleteMedicineById}
                                         onClickEditMedicine={onClickEditMedicine}
                                         key={medicine.id}

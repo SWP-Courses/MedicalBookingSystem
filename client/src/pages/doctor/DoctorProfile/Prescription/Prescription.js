@@ -17,26 +17,46 @@ import { toast } from "react-toastify";
 import { DoctorContext } from "~/context/DoctorContext";
 import { Font, PDFDownloadLink } from "@react-pdf/renderer";
 
-import { Document, Page, Text } from "@react-pdf/renderer";
+import { Document, Page, Text, StyleSheet, View } from "@react-pdf/renderer";
 // Font.register({
 //   family: "Open Sans",
 //   src: "https://fonts.gstatic.com/s/opensans/v22/mem5YaGs126MiZpBA-UN_r8OUuhpOqc.woff2",
 // });
+
+const styles = StyleSheet.create({
+  page: {
+    flexDirection: "row",
+    backgroundColor: "#E4E4E4",
+  },
+  section: {
+    margin: 10,
+    padding: 10,
+    flexGrow: 1,
+  },
+  textItalic: {
+    fontStyle: "italic",
+  },
+});
+
 function MyDocument({ data }) {
   const { drugs, username, desease, note } = data;
-  console.log(data);
   return (
     <Document>
-      <Page>
-        <Text>Tên: {username}</Text>
-        <Text>Benh: {desease}</Text>
-        <Text >Chú ý: {note}</Text>
-        {drugs?.map((drug) => (
-          <Text >
-            {drug.medicine_id.name} - {drug.quantity} {drug.medicine_id.type} -{" "}
-            {drug.dose}
-          </Text>
-        ))}
+      <Page size="A4" style={styles.page}>
+        <View style={styles.section}>
+          <Text>DON THUOC</Text>
+          <Text> </Text>
+          <Text>Tên: {username}</Text>
+          <Text>Benh: {desease}</Text>
+          <Text>Chú ý: {note}</Text>
+          <Text> </Text>
+          {drugs?.map((drug) => (
+            <Text >
+              {drug.medicine_id.name} - {drug.quantity} {drug.medicine_id.type}{" "}
+              - <Text style={styles.textItalic}>{drug.dose}</Text>
+            </Text>
+          ))}
+        </View>
       </Page>
     </Document>
   );
@@ -99,7 +119,7 @@ function Prescription(props) {
 
   const fetchAllMedicine = async () => {
     let res = await axios.get(`${API_URL}/medicine`);
-    console.log(res);
+    // console.log(res);
     if (res && res.data && res.data.medicines) {
       const listMedicine = res?.data?.medicines?.map((medicine) => {
         // console.log(medicine);
@@ -172,8 +192,11 @@ function Prescription(props) {
   };
 
   const handleSubmitPrescription = async () => {
-    console.log(drugs);
-    const formatDrugs = drugs.map(item => ({...item, medicine_id: item.medicine_id.id}))
+    // console.log(drugs);
+    const formatDrugs = drugs.map((item) => ({
+      ...item,
+      medicine_id: item.medicine_id.id,
+    }));
     const prescription = {
       bill_medicines: formatDrugs,
       note: note,
@@ -339,7 +362,13 @@ function Prescription(props) {
             fileName="prescription.pdf"
           >
             {({ blob, url, loading, error }) =>
-              loading ? "Đang tải đơn thuốc ..." : <p style={{marginTop:"10px", textDecoration:"underline"}}>In đơn thuốc</p>
+              loading ? (
+                "Đang tải đơn thuốc ..."
+              ) : (
+                <p style={{ marginTop: "10px", textDecoration: "underline" }}>
+                  In đơn thuốc
+                </p>
+              )
             }
           </PDFDownloadLink>
         )}

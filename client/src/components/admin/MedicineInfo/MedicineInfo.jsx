@@ -1,6 +1,24 @@
 import React from 'react'
 
 function MedicineInfo({ medicineInfo, medicineName, medicineDosageForm, medicineType, medicinePrice }) {
+    const optionType = [
+        "Viên",
+        "Hộp",
+        "Gói",
+        "Chai"
+    ]
+
+    const optionDosageForm = [
+        "Viên nén bao",
+        "Viên nén bao phim",
+        "Thuốc bột pha hỗn dịch uống",
+        "Hỗn dịch uống",
+        "Viên nén giải phóng kéo dài",
+        "Viên nén phân tán",
+        "Dung dịch truyền tĩnh mạch",
+        "Hộp"
+    ]
+
     if (!medicineInfo) return (
         <div className='w-100 h-auto px-3 d-flex'>
             < div className='w-100 h-100' >
@@ -17,14 +35,28 @@ function MedicineInfo({ medicineInfo, medicineName, medicineDosageForm, medicine
                         <div className="input-group-prepend w-100">
                             <span className="w-25" id="basic-addon1">Dosage Form</span>
                         </div>
-                        <input type="text" ref={medicineDosageForm} className="form-control" placeholder="Dosage Form" aria-label="DosageForm" aria-describedby="basic-addon1" />
+                        <select ref={medicineDosageForm} class="form-select" aria-label="Default select example">
+                            <option selected disabled>Choose option</option>
+                            {optionDosageForm.map((value, index) => (
+                                <option key={index} value={value}>
+                                    {value}
+                                </option>
+                            ))}
+                        </select>
                     </div >
 
                     <div div className="input-group" >
                         <div className="input-group-prepend w-100">
                             <span className="w-25" id="basic-addon1">Type</span>
                         </div>
-                        <input type="text" ref={medicineType} className="form-control" placeholder="Type" aria-label="Type" aria-describedby="basic-addon1" />
+                        <select ref={medicineType} class="form-select" aria-label="Default select example">
+                            <option selected disabled>Choose option</option>
+                            {optionType.map((value, index) => (
+                                <option key={index} value={value}>
+                                    {value}
+                                </option>
+                            ))}
+                        </select>
                     </div >
 
                     <div className="input-group">
@@ -56,14 +88,29 @@ function MedicineInfo({ medicineInfo, medicineName, medicineDosageForm, medicine
                         <div className="input-group-prepend w-100">
                             <span className="w-25" id="basic-addon1">Dosage Form</span>
                         </div>
-                        <input type="text" ref={medicineDosageForm} defaultValue={medicineInfo.dosageForm} className="form-control" placeholder="Dosage Form" aria-label="DosageForm" aria-describedby="basic-addon1" />
+                        <select ref={medicineDosageForm} defaultValue={medicineInfo.dosageForm} class="form-select" aria-label="Default select example">
+                            <option selected disabled>Choose option</option>
+                            {optionDosageForm.map((value, index) => (
+                                <option key={index} value={value}>
+                                    {value}
+                                </option>
+                            ))}
+                        </select>
                     </div>
 
                     <div className="input-group">
                         <div className="input-group-prepend w-100">
                             <span className="w-25" id="basic-addon1">Type</span>
                         </div>
-                        <input type="text" ref={medicineType} defaultValue={medicineInfo.type} className="form-control" placeholder="Type" aria-label="Type" aria-describedby="basic-addon1" />
+
+                        <select ref={medicineType} defaultValue={medicineInfo.type} class="form-select" aria-label="Default select example">
+                            <option selected disabled>Choose option</option>
+                            {optionType.map((value, index) => (
+                                <option key={index} value={value}>
+                                    {value}
+                                </option>
+                            ))}
+                        </select>
                     </div>
 
                     <div className="input-group">

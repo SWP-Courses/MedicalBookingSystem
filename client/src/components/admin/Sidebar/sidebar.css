@@ -63,6 +63,6 @@ i {
 }
 
 .sidebar__bottom__btn:hover {
-  color: #349eff;
+  color: white;
   transition: color 0.3s ease 0s;
 }

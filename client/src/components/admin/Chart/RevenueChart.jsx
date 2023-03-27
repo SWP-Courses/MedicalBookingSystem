@@ -65,7 +65,6 @@ function RevenueChart() {
             return bookingMonth === month && booking.total_price;
         });
 
-        console.log('bookingsInMonth', bookingsInMonth)
         const total = bookingsInMonth.reduce((acc, item) => {
             return acc + item.total_price;
         }, 0);
@@ -81,18 +80,6 @@ function RevenueChart() {
         height: '100%',
         labels: labels,
         datasets: [
-            // {
-            //     type: 'line',
-            //     label: 'Revenue',
-            //     borderColor: 'rgb(255, 99, 132)',
-            //     pointBorderColor: 'rgb(255, 99, 132)',
-            //     borderWidth: 2,
-            //     fill: false,
-            //     data: dataRevenueHandle,
-            //     tension: 0.1,
-            //     backgroundColor: "rgb(255, 99, 132)"
-            // },
-
             {
                 type: 'bar',
                 label: 'Patients',

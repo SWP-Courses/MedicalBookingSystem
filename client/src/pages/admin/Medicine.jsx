@@ -47,10 +47,10 @@ const Medicine = () => {
 
   const updateList = (newItem, currentList) => {
     const list = [...currentList];
-    console.log(newItem._id);
-    const isExist = list.find(item => item._id === newItem._id);
+    console.log(newItem?._id);
+    const isExist = list.find(item => item?._id === newItem?._id);
     if (!isExist) return [...list, newItem];
-    const indexOfItem = list.findIndex(item => item._id === newItem._id);
+    const indexOfItem = list.findIndex(item => item?._id === newItem?._id);
     list[indexOfItem] = newItem;
     return list;
   }
@@ -70,14 +70,15 @@ const Medicine = () => {
         const newMedicine = result.data.updateMedicine;
         setMedicineList(list => updateList(newMedicine, list));
         toast.success("Success!", toastOption);
+        window.location.reload();
       }
 
       // Reset input
       if (medicineInfo) return;
 
       medicineName.current.value = "";
-      medicineDosageForm.current.value = "";
-      medicineType.current.value = "";
+      medicineDosageForm.current.value = "Choose option";
+      medicineType.current.value = "Choose option";
       medicinePrice.current.value = "";
 
     } catch (error) {
