@@ -47,7 +47,7 @@ export default function Navbar() {
   return (
     <div className="navbarContainer">
       <div className="navbarTop container-xxl">
-        <div className="row align-items-center">
+        <div className="row align-items-center justify-content-center">
           <div className="col-3 col-md-3 col-lg-3 navbar-left text-center" onClick={() => navigate('/')}>
             <img src={logo} alt="logo" className="logo" />
           </div>
@@ -79,7 +79,7 @@ export default function Navbar() {
               </label>
             </Tippy>
           </div>
-          <div className="col-6 col-md-6 justify-content-md-center justify-content-lg col-lg-4 navbar-right">
+          <div className="col-6 col-md-6 justify-content-lg col-lg-4 navbar-right">
             <div className="navItemContainer d-none d-md-block d-lg-block">
               {(currentUser?.role === "customer" || !currentUser) && (
                 <>
@@ -102,6 +102,7 @@ export default function Navbar() {
                   >
                     <FontAwesomeIcon
                       icon={faCalendarDays}
+                      className="mr-1"
                       style={{ color: "var(--secondary-color)" }}
                     />
                     LỊCH KHÁM
